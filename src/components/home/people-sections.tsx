@@ -1,21 +1,25 @@
 import Image from "next/image";
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/sections/section-heading";
+import { Reveal } from "@/components/ui/reveal";
 import { LEADERSHIP, VOLUNTEERS, type PersonProfile } from "@/data/people";
 import { DEMO_NOTICE } from "@/data/site";
 
 export function LeadershipSection() {
   return (
-    <section className="bg-sand-soft/70 py-20">
+    <section className="bg-sand-soft/50 py-24 md:py-32">
       <Container>
         <SectionHeading
+          align="left"
           eyebrow="Leadership"
-          title="Meet our leadership"
+          title="The people who steward the mission"
           subtitle={DEMO_NOTICE}
         />
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {LEADERSHIP.map((person) => (
-            <PersonCard key={person.id} person={person} editorial />
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {LEADERSHIP.map((person, i) => (
+            <Reveal key={person.id} delay={i * 70}>
+              <PersonCard person={person} editorial />
+            </Reveal>
           ))}
         </div>
       </Container>
@@ -25,16 +29,19 @@ export function LeadershipSection() {
 
 export function VolunteersSection() {
   return (
-    <section className="py-20">
+    <section className="py-24 md:py-32">
       <Container>
         <SectionHeading
+          align="left"
           eyebrow="Community"
-          title="Our amazing volunteers"
+          title="Volunteers who keep the work moving"
           subtitle={DEMO_NOTICE}
         />
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {VOLUNTEERS.map((person) => (
-            <PersonCard key={person.id} person={person} />
+        <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {VOLUNTEERS.map((person, i) => (
+            <Reveal key={person.id} delay={i * 70}>
+              <PersonCard person={person} />
+            </Reveal>
           ))}
         </div>
       </Container>
@@ -50,18 +57,22 @@ function PersonCard({
   editorial?: boolean;
 }) {
   return (
-    <article className="overflow-hidden rounded-2xl bg-white">
-      <div className={editorial ? "relative aspect-3/4" : "relative aspect-square"}>
+    <article className="group overflow-hidden rounded-[1.5rem] bg-white">
+      <div
+        className={
+          editorial ? "relative aspect-3/4 overflow-hidden" : "relative aspect-square overflow-hidden"
+        }
+      >
         <Image
           src={person.photoUrl}
           alt={`${person.name} — demo profile`}
           fill
-          className="object-cover"
+          className="object-cover transition-transform duration-700 group-hover:scale-105"
           sizes="(max-width: 1024px) 50vw, 25vw"
         />
       </div>
       <div className="p-5">
-        <p className="text-[11px] font-semibold uppercase tracking-wider text-forest">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-forest">
           {person.role}
         </p>
         <h3 className="mt-1 font-display text-xl text-forest-deep">{person.name}</h3>

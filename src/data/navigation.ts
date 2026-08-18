@@ -13,7 +13,7 @@ export const navItems: NavItem[] = [
     href: "/impact",
     subItems: [
       { label: "Our Impact", href: "/impact" },
-      { label: "Projects", href: "/impact#projects" },
+      { label: "Projects", href: "/projects" },
       { label: "Winners", href: "/winners" },
       { label: "Success Stories", href: "/impact#success-stories" },
     ],
@@ -27,6 +27,7 @@ export const footerNav = {
     { label: "About", href: "/about" },
     { label: "Grants", href: "/grants" },
     { label: "Impact", href: "/impact" },
+    { label: "Projects", href: "/projects" },
     { label: "Winners", href: "/winners" },
   ],
   participate: [

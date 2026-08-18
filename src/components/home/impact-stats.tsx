@@ -1,30 +1,30 @@
 import { Container } from "@/components/shared/container";
-import { SectionHeading } from "@/components/sections/section-heading";
+import { Reveal } from "@/components/ui/reveal";
 import { DEMO_IMPACT_STATS } from "@/data/grant";
-import { DEMO_NOTICE } from "@/data/site";
 
 export function ImpactStats() {
   return (
-    <section className="py-20">
+    <section className="py-24 md:py-32">
       <Container>
-        <SectionHeading
-          eyebrow="Impact"
-          title="A growing record of community support"
-          subtitle={DEMO_NOTICE}
-        />
-        <div className="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-hairline bg-hairline md:grid-cols-4">
-          {DEMO_IMPACT_STATS.map((stat) => (
-            <div key={stat.label} className="bg-white px-6 py-8 text-center">
-              <p className="font-display text-3xl text-forest md:text-4xl">
+        <Reveal>
+          <p className="eyebrow">Impact</p>
+          <h2 className="mt-3 max-w-2xl font-display text-4xl font-semibold tracking-tight text-forest-deep md:text-5xl">
+            A growing record of community support
+          </h2>
+          <p className="mt-4 text-sm text-faint">
+            Figures below are replaceable demo values.
+          </p>
+        </Reveal>
+        <div className="mt-14 grid grid-cols-2 gap-10 md:grid-cols-4 md:gap-8">
+          {DEMO_IMPACT_STATS.map((stat, i) => (
+            <Reveal key={stat.label} delay={i * 80}>
+              <p className="font-display text-4xl font-semibold tracking-tight text-forest md:text-5xl">
                 {stat.value}
               </p>
-              <p className="mt-2 text-sm font-medium text-forest-deep">
+              <p className="mt-3 text-sm font-medium text-forest-deep">
                 {stat.label}
               </p>
-              <p className="mt-1 text-[11px] uppercase tracking-wider text-faint">
-                {stat.note}
-              </p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </Container>
