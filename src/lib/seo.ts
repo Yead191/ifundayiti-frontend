@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 /** Production site origin. Override with NEXT_PUBLIC_SITE_URL. */
 export function getSiteUrl() {
   const raw =
-    process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://thehubology.com";
+    process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://ifundayiti.org";
   return raw.replace(/\/$/, "");
 }
 
@@ -13,24 +13,19 @@ export function absoluteUrl(path = "/") {
   return `${base}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-/** Prefer a 1200×630 PNG at this path when available; logo is the safe fallback. */
-const DEFAULT_OG_IMAGE = "/logo-hubology.svg";
+const DEFAULT_OG_IMAGE =
+  "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=1200&h=630";
 
-export const SITE_NAME = "Hubology";
+export const SITE_NAME = "IFundAyiti";
 
 export const DEFAULT_KEYWORDS = [
-  "Hubology",
-  "the hubology",
-  "thehubology",
-  "business growth platform",
-  "verified business experts",
-  "founder community",
-  "entrepreneur marketplace",
-  "business consulting",
-  "startup services",
-  "company formation",
-  "tax strategy for founders",
-  "expert directory",
+  "IFundAyiti",
+  "Haiti grants",
+  "micro grants Haiti",
+  "Haitian entrepreneurs",
+  "community funding Haiti",
+  "nonprofit grant program",
+  "equity-free grants",
 ] as const;
 
 type BuildMetadataInput = {
@@ -39,16 +34,10 @@ type BuildMetadataInput = {
   path?: string;
   keywords?: string[];
   image?: string | null;
-  /** When true, search engines should not index the page. */
   noIndex?: boolean;
-  /** Use a fully absolute title (skips the root "%s · Hubology" template). */
   absoluteTitle?: boolean;
 };
 
-/**
- * Consistent title / description / canonical / Open Graph / Twitter metadata
- * for Hubology public pages.
- */
 export function buildMetadata({
   title,
   description,
@@ -63,7 +52,7 @@ export function buildMetadata({
     ? image.startsWith("http")
       ? image
       : absoluteUrl(image)
-    : absoluteUrl(DEFAULT_OG_IMAGE);
+    : DEFAULT_OG_IMAGE;
 
   const mergedKeywords = Array.from(
     new Set([...keywords, ...DEFAULT_KEYWORDS].filter(Boolean)),
@@ -103,7 +92,7 @@ export function noIndexMetadata(title: string, description?: string): Metadata {
   return buildMetadata({
     title,
     description:
-      description || "Private Hubology page. Sign in to access your account.",
+      description || "Private IFundAyiti page. Sign in to access your account.",
     noIndex: true,
     keywords: [],
   });

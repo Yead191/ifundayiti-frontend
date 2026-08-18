@@ -1,25 +1,31 @@
 import type { Metadata } from "next";
 
-import { Hero } from "@/components/sections/hero";
-import { WhyHubology } from "@/components/sections/why-hubology";
-import { Testimonials } from "@/components/sections/testimonials";
-import { CtaBand } from "@/components/sections/cta-band";
 import { JsonLd } from "@/components/seo/json-ld";
+import { HomeHero } from "@/components/home/hero";
+import { FloatingDonationCard } from "@/components/home/floating-donation-card";
+import { CurrentGrant } from "@/components/home/current-grant";
+import { WhatWeDo } from "@/components/home/what-we-do";
+import { HowItWorks } from "@/components/home/how-it-works";
+import { ImpactStats } from "@/components/home/impact-stats";
+import { FeaturedProjects } from "@/components/home/featured-projects";
+import {
+  LeadershipSection,
+  VolunteersSection,
+} from "@/components/home/people-sections";
+import { SuccessStory } from "@/components/home/success-story";
+import { DonationCta } from "@/components/home/donation-cta";
 import { absoluteUrl, buildMetadata, getSiteUrl, SITE_NAME } from "@/lib/seo";
+import { SITE } from "@/data/site";
 
 export const metadata: Metadata = buildMetadata({
-  title: "Hubology — Launch, grow, and scale your business",
+  title: "IFundAyiti — Grants that grow Haitian ideas",
   absoluteTitle: true,
-  description:
-    "Hubology helps founders launch, grow, and scale with verified business experts, consulting services, a private community forum, digital books, and membership perks — all in one platform.",
+  description: SITE.summary,
   path: "/",
   keywords: [
-    "all-in-one business platform",
-    "launch grow scale business",
-    "founder tools and resources",
-    "hire business consultant online",
-    "startup growth community",
-    "verified experts for entrepreneurs",
+    "IFundAyiti homepage",
+    "Haiti micro grants",
+    "apply for a grant Haiti",
   ],
 });
 
@@ -33,14 +39,11 @@ export default function HomePage() {
           "@context": "https://schema.org",
           "@graph": [
             {
-              "@type": "Organization",
+              "@type": "NGO",
               "@id": `${site}/#organization`,
               name: SITE_NAME,
               url: site,
-              logo: absoluteUrl("/logo-hubology.svg"),
-              description:
-                "All-in-one digital workspace for founders to access verified experts, services, community, and growth resources.",
-              sameAs: [],
+              description: SITE.summary,
             },
             {
               "@type": "WebSite",
@@ -48,19 +51,21 @@ export default function HomePage() {
               url: site,
               name: SITE_NAME,
               publisher: { "@id": `${site}/#organization` },
-              potentialAction: {
-                "@type": "SearchAction",
-                target: `${site}/vendors?searchTerm={search_term_string}`,
-                "query-input": "required name=search_term_string",
-              },
             },
           ],
         }}
       />
-      <Hero />
-      <WhyHubology />
-      <Testimonials />
-      <CtaBand />
+      <HomeHero />
+      <FloatingDonationCard />
+      <CurrentGrant />
+      <WhatWeDo />
+      <HowItWorks />
+      <ImpactStats />
+      <FeaturedProjects />
+      <LeadershipSection />
+      <VolunteersSection />
+      <SuccessStory />
+      <DonationCta />
     </>
   );
 }

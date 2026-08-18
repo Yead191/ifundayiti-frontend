@@ -21,6 +21,16 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "10mb",
     },
   },
+  async redirects() {
+    return [
+      { source: "/store", destination: "/shop", permanent: false },
+      { source: "/store/:path*", destination: "/shop", permanent: false },
+      { source: "/office-supplies", destination: "/shop", permanent: false },
+      { source: "/office-supplies/:path*", destination: "/shop", permanent: false },
+      { source: "/ifundayiti", destination: "/", permanent: false },
+      { source: "/donate/track", destination: "/track-application", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;

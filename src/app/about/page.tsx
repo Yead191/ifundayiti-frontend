@@ -1,174 +1,127 @@
 import type { Metadata } from "next";
-import { Building, Receipt, FileText, Users, Globe } from "lucide-react";
-import { Aurora } from "@/components/ui/aurora";
-import { Reveal } from "@/components/ui/reveal";
+import Image from "next/image";
+import Link from "next/link";
+
+import { Button } from "@/components/ui/button";
+import { PageHero } from "@/components/shared/page-hero";
+import { Container } from "@/components/shared/container";
+import { SectionHeading } from "@/components/sections/section-heading";
+import {
+  LeadershipSection,
+  VolunteersSection,
+} from "@/components/home/people-sections";
+import { DonationCta } from "@/components/home/donation-cta";
+import { HOW_IT_WORKS } from "@/data/grant";
+import { DEMO_NOTICE } from "@/data/site";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = buildMetadata({
-  title: "About Us",
+  title: "About",
   description:
-    "Learn about Hubology — the digital ecosystem helping entrepreneurs with company registration, bookkeeping, tax readiness, a vetted B2B marketplace, and a global peer network.",
+    "Learn about IFundAyiti — a grant program supporting Haitian entrepreneurs and community builders with equity-free micro-grants.",
   path: "/about",
-  keywords: [
-    "about Hubology",
-    "The HUBology",
-    "business growth ecosystem",
-    "company registration platform",
-    "founder bookkeeping services",
-    "vetted B2B marketplace",
-    "entrepreneur peer network",
-  ],
 });
-
-const deliverables = [
-  {
-    title: "Company Registration",
-    description:
-      "Launch your legal entity with fast, error-free corporate and tax registrations.",
-    icon: Building,
-  },
-  {
-    title: "On-Demand Bookkeeping",
-    description:
-      "Keep your ledgers perfectly balanced with monthly financial reporting and reconciled receipts.",
-    icon: Receipt,
-  },
-  {
-    title: "Tax Season Readiness",
-    description:
-      "Receive organized financial records to maximize tax deductions and ensure compliance.",
-    icon: FileText,
-  },
-  {
-    title: "Vetted B2B Marketplace",
-    description:
-      "Connect with verified freelancers, agencies, and vendors to outsource tasks with total confidence.",
-    icon: Users,
-  },
-  {
-    title: "Global Peer Network",
-    description:
-      "Engage in safe, collaborative forums to share strategies, find co-founders, or unlock new capital.",
-    icon: Globe,
-  },
-];
 
 export default function AboutPage() {
   return (
-    <main className="relative min-h-screen overflow-hidden pt-32 pb-24">
-      {/* Background Ambience */}
-      <Aurora
-        animated
-        className="-top-20 left-1/2 h-150 w-250 -translate-x-1/2 opacity-30"
+    <>
+      <PageHero
+        eyebrow="About"
+        title="A program built around trust, community, and practical capital."
+        subtitle="IFundAyiti helps Haitian builders turn workable ideas into local impact — through a public grant cycle that is easy to understand and follow."
       />
 
-      <div className="relative mx-auto max-w-6xl px-6 lg:px-8 z-10">
-        {/* Header / Hero */}
-        <Reveal>
-          <div className="mx-auto max-w-3xl text-center">
-            <h1 className="font-display text-4xl font-bold tracking-tight text-cloud sm:text-5xl md:text-6xl">
-              About <span className="text-gradient">The HUBology</span>
-            </h1>
-            <p className="mt-6 text-lg leading-relaxed text-mist md:text-xl">
-              Welcome to The HUBology, the ultimate digital ecosystem designed
-              to accelerate the growth of modern businesses, entrepreneurs, and
-              freelancers. We bridge the gap between ambition and execution by
-              providing a unified platform where professionals connect, learn,
-              and scale their operations.
+      <section className="py-20">
+        <Container className="grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <SectionHeading
+              align="left"
+              eyebrow="Our story"
+              title="From a grant module to a public platform."
+              subtitle="IFundAyiti began as a grant and application workflow. It is now a standalone public website for applicants, donors, and the communities those grants are meant to serve."
+            />
+            <p className="mt-6 text-sm text-faint">{DEMO_NOTICE}</p>
+          </div>
+          <div className="relative aspect-4/3 overflow-hidden rounded-2xl">
+            <Image
+              src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&q=80&w=1200&h=900"
+              alt=""
+              fill
+              className="object-cover"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+          </div>
+        </Container>
+      </section>
+
+      <section className="bg-sand-soft/70 py-20">
+        <Container className="grid gap-10 md:grid-cols-2">
+          <div className="rounded-2xl bg-white p-8">
+            <h2 className="font-display text-2xl text-forest-deep">Mission</h2>
+            <p className="mt-3 leading-relaxed text-mist">
+              Put small, equity-free grants in the hands of Haitian entrepreneurs
+              and community builders whose ideas can improve daily life where they live.
             </p>
           </div>
-        </Reveal>
+          <div className="rounded-2xl bg-white p-8">
+            <h2 className="font-display text-2xl text-forest-deep">Vision</h2>
+            <p className="mt-3 leading-relaxed text-mist">
+              A public, trustworthy grant platform where applying, tracking, and
+              supporting the mission all feel human and clear.
+            </p>
+          </div>
+        </Container>
+      </section>
 
-        {/* Mission Statement */}
-        <Reveal delay={100}>
-          <div className="border-gradient relative mt-20 overflow-hidden rounded-3xl bg-panel/30 px-8 py-12 text-center md:px-16 md:py-20 glow-soft">
-            <h2 className="font-display text-2xl font-bold text-cloud md:text-3xl">
-              Our Mission
+      <section className="py-20">
+        <Container>
+          <SectionHeading
+            eyebrow="What we believe"
+            title="Clarity over complexity."
+          />
+          <blockquote className="mx-auto mt-10 max-w-3xl text-center font-display text-2xl leading-snug text-forest-deep md:text-3xl">
+            “Donations fund the program. Grants fund the work. Communities feel the difference.”
+          </blockquote>
+        </Container>
+      </section>
+
+      <section className="bg-cream-dark py-20">
+        <Container>
+          <SectionHeading
+            eyebrow="How we create impact"
+            title="A simple grant lifecycle"
+          />
+          <ol className="mt-12 grid gap-6 md:grid-cols-5">
+            {HOW_IT_WORKS.map((item) => (
+              <li key={item.step} className="rounded-2xl bg-white p-5">
+                <p className="text-xs font-semibold text-forest">{item.step}</p>
+                <h3 className="mt-2 font-display text-lg">{item.title}</h3>
+                <p className="mt-2 text-sm text-mist">{item.body}</p>
+              </li>
+            ))}
+          </ol>
+        </Container>
+      </section>
+
+      <section className="py-16">
+        <Container className="flex flex-col items-start justify-between gap-6 rounded-2xl border border-hairline bg-white px-8 py-10 md:flex-row md:items-center">
+          <div>
+            <h2 className="font-display text-2xl text-forest-deep">
+              The grant program
             </h2>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-mist leading-relaxed">
-              To democratize business growth by giving every entrepreneur and
-              small business owner—regardless of size or location—the tools,
-              network, and insights needed to thrive in a competitive digital
-              economy.
+            <p className="mt-2 max-w-xl text-mist">
+              Open cycles accept applications for up to $1,000. One winner is selected per period.
             </p>
           </div>
-        </Reveal>
+          <Button asChild>
+            <Link href="/grants">Review grant details</Link>
+          </Button>
+        </Container>
+      </section>
 
-        {/* What We Deliver */}
-        <div className="mt-32">
-          <Reveal>
-            <div className="text-center">
-              <h2 className="font-display text-3xl font-bold text-cloud md:text-4xl">
-                What We Deliver
-              </h2>
-              <p className="mt-4 text-mist">
-                Everything you need to run and scale your business seamlessly.
-              </p>
-            </div>
-          </Reveal>
-
-          <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-            {deliverables.map((item, i) => {
-              const Icon = item.icon;
-              return (
-                <Reveal key={item.title} delay={i * 80} className="h-full">
-                  <div className="border-gradient group flex h-full flex-col rounded-3xl bg-panel/40 p-8 transition-all duration-500 hover:-translate-y-1 hover:bg-panel/70 hover:glow-violet">
-                    <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/5 text-violet-bright transition-colors group-hover:bg-violet-bright group-hover:text-white">
-                      <Icon className="h-7 w-7" />
-                    </div>
-                    <h3 className="mb-3 font-display text-xl font-semibold text-cloud">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm leading-relaxed text-mist">
-                      {item.description}
-                    </p>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Why Choose Us */}
-        <Reveal delay={200}>
-          <div className="mt-32 rounded-3xl border border-hairline bg-ink-700/50 p-8 md:p-16 lg:flex lg:items-center lg:justify-between lg:gap-16">
-            <div className="lg:max-w-xl">
-              <h2 className="font-display text-3xl font-bold text-cloud md:text-4xl">
-                Why Choose Us?
-              </h2>
-              <div className="mt-6 space-y-6 text-lg leading-relaxed text-mist">
-                <p>
-                  We understand that running a business is complex. Most
-                  founders waste hours switching between disjointed software and
-                  searching for reliable advice.
-                </p>
-                <p>
-                  <strong className="text-cloud">The HUBology</strong>{" "}
-                  eliminates that friction. We centralize your essential
-                  business needs into one powerful hub so you can focus entirely
-                  on what matters:{" "}
-                  <span className="text-violet-bright font-medium">
-                    scaling your revenue.
-                  </span>
-                </p>
-              </div>
-            </div>
-            <div className="mt-12 lg:mt-0 shrink-0">
-              <div className="relative h-64 w-64 md:h-80 md:w-80 rounded-full border border-hairline-strong bg-panel/50 glow-violet flex items-center justify-center">
-                <Aurora className="inset-0 opacity-40" />
-                <div className="relative z-10 text-center">
-                  <span className="block font-display text-5xl font-bold text-cloud">
-                    100%
-                  </span>
-                  <span className="mt-2 block text-sm font-medium uppercase tracking-widest text-mist">
-                    Focus on Growth
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </Reveal>
-      </div>
-    </main>
+      <LeadershipSection />
+      <VolunteersSection />
+      <DonationCta />
+    </>
   );
 }

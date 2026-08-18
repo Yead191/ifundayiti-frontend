@@ -21,7 +21,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     setIsMounted(true);
-    const storedCart = localStorage.getItem("hubology_cart");
+    const storedCart = localStorage.getItem("ifa_cart");
     if (storedCart) {
       try {
         setItems(JSON.parse(storedCart));
@@ -33,7 +33,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (isMounted) {
-      localStorage.setItem("hubology_cart", JSON.stringify(items));
+      localStorage.setItem("ifa_cart", JSON.stringify(items));
     }
   }, [items, isMounted]);
 

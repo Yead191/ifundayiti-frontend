@@ -5,21 +5,21 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold transition-all duration-300 ease-out-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-ink disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-full text-sm font-semibold transition-all duration-300 ease-out-soft focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest focus-visible:ring-offset-2 focus-visible:ring-offset-cream disabled:pointer-events-none disabled:opacity-50 [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        // Primary brand gradient with glow on hover
         default:
-          "bg-brand-gradient text-white shadow-[0_10px_30px_-10px_rgba(129,49,240,0.7)] hover:shadow-[0_16px_44px_-12px_rgba(129,49,240,0.9)] hover:-translate-y-0.5",
+          "bg-forest text-white shadow-[0_10px_24px_-12px_rgba(11,61,46,0.55)] hover:bg-forest-bright hover:-translate-y-0.5",
         premium:
-          "bg-[linear-gradient(160deg,#6e22e6_20%,#d65df3_60%,#6e22e6_100%)] bg-[size:200%_auto] bg-[position:0%_0%] text-white border border-white/90 hover:border-white shadow-[0_4px_12px_rgba(110,34,230,0.3)] hover:shadow-[0_12px_28px_rgba(110,34,230,0.6),0_0_20px_rgba(214,93,243,0.45)] transition-all duration-500 hover:bg-[position:100%_100%] hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]",
+          "bg-forest text-white border border-forest-deep/20 hover:bg-forest-bright hover:-translate-y-0.5",
         outline:
-          "border border-hairline-strong bg-white/[0.03] text-cloud backdrop-blur-sm hover:bg-white/[0.07] hover:border-violet/50",
-        ghost: "text-mist hover:text-cloud hover:bg-white/[0.05]",
+          "border border-forest/25 bg-white text-forest hover:bg-sand-soft hover:border-forest/40",
+        ghost: "text-mist hover:text-forest hover:bg-forest/6",
         secondary:
-          "bg-white/[0.06] text-cloud hover:bg-white/[0.1] border border-hairline",
-        link: "text-violet-bright underline-offset-4 hover:underline",
+          "bg-sand text-forest-deep hover:bg-sand-soft border border-sand",
+        sand: "bg-sand text-forest-deep hover:bg-[#ddc9a8]",
+        link: "text-forest underline-offset-4 hover:underline",
       },
       size: {
         default: "h-11 px-6 py-2",
@@ -34,7 +34,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-  VariantProps<typeof buttonVariants> {
+    VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
 
