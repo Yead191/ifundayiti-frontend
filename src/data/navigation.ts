@@ -18,6 +18,7 @@ export const navItems: NavItem[] = [
       { label: "Success Stories", href: "/impact#success-stories" },
     ],
   },
+  { label: "Events", href: "/events" },
   { label: "Shop", href: "/shop" },
   { label: "Contact", href: "/contact" },
 ];
@@ -33,6 +34,7 @@ export const footerNav = {
   participate: [
     { label: "Apply", href: "/apply" },
     { label: "Track Application", href: "/track-application" },
+    { label: "Events Calendar", href: "/events" },
     { label: "Donate", href: "/donate" },
     { label: "Shop", href: "/shop" },
   ],
