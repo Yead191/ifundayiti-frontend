@@ -37,7 +37,7 @@ export function CartMenu() {
 
       <DropdownMenuContent align="end" className="w-80 p-0">
         <DropdownMenuLabel className="flex items-center justify-between px-4 py-3 text-sm">
-          <span className="font-semibold text-forest-deep">Cart</span>
+          <span className="font-semibold text-forest-deep">Shopping Bag</span>
           <span className="text-xs text-mist">
             {cartCount === 0 ? "Empty" : `${cartCount} item${cartCount === 1 ? "" : "s"}`}
           </span>
@@ -49,7 +49,7 @@ export function CartMenu() {
             <span className="grid h-10 w-10 place-items-center rounded-xl bg-sand-soft text-forest">
               <Package className="h-5 w-5" />
             </span>
-            <p className="text-sm text-mist">Your cart is empty</p>
+            <p className="text-sm text-mist">Your shopping bag is empty</p>
             <Button asChild variant="outline" size="sm" className="mt-1">
               <Link href="/shop">Browse shop</Link>
             </Button>
@@ -87,12 +87,9 @@ export function CartMenu() {
                 {formatPrice(cartTotal)}
               </span>
             </div>
-            <div className="grid grid-cols-2 gap-2 px-4 pb-3">
-              <Button asChild variant="outline" size="sm">
-                <Link href="/cart">View cart</Link>
-              </Button>
-              <Button asChild size="sm">
-                <Link href="/checkout">Checkout</Link>
+            <div className="px-4 pb-3">
+              <Button asChild size="sm" className="w-full rounded-xl">
+                <Link href="/checkout">Proceed to Checkout</Link>
               </Button>
             </div>
           </div>
