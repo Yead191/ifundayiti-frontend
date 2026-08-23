@@ -133,9 +133,11 @@ export function DonationForm({
         )}
       </div>
 
-      <p className="text-xs leading-relaxed text-mist">
-        Donations go to the IFundAyiti Program Fund and are not linked to individual applicants.
-      </p>
+      {!compact && (
+        <p className="text-xs leading-relaxed text-mist">
+          Donations go to the IFundAyiti Program Fund and are not linked to individual applicants.
+        </p>
+      )}
 
       <Button type="submit" className="w-full" disabled={submitting}>
         {submitting ? (
