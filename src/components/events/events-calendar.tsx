@@ -51,8 +51,12 @@ const MONTH_NAMES = [
 export function EventsCalendar() {
   // Dynamically start at the real current date (e.g. today's month & year)
   const [currentDate, setCurrentDate] = React.useState(() => new Date());
-  const [selectedCategory, setSelectedCategory] = React.useState<EventCategory | "all">("all");
-  const [selectedEvent, setSelectedEvent] = React.useState<EventItem | null>(MOCK_EVENTS[0]);
+  const [selectedCategory, setSelectedCategory] = React.useState<
+    EventCategory | "all"
+  >("all");
+  const [selectedEvent, setSelectedEvent] = React.useState<EventItem | null>(
+    MOCK_EVENTS[0],
+  );
   const [modalOpen, setModalOpen] = React.useState(false);
   const [viewMode, setViewMode] = React.useState<"month" | "list">("month");
 
@@ -87,7 +91,8 @@ export function EventsCalendar() {
   const prevMonthDays = new Date(year, month, 0).getDate();
 
   const calendarCells = React.useMemo(() => {
-    const cells: { dateStr: string; dayNum: number; currentMonth: boolean }[] = [];
+    const cells: { dateStr: string; dayNum: number; currentMonth: boolean }[] =
+      [];
 
     for (let i = firstDayOfMonth - 1; i >= 0; i--) {
       const day = prevMonthDays - i;
@@ -140,8 +145,10 @@ export function EventsCalendar() {
   }
 
   function renderFormatIcon(type: "physical" | "virtual" | "hybrid") {
-    if (type === "virtual") return <Video className="h-3 w-3 text-blue-500 shrink-0" />;
-    if (type === "hybrid") return <Video className="h-3 w-3 text-purple-500 shrink-0" />;
+    if (type === "virtual")
+      return <Video className="h-3 w-3 text-blue-500 shrink-0" />;
+    if (type === "hybrid")
+      return <Video className="h-3 w-3 text-purple-500 shrink-0" />;
     return <MapPin className="h-3 w-3 text-forest shrink-0" />;
   }
 
@@ -179,7 +186,9 @@ export function EventsCalendar() {
               onClick={() => setViewMode("month")}
               className={cn(
                 "rounded-full px-3.5 py-1.5 transition-all cursor-pointer",
-                viewMode === "month" ? "bg-white text-forest-deep shadow-xs" : "text-mist",
+                viewMode === "month"
+                  ? "bg-white text-forest-deep shadow-xs"
+                  : "text-mist",
               )}
             >
               Month Grid
@@ -189,7 +198,9 @@ export function EventsCalendar() {
               onClick={() => setViewMode("list")}
               className={cn(
                 "rounded-full px-3.5 py-1.5 transition-all cursor-pointer",
-                viewMode === "list" ? "bg-white text-forest-deep shadow-xs" : "text-mist",
+                viewMode === "list"
+                  ? "bg-white text-forest-deep shadow-xs"
+                  : "text-mist",
               )}
             >
               List Feed
@@ -268,7 +279,12 @@ export function EventsCalendar() {
                         {hasMultiple && (
                           <button
                             type="button"
-                            onClick={() => setSelectedDayEvents({ dateStr: cell.dateStr, events: evts })}
+                            onClick={() =>
+                              setSelectedDayEvents({
+                                dateStr: cell.dateStr,
+                                events: evts,
+                              })
+                            }
                             className="inline-flex items-center gap-1 rounded-full bg-forest/10 px-1.5 py-0.5 text-[10px] font-bold text-forest hover:bg-forest hover:text-white transition-colors cursor-pointer"
                             title="View all events on this day"
                           >
@@ -293,7 +309,9 @@ export function EventsCalendar() {
                           >
                             <div className="flex items-center gap-1 text-[10px] opacity-90">
                               {renderFormatIcon(evt.eventType)}
-                              <span className="font-semibold">{evt.time.split("–")[0]}</span>
+                              <span className="font-semibold">
+                                {evt.time.split("–")[0]}
+                              </span>
                             </div>
                             <span className="block text-[11px] font-bold truncate leading-tight mt-0.5">
                               {evt.title}
@@ -304,7 +322,12 @@ export function EventsCalendar() {
                         {evts.length > 2 && (
                           <button
                             type="button"
-                            onClick={() => setSelectedDayEvents({ dateStr: cell.dateStr, events: evts })}
+                            onClick={() =>
+                              setSelectedDayEvents({
+                                dateStr: cell.dateStr,
+                                events: evts,
+                              })
+                            }
                             className="w-full text-center text-[10px] font-semibold text-forest hover:underline pt-0.5 cursor-pointer"
                           >
                             +{evts.length - 2} more events
@@ -322,8 +345,13 @@ export function EventsCalendar() {
               {filteredEvents.length === 0 ? (
                 <div className="rounded-3xl border border-hairline bg-white p-12 text-center">
                   <CalendarIcon className="mx-auto h-10 w-10 text-mist mb-3" />
-                  <p className="font-display text-xl text-forest-deep">No events found</p>
-                  <p className="text-xs text-mist mt-1">Try clearing your category filter to browse all upcoming drives.</p>
+                  <p className="font-display text-xl text-forest-deep">
+                    No events found
+                  </p>
+                  <p className="text-xs text-mist mt-1">
+                    Try clearing your category filter to browse all upcoming
+                    drives.
+                  </p>
                 </div>
               ) : (
                 filteredEvents.map((evt) => (
@@ -343,10 +371,12 @@ export function EventsCalendar() {
                       </div>
                       <div className="min-w-0">
                         <div className="flex items-center gap-2 mb-1">
-                          <span className={cn(
-                            "inline-block rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider",
-                            getCategoryBadgeColor(evt.category)
-                          )}>
+                          <span
+                            className={cn(
+                              "inline-block rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider",
+                              getCategoryBadgeColor(evt.category),
+                            )}
+                          >
                             {evt.category.replace("-", " ")}
                           </span>
                           {evt.eventType === "virtual" && (
@@ -380,7 +410,11 @@ export function EventsCalendar() {
                       </div>
                     </div>
 
-                    <Button size="sm" variant="outline" className="rounded-xl shrink-0">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="rounded-xl shrink-0"
+                    >
                       View Event →
                     </Button>
                   </div>
@@ -399,15 +433,17 @@ export function EventsCalendar() {
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-forest">
                     Event Spotlight
                   </p>
-                  <span className={cn(
-                    "rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider",
-                    getCategoryBadgeColor(selectedEvent.category)
-                  )}>
+                  <span
+                    className={cn(
+                      "rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider",
+                      getCategoryBadgeColor(selectedEvent.category),
+                    )}
+                  >
                     {selectedEvent.category.replace("-", " ")}
                   </span>
                 </div>
 
-                <div className="relative aspect-16/9 w-full overflow-hidden rounded-2xl bg-sand-soft">
+                <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-sand-soft">
                   <Image
                     src={selectedEvent.image}
                     alt={selectedEvent.title}
@@ -433,7 +469,9 @@ export function EventsCalendar() {
                   <div className="mt-3 space-y-1.5 text-xs text-mist">
                     <div className="flex items-center gap-2">
                       <CalendarIcon className="h-4 w-4 text-forest shrink-0" />
-                      <span className="font-semibold text-forest-deep">{selectedEvent.date}</span>
+                      <span className="font-semibold text-forest-deep">
+                        {selectedEvent.date}
+                      </span>
                     </div>
                     <div className="flex items-center gap-2">
                       <Clock className="h-4 w-4 text-forest shrink-0" />
@@ -454,7 +492,9 @@ export function EventsCalendar() {
                 <div className="rounded-2xl border border-hairline bg-sand-soft/50 p-3.5 text-xs text-forest-deep leading-relaxed flex items-start gap-2">
                   <Info className="h-4 w-4 text-forest shrink-0 mt-0.5" />
                   <p>
-                    <strong>Central Organization Fund:</strong> All event fundraising benefits the central IFundAyiti Program Fund, allocated to verified grant winners.
+                    <strong>Central Organization Fund:</strong> All event
+                    fundraising benefits the central IFundAyiti Program Fund,
+                    allocated to verified grant winners.
                   </p>
                 </div>
 
@@ -482,7 +522,8 @@ export function EventsCalendar() {
               </div>
             ) : (
               <div className="rounded-3xl border border-hairline bg-white p-6 text-center text-mist">
-                Select an event from the calendar grid to view spotlight details.
+                Select an event from the calendar grid to view spotlight
+                details.
               </div>
             )}
 
@@ -510,7 +551,9 @@ export function EventsCalendar() {
                       <p className="text-xs font-semibold text-forest-deep group-hover:text-forest transition-colors line-clamp-1">
                         {evt.title}
                       </p>
-                      <p className="text-[11px] text-mist">{evt.date} · {evt.location.split("&")[0]}</p>
+                      <p className="text-[11px] text-mist">
+                        {evt.date} · {evt.location.split("&")[0]}
+                      </p>
                     </div>
                     <ChevronRight className="h-4 w-4 text-mist group-hover:text-forest shrink-0" />
                   </button>
@@ -535,7 +578,8 @@ export function EventsCalendar() {
                   Events on {selectedDayEvents.dateStr}
                 </h3>
                 <p className="text-xs text-mist">
-                  {selectedDayEvents.events.length} events scheduled for this day
+                  {selectedDayEvents.events.length} events scheduled for this
+                  day
                 </p>
               </div>
             </div>
@@ -553,15 +597,24 @@ export function EventsCalendar() {
                 >
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className={cn("rounded-full px-2 py-0.5 text-[9px] font-bold uppercase", getCategoryBadgeColor(evt.category))}>
+                      <span
+                        className={cn(
+                          "rounded-full px-2 py-0.5 text-[9px] font-bold uppercase",
+                          getCategoryBadgeColor(evt.category),
+                        )}
+                      >
                         {evt.category.replace("-", " ")}
                       </span>
-                      <span className="text-[11px] text-forest font-semibold">{evt.time}</span>
+                      <span className="text-[11px] text-forest font-semibold">
+                        {evt.time}
+                      </span>
                     </div>
                     <h4 className="font-display text-sm font-semibold text-forest-deep">
                       {evt.title}
                     </h4>
-                    <p className="text-xs text-mist truncate mt-0.5">{evt.location}</p>
+                    <p className="text-xs text-mist truncate mt-0.5">
+                      {evt.location}
+                    </p>
                   </div>
                   <ChevronRight className="h-4 w-4 text-mist shrink-0" />
                 </div>
