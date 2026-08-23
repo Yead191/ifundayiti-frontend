@@ -6,6 +6,7 @@ export const personalSchema = z.object({
   dob: z.string().min(1, "Date of Birth is required"),
   nationality: z.string().min(1, "Nationality is required").default("Haitian"),
   location: z.string().min(5, "Full Address is required"),
+  photoUrl: z.string().optional().or(z.literal("")),
 });
 
 export type PersonalValues = z.infer<typeof personalSchema>;

@@ -1,11 +1,27 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowLeft, ArrowRight, Check, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  Briefcase,
+  Check,
+  CheckCircle2,
+  FileText,
+  HelpCircle,
+  Loader2,
+  Phone,
+  Rocket,
+  Shield,
+  Sparkles,
+  User,
+} from "lucide-react";
 
+import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { StepPersonal } from "@/features/ifundayiti/sections/form-steps/step-personal";
 import { StepContact } from "@/features/ifundayiti/sections/form-steps/step-contact";
@@ -29,13 +45,13 @@ import {
 } from "@/features/ifundayiti/data/mock-data";
 
 const STEPS = [
-  "Personal",
-  "Contact",
-  "Identification",
-  "Project",
-  "Background",
-  "Documents",
-  "Review",
+  { id: 1, label: "Personal & Photo", icon: User, desc: "Basic details & photo" },
+  { id: 2, label: "Contact Info", icon: Phone, desc: "Email & phone" },
+  { id: 3, label: "Identification", icon: Shield, desc: "National ID / NIF" },
+  { id: 4, label: "Project & Grant", icon: Rocket, desc: "Project & fund usage" },
+  { id: 5, label: "Background", icon: Briefcase, desc: "Occupation & history" },
+  { id: 6, label: "Documents", icon: FileText, desc: "ID & address uploads" },
+  { id: 7, label: "Review & Submit", icon: CheckCircle2, desc: "Final agreement" },
 ];
 
 type FileMock = { name: string; size?: string };
@@ -44,6 +60,8 @@ export function ApplyExperience() {
   const [step, setStep] = React.useState(1);
   const [loading, setLoading] = React.useState(false);
   const [submitted, setSubmitted] = React.useState(false);
+  const [trackingCode, setTrackingCode] = React.useState("");
+
   const [govIdFile, setGovIdFile] = React.useState<FileMock | null>(null);
   const [proofAddrFile, setProofAddrFile] = React.useState<FileMock | null>(null);
   const [businessPlanFile, setBusinessPlanFile] = React.useState<FileMock | null>(null);
@@ -51,7 +69,7 @@ export function ApplyExperience() {
 
   const personalForm = useForm({
     resolver: zodResolver(personalSchema),
-    defaultValues: { name: "", dob: "", nationality: "Haitian", location: "" },
+    defaultValues: { name: "", dob: "", nationality: "Haitian", location: "", photoUrl: "" },
   });
   const contactForm = useForm({
     resolver: zodResolver(contactSchema),
@@ -85,6 +103,7 @@ export function ApplyExperience() {
   });
 
   const isOpen = CURRENT_PERIOD.status === "Open";
+  const currentProgress = Math.round((step / 7) * 100);
 
   async function handleNext() {
     let valid = false;
@@ -101,14 +120,18 @@ export function ApplyExperience() {
       setFileError("");
       valid = true;
     } else if (step === 7) valid = await agreementForm.trigger();
-    if (valid) setStep((s) => Math.min(7, s + 1));
+
+    if (valid) {
+      setStep((s) => Math.min(7, s + 1));
+      window.scrollTo({ top: 300, behavior: "smooth" });
+    }
   }
 
   async function handleSubmit() {
     const ok = await agreementForm.trigger();
     if (!ok) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 1000));
 
     const personal = personalForm.getValues();
     const contact = contactForm.getValues();
@@ -149,159 +172,347 @@ export function ApplyExperience() {
       financialBackground: background.financialBackground,
       status: "Submitted",
       submissionDate: new Date().toISOString().slice(0, 10),
-      photoUrl: "",
+      photoUrl: personal.photoUrl || "",
       periodId: CURRENT_PERIOD.id,
     };
 
     localStorage.setItem("ifa_applicants", JSON.stringify([record, ...existing]));
+    setTrackingCode(trackingId);
     setLoading(false);
     setSubmitted(true);
   }
 
   if (!isOpen) {
     return (
-      <div className="rounded-2xl border border-hairline bg-white p-10 text-center">
-        <h2 className="font-display text-2xl text-forest-deep">
-          Applications are not open
+      <div className="rounded-3xl border border-hairline bg-white p-10 text-center shadow-xs">
+        <h2 className="font-display text-2xl font-semibold text-forest-deep">
+          Applications are currently closed
         </h2>
-        <p className="mt-3 text-mist">
-          There is currently no open grant cycle. Check the Grants page for dates.
+        <p className="mt-3 text-sm text-mist max-w-md mx-auto">
+          There is currently no active open grant cycle. Check the Grants page to view upcoming funding dates.
         </p>
-        <Button asChild className="mt-6">
-          <Link href="/grants">View grant cycles</Link>
+        <Button asChild className="mt-6 rounded-xl">
+          <Link href="/grants">View Grant Cycles</Link>
         </Button>
       </div>
     );
   }
 
+  // SUBMITTED SUCCESS CONFIRMATION
   if (submitted) {
     const email = contactForm.getValues("email");
     const dob = personalForm.getValues("dob");
+    const name = personalForm.getValues("name");
+    const photoUrl = personalForm.getValues("photoUrl");
+
     return (
-      <div className="rounded-2xl border border-hairline bg-white px-6 py-12 text-center">
-        <span className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-forest text-white">
-          <Check className="h-6 w-6" />
-        </span>
-        <h2 className="mt-6 font-display text-3xl text-forest-deep">
-          Application submitted successfully
-        </h2>
-        <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-mist">
-          Track this application later with the email and date of birth you used:
-          <br />
-          <strong className="text-forest-deep">{email}</strong> · {dob}
+      <div className="rounded-3xl border border-hairline bg-white p-8 text-center shadow-lg sm:p-12">
+        <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-full bg-forest/10 text-forest">
+          <CheckCircle2 className="h-10 w-10 text-forest" />
+        </div>
+
+        {photoUrl && (
+          <div className="mt-4 flex justify-center">
+            <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-forest">
+              <Image src={photoUrl} alt={name} fill className="object-cover" />
+            </div>
+          </div>
+        )}
+
+        <p className="mt-4 text-xs font-semibold uppercase tracking-[0.2em] text-forest">
+          Application Submitted
         </p>
-        <Button asChild className="mt-8">
-          <Link href="/track-application">Track application</Link>
-        </Button>
+        <h2 className="mt-2 font-display text-3xl font-semibold text-forest-deep sm:text-4xl">
+          Good luck, {name || "Applicant"}!
+        </h2>
+        <p className="mt-3 text-sm text-mist max-w-md mx-auto leading-relaxed">
+          Your grant application <strong className="text-forest-deep">#{trackingCode}</strong> has been successfully received by our review board.
+        </p>
+
+        <div className="mt-8 rounded-2xl border border-hairline bg-sand-soft/50 p-5 text-left max-w-md mx-auto text-xs text-forest-deep space-y-2">
+          <div className="flex justify-between border-b border-hairline pb-2 font-semibold">
+            <span>Registered Email</span>
+            <span>{email}</span>
+          </div>
+          <div className="flex justify-between pt-1">
+            <span className="text-mist">Date of Birth</span>
+            <span>{dob}</span>
+          </div>
+        </div>
+
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+          <Button asChild size="lg" className="rounded-xl px-8 w-full sm:w-auto">
+            <Link href="/track-application">
+              Track Application Status
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+          <Button asChild variant="outline" size="lg" className="rounded-xl px-6 w-full sm:w-auto">
+            <Link href="/grants">Return to Grants</Link>
+          </Button>
+        </div>
       </div>
     );
   }
 
+  const CurrentStepIcon = STEPS[step - 1].icon;
+
   return (
-    <div className="rounded-2xl border border-hairline bg-white p-5 sm:p-8">
-      <ol className="mb-8 flex gap-1 overflow-x-auto pb-2">
-        {STEPS.map((label, i) => {
-          const n = i + 1;
-          const active = n === step;
-          const done = n < step;
-          return (
-            <li
-              key={label}
-              className="flex min-w-22 flex-1 flex-col items-center gap-1"
-            >
-              <span
-                className={`grid h-8 w-8 place-items-center rounded-full text-xs font-semibold ${
-                  done || active
-                    ? "bg-forest text-white"
-                    : "bg-sand-soft text-mist"
-                }`}
-              >
-                {done ? <Check className="h-4 w-4" /> : n}
-              </span>
-              <span className="text-[11px] font-medium text-mist">{label}</span>
-            </li>
-          );
-        })}
-      </ol>
-
-      {step === 1 && (
-        <FormProvider {...personalForm}>
-          <StepPersonal />
-        </FormProvider>
-      )}
-      {step === 2 && (
-        <FormProvider {...contactForm}>
-          <StepContact />
-        </FormProvider>
-      )}
-      {step === 3 && (
-        <FormProvider {...idForm}>
-          <StepId />
-        </FormProvider>
-      )}
-      {step === 4 && (
-        <FormProvider {...grantForm}>
-          <StepGrant />
-        </FormProvider>
-      )}
-      {step === 5 && (
-        <FormProvider {...backgroundForm}>
-          <StepBackground />
-        </FormProvider>
-      )}
-      {step === 6 && (
-        <StepDocuments
-          govIdFile={govIdFile}
-          setGovIdFile={setGovIdFile}
-          proofAddrFile={proofAddrFile}
-          setProofAddrFile={setProofAddrFile}
-          businessPlanFile={businessPlanFile}
-          setBusinessPlanFile={setBusinessPlanFile}
-          fileError={fileError}
-        />
-      )}
-      {step === 7 && (
-        <FormProvider {...agreementForm}>
-          <div className="space-y-6">
-            <ReviewBlock
-              title="Personal"
-              rows={[
-                ["Name", personalForm.getValues("name")],
-                ["Date of birth", personalForm.getValues("dob")],
-                ["Location", personalForm.getValues("location")],
-              ]}
-            />
-            <ReviewBlock
-              title="Project"
-              rows={[
-                ["Project", grantForm.getValues("projectName")],
-                ["Amount", `$${grantForm.getValues("requestedAmount")}`],
-              ]}
-            />
-            <StepAgreement />
+    <div className="grid gap-8 lg:grid-cols-12">
+      {/* LEFT SIDEBAR TIMELINE TRACKER (4 COLS) */}
+      <aside className="lg:col-span-4 space-y-6">
+        {/* Step Progress Container */}
+        <div className="rounded-3xl border border-hairline bg-white p-6 shadow-xs">
+          <div className="flex items-center justify-between border-b border-hairline pb-4 mb-5">
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-forest">
+                Application Progress
+              </p>
+              <p className="text-sm font-semibold text-forest-deep">
+                Step {step} of 7
+              </p>
+            </div>
+            <span className="rounded-full bg-sand-soft px-3 py-1 text-xs font-bold text-forest">
+              {currentProgress}%
+            </span>
           </div>
-        </FormProvider>
-      )}
 
-      <div className="mt-8 flex items-center justify-between gap-3">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => setStep((s) => Math.max(1, s - 1))}
-          disabled={step === 1}
-        >
-          <ArrowLeft /> Back
-        </Button>
-        {step < 7 ? (
-          <Button type="button" onClick={() => void handleNext()}>
-            Continue <ArrowRight />
-          </Button>
-        ) : (
-          <Button type="button" onClick={() => void handleSubmit()} disabled={loading}>
-            {loading ? <Loader2 className="animate-spin" /> : "Submit application"}
-          </Button>
-        )}
-      </div>
+          {/* Stepper Timeline List */}
+          <ol className="space-y-2.5">
+            {STEPS.map((s) => {
+              const active = s.id === step;
+              const isDone = s.id < step;
+              const Icon = s.icon;
+
+              return (
+                <li
+                  key={s.id}
+                  className={cn(
+                    "flex items-center gap-3 rounded-2xl p-3 text-xs transition-all cursor-pointer",
+                    active
+                      ? "bg-forest text-white shadow-xs font-semibold"
+                      : isDone
+                        ? "bg-sand-soft/60 text-forest-deep font-medium"
+                        : "text-mist hover:bg-sand-soft/30",
+                  )}
+                  onClick={() => {
+                    if (isDone) setStep(s.id);
+                  }}
+                >
+                  <span
+                    className={cn(
+                      "flex h-7 w-7 shrink-0 items-center justify-center rounded-xl text-xs font-bold transition-all",
+                      active
+                        ? "bg-white text-forest"
+                        : isDone
+                          ? "bg-forest text-white"
+                          : "bg-sand-soft text-mist",
+                    )}
+                  >
+                    {isDone ? <Check className="h-3.5 w-3.5" /> : s.id}
+                  </span>
+
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-xs">{s.label}</p>
+                    <p
+                      className={cn(
+                        "truncate text-[10px]",
+                        active ? "text-sand/80" : "text-mist",
+                      )}
+                    >
+                      {s.desc}
+                    </p>
+                  </div>
+                </li>
+              );
+            })}
+          </ol>
+        </div>
+
+        {/* Guidance Tips Card */}
+        <div className="rounded-3xl border border-hairline bg-sand-soft/60 p-6 hidden lg:block">
+          <div className="flex items-center gap-2 text-forest mb-2">
+            <Sparkles className="h-4 w-4" />
+            <h4 className="font-display text-sm font-semibold text-forest-deep">
+              Tips for a Strong Application
+            </h4>
+          </div>
+          <ul className="space-y-2 text-xs text-mist leading-relaxed list-disc pl-4">
+            <li>Upload a clear profile photo & valid ID.</li>
+            <li>Be specific about how the $1,000 grant will be spent.</li>
+            <li>Explain the tangible community benefits of your project.</li>
+          </ul>
+        </div>
+      </aside>
+
+      {/* RIGHT MAIN FORM CARD (8 COLS) */}
+      <main className="lg:col-span-8">
+        <div className="rounded-3xl border border-hairline bg-white p-6 shadow-md sm:p-10">
+          {/* Header */}
+          <div className="border-b border-hairline pb-6 mb-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-sand-soft text-forest">
+                  <CurrentStepIcon className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-forest">
+                    Step {step} of 7
+                  </p>
+                  <h3 className="font-display text-xl font-semibold text-forest-deep sm:text-2xl">
+                    {STEPS[step - 1].label}
+                  </h3>
+                </div>
+              </div>
+            </div>
+
+            {/* Progress bar */}
+            <div className="mt-5 h-2 w-full overflow-hidden rounded-full bg-sand-soft">
+              <div
+                className="h-full bg-forest transition-all duration-300 rounded-full"
+                style={{ width: `${currentProgress}%` }}
+              />
+            </div>
+          </div>
+
+          {/* FORM STEPS CONTENT */}
+          {step === 1 && (
+            <FormProvider {...personalForm}>
+              <StepPersonal />
+            </FormProvider>
+          )}
+
+          {step === 2 && (
+            <FormProvider {...contactForm}>
+              <StepContact />
+            </FormProvider>
+          )}
+
+          {step === 3 && (
+            <FormProvider {...idForm}>
+              <StepId />
+            </FormProvider>
+          )}
+
+          {step === 4 && (
+            <FormProvider {...grantForm}>
+              <StepGrant />
+            </FormProvider>
+          )}
+
+          {step === 5 && (
+            <FormProvider {...backgroundForm}>
+              <StepBackground />
+            </FormProvider>
+          )}
+
+          {step === 6 && (
+            <StepDocuments
+              govIdFile={govIdFile}
+              setGovIdFile={setGovIdFile}
+              proofAddrFile={proofAddrFile}
+              setProofAddrFile={setProofAddrFile}
+              businessPlanFile={businessPlanFile}
+              setBusinessPlanFile={setBusinessPlanFile}
+              fileError={fileError}
+            />
+          )}
+
+          {step === 7 && (
+            <FormProvider {...agreementForm}>
+              <div className="space-y-6">
+                {/* Photo Preview if present */}
+                {personalForm.getValues("photoUrl") && (
+                  <div className="flex items-center gap-4 rounded-2xl border border-hairline bg-sand-soft/40 p-4">
+                    <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-forest">
+                      <Image
+                        src={personalForm.getValues("photoUrl")}
+                        alt="Applicant Photo"
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <div>
+                      <p className="text-xs font-semibold text-forest">Applicant Profile Photo</p>
+                      <p className="text-sm font-semibold text-forest-deep">
+                        {personalForm.getValues("name")}
+                      </p>
+                    </div>
+                  </div>
+                )}
+
+                <ReviewBlock
+                  title="Personal Information"
+                  rows={[
+                    ["Full Name", personalForm.getValues("name")],
+                    ["Date of Birth", personalForm.getValues("dob")],
+                    ["Location", personalForm.getValues("location")],
+                  ]}
+                />
+
+                <ReviewBlock
+                  title="Contact & ID"
+                  rows={[
+                    ["Email", contactForm.getValues("email")],
+                    ["Phone", contactForm.getValues("phone")],
+                    ["National ID / NIF", idForm.getValues("nationalId")],
+                  ]}
+                />
+
+                <ReviewBlock
+                  title="Project Proposal"
+                  rows={[
+                    ["Project Name", grantForm.getValues("projectName")],
+                    ["Requested Amount", `$${grantForm.getValues("requestedAmount")}`],
+                  ]}
+                />
+
+                <StepAgreement />
+              </div>
+            </FormProvider>
+          )}
+
+          {/* NAV BUTTONS */}
+          <div className="mt-10 flex items-center justify-between gap-4 border-t border-hairline pt-6">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setStep((s) => Math.max(1, s - 1))}
+              disabled={step === 1}
+              className="rounded-xl px-5"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" /> Previous Step
+            </Button>
+
+            {step < 7 ? (
+              <Button
+                type="button"
+                onClick={() => void handleNext()}
+                className="rounded-xl px-6"
+              >
+                Continue <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+            ) : (
+              <Button
+                type="button"
+                onClick={() => void handleSubmit()}
+                disabled={loading}
+                className="rounded-xl px-8 bg-forest hover:bg-forest/90 shadow-md"
+              >
+                {loading ? (
+                  <span className="flex items-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" /> Submitting...
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    Submit Grant Application <Check className="ml-1 h-4 w-4" />
+                  </span>
+                )}
+              </Button>
+            )}
+          </div>
+        </div>
+      </main>
     </div>
   );
 }
@@ -314,15 +525,15 @@ function ReviewBlock({
   rows: [string, string][];
 }) {
   return (
-    <div className="rounded-xl bg-sand-soft/70 p-4">
+    <div className="rounded-2xl border border-hairline bg-sand-soft/50 p-4">
       <p className="text-xs font-semibold uppercase tracking-wider text-forest">
         {title}
       </p>
-      <dl className="mt-2 space-y-1 text-sm">
+      <dl className="mt-2 space-y-1.5 text-xs">
         {rows.map(([k, v]) => (
           <div key={k} className="flex justify-between gap-4">
             <dt className="text-mist">{k}</dt>
-            <dd className="text-right text-forest-deep">{v || "—"}</dd>
+            <dd className="text-right font-semibold text-forest-deep">{v || "—"}</dd>
           </div>
         ))}
       </dl>

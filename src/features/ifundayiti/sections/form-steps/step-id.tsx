@@ -6,22 +6,25 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function StepId() {
-  const { register, formState: { errors } } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div>
-        <Label htmlFor="nationalId" className="text-cloud text-xs font-semibold uppercase tracking-wider mb-2 block">
-          National Identification ID (CIN / NIF)
+        <Label htmlFor="nationalId" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-forest">
+          National Identification ID (CIN / NIF) *
         </Label>
         <Input
           id="nationalId"
           {...register("nationalId")}
-          className="bg-ink/40 border-hairline text-cloud placeholder:text-faint focus:ring-violet/40 focus:border-violet"
+          className="h-12 rounded-xl border-hairline bg-sand-soft/20 text-forest-deep focus:bg-white focus:border-forest focus:ring-2 focus:ring-forest/15"
           placeholder="e.g. 01-01-99-1994-04-00101"
         />
         {errors.nationalId && (
-          <p className="text-xs text-rose-400 mt-1 flex items-center gap-1">
+          <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-600">
             <AlertCircle className="h-3 w-3" />
             <span>{errors.nationalId.message as string}</span>
           </p>
@@ -29,13 +32,13 @@ export function StepId() {
       </div>
 
       <div>
-        <Label htmlFor="passport" className="text-cloud text-xs font-semibold uppercase tracking-wider mb-2 block">
-          Passport Number (Optional)
+        <Label htmlFor="passport" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-forest">
+          Passport Number <span className="font-normal text-mist">(Optional)</span>
         </Label>
         <Input
           id="passport"
           {...register("passport")}
-          className="bg-ink/40 border-hairline text-cloud placeholder:text-faint focus:ring-violet/40 focus:border-violet"
+          className="h-12 rounded-xl border-hairline bg-sand-soft/20 text-forest-deep focus:bg-white focus:border-forest focus:ring-2 focus:ring-forest/15"
           placeholder="e.g. HH123456"
         />
       </div>

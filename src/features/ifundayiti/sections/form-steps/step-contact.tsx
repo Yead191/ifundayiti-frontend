@@ -6,23 +6,26 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 export function StepContact() {
-  const { register, formState: { errors } } = useFormContext();
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext();
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-5">
       <div>
-        <Label htmlFor="email" className="text-cloud text-xs font-semibold uppercase tracking-wider mb-2 block">
-          Email Address
+        <Label htmlFor="email" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-forest">
+          Email Address *
         </Label>
         <Input
           id="email"
           type="email"
           {...register("email")}
-          className="bg-ink/40 border-hairline text-cloud placeholder:text-faint focus:ring-violet/40 focus:border-violet"
+          className="h-12 rounded-xl border-hairline bg-sand-soft/20 text-forest-deep focus:bg-white focus:border-forest focus:ring-2 focus:ring-forest/15"
           placeholder="e.g. name@domain.com"
         />
         {errors.email && (
-          <p className="text-xs text-rose-400 mt-1 flex items-center gap-1">
+          <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-600">
             <AlertCircle className="h-3 w-3" />
             <span>{errors.email.message as string}</span>
           </p>
@@ -30,17 +33,17 @@ export function StepContact() {
       </div>
 
       <div>
-        <Label htmlFor="phone" className="text-cloud text-xs font-semibold uppercase tracking-wider mb-2 block">
-          Phone Number
+        <Label htmlFor="phone" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-forest">
+          Phone Number *
         </Label>
         <Input
           id="phone"
           {...register("phone")}
-          className="bg-ink/40 border-hairline text-cloud placeholder:text-faint focus:ring-violet/40 focus:border-violet"
+          className="h-12 rounded-xl border-hairline bg-sand-soft/20 text-forest-deep focus:bg-white focus:border-forest focus:ring-2 focus:ring-forest/15"
           placeholder="e.g. +509 3712-3456"
         />
         {errors.phone && (
-          <p className="text-xs text-rose-400 mt-1 flex items-center gap-1">
+          <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-600">
             <AlertCircle className="h-3 w-3" />
             <span>{errors.phone.message as string}</span>
           </p>

@@ -25,24 +25,27 @@ export function StepDocuments({
   setProofAddrFile,
   businessPlanFile,
   setBusinessPlanFile,
-  fileError
+  fileError,
 }: StepDocumentsProps) {
-  
   const idRef = useRef<HTMLInputElement>(null);
   const addrRef = useRef<HTMLInputElement>(null);
   const planRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: "id" | "addr" | "plan") => {
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: "id" | "addr" | "plan",
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const formattedSize = file.size > 1024 * 1024 
-      ? (file.size / (1024 * 1024)).toFixed(1) + " MB" 
-      : (file.size / 1024).toFixed(0) + " KB";
+    const formattedSize =
+      file.size > 1024 * 1024
+        ? (file.size / (1024 * 1024)).toFixed(1) + " MB"
+        : (file.size / 1024).toFixed(0) + " KB";
 
     const mockFile: FileMock = {
       name: file.name,
-      size: formattedSize
+      size: formattedSize,
     };
 
     if (type === "id") setGovIdFile(mockFile);
@@ -52,27 +55,31 @@ export function StepDocuments({
 
   return (
     <div className="space-y-5">
-      <div className="rounded-2xl bg-amber-500/10 border border-amber-500/20 p-4 flex items-start gap-3">
-        <AlertCircle className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
-        <p className="text-xs text-amber-200/90 leading-relaxed">
-          <strong>Warning:</strong> Missing required documents may result in your application being rejected during the screening process.
+      <div className="rounded-2xl bg-amber-500/10 border border-amber-500/20 p-4 flex items-start gap-3 text-amber-900">
+        <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
+        <p className="text-xs leading-relaxed text-amber-950">
+          <strong>Note:</strong> Missing required documents may result in your application being delayed or rejected during screening.
         </p>
       </div>
 
       {/* Upload Item 1: ID */}
-      <div className="border border-hairline rounded-2xl p-4 bg-ink/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="border border-hairline rounded-2xl p-4 bg-sand-soft/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex-1">
-          <span className="block text-sm font-semibold text-cloud">Government-issued ID *</span>
-          <span className="text-xs text-faint block">National ID Card or Passport Scan (Required)</span>
+          <span className="block text-sm font-semibold text-forest-deep">
+            Government-issued ID *
+          </span>
+          <span className="text-xs text-mist block mt-0.5">
+            National ID Card or Passport Scan (Required)
+          </span>
           {govIdFile && (
-            <span className="mt-2 text-xs font-semibold text-emerald-300 flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg w-fit">
+            <span className="mt-2 text-xs font-semibold text-forest flex items-center gap-1 bg-forest/10 border border-forest/20 px-2.5 py-1 rounded-lg w-fit">
               <Check className="h-3 w-3 shrink-0" />
               <span className="truncate max-w-[200px]">{govIdFile.name}</span>
               <span className="text-[10px] opacity-75">({govIdFile.size})</span>
             </span>
           )}
         </div>
-        
+
         <input
           type="file"
           ref={idRef}
@@ -80,24 +87,28 @@ export function StepDocuments({
           className="hidden"
           accept="image/*,.pdf"
         />
-        
+
         <button
           type="button"
           onClick={() => idRef.current?.click()}
-          className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-cloud px-4 py-2.5 border border-hairline bg-white/3 hover:bg-white/8 rounded-xl outline-none transition-all duration-200 hover:border-violet/40 cursor-pointer"
+          className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-forest-deep px-4 py-2.5 border border-hairline bg-white hover:bg-sand-soft rounded-xl transition-all cursor-pointer shadow-xs"
         >
-          <FileUp className="h-4 w-4" />
-          <span>{govIdFile ? "Change File" : "Upload ID Scans"}</span>
+          <FileUp className="h-4 w-4 text-forest" />
+          <span>{govIdFile ? "Change File" : "Upload ID Scan"}</span>
         </button>
       </div>
 
       {/* Upload Item 2: Proof of Address */}
-      <div className="border border-hairline rounded-2xl p-4 bg-ink/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="border border-hairline rounded-2xl p-4 bg-sand-soft/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex-1">
-          <span className="block text-sm font-semibold text-cloud">Proof of Address *</span>
-          <span className="text-xs text-faint block">Utility Bill, Tax Record, or Rent Slip (Required)</span>
+          <span className="block text-sm font-semibold text-forest-deep">
+            Proof of Address *
+          </span>
+          <span className="text-xs text-mist block mt-0.5">
+            Utility Bill, Tax Record, or Rent Slip (Required)
+          </span>
           {proofAddrFile && (
-            <span className="mt-2 text-xs font-semibold text-emerald-300 flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg w-fit">
+            <span className="mt-2 text-xs font-semibold text-forest flex items-center gap-1 bg-forest/10 border border-forest/20 px-2.5 py-1 rounded-lg w-fit">
               <Check className="h-3 w-3 shrink-0" />
               <span className="truncate max-w-[200px]">{proofAddrFile.name}</span>
               <span className="text-[10px] opacity-75">({proofAddrFile.size})</span>
@@ -116,20 +127,24 @@ export function StepDocuments({
         <button
           type="button"
           onClick={() => addrRef.current?.click()}
-          className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-cloud px-4 py-2.5 border border-hairline bg-white/3 hover:bg-white/8 rounded-xl outline-none transition-all duration-200 hover:border-violet/40 cursor-pointer"
+          className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-forest-deep px-4 py-2.5 border border-hairline bg-white hover:bg-sand-soft rounded-xl transition-all cursor-pointer shadow-xs"
         >
-          <FileUp className="h-4 w-4" />
-          <span>{proofAddrFile ? "Change File" : "Upload Proof Scan"}</span>
+          <FileUp className="h-4 w-4 text-forest" />
+          <span>{proofAddrFile ? "Change File" : "Upload Address Scan"}</span>
         </button>
       </div>
 
       {/* Upload Item 3: Business Plan */}
-      <div className="border border-hairline rounded-2xl p-4 bg-ink/20 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="border border-hairline rounded-2xl p-4 bg-sand-soft/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex-1">
-          <span className="block text-sm font-semibold text-cloud">Business Plan / Images</span>
-          <span className="text-xs text-faint block">Mock plan, supporting product images (Optional)</span>
+          <span className="block text-sm font-semibold text-forest-deep">
+            Business Plan / Supporting Documents
+          </span>
+          <span className="text-xs text-mist block mt-0.5">
+            Project outline, budget breakdown, or product photos (Optional)
+          </span>
           {businessPlanFile && (
-            <span className="mt-2 text-xs font-semibold text-emerald-300 flex items-center gap-1 bg-emerald-500/10 border border-emerald-500/20 px-2.5 py-1 rounded-lg w-fit">
+            <span className="mt-2 text-xs font-semibold text-forest flex items-center gap-1 bg-forest/10 border border-forest/20 px-2.5 py-1 rounded-lg w-fit">
               <Check className="h-3 w-3 shrink-0" />
               <span className="truncate max-w-[200px]">{businessPlanFile.name}</span>
               <span className="text-[10px] opacity-75">({businessPlanFile.size})</span>
@@ -148,16 +163,16 @@ export function StepDocuments({
         <button
           type="button"
           onClick={() => planRef.current?.click()}
-          className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-cloud px-4 py-2.5 border border-hairline bg-white/3 hover:bg-white/8 rounded-xl outline-none transition-all duration-200 hover:border-violet/40 cursor-pointer"
+          className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-forest-deep px-4 py-2.5 border border-hairline bg-white hover:bg-sand-soft rounded-xl transition-all cursor-pointer shadow-xs"
         >
-          <FileUp className="h-4 w-4" />
-          <span>{businessPlanFile ? "Change File" : "Upload Plan File"}</span>
+          <FileUp className="h-4 w-4 text-forest" />
+          <span>{businessPlanFile ? "Change File" : "Upload Business Plan"}</span>
         </button>
       </div>
 
       {fileError && (
-        <div className="flex items-center gap-2 text-xs text-rose-400 mt-2">
-          <AlertCircle className="h-4 w-4" />
+        <div className="flex items-center gap-2 text-xs text-red-600 mt-2 font-medium">
+          <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{fileError}</span>
         </div>
       )}
