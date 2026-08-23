@@ -1,38 +1,39 @@
+import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 
 /* ============================================================
-   Hubology — premium shared loader
-   A self-contained brand loader built on pure CSS animation:
-   the "hub" spinner (dual counter-rotating gradient rings, a
-   breathing core and an orbiting node) paired with the real
-   wordmark carrying a light-sweep shimmer.
-
-   No animation library; honours prefers-reduced-motion via
-   globals.css.
+   IFundAyiti — premium shared loader
+   Forest + sand rings, logo shimmer, and a soft progress pulse.
+   Pure CSS animation; honours prefers-reduced-motion in globals.css.
    ============================================================ */
+
+const LOGO_SRC = "/logo-ifundayiti.png";
 
 type Size = "sm" | "md" | "lg";
 
-const SPINNER_PX: Record<Size, number> = { sm: 40, md: 72, lg: 104 };
-const WORDMARK_H: Record<Size, string> = {
-  sm: "h-4",
-  md: "h-6",
-  lg: "h-8",
-};
+const SPINNER_PX: Record<Size, number> = { sm: 44, md: 76, lg: 108 };
+const LOGO_WIDTH: Record<Size, number> = { sm: 128, md: 168, lg: 208 };
+
+function gradientId(prefix: string, name: string) {
+  return `${prefix}-${name}`;
+}
 
 /**
- * The animated brand mark on its own — a compact "hub" of two
- * counter-rotating gradient arcs, a pulsing core and a node
- * orbiting the outer ring. Drop it anywhere a spinner is needed.
+ * Dual counter-rotating forest/sand arcs with a breathing core and
+ * orbiting sand node. Use on its own anywhere a spinner is needed.
  */
 export function BrandSpinner({
   size = "md",
   className,
+  idPrefix = "fund",
 }: {
   size?: Size;
   className?: string;
+  idPrefix?: string;
 }) {
   const px = SPINNER_PX[size];
+
   return (
     <span
       className={cn("relative inline-grid place-items-center", className)}
@@ -40,14 +41,13 @@ export function BrandSpinner({
       role="status"
       aria-label="Loading"
     >
-      {/* Ambient violet glow */}
       <span
         aria-hidden
         className="loader-glow absolute inset-0 rounded-full"
         style={{
           background:
-            "radial-gradient(circle, rgba(129,49,240,0.55), rgba(3,193,251,0.18) 55%, transparent 72%)",
-          filter: "blur(6px)",
+            "radial-gradient(circle, rgba(11,61,46,0.28), rgba(230,213,184,0.35) 52%, transparent 72%)",
+          filter: "blur(8px)",
         }}
       />
 
@@ -60,71 +60,107 @@ export function BrandSpinner({
         className="relative"
       >
         <defs>
-          <linearGradient id="hubViolet" x1="0" y1="0" x2="100" y2="100">
-            <stop offset="0" stopColor="#9a55ff" />
-            <stop offset="0.55" stopColor="#8131f0" />
-            <stop offset="1" stopColor="#4a1c8a" />
+          <linearGradient
+            id={gradientId(idPrefix, "forest")}
+            x1="0"
+            y1="0"
+            x2="100"
+            y2="100"
+          >
+            <stop offset="0" stopColor="#145c45" />
+            <stop offset="0.55" stopColor="#0b3d2e" />
+            <stop offset="1" stopColor="#072a20" />
           </linearGradient>
-          <linearGradient id="hubCyan" x1="0" y1="100" x2="100" y2="0">
-            <stop offset="0" stopColor="#136FF4" />
-            <stop offset="1" stopColor="#03C1FB" />
+          <linearGradient
+            id={gradientId(idPrefix, "sand")}
+            x1="0"
+            y1="100"
+            x2="100"
+            y2="0"
+          >
+            <stop offset="0" stopColor="#f3eadf" />
+            <stop offset="0.45" stopColor="#e6d5b8" />
+            <stop offset="1" stopColor="#c9b896" />
           </linearGradient>
-          <radialGradient id="hubCore" cx="0.5" cy="0.45" r="0.6">
-            <stop offset="0" stopColor="#c9b4ff" />
-            <stop offset="0.5" stopColor="#8131f0" />
-            <stop offset="1" stopColor="#03C1FB" />
+          <radialGradient
+            id={gradientId(idPrefix, "core")}
+            cx="0.5"
+            cy="0.45"
+            r="0.62"
+          >
+            <stop offset="0" stopColor="#f3eadf" />
+            <stop offset="0.45" stopColor="#145c45" />
+            <stop offset="1" stopColor="#0b3d2e" />
           </radialGradient>
         </defs>
 
-        {/* faint full rings for depth */}
-        <circle cx="50" cy="50" r="42" stroke="rgba(255,255,255,0.06)" strokeWidth="5" />
-        <circle cx="50" cy="50" r="30" stroke="rgba(255,255,255,0.05)" strokeWidth="4" />
+        <circle
+          cx="50"
+          cy="50"
+          r="42"
+          stroke="rgba(11,61,46,0.08)"
+          strokeWidth="5"
+        />
+        <circle
+          cx="50"
+          cy="50"
+          r="30"
+          stroke="rgba(230,213,184,0.45)"
+          strokeWidth="4"
+        />
 
-        {/* outer ring — violet arc, clockwise */}
-        <g className="hub-rot">
+        <g className="fund-rot">
           <circle
             cx="50"
             cy="50"
             r="42"
-            stroke="url(#hubViolet)"
+            stroke={`url(#${gradientId(idPrefix, "forest")})`}
             strokeWidth="5"
             strokeLinecap="round"
-            strokeDasharray="150 114"
+            strokeDasharray="148 116"
           />
         </g>
 
-        {/* inner ring — cyan arc, counter-clockwise */}
-        <g className="hub-rot-rev">
+        <g className="fund-rot-rev">
           <circle
             cx="50"
             cy="50"
             r="30"
-            stroke="url(#hubCyan)"
+            stroke={`url(#${gradientId(idPrefix, "sand")})`}
             strokeWidth="4"
             strokeLinecap="round"
-            strokeDasharray="98 91"
+            strokeDasharray="96 93"
           />
         </g>
 
-        {/* node tracing the outer orbit */}
-        <g className="hub-orbit">
-          <circle cx="50" cy="8" r="4.5" fill="#03C1FB" />
-          <circle cx="50" cy="8" r="7" fill="#03C1FB" opacity="0.25" />
+        <g className="fund-orbit">
+          <circle cx="50" cy="8" r="4" fill="#e6d5b8" />
+          <circle cx="50" cy="8" r="6.5" fill="#e6d5b8" opacity="0.35" />
         </g>
 
-        {/* breathing core */}
-        <circle className="hub-core" cx="50" cy="50" r="11" fill="url(#hubCore)" />
-        <circle cx="50" cy="50" r="11" fill="none" stroke="rgba(255,255,255,0.25)" strokeWidth="0.75" />
+        <circle
+          className="fund-core"
+          cx="50"
+          cy="50"
+          r="10"
+          fill={`url(#${gradientId(idPrefix, "core")})`}
+        />
+        <circle
+          cx="50"
+          cy="50"
+          r="10"
+          fill="none"
+          stroke="rgba(255,255,255,0.35)"
+          strokeWidth="0.75"
+        />
       </svg>
     </span>
   );
 }
 
 /**
- * Full loader: the brand spinner above the wordmark (with a
- * light-sweep shimmer clipped to the logo silhouette) and an
- * optional caption. Use inline, or set `fullscreen` for a
- * centred overlay on the brand background.
+ * Full loader: spinner, IFundAyiti wordmark with shimmer, animated
+ * progress bar, and optional caption. Set `fullscreen` for route overlays.
  */
 export function Loader({
   size = "md",
@@ -139,27 +175,38 @@ export function Loader({
   fullscreen?: boolean;
   className?: string;
 }) {
+  const logoWidth = LOGO_WIDTH[size];
+
   const content = (
-    <div className={cn("flex flex-col items-center gap-5", className)}>
-      <BrandSpinner size={size} />
+    <div className={cn("flex flex-col items-center gap-6", className)}>
+      <BrandSpinner size={size} idPrefix="loader" />
 
       {showWordmark && (
-        <div
-          className="logo-sweep logo-sweep-loop relative"
-          style={{ ["--logo-src" as string]: "url('/logo-hubology.svg')" }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/logo-hubology.svg"
-            alt="Hubology"
-            className={cn("w-auto select-none opacity-95", WORDMARK_H[size])}
+        <div className="logo-sweep logo-sweep-loop relative overflow-hidden rounded-lg">
+          <Image
+            src={LOGO_SRC}
+            alt="IFundAyiti"
+            width={logoWidth}
+            height={Math.round(logoWidth * 0.32)}
+            className="h-auto w-auto select-none"
+            priority
             draggable={false}
           />
         </div>
       )}
 
+      <div
+        aria-hidden
+        className="h-0.5 w-44 overflow-hidden rounded-full bg-forest/10 sm:w-52"
+      >
+        <div className="loader-progress h-full w-full rounded-full bg-linear-to-r from-forest via-forest-bright to-sand" />
+      </div>
+
       {label && (
-        <p className="text-sm font-medium tracking-wide text-mist" aria-live="polite">
+        <p
+          className="text-sm font-medium tracking-wide text-mist"
+          aria-live="polite"
+        >
           {label}
         </p>
       )}
@@ -172,13 +219,38 @@ export function Loader({
     <div
       role="status"
       aria-busy="true"
-      className="loader-in fixed inset-0 z-100 grid place-items-center overflow-hidden bg-ink"
+      aria-label={label ?? "Loading IFundAyiti"}
+      className="loader-in fixed inset-0 z-100 grid place-items-center overflow-hidden bg-cream"
     >
-      {/* signature ambient aurora */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 opacity-[0.045]"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle at 1px 1px, #0b3d2e 1px, transparent 0)",
+          backgroundSize: "26px 26px",
+        }}
+      />
       <span
         aria-hidden
         className="aurora animate-drift"
-        style={{ width: 420, height: 420, left: "50%", top: "42%", transform: "translate(-50%,-50%)" }}
+        style={{
+          width: 480,
+          height: 480,
+          left: "50%",
+          top: "40%",
+          transform: "translate(-50%, -50%)",
+        }}
+      />
+      <span
+        aria-hidden
+        className="absolute h-72 w-72 rounded-full opacity-30 blur-3xl"
+        style={{
+          left: "18%",
+          bottom: "12%",
+          background:
+            "radial-gradient(circle, rgba(11,61,46,0.14), transparent 70%)",
+        }}
       />
       <div className="relative">{content}</div>
     </div>

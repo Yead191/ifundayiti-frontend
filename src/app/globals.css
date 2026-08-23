@@ -293,6 +293,136 @@
   animation: drift 14s ease-in-out infinite;
 }
 
+/* —— IFundAyiti loader —— */
+@keyframes loader-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fund-rot {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fund-rot-rev {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+@keyframes fund-orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fund-core {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(0.9);
+    opacity: 0.88;
+  }
+}
+
+@keyframes loader-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.45;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes logo-shimmer {
+  0% {
+    transform: translateX(-130%);
+  }
+  100% {
+    transform: translateX(130%);
+  }
+}
+
+@keyframes loader-progress {
+  0% {
+    transform: scaleX(0.08);
+    transform-origin: left center;
+  }
+  45% {
+    transform: scaleX(0.72);
+    transform-origin: left center;
+  }
+  100% {
+    transform: scaleX(1);
+    transform-origin: left center;
+  }
+}
+
+.loader-in {
+  animation: loader-in 0.45s var(--ease-out-soft) both;
+}
+
+.fund-rot {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: fund-rot 2.75s linear infinite;
+}
+
+.fund-rot-rev {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: fund-rot-rev 2.05s linear infinite;
+}
+
+.fund-orbit {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: fund-orbit 2.75s linear infinite;
+}
+
+.fund-core {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: fund-core 2.35s ease-in-out infinite;
+}
+
+.loader-glow {
+  animation: loader-glow-pulse 2.35s ease-in-out infinite;
+}
+
+.logo-sweep-loop {
+  isolation: isolate;
+}
+
+.logo-sweep-loop::after {
+  content: "";
+  position: absolute;
+  inset: -20% -40%;
+  background: linear-gradient(
+    105deg,
+    transparent 38%,
+    rgba(255, 255, 255, 0.72) 50%,
+    transparent 62%
+  );
+  animation: logo-shimmer 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.loader-progress {
+  animation: loader-progress 1.85s var(--ease-out-soft) infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -306,6 +436,21 @@
 
   .animate-drift {
     animation: none;
+  }
+
+  .loader-in,
+  .fund-rot,
+  .fund-rot-rev,
+  .fund-orbit,
+  .fund-core,
+  .loader-glow,
+  .loader-progress,
+  .logo-sweep-loop::after {
+    animation: none;
+  }
+
+  .loader-progress {
+    transform: scaleX(0.55);
   }
 
   * {
