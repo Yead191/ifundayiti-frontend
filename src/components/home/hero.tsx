@@ -22,7 +22,7 @@ export function HomeHero() {
   const open = CURRENT_PERIOD.status === "Open";
 
   return (
-    <section className="relative h-[720px] overflow-hidden bg-forest pt-24 text-white md:h-[780px] lg:h-[840px]">
+    <section className="relative h-180 overflow-hidden bg-forest pt-24 text-white md:h-195 lg:h-210">
       <div className="absolute inset-0">
         <Image
           src={HERO_IMAGE}
@@ -44,7 +44,7 @@ export function HomeHero() {
         />
       </div>
 
-      <Container className="relative flex h-full flex-col justify-center pb-[160px] pt-8 md:pb-[180px] md:pt-4">
+      <Container className="relative flex h-full flex-col justify-center pb-40 pt-8 md:pb-45 md:pt-4">
         <div className="grid items-end gap-12 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-7">
             <Reveal>

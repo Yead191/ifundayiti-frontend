@@ -11,7 +11,7 @@ const TRUST_POINTS = [
 
 export function FloatingDonationCard() {
   return (
-    <Container className="relative z-20 -mt-[132px] md:-mt-[148px]">
+    <Container className="relative z-20 -mt-33 md:-mt-37">
       <div className="overflow-hidden rounded-[1.75rem] border border-white/70 bg-white shadow-[0_32px_90px_-36px_rgba(11,61,46,0.55)] ring-1 ring-forest/8">
         <div className="grid lg:grid-cols-12">
           <aside className="relative overflow-hidden bg-sand-soft px-7 py-9 md:px-9 md:py-10 lg:col-span-4">
