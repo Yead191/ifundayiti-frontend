@@ -1,11 +1,5 @@
 import type { Metadata } from "next";
-import {
-  Award,
-  Lock,
-  ShieldCheck,
-  Sparkles,
-  Zap,
-} from "lucide-react";
+import { Lock, ShieldCheck, Sparkles, Zap } from "lucide-react";
 
 import { PageHero } from "@/components/shared/page-hero";
 import { Container } from "@/components/shared/container";
@@ -35,17 +29,35 @@ export default function ApplyPage() {
         <Container>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
             {[
-              { icon: Zap, title: "$1,000 Max Grant", desc: "Equity-free seed funding" },
-              { icon: ShieldCheck, title: "0% Equity Taken", desc: "Non-dilutive community capital" },
-              { icon: Sparkles, title: "Quarterly Cycle", desc: "Active review & selection" },
-              { icon: Lock, title: "Encrypted & Secure", desc: "Confidential application review" },
+              {
+                icon: Zap,
+                title: "$1,000 Max Grant",
+                desc: "Equity-free seed funding",
+              },
+              {
+                icon: ShieldCheck,
+                title: "0% Equity Taken",
+                desc: "Non-dilutive community capital",
+              },
+              {
+                icon: Sparkles,
+                title: "Quarterly Cycle",
+                desc: "Active review & selection",
+              },
+              {
+                icon: Lock,
+                title: "Encrypted & Secure",
+                desc: "Confidential application review",
+              },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="flex items-center gap-3">
                 <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-sand-soft text-forest">
                   <Icon className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-forest-deep">{title}</p>
+                  <p className="text-xs font-semibold text-forest-deep">
+                    {title}
+                  </p>
                   <p className="text-[11px] text-mist">{desc}</p>
                 </div>
               </div>
