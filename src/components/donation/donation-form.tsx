@@ -3,17 +3,13 @@
 import * as React from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import {
-  Heart,
-  Loader2,
-  Lock,
-  Sparkles,
-} from "lucide-react";
+import { Heart, Loader2, Lock, Sparkles } from "lucide-react";
 
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { createDonation } from "@/helpers/next-fetch/donationActions";
 
 const PRESETS = [
   { amount: 25, impact: "Essential supplies" },
@@ -40,7 +36,6 @@ export function DonationForm({
   const [custom, setCustom] = React.useState("");
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
-  const [note, setNote] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
 
   const amount = selected === "custom" ? Number(custom) || 0 : selected;
@@ -64,17 +59,21 @@ export function DonationForm({
     }
 
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 900));
-    setSubmitting(false);
+    try {
+      const result = await createDonation({ name, email, amount });
 
-    toast.success(
-      `Thank you, ${name}! Your gift of ${formatPrice(amount)} was recorded.`
-    );
-    setName("");
-    setEmail("");
-    setNote("");
-    setCustom("");
-    setSelected(100);
+      if (!result.success || !result.data?.paymentUrl) {
+        toast.error(result.message || "Failed to create donation session. Please try again.");
+        return;
+      }
+
+      // Redirect to Stripe checkout
+      window.location.href = result.data.paymentUrl;
+    } catch {
+      toast.error("Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -190,21 +189,6 @@ export function DonationForm({
             />
           </div>
         </div>
-
-        {!compact && (
-          <div>
-            <Label htmlFor="donor-note" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-forest">
-              Note of Encouragement <span className="font-normal text-mist">(Optional)</span>
-            </Label>
-            <Input
-              id="donor-note"
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              placeholder="Leave a message for Haitian entrepreneurs..."
-              className="h-11 rounded-xl border-hairline bg-sand-soft/20 focus:bg-white"
-            />
-          </div>
-        )}
       </div>
 
       {/* Guarantee & Submit */}
@@ -218,7 +202,7 @@ export function DonationForm({
           {submitting ? (
             <span className="flex items-center gap-2">
               <Loader2 className="h-5 w-5 animate-spin" />
-              Processing Gift...
+              Redirecting to Secure Payment...
             </span>
           ) : (
             <span className="flex items-center gap-2">
@@ -230,7 +214,7 @@ export function DonationForm({
 
         <div className="flex items-center justify-center gap-2 text-xs text-mist">
           <Lock className="h-3.5 w-3.5 text-forest" />
-          <span>100% of public donations directly fund micro-grants. Secure demo.</span>
+          <span>Secure Stripe checkout · 100% of donations fund micro-grants.</span>
         </div>
       </div>
     </form>
