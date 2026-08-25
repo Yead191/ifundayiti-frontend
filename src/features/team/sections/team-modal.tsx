@@ -1,0 +1,157 @@
+"use client";
+
+import Image from "next/image";
+import { MapPin, Mail, Linkedin, Twitter, Github } from "lucide-react";
+import { type TeamMember } from "@/data/team";
+import { Modal } from "@/components/ui/modal";
+
+interface TeamModalProps {
+  member: TeamMember | null;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export function TeamModal({ member, isOpen, onClose }: TeamModalProps) {
+  if (!member) return null;
+
+  const categoryBadgeColor =
+    member.category === "directors"
+      ? "bg-emerald-100 text-emerald-900 border-emerald-300"
+      : member.category === "members"
+        ? "bg-amber-100 text-amber-900 border-amber-300"
+        : "bg-teal-100 text-teal-900 border-teal-300";
+
+  const categoryLabel =
+    member.category === "directors"
+      ? "Board Director"
+      : member.category === "members"
+        ? "Core Operations Member"
+        : "Volunteer & Ambassador";
+
+  return (
+    <Modal
+      open={isOpen}
+      onClose={onClose}
+      className="max-w-2xl p-0 overflow-hidden rounded-3xl bg-white border border-hairline shadow-2xl"
+    >
+      <div className="relative">
+        {/* Top Banner Gradient */}
+        <div className="h-28 bg-linear-to-r from-forest-bright via-forest to-forest-deep" />
+
+        {/* Profile Header Content */}
+        <div className="relative px-6 pb-6 pt-0 sm:px-8">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 -mt-14">
+            <div className="relative h-28 w-28 overflow-hidden rounded-2xl border-4 border-white shadow-lg bg-sand-soft">
+              <Image
+                src={member.photoUrl}
+                alt={member.name}
+                fill
+                className="object-cover"
+                sizes="112px"
+              />
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              <span
+                className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${categoryBadgeColor}`}
+              >
+                {categoryLabel}
+              </span>
+              <span className="inline-flex items-center gap-1 rounded-full border border-hairline bg-sand-soft/80 px-3 py-1 text-xs font-medium text-forest-deep">
+                <MapPin className="h-3 w-3 text-forest" />
+                {member.location}
+              </span>
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <h2 className="font-display text-2xl font-bold text-forest-deep">
+              {member.name}
+            </h2>
+            <p className="text-base font-semibold text-forest">{member.role}</p>
+          </div>
+
+          {/* Bio */}
+          <div className="mt-5">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-mist">
+              About
+            </h4>
+            <p className="mt-2 text-sm leading-relaxed text-cloud">
+              {member.bio}
+            </p>
+          </div>
+
+          {/* Focus Areas / Skills */}
+          {member.focusAreas && member.focusAreas.length > 0 && (
+            <div className="mt-5">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-mist mb-2">
+                Focus Areas & Expertise
+              </h4>
+              <div className="flex flex-wrap gap-2">
+                {member.focusAreas.map((skill, idx) => (
+                  <span
+                    key={idx}
+                    className="rounded-lg bg-cream-dark border border-hairline px-2.5 py-1 text-xs font-medium text-forest-deep"
+                  >
+                    {skill}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Social & Contact */}
+          <div className="mt-6 flex items-center justify-between border-t border-hairline pt-4">
+            <span className="text-xs font-medium text-mist">
+              IFundAyiti Verified Profile
+            </span>
+            <div className="flex items-center gap-2">
+              {member.email && (
+                <a
+                  href={`mailto:${member.email}`}
+                  className="grid h-9 w-9 place-items-center rounded-xl border border-hairline bg-sand-soft/60 text-forest transition-colors hover:bg-forest hover:text-white"
+                  title="Send Email"
+                >
+                  <Mail className="h-4 w-4" />
+                </a>
+              )}
+              {member.linkedin && (
+                <a
+                  href={member.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="grid h-9 w-9 place-items-center rounded-xl border border-hairline bg-sand-soft/60 text-forest transition-colors hover:bg-forest hover:text-white"
+                  title="LinkedIn Profile"
+                >
+                  <Linkedin className="h-4 w-4" />
+                </a>
+              )}
+              {member.twitter && (
+                <a
+                  href={member.twitter}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="grid h-9 w-9 place-items-center rounded-xl border border-hairline bg-sand-soft/60 text-forest transition-colors hover:bg-forest hover:text-white"
+                  title="Twitter Profile"
+                >
+                  <Twitter className="h-4 w-4" />
+                </a>
+              )}
+              {member.github && (
+                <a
+                  href={member.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="grid h-9 w-9 place-items-center rounded-xl border border-hairline bg-sand-soft/60 text-forest transition-colors hover:bg-forest hover:text-white"
+                  title="GitHub Profile"
+                >
+                  <Github className="h-4 w-4" />
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </Modal>
+  );
+}
