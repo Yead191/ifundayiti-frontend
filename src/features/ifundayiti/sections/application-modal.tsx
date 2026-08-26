@@ -30,11 +30,6 @@ import { StepDocuments } from "./form-steps/step-documents";
 import { StepBackground } from "./form-steps/step-background";
 import { StepAgreement } from "./form-steps/step-agreement";
 
-interface FileMock {
-  name: string;
-  size?: string;
-}
-
 export function IFundAyitiApplicationModal() {
   const { showAppModal, setShowAppModal, submitApplication } = useIFundAyiti();
 
@@ -45,9 +40,10 @@ export function IFundAyitiApplicationModal() {
   const [copied, setCopied] = useState(false);
 
   // Files state (step 5)
-  const [govIdFile, setGovIdFile] = useState<FileMock | null>(null);
-  const [proofAddrFile, setProofAddrFile] = useState<FileMock | null>(null);
-  const [businessPlanFile, setBusinessPlanFile] = useState<FileMock | null>(null);
+  const [govIdFile, setGovIdFile] = useState<File | null>(null);
+  const [proofAddrFile, setProofAddrFile] = useState<File | null>(null);
+  const [businessPlanFile, setBusinessPlanFile] = useState<File | null>(null);
+  const [supportingDocs, setSupportingDocs] = useState<File[]>([]);
   const [fileError, setFileError] = useState("");
 
   // Setup form states for each step using extracted schemas
@@ -170,6 +166,7 @@ export function IFundAyitiApplicationModal() {
     setGovIdFile(null);
     setProofAddrFile(null);
     setBusinessPlanFile(null);
+    setSupportingDocs([]);
     setStep(1);
     setShowAppModal(false);
   };
@@ -258,6 +255,8 @@ export function IFundAyitiApplicationModal() {
               setProofAddrFile={setProofAddrFile}
               businessPlanFile={businessPlanFile}
               setBusinessPlanFile={setBusinessPlanFile}
+              supportingDocs={supportingDocs}
+              setSupportingDocs={setSupportingDocs}
               fileError={fileError}
             />
           )}
