@@ -1,21 +1,23 @@
 "use client";
 
 import React, { useRef } from "react";
-import { AlertCircle, FileUp, Check } from "lucide-react";
-
-interface FileMock {
-  name: string;
-  size?: string;
-}
+import { AlertCircle, FileUp, Check, X } from "lucide-react";
 
 interface StepDocumentsProps {
-  govIdFile: FileMock | null;
-  setGovIdFile: (f: FileMock | null) => void;
-  proofAddrFile: FileMock | null;
-  setProofAddrFile: (f: FileMock | null) => void;
-  businessPlanFile: FileMock | null;
-  setBusinessPlanFile: (f: FileMock | null) => void;
+  govIdFile: File | null;
+  setGovIdFile: (f: File | null) => void;
+  proofAddrFile: File | null;
+  setProofAddrFile: (f: File | null) => void;
+  businessPlanFile: File | null;
+  setBusinessPlanFile: (f: File | null) => void;
+  supportingDocs: File[];
+  setSupportingDocs: (f: File[]) => void;
   fileError: string;
+}
+
+function formatSize(bytes: number) {
+  if (bytes > 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(1) + " MB";
+  return (bytes / 1024).toFixed(0) + " KB";
 }
 
 export function StepDocuments({
@@ -25,32 +27,36 @@ export function StepDocuments({
   setProofAddrFile,
   businessPlanFile,
   setBusinessPlanFile,
+  supportingDocs,
+  setSupportingDocs,
   fileError,
 }: StepDocumentsProps) {
   const idRef = useRef<HTMLInputElement>(null);
   const addrRef = useRef<HTMLInputElement>(null);
   const planRef = useRef<HTMLInputElement>(null);
+  const supportRef = useRef<HTMLInputElement>(null);
 
-  const handleFileChange = (
+  const handleSingleFile = (
     e: React.ChangeEvent<HTMLInputElement>,
-    type: "id" | "addr" | "plan",
+    setter: (f: File | null) => void
   ) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (file) setter(file);
+  };
 
-    const formattedSize =
-      file.size > 1024 * 1024
-        ? (file.size / (1024 * 1024)).toFixed(1) + " MB"
-        : (file.size / 1024).toFixed(0) + " KB";
+  const handleMultipleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (supportingDocs.length + files.length > 5) {
+      alert("You can only upload a maximum of 5 supporting documents.");
+      return;
+    }
+    setSupportingDocs([...supportingDocs, ...files]);
+    // Reset input so the same file can be selected again if removed
+    if (supportRef.current) supportRef.current.value = "";
+  };
 
-    const mockFile: FileMock = {
-      name: file.name,
-      size: formattedSize,
-    };
-
-    if (type === "id") setGovIdFile(mockFile);
-    else if (type === "addr") setProofAddrFile(mockFile);
-    else if (type === "plan") setBusinessPlanFile(mockFile);
+  const removeSupportDoc = (index: number) => {
+    setSupportingDocs(supportingDocs.filter((_, i) => i !== index));
   };
 
   return (
@@ -75,7 +81,7 @@ export function StepDocuments({
             <span className="mt-2 text-xs font-semibold text-forest flex items-center gap-1 bg-forest/10 border border-forest/20 px-2.5 py-1 rounded-lg w-fit">
               <Check className="h-3 w-3 shrink-0" />
               <span className="truncate max-w-[200px]">{govIdFile.name}</span>
-              <span className="text-[10px] opacity-75">({govIdFile.size})</span>
+              <span className="text-[10px] opacity-75">({formatSize(govIdFile.size)})</span>
             </span>
           )}
         </div>
@@ -83,7 +89,7 @@ export function StepDocuments({
         <input
           type="file"
           ref={idRef}
-          onChange={(e) => handleFileChange(e, "id")}
+          onChange={(e) => handleSingleFile(e, setGovIdFile)}
           className="hidden"
           accept="image/*,.pdf"
         />
@@ -111,7 +117,7 @@ export function StepDocuments({
             <span className="mt-2 text-xs font-semibold text-forest flex items-center gap-1 bg-forest/10 border border-forest/20 px-2.5 py-1 rounded-lg w-fit">
               <Check className="h-3 w-3 shrink-0" />
               <span className="truncate max-w-[200px]">{proofAddrFile.name}</span>
-              <span className="text-[10px] opacity-75">({proofAddrFile.size})</span>
+              <span className="text-[10px] opacity-75">({formatSize(proofAddrFile.size)})</span>
             </span>
           )}
         </div>
@@ -119,7 +125,7 @@ export function StepDocuments({
         <input
           type="file"
           ref={addrRef}
-          onChange={(e) => handleFileChange(e, "addr")}
+          onChange={(e) => handleSingleFile(e, setProofAddrFile)}
           className="hidden"
           accept="image/*,.pdf"
         />
@@ -138,16 +144,16 @@ export function StepDocuments({
       <div className="border border-hairline rounded-2xl p-4 bg-sand-soft/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex-1">
           <span className="block text-sm font-semibold text-forest-deep">
-            Business Plan / Supporting Documents
+            Business Plan
           </span>
           <span className="text-xs text-mist block mt-0.5">
-            Project outline, budget breakdown, or product photos (Optional)
+            Project outline or budget breakdown (Optional)
           </span>
           {businessPlanFile && (
             <span className="mt-2 text-xs font-semibold text-forest flex items-center gap-1 bg-forest/10 border border-forest/20 px-2.5 py-1 rounded-lg w-fit">
               <Check className="h-3 w-3 shrink-0" />
               <span className="truncate max-w-[200px]">{businessPlanFile.name}</span>
-              <span className="text-[10px] opacity-75">({businessPlanFile.size})</span>
+              <span className="text-[10px] opacity-75">({formatSize(businessPlanFile.size)})</span>
             </span>
           )}
         </div>
@@ -155,7 +161,7 @@ export function StepDocuments({
         <input
           type="file"
           ref={planRef}
-          onChange={(e) => handleFileChange(e, "plan")}
+          onChange={(e) => handleSingleFile(e, setBusinessPlanFile)}
           className="hidden"
           accept="image/*,.pdf,.doc,.docx"
         />
@@ -168,6 +174,58 @@ export function StepDocuments({
           <FileUp className="h-4 w-4 text-forest" />
           <span>{businessPlanFile ? "Change File" : "Upload Business Plan"}</span>
         </button>
+      </div>
+
+      {/* Upload Item 4: Supporting Documents */}
+      <div className="border border-hairline rounded-2xl p-4 bg-sand-soft/30 flex flex-col gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex-1">
+            <span className="block text-sm font-semibold text-forest-deep">
+              Supporting Documents
+            </span>
+            <span className="text-xs text-mist block mt-0.5">
+              Additional photos, licenses, etc. (Max 5 files)
+            </span>
+          </div>
+
+          <input
+            type="file"
+            multiple
+            ref={supportRef}
+            onChange={handleMultipleFiles}
+            className="hidden"
+            accept="image/*,.pdf,.doc,.docx"
+          />
+
+          <button
+            type="button"
+            onClick={() => supportRef.current?.click()}
+            disabled={supportingDocs.length >= 5}
+            className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-forest-deep px-4 py-2.5 border border-hairline bg-white hover:bg-sand-soft rounded-xl transition-all cursor-pointer shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <FileUp className="h-4 w-4 text-forest" />
+            <span>Upload Files</span>
+          </button>
+        </div>
+
+        {supportingDocs.length > 0 && (
+          <div className="flex flex-wrap gap-2 pt-2 border-t border-hairline">
+            {supportingDocs.map((doc, i) => (
+              <span key={i} className="text-xs font-semibold text-forest flex items-center gap-1.5 bg-forest/10 border border-forest/20 pl-2.5 pr-1.5 py-1 rounded-lg w-fit">
+                <Check className="h-3 w-3 shrink-0" />
+                <span className="truncate max-w-[150px]">{doc.name}</span>
+                <span className="text-[10px] opacity-75">({formatSize(doc.size)})</span>
+                <button
+                  type="button"
+                  onClick={() => removeSupportDoc(i)}
+                  className="ml-1 text-forest/60 hover:text-red-600 transition-colors"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
       </div>
 
       {fileError && (

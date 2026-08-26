@@ -8,7 +8,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
-export function StepPersonal() {
+export function StepPersonal({
+  setImageFile,
+}: {
+  setImageFile?: (file: File | null) => void;
+} = {}) {
   const {
     register,
     watch,
@@ -26,6 +30,7 @@ export function StepPersonal() {
         alert("File size should be less than 5MB");
         return;
       }
+      setImageFile?.(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setValue("photoUrl", reader.result as string, { shouldValidate: true });
@@ -35,6 +40,7 @@ export function StepPersonal() {
   }
 
   function handleRemovePhoto() {
+    setImageFile?.(null);
     setValue("photoUrl", "", { shouldValidate: true });
     if (fileInputRef.current) {
       fileInputRef.current.value = "";

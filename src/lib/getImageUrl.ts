@@ -4,15 +4,16 @@ export function getImageUrl(imageurl: string | null | undefined) {
     const baseUrl = (
       process.env.IMAGE_BASE_URL ||
       process.env.NEXT_PUBLIC_IMAGE_BASE_URL ||
-      "https://api.thehubology.com"
+      "http://10.10.26.173:5004"
     )?.replace("/files", "");
 
     return `${baseUrl}${imageurl}`;
   }
-  if (imageurl.startsWith("http") || imageurl.startsWith("blob:")) return imageurl;
+  if (imageurl.startsWith("http") || imageurl.startsWith("blob:"))
+    return imageurl;
   return (
     (process.env.IMAGE_BASE_URL ||
       process.env.NEXT_PUBLIC_IMAGE_BASE_URL ||
-      "https://api.thehubology.com/files") + imageurl
+      "http://10.10.26.173:5004/files") + imageurl
   );
 }

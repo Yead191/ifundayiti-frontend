@@ -62,10 +62,13 @@ export function ApplyExperience() {
   const [submitted, setSubmitted] = React.useState(false);
   const [trackingCode, setTrackingCode] = React.useState("");
 
-  const [govIdFile, setGovIdFile] = React.useState<FileMock | null>(null);
-  const [proofAddrFile, setProofAddrFile] = React.useState<FileMock | null>(null);
-  const [businessPlanFile, setBusinessPlanFile] = React.useState<FileMock | null>(null);
+  const [imageFile, setImageFile] = React.useState<File | null>(null);
+  const [govIdFile, setGovIdFile] = React.useState<File | null>(null);
+  const [proofAddrFile, setProofAddrFile] = React.useState<File | null>(null);
+  const [businessPlanFile, setBusinessPlanFile] = React.useState<File | null>(null);
+  const [supportingDocs, setSupportingDocs] = React.useState<File[]>([]);
   const [fileError, setFileError] = React.useState("");
+  const [submitError, setSubmitError] = React.useState("");
 
   const personalForm = useForm({
     resolver: zodResolver(personalSchema),
@@ -131,7 +134,7 @@ export function ApplyExperience() {
     const ok = await agreementForm.trigger();
     if (!ok) return;
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1000));
+    setSubmitError("");
 
     const personal = personalForm.getValues();
     const contact = contactForm.getValues();
@@ -139,47 +142,40 @@ export function ApplyExperience() {
     const grant = grantForm.getValues();
     const background = backgroundForm.getValues();
 
-    const stored = localStorage.getItem("ifa_applicants");
-    const existing: IFundApplicant[] = stored
-      ? JSON.parse(stored)
-      : INITIAL_APPLICANTS;
-    const year = new Date().getFullYear();
-    const trackingId = `IFA-${year}-${String(existing.length + 101).padStart(6, "0")}`;
+    const formData = new FormData();
+    // Use proper destructuring since photoUrl isn't sent in personal JSON
+    const { photoUrl, ...personalData } = personal;
 
-    const record: IFundApplicant = {
-      id: trackingId,
-      name: personal.name,
-      dob: personal.dob,
-      nationality: personal.nationality,
-      location: personal.location,
-      email: contact.email,
-      phone: contact.phone,
-      nationalId: id.nationalId,
-      passport: id.passport,
-      projectName: grant.projectName,
-      projectDescription: grant.projectDescription,
-      requestedAmount: grant.requestedAmount,
-      fundUsage: grant.fundUsage,
-      expectedImpact: grant.expectedImpact,
-      documents: [
-        { type: "Government-issued ID", name: govIdFile?.name ?? "" },
-        { type: "Proof of Address", name: proofAddrFile?.name ?? "" },
-        ...(businessPlanFile
-          ? [{ type: "Business Plan", name: businessPlanFile.name }]
-          : []),
-      ],
-      occupation: background.occupation,
-      financialBackground: background.financialBackground,
-      status: "Submitted",
-      submissionDate: new Date().toISOString().slice(0, 10),
-      photoUrl: personal.photoUrl || "",
-      periodId: CURRENT_PERIOD.id,
-    };
+    formData.append("personal", JSON.stringify(personalData));
+    formData.append("contact", JSON.stringify(contact));
+    formData.append("identification", JSON.stringify(id));
+    formData.append("grant", JSON.stringify(grant));
+    formData.append("background", JSON.stringify(background));
 
-    localStorage.setItem("ifa_applicants", JSON.stringify([record, ...existing]));
-    setTrackingCode(trackingId);
-    setLoading(false);
-    setSubmitted(true);
+    if (govIdFile) formData.append("nid_card", govIdFile);
+    if (proofAddrFile) formData.append("proof_of_address", proofAddrFile);
+    if (businessPlanFile) formData.append("business_plan", businessPlanFile);
+    if (imageFile) formData.append("image", imageFile);
+
+    supportingDocs.forEach((doc) => {
+      formData.append("supporting_documents", doc);
+    });
+
+    try {
+      const { submitApplication } = await import("@/helpers/next-fetch/applicationActions");
+      const res = await submitApplication(formData);
+
+      if (res.success && res.data) {
+        setTrackingCode(res.data.id || "IFA-SUBMITTED");
+        setSubmitted(true);
+      } else {
+        setSubmitError(res.error || res.message || "Failed to submit application.");
+      }
+    } catch (err: any) {
+      setSubmitError(err.message || "An unexpected error occurred.");
+    } finally {
+      setLoading(false);
+    }
   }
 
   if (!isOpen) {
@@ -203,7 +199,7 @@ export function ApplyExperience() {
     const email = contactForm.getValues("email");
     const dob = personalForm.getValues("dob");
     const name = personalForm.getValues("name");
-    const photoUrl = personalForm.getValues("photoUrl");
+    const photoPreviewUrl = personalForm.getValues("photoUrl");
 
     return (
       <div className="rounded-3xl border border-hairline bg-white p-8 text-center shadow-lg sm:p-12">
@@ -211,10 +207,10 @@ export function ApplyExperience() {
           <CheckCircle2 className="h-10 w-10 text-forest" />
         </div>
 
-        {photoUrl && (
+        {photoPreviewUrl && (
           <div className="mt-4 flex justify-center">
             <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-forest">
-              <Image src={photoUrl} alt={name} fill className="object-cover" />
+              <Image src={photoPreviewUrl} alt={name} fill className="object-cover" />
             </div>
           </div>
         )}
@@ -226,22 +222,28 @@ export function ApplyExperience() {
           Good luck, {name || "Applicant"}!
         </h2>
         <p className="mt-3 text-sm text-mist max-w-md mx-auto leading-relaxed">
-          Your grant application <strong className="text-forest-deep">#{trackingCode}</strong> has been successfully received by our review board.
+          Your grant application has been successfully received by our review board.
         </p>
 
-        <div className="mt-8 rounded-2xl border border-hairline bg-sand-soft/50 p-5 text-left max-w-md mx-auto text-xs text-forest-deep space-y-2">
-          <div className="flex justify-between border-b border-hairline pb-2 font-semibold">
+        <div className="mt-8 rounded-2xl border border-hairline bg-amber-500/10 p-5 text-left max-w-md mx-auto text-sm text-amber-950 space-y-3">
+          <div className="flex items-start gap-2">
+            <HelpCircle className="h-5 w-5 text-amber-600 shrink-0" />
+            <p>
+              <strong>Important:</strong> You will need your registered email and date of birth to track your application status later. Please keep them safe.
+            </p>
+          </div>
+          <div className="flex justify-between border-t border-amber-500/20 pt-3 font-medium text-xs">
             <span>Registered Email</span>
             <span>{email}</span>
           </div>
-          <div className="flex justify-between pt-1">
-            <span className="text-mist">Date of Birth</span>
+          <div className="flex justify-between pt-1 font-medium text-xs">
+            <span className="text-amber-900/70">Date of Birth</span>
             <span>{dob}</span>
           </div>
         </div>
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Button asChild size="lg" className="rounded-xl px-8 w-full sm:w-auto">
+          <Button asChild size="lg" className="rounded-xl px-8 w-full sm:w-auto shadow-md hover:shadow-lg transition-all">
             <Link href="/track-application">
               Track Application Status
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -378,7 +380,7 @@ export function ApplyExperience() {
           {/* FORM STEPS CONTENT */}
           {step === 1 && (
             <FormProvider {...personalForm}>
-              <StepPersonal />
+              <StepPersonal setImageFile={setImageFile} />
             </FormProvider>
           )}
 
@@ -414,6 +416,8 @@ export function ApplyExperience() {
               setProofAddrFile={setProofAddrFile}
               businessPlanFile={businessPlanFile}
               setBusinessPlanFile={setBusinessPlanFile}
+              supportingDocs={supportingDocs}
+              setSupportingDocs={setSupportingDocs}
               fileError={fileError}
             />
           )}

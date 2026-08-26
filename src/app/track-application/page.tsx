@@ -15,9 +15,9 @@ export default function TrackApplicationPage() {
   return (
     <>
       <PageHero
-        eyebrow="Status"
-        title="Track your application"
-        subtitle="Enter the email and date of birth used on your submission. Sensitive identification and documents are never shown here."
+        eyebrow="Application Status"
+        title="Track Your Journey"
+        subtitle="Stay updated on your IFundAyiti grant application. Enter your registered email and date of birth below to view your real-time status and next steps securely."
       />
       <section className="py-14">
         <Container>
