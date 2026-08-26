@@ -24,15 +24,16 @@ export function PremiumStatusCard({ applicant }: PremiumStatusCardProps) {
     });
   };
 
-  const statusLabel = {
-    submitted: "Submitted Successfully",
-    underReview: "Currently Under Review",
-    approved: "Application Approved",
-    finalist: "Top Finalist",
-    winner: "Grant Winner!",
-    rejected: "Application Declined",
-    archived: "Archived",
-  }[status] || status;
+  const statusLabel =
+    {
+      submitted: "Submitted Successfully",
+      underReview: "Currently Under Review",
+      approved: "Application Approved",
+      finalist: "Top Finalist",
+      winner: "Grant Winner!",
+      rejected: "Application Declined",
+      archived: "Archived",
+    }[status] || status;
 
   return (
     <article className="overflow-hidden rounded-3xl border border-hairline bg-white shadow-xl">
@@ -63,7 +64,7 @@ export function PremiumStatusCard({ applicant }: PremiumStatusCardProps) {
             <span className="font-medium text-forest-deep shrink-0">
               Project:
             </span>
-            <span className="truncate max-w-[200px] sm:max-w-[300px]">
+            <span className="truncate max-w-50 sm:max-w-75">
               {applicant.grant.projectName}
             </span>
           </div>
