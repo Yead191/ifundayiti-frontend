@@ -73,7 +73,7 @@ export async function HomeHero() {
             <Reveal delay={200} className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" variant="secondary" className="rounded-xl px-7">
                 <Link href={open ? "/apply" : "/grants"}>
-                  Apply for a Grant
+                  {open ? "Apply for a Grant" : "View Grant Details"}
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -91,7 +91,7 @@ export async function HomeHero() {
             <Reveal delay={120} className="lg:col-span-5">
               <div className="rounded-[1.5rem] border border-white/12 bg-white/8 p-6 backdrop-blur-md md:p-7">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sand/80">
-                  Current cycle
+                  Current cycle · {currentPeriod.status}
                 </p>
                 <p className="mt-2 font-display text-2xl font-semibold text-white">
                   {currentPeriod.title}
