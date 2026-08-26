@@ -120,8 +120,8 @@ export function PaymentSuccessContent() {
     <div className="min-h-screen bg-cream pt-6">
       {/* Background glows */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
-        <div className="aurora -left-32 -top-32 h-[500px] w-[500px] opacity-20" />
-        <div className="aurora -bottom-32 -right-32 h-[400px] w-[400px] opacity-15" />
+        <div className="aurora -left-32 -top-32 h-125 w-125 opacity-20" />
+        <div className="aurora -bottom-32 -right-32 h-100 w-100 opacity-15" />
       </div>
 
       <Container className="relative z-10 flex min-h-screen flex-col items-center justify-center py-20">

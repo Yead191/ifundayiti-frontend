@@ -5,21 +5,22 @@ import { ArrowUpRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
-import { CURRENT_PERIOD } from "@/data/grant";
 import { formatPrice } from "@/lib/utils";
+import { getCurrentApplicationPeriod } from "@/helpers/next-fetch/periodActions";
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=1800&h=1200";
 
 function formatDate(iso: string) {
-  return new Date(`${iso}T00:00:00`).toLocaleDateString("en-US", {
+  return new Date(`${iso}`).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
   });
 }
 
-export function HomeHero() {
-  const open = CURRENT_PERIOD.status === "Open";
+export async function HomeHero() {
+  const currentPeriod = await getCurrentApplicationPeriod();
+  const open = currentPeriod?.status === "Open";
 
   return (
     <section className="relative h-180 overflow-hidden bg-forest pt-24 text-white md:h-195 lg:h-210">
@@ -86,35 +87,37 @@ export function HomeHero() {
             </Reveal>
           </div>
 
-          <Reveal delay={120} className="lg:col-span-5">
-            <div className="rounded-[1.5rem] border border-white/12 bg-white/8 p-6 backdrop-blur-md md:p-7">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sand/80">
-                Current cycle
-              </p>
-              <p className="mt-2 font-display text-2xl font-semibold text-white">
-                {CURRENT_PERIOD.title}
-              </p>
-              <dl className="mt-6 grid grid-cols-2 gap-5 border-t border-white/10 pt-6">
-                <div>
-                  <dt className="text-xs text-sand/70">Maximum grant</dt>
-                  <dd className="mt-1 font-display text-2xl text-sand">
-                    {formatPrice(CURRENT_PERIOD.maximumGrantAmount)}
-                  </dd>
-                </div>
-                <div>
-                  <dt className="text-xs text-sand/70">Window</dt>
-                  <dd className="mt-1 text-sm font-medium leading-snug text-white">
-                    {formatDate(CURRENT_PERIOD.startDate)} –{" "}
-                    {formatDate(CURRENT_PERIOD.endDate)}
-                  </dd>
-                </div>
-              </dl>
-              <p className="mt-5 text-xs leading-relaxed text-sand/75">
-                One winner per cycle. Donations fuel the Program Fund — not a
-                single applicant.
-              </p>
-            </div>
-          </Reveal>
+          {currentPeriod && (
+            <Reveal delay={120} className="lg:col-span-5">
+              <div className="rounded-[1.5rem] border border-white/12 bg-white/8 p-6 backdrop-blur-md md:p-7">
+                <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sand/80">
+                  Current cycle
+                </p>
+                <p className="mt-2 font-display text-2xl font-semibold text-white">
+                  {currentPeriod.title}
+                </p>
+                <dl className="mt-6 grid grid-cols-2 gap-5 border-t border-white/10 pt-6">
+                  <div>
+                    <dt className="text-xs text-sand/70">Maximum grant</dt>
+                    <dd className="mt-1 font-display text-2xl text-sand">
+                      {formatPrice(currentPeriod.maximumGrantAmount)}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs text-sand/70">Window</dt>
+                    <dd className="mt-1 text-sm font-medium leading-snug text-white">
+                      {formatDate(currentPeriod.startDate)} –{" "}
+                      {formatDate(currentPeriod.endDate)}
+                    </dd>
+                  </div>
+                </dl>
+                <p className="mt-5 text-xs leading-relaxed text-sand/75">
+                  One winner per cycle. Donations fuel the Program Fund — not a
+                  single applicant.
+                </p>
+              </div>
+            </Reveal>
+          )}
         </div>
       </Container>
     </section>

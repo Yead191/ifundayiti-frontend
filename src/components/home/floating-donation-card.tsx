@@ -6,7 +6,7 @@ import { Container } from "@/components/shared/container";
 const TRUST_POINTS = [
   "Gifts go to the IFundAyiti Program Fund",
   "Not linked to an individual applicant",
-  "Demo flow — replace with live payment later",
+  "Payments secured by Stripe — trusted by millions worldwide",
 ];
 
 export function FloatingDonationCard() {
@@ -52,7 +52,7 @@ export function FloatingDonationCard() {
                   Choose an amount and leave your details
                 </p>
               </div>
-              <p className="text-xs text-mist">Secure demo · no payment yet</p>
+              <p className="text-xs text-mist">Secured by Stripe · 256-bit encryption</p>
             </div>
             <DonationForm compact />
           </div>

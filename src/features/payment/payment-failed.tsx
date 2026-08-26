@@ -109,16 +109,18 @@ export function PaymentFailedContent() {
       {/* Background glows — warmer/reddish tint */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div
-          className="absolute -left-40 -top-40 h-[500px] w-[500px] rounded-full opacity-10"
+          className="absolute -left-40 -top-40 h-125 w-125 rounded-full opacity-10"
           style={{
-            background: "radial-gradient(circle, rgba(244,63,94,0.5), transparent 70%)",
+            background:
+              "radial-gradient(circle, rgba(244,63,94,0.5), transparent 70%)",
             filter: "blur(80px)",
           }}
         />
         <div
-          className="absolute -bottom-40 -right-40 h-[400px] w-[400px] rounded-full opacity-10"
+          className="absolute -bottom-40 -right-40 h-100 w-100 rounded-full opacity-10"
           style={{
-            background: "radial-gradient(circle, rgba(239,68,68,0.4), transparent 70%)",
+            background:
+              "radial-gradient(circle, rgba(239,68,68,0.4), transparent 70%)",
             filter: "blur(80px)",
           }}
         />
@@ -128,7 +130,9 @@ export function PaymentFailedContent() {
         {/* Card */}
         <div className="w-full max-w-2xl overflow-hidden rounded-3xl border border-white/80 bg-white shadow-[0_32px_80px_-24px_rgba(11,61,46,0.16)]">
           {/* Top gradient band */}
-          <div className={`relative h-36 bg-linear-to-r ${config.accentColor} overflow-hidden`}>
+          <div
+            className={`relative h-36 bg-linear-to-r ${config.accentColor} overflow-hidden`}
+          >
             <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/8 to-white/0" />
 
             {/* Centered failed ring */}
@@ -170,7 +174,10 @@ export function PaymentFailedContent() {
               </div>
               <ul className="space-y-2">
                 {config.tips.map((tip, i) => (
-                  <li key={i} className="flex items-start gap-2.5 text-xs text-forest-deep">
+                  <li
+                    key={i}
+                    className="flex items-start gap-2.5 text-xs text-forest-deep"
+                  >
                     <span className="mt-0.5 flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-rose-100 text-[10px] font-bold text-rose-700">
                       {i + 1}
                     </span>
@@ -182,7 +189,11 @@ export function PaymentFailedContent() {
 
             {/* CTAs */}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg" className="flex-1 rounded-2xl font-semibold shadow-md">
+              <Button
+                asChild
+                size="lg"
+                className="flex-1 rounded-2xl font-semibold shadow-md"
+              >
                 <Link href={config.retryCta.href}>
                   <RotateCcw className="mr-2 h-4 w-4" />
                   {config.retryCta.label}
@@ -223,7 +234,10 @@ export function PaymentFailedContent() {
         {/* Footer note */}
         <p className="mt-8 text-center text-xs text-mist">
           Still having trouble?{" "}
-          <Link href="/contact" className="font-semibold text-forest hover:underline">
+          <Link
+            href="/contact"
+            className="font-semibold text-forest hover:underline"
+          >
             Contact our team
           </Link>{" "}
           — we will help you sort it out.

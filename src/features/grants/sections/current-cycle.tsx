@@ -4,13 +4,13 @@ import { ArrowUpRight, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
-import { CURRENT_PERIOD } from "@/data/grant";
 import {
   GRANTS_CYCLE,
   GRANTS_STATUS_LABELS,
 } from "@/data/grants-page";
 import { formatGrantDate } from "@/features/grants/lib/format-grant-date";
 import { cn, formatPrice } from "@/lib/utils";
+import { getCurrentApplicationPeriod } from "@/helpers/next-fetch/periodActions";
 
 const STATUS_STYLES = {
   open: "bg-emerald-500/15 text-emerald-100 border-emerald-400/25",
@@ -19,10 +19,13 @@ const STATUS_STYLES = {
   neutral: "bg-white/10 text-sand border-white/15",
 };
 
-export function GrantsCurrentCycle() {
-  const open = CURRENT_PERIOD.status === "Open";
+export async function GrantsCurrentCycle() {
+  const currentPeriod = await getCurrentApplicationPeriod();
+  if (!currentPeriod) return null;
+
+  const open = currentPeriod.status === "Open";
   const statusMeta =
-    GRANTS_STATUS_LABELS[CURRENT_PERIOD.status] ??
+    GRANTS_STATUS_LABELS[currentPeriod.status] ??
     GRANTS_STATUS_LABELS.Closed;
 
   return (
@@ -45,7 +48,7 @@ export function GrantsCurrentCycle() {
                 </span>
               </div>
               <h2 className="mt-4 font-display text-3xl font-semibold leading-snug md:text-4xl">
-                {CURRENT_PERIOD.title}
+                {currentPeriod.title}
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-sand/90">
                 {open ? GRANTS_CYCLE.openLead : GRANTS_CYCLE.closedLead}
@@ -55,8 +58,8 @@ export function GrantsCurrentCycle() {
                 <p className="text-sm leading-relaxed text-sand/90">
                   Application window:{" "}
                   <strong className="font-semibold text-white">
-                    {formatGrantDate(CURRENT_PERIOD.startDate)} –{" "}
-                    {formatGrantDate(CURRENT_PERIOD.endDate)}
+                    {formatGrantDate(currentPeriod.startDate)} –{" "}
+                    {formatGrantDate(currentPeriod.endDate)}
                   </strong>
                 </p>
               </div>
@@ -73,7 +76,7 @@ export function GrantsCurrentCycle() {
                 Maximum grant
               </p>
               <p className="mt-2 font-display text-5xl font-semibold tracking-tight text-sand">
-                {formatPrice(CURRENT_PERIOD.maximumGrantAmount)}
+                {formatPrice(currentPeriod.maximumGrantAmount)}
               </p>
               <p className="mt-4 text-sm leading-relaxed text-sand/85">
                 {GRANTS_CYCLE.maxGrantNote}
@@ -87,6 +90,14 @@ export function GrantsCurrentCycle() {
                   <dt className="text-sand/70">Equity</dt>
                   <dd className="font-medium text-white">None taken</dd>
                 </div>
+                {open && (
+                  <div className="flex justify-between gap-4">
+                    <dt className="text-sand/70">Applications received</dt>
+                    <dd className="font-medium text-white">
+                      {currentPeriod.totalApplicationsSubmitted}
+                    </dd>
+                  </div>
+                )}
               </dl>
             </div>
           </div>
