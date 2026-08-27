@@ -1,12 +1,24 @@
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/sections/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { PREVIOUS_PERIODS } from "@/data/grant";
 import { GRANTS_HISTORY } from "@/data/grants-page";
 import { formatGrantDate } from "@/features/grants/lib/format-grant-date";
 import { cn } from "@/lib/utils";
+import { nextFetch } from "@/helpers/next-fetch/NextFetch";
 
-export function GrantsHistory() {
+export async function GrantsHistory() {
+  const res = await nextFetch("/period", { cache: "no-store" });
+  let periods = res.success ? res.data || [] : [];
+
+  if (periods.length > 0) {
+    const firstStatus = periods[0].status;
+    if (firstStatus === "Open" || firstStatus === "Review") {
+      periods = periods.slice(1);
+    }
+  }
+
+  if (periods.length === 0) return null;
+
   return (
     <section className="py-20 md:py-24">
       <Container>
@@ -17,9 +29,9 @@ export function GrantsHistory() {
           subtitle={GRANTS_HISTORY.subtitle}
         />
         <div className="mt-10 overflow-hidden rounded-[1.5rem] border border-hairline bg-white shadow-[0_20px_50px_-36px_rgba(11,61,46,0.35)]">
-          {PREVIOUS_PERIODS.map((period, index) => (
+          {periods.map((period: any, index: number) => (
             <Reveal
-              key={period.id}
+              key={period._id}
               delay={index * 50}
               className={cn(
                 "flex flex-col gap-3 px-6 py-5 sm:flex-row sm:items-center sm:justify-between md:px-8",
