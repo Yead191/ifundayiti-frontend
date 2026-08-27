@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   Search,
   MapPin,
@@ -15,81 +16,65 @@ import { Reveal } from "@/components/ui/reveal";
 import { TEAM_CATEGORIES, type TeamCategory } from "@/data/team";
 import { TeamModal } from "@/features/team/sections/team-modal";
 import { PaginationControls } from "@/components/ui/pagination-controls";
-import { getTeamMembers } from "@/helpers/next-fetch/teamActions";
 import { getImageUrl } from "@/lib/getImageUrl";
 
 interface TeamGridProps {
-  initialMembers: any[];
-  initialPagination: any;
+  members: any[];
+  pagination: any;
   stats: {
     totalDirectors: number;
     totalMembers: number;
     totalVolunteers: number;
   };
+  activeCategory: TeamCategory;
+  searchQuery: string;
+  page: number;
 }
 
-export function TeamGrid({ initialMembers, initialPagination, stats }: TeamGridProps) {
-  const [activeCategory, setActiveCategory] = React.useState<TeamCategory>("all");
-  const [searchQuery, setSearchQuery] = React.useState("");
-  const [debouncedSearch, setDebouncedSearch] = React.useState("");
-  const [page, setPage] = React.useState(1);
-
-  const [members, setMembers] = React.useState(initialMembers);
-  const [pagination, setPagination] = React.useState(initialPagination);
-  const [loading, setLoading] = React.useState(false);
+export function TeamGrid({
+  members,
+  pagination,
+  stats,
+  activeCategory,
+  searchQuery,
+  page,
+}: TeamGridProps) {
+  const router = useRouter();
+  const [searchInput, setSearchInput] = React.useState(searchQuery);
   const [selectedMember, setSelectedMember] = React.useState<any | null>(null);
 
-  // Debounce Search
+  // Sync state if searchQuery changes from outside (e.g. Back button)
   React.useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedSearch(searchQuery);
-      setPage(1); // Reset page on new search
-    }, 400);
-    return () => clearTimeout(handler);
+    setSearchInput(searchQuery);
   }, [searchQuery]);
 
-  // Reset page when category changes
-  React.useEffect(() => {
-    setPage(1);
-  }, [activeCategory]);
-
-  // Fetch Team Members
-  React.useEffect(() => {
-    let isMounted = true;
-    
-    // Skip initial fetch on mount since we have initialMembers
-    if (
-      activeCategory === "all" &&
-      debouncedSearch === "" &&
-      page === 1 &&
-      members === initialMembers
-    ) {
-      return;
-    }
-
-    const fetchData = async () => {
-      setLoading(true);
-      const res = await getTeamMembers({
-        category: activeCategory,
-        searchTerm: debouncedSearch,
-        page,
-        limit: 9,
-      });
-      if (isMounted && res.success) {
-        setMembers(res.data || []);
-        setPagination(
-          res.pagination || { total: 0, limit: 9, page: 1, totalPage: 1 }
-        );
+  const updateParams = React.useCallback(
+    (nextCategory: string, nextSearch: string, nextPage: number) => {
+      const params = new URLSearchParams();
+      if (nextCategory !== "all") {
+        params.set("category", nextCategory);
       }
-      setLoading(false);
-    };
+      if (nextSearch) {
+        params.set("q", nextSearch);
+      }
+      if (nextPage > 1) {
+        params.set("page", nextPage.toString());
+      }
+      router.replace(`/team?${params.toString()}`, { scroll: false });
+    },
+    [router]
+  );
 
-    fetchData();
+  // Debounce search input changes
+  React.useEffect(() => {
+    if (searchInput === searchQuery) return;
+    
+    const handler = setTimeout(() => {
+      updateParams(activeCategory, searchInput, 1);
+    }, 400);
 
-    return () => {
-      isMounted = false;
-    };
-  }, [activeCategory, debouncedSearch, page]);
+    return () => clearTimeout(handler);
+  }, [searchInput, searchQuery, activeCategory, updateParams]);
 
   const getCategoryCount = (categoryId: TeamCategory) => {
     if (categoryId === "all") {
@@ -99,6 +84,19 @@ export function TeamGrid({ initialMembers, initialPagination, stats }: TeamGridP
     if (categoryId === "members") return stats.totalMembers;
     if (categoryId === "volunteers") return stats.totalVolunteers;
     return 0;
+  };
+
+  const handleCategoryChange = (catId: TeamCategory) => {
+    updateParams(catId, searchInput, 1);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    updateParams(activeCategory, searchInput, newPage);
+  };
+
+  const handleReset = () => {
+    setSearchInput("");
+    updateParams("all", "", 1);
   };
 
   return (
@@ -117,7 +115,7 @@ export function TeamGrid({ initialMembers, initialPagination, stats }: TeamGridP
               return (
                 <button
                   key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
+                  onClick={() => handleCategoryChange(cat.id)}
                   className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all duration-200 ${
                     active
                       ? "bg-forest text-white shadow-md"
@@ -145,13 +143,13 @@ export function TeamGrid({ initialMembers, initialPagination, stats }: TeamGridP
             <input
               type="text"
               placeholder="Search by name or focus areas..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
               className="w-full rounded-2xl border border-hairline bg-white py-2.5 pl-10 pr-4 text-sm text-forest-deep placeholder:text-mist focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
             />
-            {searchQuery && (
+            {searchInput && (
               <button
-                onClick={() => setSearchQuery("")}
+                onClick={handleReset}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-mist hover:text-forest"
               >
                 Clear
@@ -166,11 +164,7 @@ export function TeamGrid({ initialMembers, initialPagination, stats }: TeamGridP
         </div>
 
         {/* Members Grid */}
-        {loading ? (
-          <div className="mt-12 flex items-center justify-center min-h-[300px]">
-            <div className="h-10 w-10 animate-spin rounded-full border-4 border-forest border-t-transparent" />
-          </div>
-        ) : members.length === 0 ? (
+        {members.length === 0 ? (
           <div className="mt-12 rounded-3xl border border-dashed border-hairline bg-white p-12 text-center">
             <UserCheck className="mx-auto h-12 w-12 text-mist/60" />
             <h3 className="mt-4 font-display text-lg font-bold text-forest-deep">
@@ -180,10 +174,7 @@ export function TeamGrid({ initialMembers, initialPagination, stats }: TeamGridP
               Try adjusting your search criteria or category filter.
             </p>
             <button
-              onClick={() => {
-                setActiveCategory("all");
-                setSearchQuery("");
-              }}
+              onClick={handleReset}
               className="mt-4 inline-flex items-center rounded-xl bg-forest px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-forest-bright"
             >
               Reset Filters
@@ -270,7 +261,7 @@ export function TeamGrid({ initialMembers, initialPagination, stats }: TeamGridP
 
             <PaginationControls
               pagination={pagination}
-              onPageChange={(p) => setPage(p)}
+              onPageChange={handlePageChange}
             />
           </>
         )}

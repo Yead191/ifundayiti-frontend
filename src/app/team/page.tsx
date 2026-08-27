@@ -17,6 +17,10 @@ export const metadata: Metadata = buildMetadata({
   ],
 });
 
-export default function TeamPage() {
-  return <TeamPageContent />;
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+}
+
+export default async function TeamPage({ searchParams }: PageProps) {
+  return <TeamPageContent searchParams={searchParams} />;
 }
