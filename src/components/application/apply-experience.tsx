@@ -39,19 +39,30 @@ import {
   agreementSchema,
 } from "@/lib/ifundayiti-schemas";
 import { CURRENT_PERIOD } from "@/data/grant";
-import {
-  INITIAL_APPLICANTS,
-  type IFundApplicant,
-} from "@/features/ifundayiti/data/mock-data";
 
 const STEPS = [
-  { id: 1, label: "Personal & Photo", icon: User, desc: "Basic details & photo" },
+  {
+    id: 1,
+    label: "Personal & Photo",
+    icon: User,
+    desc: "Basic details & photo",
+  },
   { id: 2, label: "Contact Info", icon: Phone, desc: "Email & phone" },
   { id: 3, label: "Identification", icon: Shield, desc: "National ID / NIF" },
-  { id: 4, label: "Project & Grant", icon: Rocket, desc: "Project & fund usage" },
+  {
+    id: 4,
+    label: "Project & Grant",
+    icon: Rocket,
+    desc: "Project & fund usage",
+  },
   { id: 5, label: "Background", icon: Briefcase, desc: "Occupation & history" },
   { id: 6, label: "Documents", icon: FileText, desc: "ID & address uploads" },
-  { id: 7, label: "Review & Submit", icon: CheckCircle2, desc: "Final agreement" },
+  {
+    id: 7,
+    label: "Review & Submit",
+    icon: CheckCircle2,
+    desc: "Final agreement",
+  },
 ];
 
 type FileMock = { name: string; size?: string };
@@ -65,14 +76,22 @@ export function ApplyExperience() {
   const [imageFile, setImageFile] = React.useState<File | null>(null);
   const [govIdFile, setGovIdFile] = React.useState<File | null>(null);
   const [proofAddrFile, setProofAddrFile] = React.useState<File | null>(null);
-  const [businessPlanFile, setBusinessPlanFile] = React.useState<File | null>(null);
+  const [businessPlanFile, setBusinessPlanFile] = React.useState<File | null>(
+    null,
+  );
   const [supportingDocs, setSupportingDocs] = React.useState<File[]>([]);
   const [fileError, setFileError] = React.useState("");
   const [submitError, setSubmitError] = React.useState("");
 
   const personalForm = useForm({
     resolver: zodResolver(personalSchema),
-    defaultValues: { name: "", dob: "", nationality: "Haitian", location: "", photoUrl: "" },
+    defaultValues: {
+      name: "",
+      dob: "",
+      nationality: "Haitian",
+      location: "",
+      photoUrl: "",
+    },
   });
   const contactForm = useForm({
     resolver: zodResolver(contactSchema),
@@ -162,14 +181,17 @@ export function ApplyExperience() {
     });
 
     try {
-      const { submitApplication } = await import("@/helpers/next-fetch/applicationActions");
+      const { submitApplication } =
+        await import("@/helpers/next-fetch/applicationActions");
       const res = await submitApplication(formData);
 
       if (res.success && res.data) {
         setTrackingCode(res.data.id || "IFA-SUBMITTED");
         setSubmitted(true);
       } else {
-        setSubmitError(res.error || res.message || "Failed to submit application.");
+        setSubmitError(
+          res.error || res.message || "Failed to submit application.",
+        );
       }
     } catch (err: any) {
       setSubmitError(err.message || "An unexpected error occurred.");
@@ -185,7 +207,8 @@ export function ApplyExperience() {
           Applications are currently closed
         </h2>
         <p className="mt-3 text-sm text-mist max-w-md mx-auto">
-          There is currently no active open grant cycle. Check the Grants page to view upcoming funding dates.
+          There is currently no active open grant cycle. Check the Grants page
+          to view upcoming funding dates.
         </p>
         <Button asChild className="mt-6 rounded-xl">
           <Link href="/grants">View Grant Cycles</Link>
@@ -210,7 +233,12 @@ export function ApplyExperience() {
         {photoPreviewUrl && (
           <div className="mt-4 flex justify-center">
             <div className="relative h-16 w-16 overflow-hidden rounded-full border-2 border-forest">
-              <Image src={photoPreviewUrl} alt={name} fill className="object-cover" />
+              <Image
+                src={photoPreviewUrl}
+                alt={name}
+                fill
+                className="object-cover"
+              />
             </div>
           </div>
         )}
@@ -222,14 +250,17 @@ export function ApplyExperience() {
           Good luck, {name || "Applicant"}!
         </h2>
         <p className="mt-3 text-sm text-mist max-w-md mx-auto leading-relaxed">
-          Your grant application has been successfully received by our review board.
+          Your grant application has been successfully received by our review
+          board.
         </p>
 
         <div className="mt-8 rounded-2xl border border-hairline bg-amber-500/10 p-5 text-left max-w-md mx-auto text-sm text-amber-950 space-y-3">
           <div className="flex items-start gap-2">
             <HelpCircle className="h-5 w-5 text-amber-600 shrink-0" />
             <p>
-              <strong>Important:</strong> You will need your registered email and date of birth to track your application status later. Please keep them safe.
+              <strong>Important:</strong> You will need your registered email
+              and date of birth to track your application status later. Please
+              keep them safe.
             </p>
           </div>
           <div className="flex justify-between border-t border-amber-500/20 pt-3 font-medium text-xs">
@@ -243,13 +274,22 @@ export function ApplyExperience() {
         </div>
 
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
-          <Button asChild size="lg" className="rounded-xl px-8 w-full sm:w-auto shadow-md hover:shadow-lg transition-all">
+          <Button
+            asChild
+            size="lg"
+            className="rounded-xl px-8 w-full sm:w-auto shadow-md hover:shadow-lg transition-all"
+          >
             <Link href="/track-application">
               Track Application Status
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </Button>
-          <Button asChild variant="outline" size="lg" className="rounded-xl px-6 w-full sm:w-auto">
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="rounded-xl px-6 w-full sm:w-auto"
+          >
             <Link href="/grants">Return to Grants</Link>
           </Button>
         </div>
@@ -437,7 +477,9 @@ export function ApplyExperience() {
                       />
                     </div>
                     <div>
-                      <p className="text-xs font-semibold text-forest">Applicant Profile Photo</p>
+                      <p className="text-xs font-semibold text-forest">
+                        Applicant Profile Photo
+                      </p>
                       <p className="text-sm font-semibold text-forest-deep">
                         {personalForm.getValues("name")}
                       </p>
@@ -467,7 +509,10 @@ export function ApplyExperience() {
                   title="Project Proposal"
                   rows={[
                     ["Project Name", grantForm.getValues("projectName")],
-                    ["Requested Amount", `$${grantForm.getValues("requestedAmount")}`],
+                    [
+                      "Requested Amount",
+                      `$${grantForm.getValues("requestedAmount")}`,
+                    ],
                   ]}
                 />
 
@@ -537,7 +582,9 @@ function ReviewBlock({
         {rows.map(([k, v]) => (
           <div key={k} className="flex justify-between gap-4">
             <dt className="text-mist">{k}</dt>
-            <dd className="text-right font-semibold text-forest-deep">{v || "—"}</dd>
+            <dd className="text-right font-semibold text-forest-deep">
+              {v || "—"}
+            </dd>
           </div>
         ))}
       </dl>

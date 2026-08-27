@@ -131,9 +131,9 @@ export function PaymentFailedContent() {
         <div className="w-full max-w-2xl overflow-hidden rounded-3xl border border-white/80 bg-white shadow-[0_32px_80px_-24px_rgba(11,61,46,0.16)]">
           {/* Top gradient band */}
           <div
-            className={`relative h-36 bg-linear-to-r ${config.accentColor} overflow-hidden`}
+            className={`relative h-36 bg-linear-to-r ${config.accentColor}`}
           >
-            <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/8 to-white/0" />
+            <div className="absolute inset-0 bg-linear-to-r from-white/0 via-white/8 to-white/0 overflow-hidden" />
 
             {/* Centered failed ring */}
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">

@@ -220,6 +220,9 @@ export interface WinnerStory {
   awardedAmount: number;
   period: string;
   location: string;
+  occupation: string;
+  fundUsage: string;
+  expectedImpact: string;
   story: string;
   photoUrl: string;
   gallery: string[];
@@ -234,6 +237,9 @@ export const WINNERS: WinnerStory[] = [
     awardedAmount: 1000,
     period: "Spring 2026 Grant Cycle",
     location: "Saint-Marc",
+    occupation: "Artisan Chocolate Maker",
+    fundUsage: "Purchased commercial-grade grinding equipment and eco-friendly packaging materials.",
+    expectedImpact: "Increase processing capacity by 400%, allowing us to hire two additional local women and supply three more regional grocers.",
     story:
       "A $1,000 grant helped purchase grinding equipment and packaging tools. Weekly cocoa processing grew from a small handmade batch to a regional supply of chocolate and cocoa powder, and two local women joined the packaging team.",
     photoUrl:
@@ -251,6 +257,9 @@ export const WINNERS: WinnerStory[] = [
     awardedAmount: 950,
     period: "Winter 2025 Grant Cycle",
     location: "Jacmel",
+    occupation: "Master Carpenter",
+    fundUsage: "Acquired modern safety equipment, a table saw, and raw timber materials.",
+    expectedImpact: "Create a safer working environment and launch a weekend apprenticeship program to train local high-school students in woodworking.",
     story:
       "With a micro-grant, Luc added safer power tools to a hand-tool workshop. The shop has since built school benches and repaired storm-damaged roof timbers, and now hosts weekend woodcraft sessions for high-school students.",
     photoUrl:
@@ -264,3 +273,4 @@ export const WINNERS: WinnerStory[] = [
 export function getWinnerBySlug(slug: string) {
   return WINNERS.find((w) => w.slug === slug) ?? null;
 }
+

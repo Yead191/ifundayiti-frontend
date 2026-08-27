@@ -4,8 +4,14 @@ import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  X, Check, AlertCircle, Clipboard, Loader2,
-  Printer, ArrowLeft, ArrowRight, Search
+  X,
+  Check,
+  Clipboard,
+  Loader2,
+  Printer,
+  ArrowLeft,
+  ArrowRight,
+  Search,
 } from "lucide-react";
 import { useIFundAyiti } from "../context/ifundayiti-context";
 import { formatPrice } from "@/lib/utils";
@@ -18,7 +24,7 @@ import {
   idSchema,
   grantSchema,
   backgroundSchema,
-  agreementSchema
+  agreementSchema,
 } from "@/lib/ifundayiti-schemas";
 
 // Import modular step components
@@ -49,32 +55,42 @@ export function IFundAyitiApplicationModal() {
   // Setup form states for each step using extracted schemas
   const personalForm = useForm({
     resolver: zodResolver(personalSchema),
-    defaultValues: { name: "", dob: "", nationality: "Haitian", location: "" }
+    defaultValues: { name: "", dob: "", nationality: "Haitian", location: "" },
   });
 
   const contactForm = useForm({
     resolver: zodResolver(contactSchema),
-    defaultValues: { email: "", phone: "" }
+    defaultValues: { email: "", phone: "" },
   });
 
   const idForm = useForm({
     resolver: zodResolver(idSchema),
-    defaultValues: { nationalId: "", passport: "" }
+    defaultValues: { nationalId: "", passport: "" },
   });
 
   const grantForm = useForm({
     resolver: zodResolver(grantSchema),
-    defaultValues: { projectName: "", projectDescription: "", requestedAmount: 1000, fundUsage: "", expectedImpact: "" }
+    defaultValues: {
+      projectName: "",
+      projectDescription: "",
+      requestedAmount: 1000,
+      fundUsage: "",
+      expectedImpact: "",
+    },
   });
 
   const backgroundForm = useForm({
     resolver: zodResolver(backgroundSchema),
-    defaultValues: { occupation: "", financialBackground: "" }
+    defaultValues: { occupation: "", financialBackground: "" },
   });
 
   const agreementForm = useForm({
     resolver: zodResolver(agreementSchema),
-    defaultValues: { certifyAccurate: false, noGuarantee: false, disqualification: false }
+    defaultValues: {
+      certifyAccurate: false,
+      noGuarantee: false,
+      disqualification: false,
+    },
   });
 
   if (!showAppModal) return null;
@@ -98,8 +114,7 @@ export function IFundAyitiApplicationModal() {
       }
       setFileError("");
       valid = true;
-    }
-    else if (step === 6) valid = await backgroundForm.trigger();
+    } else if (step === 6) valid = await backgroundForm.trigger();
 
     if (valid) {
       setStep((s) => s + 1);
@@ -135,9 +150,14 @@ export function IFundAyitiApplicationModal() {
       financialBackground: backgroundForm.getValues("financialBackground"),
       documents: [
         { type: "Government ID", name: govIdFile?.name || "Uploaded_ID.pdf" },
-        { type: "Proof of Address", name: proofAddrFile?.name || "Uploaded_Proof.pdf" },
-        ...(businessPlanFile ? [{ type: "Business Plan", name: businessPlanFile.name }] : [])
-      ]
+        {
+          type: "Proof of Address",
+          name: proofAddrFile?.name || "Uploaded_Proof.pdf",
+        },
+        ...(businessPlanFile
+          ? [{ type: "Business Plan", name: businessPlanFile.name }]
+          : []),
+      ],
     };
 
     // console.log("Full Details:", fullDetails);
@@ -178,17 +198,18 @@ export function IFundAyitiApplicationModal() {
     "Grant Project",
     "Documentation",
     "Finance Check",
-    "Agreement"
+    "Agreement",
   ];
 
   return (
     <div className="fixed inset-0 z-100 flex items-center justify-center p-4 bg-ink/90 backdrop-blur-md overflow-y-auto">
       <div className="relative w-full max-w-2xl bg-panel-soft border border-hairline-strong rounded-3xl overflow-hidden shadow-2xl flex flex-col my-8">
-
         {/* Header toolbar */}
         <div className="flex items-center justify-between border-b border-hairline px-6 py-4 bg-panel">
           <div>
-            <h3 className="font-display font-bold text-cloud text-lg">IFundAyiti Grant Application</h3>
+            <h3 className="font-display font-bold text-cloud text-lg">
+              IFundAyiti Grant Application
+            </h3>
             {step < 8 && (
               <p className="text-xs text-faint mt-0.5">
                 Step {step} of 7: {stepLabels[step - 1]}
@@ -217,7 +238,6 @@ export function IFundAyitiApplicationModal() {
 
         {/* Modal content body */}
         <div className="p-6 md:p-8 flex-1 overflow-y-auto max-h-[70vh]">
-
           {/* STEP 1: Personal Details */}
           {step === 1 && (
             <FormProvider {...personalForm}>
@@ -282,17 +302,25 @@ export function IFundAyitiApplicationModal() {
                 <Check className="h-8 w-8" />
               </div>
 
-              <h3 className="font-display font-bold text-2xl text-cloud">Application Submitted!</h3>
+              <h3 className="font-display font-bold text-2xl text-cloud">
+                Application Submitted!
+              </h3>
               <p className="text-sm text-mist max-w-md mx-auto mt-2 leading-relaxed">
-                Your application has been received and logged under status <strong className="text-emerald-300">Submitted</strong>. Vetting begins immediately.
+                Your application has been received and logged under status{" "}
+                <strong className="text-emerald-300">Submitted</strong>. Vetting
+                begins immediately.
               </p>
 
               {/* Receipt Area */}
               <div className="border border-hairline bg-ink/40 p-6 rounded-2xl my-8 max-w-md mx-auto text-left relative overflow-hidden">
                 <div className="absolute top-0 right-0 h-2 bg-linear-to-r from-violet-bright to-violet w-full" />
-                <span className="block text-[10px] uppercase tracking-wider text-faint">Your Unique Tracking ID</span>
+                <span className="block text-[10px] uppercase tracking-wider text-faint">
+                  Your Unique Tracking ID
+                </span>
                 <div className="flex items-center justify-between mt-1">
-                  <span className="font-mono text-2xl font-bold text-cloud tracking-wide">{trackingId}</span>
+                  <span className="font-mono text-2xl font-bold text-cloud tracking-wide">
+                    {trackingId}
+                  </span>
                   <button
                     onClick={copyToClipboard}
                     className="p-1.5 rounded-lg border border-hairline bg-white/3 text-mist hover:text-cloud hover:bg-white/8 transition-colors text-xs flex items-center gap-1 outline-none cursor-pointer"
@@ -305,19 +333,29 @@ export function IFundAyitiApplicationModal() {
                 <div className="mt-4 pt-4 border-t border-hairline/50 grid grid-cols-2 gap-x-4 gap-y-2 text-xs">
                   <div>
                     <span className="block text-faint">Applicant</span>
-                    <span className="font-medium text-cloud mt-0.5 block">{personalForm.getValues("name")}</span>
+                    <span className="font-medium text-cloud mt-0.5 block">
+                      {personalForm.getValues("name")}
+                    </span>
                   </div>
                   <div>
                     <span className="block text-faint">Project</span>
-                    <span className="font-medium text-cloud mt-0.5 block truncate">{grantForm.getValues("projectName")}</span>
+                    <span className="font-medium text-cloud mt-0.5 block truncate">
+                      {grantForm.getValues("projectName")}
+                    </span>
                   </div>
                   <div>
                     <span className="block text-faint">Date of Birth</span>
-                    <span className="font-mono font-medium text-cloud mt-0.5 block">{personalForm.getValues("dob")}</span>
+                    <span className="font-mono font-medium text-cloud mt-0.5 block">
+                      {personalForm.getValues("dob")}
+                    </span>
                   </div>
                   <div>
                     <span className="block text-faint">Requested</span>
-                    <span className="font-medium text-cloud mt-0.5 block">{formatPrice(Number(grantForm.getValues("requestedAmount")))}</span>
+                    <span className="font-medium text-cloud mt-0.5 block">
+                      {formatPrice(
+                        Number(grantForm.getValues("requestedAmount")),
+                      )}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -353,7 +391,6 @@ export function IFundAyitiApplicationModal() {
               </button>
             </div>
           )}
-
         </div>
 
         {/* Action button triggers for stepper navigation */}
@@ -398,7 +435,6 @@ export function IFundAyitiApplicationModal() {
             )}
           </div>
         )}
-
       </div>
     </div>
   );
