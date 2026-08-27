@@ -4,10 +4,7 @@ import { ArrowUpRight, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
-import {
-  GRANTS_CYCLE,
-  GRANTS_STATUS_LABELS,
-} from "@/data/grants-page";
+import { GRANTS_CYCLE, GRANTS_STATUS_LABELS } from "@/data/grants-page";
 import { formatGrantDate } from "@/features/grants/lib/format-grant-date";
 import { cn, formatPrice } from "@/lib/utils";
 import { getCurrentApplicationPeriod } from "@/helpers/next-fetch/periodActions";
@@ -25,8 +22,7 @@ export async function GrantsCurrentCycle() {
 
   const open = currentPeriod.status === "Open";
   const statusMeta =
-    GRANTS_STATUS_LABELS[currentPeriod.status] ??
-    GRANTS_STATUS_LABELS.Closed;
+    GRANTS_STATUS_LABELS[currentPeriod.status] ?? GRANTS_STATUS_LABELS.Closed;
 
   return (
     <section id={GRANTS_CYCLE.id} className="scroll-mt-24 py-20 md:py-24">
@@ -63,7 +59,12 @@ export async function GrantsCurrentCycle() {
                   </strong>
                 </p>
               </div>
-              <Button asChild variant="secondary" size="lg" className="mt-8 rounded-xl">
+              <Button
+                asChild
+                variant="secondary"
+                size="lg"
+                className="mt-8 rounded-xl"
+              >
                 <Link href={open ? "/apply" : "/track-application"}>
                   {open ? "Apply for this cycle" : "Track an application"}
                   <ArrowUpRight className="h-4 w-4" />
@@ -90,14 +91,15 @@ export async function GrantsCurrentCycle() {
                   <dt className="text-sand/70">Equity</dt>
                   <dd className="font-medium text-white">None taken</dd>
                 </div>
-                {open && (
-                  <div className="flex justify-between gap-4">
-                    <dt className="text-sand/70">Applications received</dt>
-                    <dd className="font-medium text-white">
-                      {currentPeriod.totalApplicationsSubmitted}
-                    </dd>
-                  </div>
-                )}
+                {open ||
+                  (currentPeriod.status === "Closed" && (
+                    <div className="flex justify-between gap-4">
+                      <dt className="text-sand/70">Applications received</dt>
+                      <dd className="font-medium text-white">
+                        {currentPeriod.totalApplicationsSubmitted}
+                      </dd>
+                    </div>
+                  ))}
               </dl>
             </div>
           </div>

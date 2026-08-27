@@ -45,7 +45,7 @@ export interface ApplicationTrackData {
   status: TApplicationStatus;
   rejectionReason?: string;
   successStory?: string;
-  fundedAmount?: number;
+  awardedAmount?: number;
   createdAt: string;
   updatedAt: string;
 }

@@ -126,12 +126,13 @@ export function PremiumStatusCard({ applicant }: PremiumStatusCardProps) {
               <p className="mt-2 text-sm text-amber-800 leading-relaxed">
                 You have been selected as a grant winner! We will be in touch
                 shortly regarding the next steps for funding distribution.
-                {applicant.fundedAmount && (
+                {applicant?.awardedAmount && (
                   <span className="block mt-2 font-semibold">
-                    Awarded Amount: ${applicant.fundedAmount.toLocaleString()}
+                    Awarded Amount: $
+                    {applicant?.awardedAmount?.toLocaleString()}
                   </span>
                 )}
-                {applicant.successStory && (
+                {applicant?.successStory && (
                   <span className="block mt-4 italic border-l-2 border-amber-300 pl-3">
                     "{applicant.successStory}"
                   </span>
