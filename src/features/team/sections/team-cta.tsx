@@ -53,8 +53,8 @@ export function TeamCta() {
                     Ready to join as a Volunteer, Ambassador, or Core Member?
                   </p>
                   <Button asChild size="lg" className="rounded-xl bg-sand text-forest-deep hover:bg-white font-bold shadow-lg">
-                    <Link href="/contact?subject=Join%20Team%20or%20Volunteer">
-                      Get In Touch <ArrowRight className="ml-2 h-4 w-4" />
+                    <Link href="/become-a-volunteer">
+                      Apply Now <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="sm" className="rounded-xl border-white/30 text-white hover:bg-white/20">

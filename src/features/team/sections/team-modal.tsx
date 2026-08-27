@@ -2,11 +2,11 @@
 
 import Image from "next/image";
 import { MapPin, Mail, Linkedin, Twitter, Github } from "lucide-react";
-import { type TeamMember } from "@/data/team";
 import { Modal } from "@/components/ui/modal";
+import { getImageUrl } from "@/lib/getImageUrl";
 
 interface TeamModalProps {
-  member: TeamMember | null;
+  member: any | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -15,16 +15,16 @@ export function TeamModal({ member, isOpen, onClose }: TeamModalProps) {
   if (!member) return null;
 
   const categoryBadgeColor =
-    member.category === "directors"
+    member.category === "director"
       ? "bg-emerald-100 text-emerald-900 border-emerald-300"
-      : member.category === "members"
+      : member.category === "member"
         ? "bg-amber-100 text-amber-900 border-amber-300"
         : "bg-teal-100 text-teal-900 border-teal-300";
 
   const categoryLabel =
-    member.category === "directors"
+    member.category === "director"
       ? "Board Director"
-      : member.category === "members"
+      : member.category === "member"
         ? "Core Operations Member"
         : "Volunteer & Ambassador";
 
@@ -36,14 +36,26 @@ export function TeamModal({ member, isOpen, onClose }: TeamModalProps) {
     >
       <div className="relative">
         {/* Top Banner Gradient */}
-        <div className="h-28 bg-linear-to-r from-forest-bright via-forest to-forest-deep" />
+        <div className="relative h-28 bg-forest-deep flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0 bg-linear-to-br from-forest-deep via-forest to-forest-deep opacity-60" />
+          <div
+            className="absolute inset-0 opacity-10"
+            style={{
+              backgroundImage: "radial-gradient(#ffffff 1px, transparent 1px)",
+              backgroundSize: "20px 20px",
+            }}
+          />
+          <div className="relative z-10 font-display font-black text-4xl sm:text-5xl leading-none text-white/25 select-none tracking-tighter mix-blend-overlay">
+            {member.category.toUpperCase()}
+          </div>
+        </div>
 
         {/* Profile Header Content */}
         <div className="relative px-6 pb-6 pt-0 sm:px-8">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 -mt-14">
             <div className="relative h-28 w-28 overflow-hidden rounded-2xl border-4 border-white shadow-lg bg-sand-soft">
               <Image
-                src={member.photoUrl}
+                src={getImageUrl(member.image) || ""}
                 alt={member.name}
                 fill
                 className="object-cover"
@@ -68,7 +80,7 @@ export function TeamModal({ member, isOpen, onClose }: TeamModalProps) {
             <h2 className="font-display text-2xl font-bold text-forest-deep">
               {member.name}
             </h2>
-            <p className="text-base font-semibold text-forest">{member.role}</p>
+            <p className="text-base font-semibold text-forest">{categoryLabel}</p>
           </div>
 
           {/* Bio */}
@@ -88,7 +100,7 @@ export function TeamModal({ member, isOpen, onClose }: TeamModalProps) {
                 Focus Areas & Expertise
               </h4>
               <div className="flex flex-wrap gap-2">
-                {member.focusAreas.map((skill, idx) => (
+                {member.focusAreas.map((skill: string, idx: number) => (
                   <span
                     key={idx}
                     className="rounded-lg bg-cream-dark border border-hairline px-2.5 py-1 text-xs font-medium text-forest-deep"

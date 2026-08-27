@@ -6,50 +6,99 @@ import {
   Search,
   MapPin,
   ExternalLink,
-  Quote,
-  Sparkles,
   UserCheck,
   Shield,
   Heart,
 } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
-import {
-  TEAM_MEMBERS,
-  TEAM_CATEGORIES,
-  type TeamCategory,
-  type TeamMember,
-} from "@/data/team";
+import { TEAM_CATEGORIES, type TeamCategory } from "@/data/team";
 import { TeamModal } from "@/features/team/sections/team-modal";
+import { PaginationControls } from "@/components/ui/pagination-controls";
+import { getTeamMembers } from "@/helpers/next-fetch/teamActions";
+import { getImageUrl } from "@/lib/getImageUrl";
 
-export function TeamGrid() {
-  const [activeCategory, setActiveCategory] =
-    React.useState<TeamCategory>("all");
+interface TeamGridProps {
+  initialMembers: any[];
+  initialPagination: any;
+  stats: {
+    totalDirectors: number;
+    totalMembers: number;
+    totalVolunteers: number;
+  };
+}
+
+export function TeamGrid({ initialMembers, initialPagination, stats }: TeamGridProps) {
+  const [activeCategory, setActiveCategory] = React.useState<TeamCategory>("all");
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [selectedMember, setSelectedMember] = React.useState<TeamMember | null>(
-    null,
-  );
+  const [debouncedSearch, setDebouncedSearch] = React.useState("");
+  const [page, setPage] = React.useState(1);
 
-  const filteredMembers = React.useMemo(() => {
-    return TEAM_MEMBERS.filter((member) => {
-      const matchesCategory =
-        activeCategory === "all" || member.category === activeCategory;
-      const q = searchQuery.toLowerCase().trim();
-      const matchesSearch =
-        !q ||
-        member.name.toLowerCase().includes(q) ||
-        member.role.toLowerCase().includes(q) ||
-        member.location.toLowerCase().includes(q) ||
-        member.bio.toLowerCase().includes(q) ||
-        member.focusAreas.some((area) => area.toLowerCase().includes(q));
+  const [members, setMembers] = React.useState(initialMembers);
+  const [pagination, setPagination] = React.useState(initialPagination);
+  const [loading, setLoading] = React.useState(false);
+  const [selectedMember, setSelectedMember] = React.useState<any | null>(null);
 
-      return matchesCategory && matchesSearch;
-    });
-  }, [activeCategory, searchQuery]);
+  // Debounce Search
+  React.useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+      setPage(1); // Reset page on new search
+    }, 400);
+    return () => clearTimeout(handler);
+  }, [searchQuery]);
 
-  const getCategoryCount = (category: TeamCategory) => {
-    if (category === "all") return TEAM_MEMBERS.length;
-    return TEAM_MEMBERS.filter((m) => m.category === category).length;
+  // Reset page when category changes
+  React.useEffect(() => {
+    setPage(1);
+  }, [activeCategory]);
+
+  // Fetch Team Members
+  React.useEffect(() => {
+    let isMounted = true;
+    
+    // Skip initial fetch on mount since we have initialMembers
+    if (
+      activeCategory === "all" &&
+      debouncedSearch === "" &&
+      page === 1 &&
+      members === initialMembers
+    ) {
+      return;
+    }
+
+    const fetchData = async () => {
+      setLoading(true);
+      const res = await getTeamMembers({
+        category: activeCategory,
+        searchTerm: debouncedSearch,
+        page,
+        limit: 9,
+      });
+      if (isMounted && res.success) {
+        setMembers(res.data || []);
+        setPagination(
+          res.pagination || { total: 0, limit: 9, page: 1, totalPage: 1 }
+        );
+      }
+      setLoading(false);
+    };
+
+    fetchData();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [activeCategory, debouncedSearch, page]);
+
+  const getCategoryCount = (categoryId: TeamCategory) => {
+    if (categoryId === "all") {
+      return stats.totalDirectors + stats.totalMembers + stats.totalVolunteers;
+    }
+    if (categoryId === "directors") return stats.totalDirectors;
+    if (categoryId === "members") return stats.totalMembers;
+    if (categoryId === "volunteers") return stats.totalVolunteers;
+    return 0;
   };
 
   return (
@@ -95,7 +144,7 @@ export function TeamGrid() {
             <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-mist" />
             <input
               type="text"
-              placeholder="Search by name, role, or city..."
+              placeholder="Search by name or focus areas..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full rounded-2xl border border-hairline bg-white py-2.5 pl-10 pr-4 text-sm text-forest-deep placeholder:text-mist focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
@@ -117,7 +166,11 @@ export function TeamGrid() {
         </div>
 
         {/* Members Grid */}
-        {filteredMembers.length === 0 ? (
+        {loading ? (
+          <div className="mt-12 flex items-center justify-center min-h-[300px]">
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-forest border-t-transparent" />
+          </div>
+        ) : members.length === 0 ? (
           <div className="mt-12 rounded-3xl border border-dashed border-hairline bg-white p-12 text-center">
             <UserCheck className="mx-auto h-12 w-12 text-mist/60" />
             <h3 className="mt-4 font-display text-lg font-bold text-forest-deep">
@@ -137,75 +190,89 @@ export function TeamGrid() {
             </button>
           </div>
         ) : (
-          <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {filteredMembers.map((member, index) => {
-              const categoryBadge =
-                member.category === "directors" ? (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-900">
-                    <Shield className="h-3 w-3" /> Director
-                  </span>
-                ) : member.category === "members" ? (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold text-amber-900">
-                    <UserCheck className="h-3 w-3" /> Core Member
-                  </span>
-                ) : (
-                  <span className="inline-flex items-center gap-1 rounded-full border border-teal-300 bg-teal-100 px-2.5 py-0.5 text-[11px] font-semibold text-teal-900">
-                    <Heart className="h-3 w-3" /> Volunteer
-                  </span>
-                );
+          <>
+            <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {members.map((member, index) => {
+                const categoryBadge =
+                  member.category === "director" ? (
+                    <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-900">
+                      <Shield className="h-3 w-3" /> Director
+                    </span>
+                  ) : member.category === "member" ? (
+                    <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold text-amber-900">
+                      <UserCheck className="h-3 w-3" /> Core Member
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 rounded-full border border-teal-300 bg-teal-100 px-2.5 py-0.5 text-[11px] font-semibold text-teal-900">
+                      <Heart className="h-3 w-3" /> Volunteer
+                    </span>
+                  );
 
-              return (
-                <Reveal key={member.id} delay={index * 30}>
-                  <article
-                    onClick={() => setSelectedMember(member)}
-                    className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/80 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-forest/30 hover:shadow-xl cursor-pointer"
-                  >
-                    <div>
-                      {/* Avatar & Badges */}
-                      <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-sand-soft">
-                        <Image
-                          src={member.photoUrl}
-                          alt={member.name}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        />
-                        <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80" />
+                const mappedRole =
+                  member.category === "director"
+                    ? "Board Director"
+                    : member.category === "member"
+                      ? "Core Operations Member"
+                      : "Volunteer & Ambassador";
 
-                        <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-                          {categoryBadge}
-                          <span className="inline-flex items-center gap-1 rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md">
-                            <MapPin className="h-3 w-3 text-sand" />
-                            {member.location.split(",")[0]}
-                          </span>
+                return (
+                  <Reveal key={member._id} delay={index * 30}>
+                    <article
+                      onClick={() => setSelectedMember(member)}
+                      className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/80 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-forest/30 hover:shadow-xl cursor-pointer"
+                    >
+                      <div>
+                        {/* Avatar & Badges */}
+                        <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-sand-soft">
+                          <Image
+                            src={getImageUrl(member.image) || ""}
+                            alt={member.name}
+                            fill
+                            className="object-cover transition-transform duration-700 group-hover:scale-105"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                          />
+                          <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-80" />
+
+                          <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
+                            {categoryBadge}
+                            <span className="inline-flex items-center gap-1 rounded-full bg-black/50 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md">
+                              <MapPin className="h-3 w-3 text-sand" />
+                              {member.location?.split(",")[0] || "Haiti"}
+                            </span>
+                          </div>
+
+                          <div className="absolute bottom-3 left-3 right-3 text-white">
+                            <h3 className="font-display text-xl font-bold leading-tight group-hover:text-sand">
+                              {member.name}
+                            </h3>
+                            <p className="text-xs font-semibold tracking-wide text-sand-soft">
+                              {mappedRole}
+                            </p>
+                          </div>
                         </div>
 
-                        <div className="absolute bottom-3 left-3 right-3 text-white">
-                          <h3 className="font-display text-xl font-bold leading-tight group-hover:text-sand">
-                            {member.name}
-                          </h3>
-                          <p className="text-xs font-semibold tracking-wide text-sand-soft">
-                            {member.role}
-                          </p>
-                        </div>
+                        {/* Bio preview */}
+                        <p className="mt-4 text-xs leading-relaxed text-mist line-clamp-3">
+                          {member.bio}
+                        </p>
                       </div>
 
-                      {/* Bio preview */}
-                      <p className="mt-4 text-xs leading-relaxed text-mist line-clamp-3">
-                        {member.bio}
-                      </p>
-                    </div>
+                      {/* Footer / Trigger detail */}
+                      <div className="mt-4 flex items-center justify-between border-t border-hairline pt-3 text-xs font-semibold text-forest">
+                        <span>View profile & details</span>
+                        <ExternalLink className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+                      </div>
+                    </article>
+                  </Reveal>
+                );
+              })}
+            </div>
 
-                    {/* Footer / Trigger detail */}
-                    <div className="mt-4 flex items-center justify-between border-t border-hairline pt-3 text-xs font-semibold text-forest">
-                      <span>View profile & details</span>
-                      <ExternalLink className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-                    </div>
-                  </article>
-                </Reveal>
-              );
-            })}
-          </div>
+            <PaginationControls
+              pagination={pagination}
+              onPageChange={(p) => setPage(p)}
+            />
+          </>
         )}
 
         {/* Modal detail */}

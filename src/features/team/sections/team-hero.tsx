@@ -9,9 +9,13 @@ import {
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
-import { TEAM_STATS } from "@/data/team";
-
-export function TeamHero() {
+export function TeamHero({ stats: statsData }: { stats: { totalDirectors: number; totalMembers: number; totalVolunteers: number } }) {
+  const stats = [
+    { label: "Board Directors", value: statsData.totalDirectors.toString(), suffix: "" },
+    { label: "Core Operations", value: statsData.totalMembers.toString(), suffix: "" },
+    { label: "Active Volunteers", value: statsData.totalVolunteers.toString(), suffix: "+" },
+    { label: "Haiti Departments", value: "10", suffix: "/10" },
+  ];
   return (
     <section className="relative overflow-hidden bg-linear-to-b from-sand-soft/80 via-cream to-cream pb-16 pt-28 md:pb-24 md:pt-36">
       {/* Glow Auroras */}
@@ -72,7 +76,7 @@ export function TeamHero() {
         {/* Stats Grid */}
         <Reveal delay={250}>
           <div className="mt-16 grid grid-cols-2 gap-4 rounded-3xl border border-white/80 bg-white/70 p-6 shadow-xl backdrop-blur-xl sm:grid-cols-4 md:p-8">
-            {TEAM_STATS.map((stat, i) => (
+            {stats.map((stat, i) => (
               <div
                 key={i}
                 className="text-center sm:border-r sm:border-hairline sm:last:border-r-0"
