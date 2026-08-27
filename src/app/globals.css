@@ -109,6 +109,11 @@
     overflow-x: hidden;
   }
 
+  body[data-scroll-locked] {
+    padding-right: 0 !important;
+    margin-right: 0 !important;
+  }
+
   h1,
   h2,
   h3,

@@ -22,6 +22,7 @@ export const navItems: NavItem[] = [
       { label: "Our Impact", href: "/impact" },
       { label: "Projects", href: "/projects" },
       { label: "Winners", href: "/winners" },
+      { label: "Finalists", href: "/finalists" },
       { label: "Success Stories", href: "/impact#success-stories" },
     ],
   },

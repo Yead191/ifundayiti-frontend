@@ -5,6 +5,7 @@ import { ImpactHero } from "@/features/impact/sections/hero";
 import { ImpactMetrics } from "@/features/impact/sections/metrics";
 import { ImpactSuccessStory } from "@/features/impact/sections/success-story";
 import { ImpactWinners } from "@/features/impact/sections/winners";
+import { ImpactFinalists } from "@/features/impact/sections/finalists";
 
 export default function ImpactPageContent() {
   return (
@@ -15,6 +16,7 @@ export default function ImpactPageContent() {
       <ImpactSuccessStory />
       <ImpactFundFlow />
       <ImpactWinners />
+      <ImpactFinalists />
       <ImpactCta />
     </>
   );

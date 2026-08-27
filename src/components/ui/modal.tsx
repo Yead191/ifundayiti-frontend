@@ -13,6 +13,7 @@ interface ModalProps {
   description?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  hideCloseButton?: boolean;
 }
 
 /**
@@ -27,6 +28,7 @@ export function Modal({
   description,
   children,
   className,
+  hideCloseButton,
 }: ModalProps) {
   const panelRef = React.useRef<HTMLDivElement>(null);
   const [mounted, setMounted] = React.useState(false);
@@ -86,30 +88,32 @@ export function Modal({
           className,
         )}
       >
-        <div className="flex items-start justify-between gap-4">
-          <div className="min-w-0">
-            {title && (
-              <h2
-                id={titleId}
-                className="font-display text-xl font-semibold tracking-tight text-cloud"
-              >
-                {title}
-              </h2>
-            )}
-            {description && (
-              <p id={descId} className="mt-1 text-sm text-mist">
-                {description}
-              </p>
-            )}
+        {!hideCloseButton && (
+          <div className="flex items-start justify-between gap-4">
+            <div className="min-w-0">
+              {title && (
+                <h2
+                  id={titleId}
+                  className="font-display text-xl font-semibold tracking-tight text-cloud"
+                >
+                  {title}
+                </h2>
+              )}
+              {description && (
+                <p id={descId} className="mt-1 text-sm text-mist">
+                  {description}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={onClose}
+              aria-label="Close"
+              className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-hairline bg-white/3 text-mist transition-colors hover:bg-white/8 hover:text-cloud z-50"
+            >
+              <X className="h-4.5 w-4.5" />
+            </button>
           </div>
-          <button
-            onClick={onClose}
-            aria-label="Close"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-hairline bg-white/3 text-mist transition-colors hover:bg-white/8 hover:text-cloud"
-          >
-            <X className="h-4.5 w-4.5" />
-          </button>
-        </div>
+        )}
 
         <div className={cn(title || description ? "mt-5" : "")}>{children}</div>
       </div>
