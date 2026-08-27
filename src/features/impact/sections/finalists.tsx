@@ -17,7 +17,10 @@ export async function ImpactFinalists() {
   if (!latestPeriod) return null;
 
   // 2. Fetch finalists for this period
-  const finalistsRes = await nextFetch(`/application?applicationPeriod=${latestPeriod._id}&status=finalist&limit=4`, { cache: "no-store" });
+  const finalistsRes = await nextFetch(
+    `/application?applicationPeriod=${latestPeriod._id}&status=finalist&limit=4`,
+    { cache: "no-store" },
+  );
   const finalists = finalistsRes.success ? finalistsRes.data || [] : [];
 
   if (finalists.length === 0) return null;
@@ -26,8 +29,8 @@ export async function ImpactFinalists() {
     <section className="py-24 md:py-32 bg-forest-deep relative overflow-hidden text-white">
       {/* Decorative Background */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-forest/40 rounded-full blur-[120px] mix-blend-screen opacity-50 -translate-y-1/2 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-forest-bright/20 rounded-full blur-[100px] mix-blend-screen opacity-30 translate-y-1/3 -translate-x-1/4" />
+        <div className="absolute top-0 right-0 w-200 h-200 bg-forest/40 rounded-full blur-[120px] mix-blend-screen opacity-50 -translate-y-1/2 translate-x-1/3" />
+        <div className="absolute bottom-0 left-0 w-150 h-150 bg-forest-bright/20 rounded-full blur-[100px] mix-blend-screen opacity-30 translate-y-1/3 -translate-x-1/4" />
       </div>
 
       <Container className="relative z-10">
@@ -52,7 +55,7 @@ export async function ImpactFinalists() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {finalists.map((finalist: any, index: number) => (
             <Reveal key={finalist._id} delay={index * 100}>
-              <div className="group relative h-[400px] w-full overflow-hidden rounded-3xl bg-forest border border-white/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.5)]">
+              <div className="group relative h-100 w-full overflow-hidden rounded-3xl bg-forest border border-white/10 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_20px_40px_-20px_rgba(0,0,0,0.5)]">
                 <Image
                   src={getImageUrl(finalist.personal?.image) || ""}
                   alt={finalist.personal?.name || ""}
@@ -60,10 +63,10 @@ export async function ImpactFinalists() {
                   className="object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 />
-                
+
                 {/* Gradient overlay to ensure text is readable */}
                 <div className="absolute inset-0 bg-linear-to-t from-forest-deep via-forest-deep/60 to-transparent opacity-90 transition-opacity duration-300 group-hover:opacity-100" />
-                
+
                 <div className="absolute inset-0 p-6 flex flex-col justify-end">
                   <div className="translate-y-4 transition-transform duration-500 group-hover:translate-y-0">
                     <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-sand-soft mb-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100 delay-100">
