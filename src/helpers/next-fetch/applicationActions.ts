@@ -13,10 +13,13 @@ export async function submitApplication(formData: FormData) {
   return result;
 }
 
-/** GET /application/track — fetches a specific application by email and dob */
-export async function trackApplicationStatus(email: string, dob: string) {
-  // Pass the dob as ISO string or encodeURIComponent based on API format.
-  const queryParams = new URLSearchParams({ email, dob });
+/** GET /application/track — fetches a specific application by email, dob and optional periodId */
+export async function trackApplicationStatus(email: string, dob: string, periodId?: string) {
+  const params: Record<string, string> = { email, dob };
+  if (periodId) {
+    params.periodId = periodId;
+  }
+  const queryParams = new URLSearchParams(params);
   const result = await nextFetch(`/application/track?${queryParams.toString()}`, {
     method: "GET",
     // We shouldn't heavily cache this since status updates are important

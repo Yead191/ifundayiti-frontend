@@ -8,27 +8,48 @@ import { Search, Loader2, Calendar, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { trackApplicationStatus } from "@/helpers/next-fetch/applicationActions";
+import { getAllApplicationPeriods } from "@/helpers/next-fetch/periodActions";
 import { ApplicationTrackData } from "../types";
 import { PremiumStatusCard } from "./premium-status-card";
 
 const schema = z.object({
   email: z.string().email("Enter a valid email address"),
   dob: z.string().min(1, "Date of birth is required"),
+  periodId: z.string().optional(),
 });
 
 export function ApplicationTrackerForm() {
   const [email, setEmail] = React.useState("");
   const [dob, setDob] = React.useState("");
+  const [periods, setPeriods] = React.useState<any[]>([]);
+  const [selectedPeriod, setSelectedPeriod] = React.useState("all");
   const [loading, setLoading] = React.useState(false);
   const [result, setResult] = React.useState<
     ApplicationTrackData | null | undefined
   >(undefined);
   const [errorMsg, setErrorMsg] = React.useState("");
 
+  React.useEffect(() => {
+    async function fetchPeriods() {
+      const res = await getAllApplicationPeriods();
+      if (res.success && res.data) {
+        setPeriods(res.data);
+      }
+    }
+    fetchPeriods();
+  }, []);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const parsed = schema.safeParse({ email, dob });
+    const parsed = schema.safeParse({ email, dob, periodId: selectedPeriod });
     if (!parsed.success) {
       toast.error(parsed.error.errors[0]?.message);
       return;
@@ -40,14 +61,22 @@ export function ApplicationTrackerForm() {
 
     try {
       const dateIso = new Date(parsed.data.dob).toISOString();
-      const res = await trackApplicationStatus(parsed.data.email, dateIso);
+      const actualPeriodId =
+        selectedPeriod === "all" ? undefined : selectedPeriod;
+      const res = await trackApplicationStatus(
+        parsed.data.email,
+        dateIso,
+        actualPeriodId,
+      );
 
       if (res.success && res.data) {
         setResult(res.data);
       } else {
         setResult(null);
         setErrorMsg(
-          res.message || res.error || "No application found with these credentials."
+          res.message ||
+            res.error ||
+            "No application found with these credentials.",
         );
       }
     } catch (err: any) {
@@ -66,7 +95,7 @@ export function ApplicationTrackerForm() {
       >
         <div className="absolute top-0 left-0 h-1.5 w-full bg-linear-to-r from-forest via-forest-deep to-forest" />
 
-        <div className="grid gap-6 sm:grid-cols-2 items-end">
+        <div className="grid gap-6 md:grid-cols-3 items-end">
           <div className="space-y-2">
             <Label
               htmlFor="track-email"
@@ -86,6 +115,7 @@ export function ApplicationTrackerForm() {
               />
             </div>
           </div>
+
           <div className="space-y-2">
             <Label
               htmlFor="track-dob"
@@ -103,6 +133,31 @@ export function ApplicationTrackerForm() {
                 className="pl-12 h-14 rounded-2xl bg-sand-soft/30 border-hairline focus:bg-white transition-all text-forest-deep"
               />
             </div>
+          </div>
+
+          <div className="">
+            <Label
+              htmlFor="track-period"
+              className="text-xs font-semibold uppercase tracking-wider text-forest-deep"
+            >
+              Grant Cycle (Optional)
+            </Label>
+            <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
+              <SelectTrigger
+                id="track-period"
+                className="w-full bg-sand-soft/30 border-hairline h-14 rounded-2xl text-forest-deep font-medium focus:bg-white transition-all py-0 [&>span]:flex [&>span]:items-center [&>span]:h-full -bottom-2!"
+              >
+                <SelectValue placeholder="All Cycles (Latest)" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Cycles (Latest)</SelectItem>
+                {periods.map((period) => (
+                  <SelectItem key={period._id} value={period._id}>
+                    {period.title}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
@@ -131,8 +186,8 @@ export function ApplicationTrackerForm() {
             Application Not Found
           </h3>
           <p className="mt-2 text-sm text-red-700/80 max-w-md">
-            {errorMsg} Please make sure you are using the exact email and date
-            of birth you applied with.
+            {errorMsg} Please make sure you are using the exact credentials and
+            selected cycle.
           </p>
         </div>
       )}
