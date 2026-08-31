@@ -5,10 +5,30 @@ import { ArrowDown, MapPin } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { ABOUT_HERO } from "@/data/about";
-import { SITE } from "@/data/site";
+import { getDictionary } from "@/lib/dictionaries";
 
-export function AboutHero() {
-  const [primaryNav, ...secondaryNav] = ABOUT_HERO.navLinks;
+export async function AboutHero({ lang }: { lang: string }) {
+  const dict = await getDictionary(lang);
+  const t = dict.AboutPage.Hero;
+
+  const highlights = [
+    { label: t.Origin, value: t.OriginVal },
+    { label: t.Focus, value: t.FocusVal },
+    { label: t.Model, value: t.ModelVal },
+  ];
+
+  const navLinks = [
+    { href: "#story", label: t.OurStory },
+    { href: "#principles", label: t.Principles },
+    { href: "#team", label: t.Team },
+  ];
+
+  const locationCard = {
+    label: t.BasedInAyiti,
+    quote: t.BasedInAyitiQuote,
+  };
+
+  const [primaryNav, ...secondaryNav] = navLinks;
 
   return (
     <section className="relative overflow-hidden border-b border-hairline bg-cream">
@@ -17,20 +37,20 @@ export function AboutHero() {
           <div className="aurora -left-16 top-12 h-64 w-64 opacity-35" />
           <Container className="relative max-w-none px-0 lg:max-w-xl lg:px-0">
             <Reveal>
-              <span className="eyebrow">{ABOUT_HERO.eyebrow}</span>
+              <span className="eyebrow">{t.Eyebrow}</span>
               <h1 className="mt-5 font-display text-[2.65rem] font-semibold leading-[1.02] tracking-tight text-forest-deep sm:text-5xl lg:text-[3.5rem]">
-                {ABOUT_HERO.title}
+                {t.Title}
                 <span className="mt-1 block text-forest">
-                  {ABOUT_HERO.titleAccent}
+                  {t.TitleAccent}
                 </span>
               </h1>
               <p className="mt-6 max-w-lg text-lg leading-relaxed text-mist">
-                {SITE.tagline} {ABOUT_HERO.subtitleSuffix}
+                {t.Tagline} {t.SubtitleSuffix}
               </p>
             </Reveal>
 
             <Reveal delay={100} className="mt-10 grid gap-3 sm:grid-cols-3">
-              {ABOUT_HERO.highlights.map((item) => (
+              {highlights.map((item) => (
                 <div
                   key={item.label}
                   className="rounded-2xl border border-hairline bg-white/80 px-4 py-4 shadow-[0_16px_40px_-32px_rgba(11,61,46,0.35)] backdrop-blur-sm"
@@ -82,10 +102,10 @@ export function AboutHero() {
             <div className="rounded-xl border border-white/20 bg-white/12 p-5 text-white backdrop-blur-md">
               <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-sand/90">
                 <MapPin className="h-3.5 w-3.5" />
-                {ABOUT_HERO.locationCard.label}
+                {locationCard.label}
               </div>
               <p className="mt-2 font-display text-lg leading-snug">
-                {ABOUT_HERO.locationCard.quote}
+                {locationCard.quote}
               </p>
             </div>
           </div>

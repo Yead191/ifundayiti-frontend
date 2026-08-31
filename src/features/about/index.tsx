@@ -6,16 +6,16 @@ import { AboutPrinciples } from "@/features/about/sections/principles";
 import { AboutStory } from "@/features/about/sections/story";
 import { AboutTeam } from "@/features/about/sections/team";
 
-export default function AboutPageContent() {
+export default function AboutPageContent({ lang }: { lang: string }) {
   return (
     <>
-      <AboutHero />
-      <AboutStory />
-      <AboutPrinciples />
-      <AboutAudiences />
-      <AboutGovernance />
-      <AboutConnectCta />
-      <AboutTeam />
+      <AboutHero lang={lang} />
+      <AboutStory lang={lang} />
+      <AboutPrinciples lang={lang} />
+      <AboutAudiences lang={lang} />
+      <AboutGovernance lang={lang} />
+      <AboutConnectCta lang={lang} />
+      <AboutTeam lang={lang} />
     </>
   );
 }

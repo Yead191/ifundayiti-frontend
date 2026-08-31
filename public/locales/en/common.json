@@ -145,5 +145,78 @@
     "ErrEmail": "Enter a valid email address",
     "ErrAmount": "Minimum donation is $5",
     "ErrGeneric": "Please complete the form"
+  },
+  "AboutPage": {
+    "Hero": {
+      "Eyebrow": "About IFundAyiti",
+      "Title": "The people and principles",
+      "TitleAccent": "behind every grant.",
+      "Tagline": "Funding ideas that strengthen Haitian communities.",
+      "SubtitleSuffix": "This page is for the story, the standards, and the team — not the application form.",
+      "Origin": "Origin",
+      "OriginVal": "Hubology initiative",
+      "Focus": "Focus",
+      "FocusVal": "Haiti-first grants",
+      "Model": "Model",
+      "ModelVal": "Public by design",
+      "OurStory": "Our story",
+      "Principles": "Principles",
+      "Team": "Team",
+      "BasedInAyiti": "Based in Ayiti",
+      "BasedInAyitiQuote": "Programs should feel close to the streets they serve — not distant in a dashboard."
+    },
+    "Story": {
+      "Eyebrow": "Our story",
+      "Title": "A grant workflow that grew into something public.",
+      "Subtitle": "IFundAyiti started inside Hubology as a way to review local ideas with care. It became its own site so applicants, donors, and communities could share one clear record.",
+      "Paragraph1": "That evolution was intentional. Private spreadsheets and closed inboxes make hope feel fragile. A public platform lets families track an application, lets donors see how gifts are used, and lets winners be celebrated without exposing every personal detail online.",
+      "Paragraph2": "We are still early — much of this site runs on demo content while official program details are finalized. The commitment is already real: run grants with transparency, respect, and a Haiti-first point of view.",
+      "Callout": "Small teams. Clear rules. Real names behind the work."
+    },
+    "Principles": {
+      "Eyebrow": "What we stand for",
+      "Title": "Four principles that do not bend.",
+      "Subtitle": "Not slogans for a homepage — standards we use when reviewing files, speaking with donors, and choosing winners.",
+      "Principle1Title": "Open by default",
+      "Principle1Body": "Application status, finalists, and winners are visible on a public site — not hidden behind private threads or opaque approvals.",
+      "Principle2Title": "Local eyes on every file",
+      "Principle2Body": "A vetting board reads each submission with neighborhood context in mind. Capital follows judgment, not algorithms alone.",
+      "Principle3Title": "Dignity in the process",
+      "Principle3Body": "We ask for verification without spectacle. Proof protects the community; it should never feel like a performance of hardship.",
+      "Principle4Title": "One fund, many futures",
+      "Principle4Body": "Donations pool into a single Program Fund. Grants go to selected winners — not to individual crowdfunding profiles."
+    },
+    "Audiences": {
+      "Eyebrow": "Who this is for",
+      "Title": "Three groups, one shared outcome.",
+      "Subtitle": "IFundAyiti only works when builders, supporters, and neighbors all recognize themselves in the process.",
+      "Audience1Title": "Builders & vendors",
+      "Audience1Emotion": "You already carry the risk.",
+      "Audience1Body": "Street cooks, plot tenders, repair crews, and corner inventors who need a first push — not another loan with impossible terms.",
+      "Audience2Title": "Donors near and far",
+      "Audience2Emotion": "You want proof, not pressure.",
+      "Audience2Body": "Give to a program you can explain to a friend: where money pools, how winners are chosen, and why names stay protected.",
+      "Audience3Title": "Neighbors who feel the result",
+      "Audience3Emotion": "Impact should be visible on the block.",
+      "Audience3Body": "Better light, cleaner water, fuller stalls, safer lanes — the kind of change you notice on a walk home, not in a press release."
+    },
+    "Governance": {
+      "Eyebrow": "How decisions are made",
+      "Title": "Governance without mystery.",
+      "Subtitle": "The home page walks through the grant lifecycle. Here is the accountability layer underneath it.",
+      "Step1Title": "Applications arrive",
+      "Step1Body": "During an open cycle, builders submit ideas, IDs, and supporting documents through a structured public form.",
+      "Step2Title": "Board review",
+      "Step2Body": "The vetting board checks completeness, feasibility, and community fit. Approved applicants may appear as public finalists.",
+      "Step3Title": "Winner & payout",
+      "Step3Body": "One winner is selected per period. Funds are transferred manually to verified recipients — outside individual campaign pages."
+    },
+    "Connect": {
+      "Eyebrow": "Stay connected",
+      "Title": "Ready to go deeper?",
+      "Body": "Grant rules and timelines live on the grants page. Questions about the program — or how to partner with us — belong in a conversation, not a repeated homepage pitch.",
+      "ReadDetails": "Read grant details",
+      "ContactTeam": "Contact the team"
+    }
   }
 }

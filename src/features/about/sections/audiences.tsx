@@ -1,23 +1,32 @@
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/sections/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { ABOUT_AUDIENCES } from "@/data/about";
+import { getDictionary } from "@/lib/dictionaries";
 
-export function AboutAudiences() {
+export async function AboutAudiences({ lang }: { lang: string }) {
+  const dict = await getDictionary(lang);
+  const t = dict.AboutPage.Audiences;
+
+  const items = [
+    { title: t.Audience1Title, emotion: t.Audience1Emotion, body: t.Audience1Body },
+    { title: t.Audience2Title, emotion: t.Audience2Emotion, body: t.Audience2Body },
+    { title: t.Audience3Title, emotion: t.Audience3Emotion, body: t.Audience3Body },
+  ];
+
   return (
     <section className="py-24 md:py-32">
       <Container>
         <SectionHeading
-          eyebrow={ABOUT_AUDIENCES.eyebrow}
-          title={ABOUT_AUDIENCES.title}
-          subtitle={ABOUT_AUDIENCES.subtitle}
+          eyebrow={t.Eyebrow}
+          title={t.Title}
+          subtitle={t.Subtitle}
         />
         <div className="mt-14 grid gap-8 lg:grid-cols-3">
-          {ABOUT_AUDIENCES.items.map((item, index) => (
+          {items.map((item, index) => (
             <Reveal
               key={item.title}
               delay={index * 80}
-              className="flex h-full flex-col rounded-[1.75rem] border border-hairline bg-cream-dark/50 p-8"
+              className="group rounded-[1.75rem] border border-hairline bg-cream-dark/50 p-8"
             >
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-forest">
                 {item.title}

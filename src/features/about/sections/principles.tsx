@@ -3,8 +3,19 @@ import { SectionHeading } from "@/components/sections/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { ABOUT_PRINCIPLES } from "@/data/about";
 import { ABOUT_ICONS } from "@/features/about/lib/icons";
+import { getDictionary } from "@/lib/dictionaries";
 
-export function AboutPrinciples() {
+export async function AboutPrinciples({ lang }: { lang: string }) {
+  const dict = await getDictionary(lang);
+  const t = dict.AboutPage.Principles;
+
+  const items = [
+    { icon: "scale" as const, title: t.Principle1Title, body: t.Principle1Body },
+    { icon: "shield-check" as const, title: t.Principle2Title, body: t.Principle2Body },
+    { icon: "hand-heart" as const, title: t.Principle3Title, body: t.Principle3Body },
+    { icon: "landmark" as const, title: t.Principle4Title, body: t.Principle4Body },
+  ];
+
   return (
     <section
       id={ABOUT_PRINCIPLES.id}
@@ -12,12 +23,12 @@ export function AboutPrinciples() {
     >
       <Container>
         <SectionHeading
-          eyebrow={ABOUT_PRINCIPLES.eyebrow}
-          title={ABOUT_PRINCIPLES.title}
-          subtitle={ABOUT_PRINCIPLES.subtitle}
+          eyebrow={t.Eyebrow}
+          title={t.Title}
+          subtitle={t.Subtitle}
         />
         <div className="mt-14 grid gap-6 md:grid-cols-2">
-          {ABOUT_PRINCIPLES.items.map((item, index) => {
+          {items.map((item, index) => {
             const Icon = ABOUT_ICONS[item.icon];
             return (
               <Reveal

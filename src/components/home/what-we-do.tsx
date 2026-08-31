@@ -18,7 +18,7 @@ export function WhatWeDo() {
     <section className="py-24 md:py-32">
       <Container className="grid items-center gap-14 lg:grid-cols-12 lg:gap-16">
         <Reveal className="relative lg:col-span-6">
-          <div className="relative aspect-4/5 overflow-hidden rounded-[1.75rem] bg-sand-soft sm:aspect-4/3 lg:aspect-[4/5]">
+          <div className="relative aspect-4/5 overflow-hidden rounded-[1.75rem] bg-sand-soft sm:aspect-4/3 lg:aspect-4/5">
             <Image
               src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=1200&h=1500"
               alt="Agricultural work in a community field"

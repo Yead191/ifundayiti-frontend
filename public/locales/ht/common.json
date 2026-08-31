@@ -145,5 +145,78 @@
     "ErrEmail": "Mete yon adrès imèl ki valab",
     "ErrAmount": "Donasyon minimòm nan se $5",
     "ErrGeneric": "Tanpri ranpli fòm nan"
+  },
+  "AboutPage": {
+    "Hero": {
+      "Eyebrow": "Kiyès IFundAyiti ye",
+      "Title": "Moun yo ak prensip yo",
+      "TitleAccent": "ki dèyè chak sibvansyon.",
+      "Tagline": "Finanse lide k ap fòtifye kominote ayisyen yo.",
+      "SubtitleSuffix": "Paj sa a se pou istwa a, prensip yo, ak ekip la — se pa fòm aplikasyon an.",
+      "Origin": "Orijin",
+      "OriginVal": "Inisyativ Hubology",
+      "Focus": "Fokus",
+      "FocusVal": "Sibvansyon Ayiti-premye",
+      "Model": "Modèl",
+      "ModelVal": "Piblik pa konsepsyon",
+      "OurStory": "Istwa nou",
+      "Principles": "Prensip yo",
+      "Team": "Ekip la",
+      "BasedInAyiti": "Baze an Ayiti",
+      "BasedInAyitiQuote": "Pwogram yo ta dwe santi yo toupre lari y ap sèvi yo — pa lwen nan yon tablodbò."
+    },
+    "Story": {
+      "Eyebrow": "Istwa nou",
+      "Title": "Yon workflow sibvansyon ki grandi pou l vin piblik.",
+      "Subtitle": "IFundAyiti te kòmanse anndan Hubology kòm yon fason pou evalye lide lokal yo ak swen. Li te vin tounen pwòp sit li pou aplikan yo, donatè yo, ak kominote yo ka pataje yon sèl dosye klè.",
+      "Paragraph1": "Evolisyon sa a te entansyonèl. Fèy calcul prive ak bwat resepsyon fèmen fè espwa a santi l frajil. Yon platfòm piblik pèmèt fanmi yo suiv yon aplikasyon, pèmèt donatè yo wè kijan yo sèvi ak kado yo, epi pèmèt gayan yo selebre san yo pa ekspoze tout detay pèsonèl yo sou Entènèt.",
+      "Paragraph2": "Nou toujou nan konmansman — anpil nan sit sa a fonksyone sou kontni demonstrasyon pandan detay ofisyèl pwogram nan ap finalize. Angajman an deja reyèl: jere sibvansyon ak transparans, respè, ak yon pwen de vi ki mete Ayiti an premye.",
+      "Callout": "Ti ekip. Règleman klè. Non reywl dèyè travay la."
+    },
+    "Principles": {
+      "Eyebrow": "Sa nou defann",
+      "Title": "Kat prensip ki pa tolere okenn devyasyon.",
+      "Subtitle": "Se pa slogan pou yon paj akey — se prensip nou itilize lè n ap revize dosye yo, n ap pale ak donatè yo, epi n ap chwazi gayan yo.",
+      "Principle1Title": "Piblik pa defo",
+      "Principle1Body": "Eta aplikasyon yo, finalis yo, ak gayan yo vizib sou yon sit piblik — yo pa kache dèyè fil prive oswa apwobasyon anba tab.",
+      "Principle2Title": "Je lokal sou chak dosye",
+      "Principle2Body": "Yon komite evalyasyon li chak aplikasyon ak kontèks katye a nan tèt yo. Kapital la swiv jijman moun, pa algoritm sèlman.",
+      "Principle3Title": "Diyite nan pwosesis la",
+      "Principle3Body": "Nou mande verifikasyon san fè espektak. Prèv pwoteje kominote a; li pa ta dwe janm santi l tankou yon pèfòmans nan mizè.",
+      "Principle4Title": "Yon sèl fon, anpil desten",
+      "Principle4Body": "Donasyon yo rasanble nan yon sèl Fon Pwogram. Sibvansyon yo ale jwenn gayan yo chwazi yo — pa nan pwofil crowdfunding endividyèl."
+    },
+    "Audiences": {
+      "Eyebrow": "Pou ki moun sa fèt",
+      "Title": "Twa gwoup, yon sèl rezilta pataje.",
+      "Subtitle": "IFundAyiti travay sèlman lè kreyatè yo, sipòtè yo, ak vwazen yo tout rekonèt tèt yo nan pwosesis la.",
+      "Audience1Title": "Kreyatè & machann yo",
+      "Audience1Emotion": "Ou deja pote tout risk yo.",
+      "Audience1Body": "Machann manje nan lari, moun k ap travay tè, ekip reparasyon, ak kreyatè nan katye yo ki bezwen yon premye sipò — se pa yon lòt prè ak kondisyon enposib.",
+      "Audience2Title": "Donatè pre ak lwen",
+      "Audience2Emotion": "Ou vle prèv, se pa presyon.",
+      "Audience2Body": "Bay nan yon pwogram ou ka eksplike yon zanmi: kote lajan an ale, ki jan yo chwazi gayan yo, ak poukisa non yo rete pwoteje.",
+      "Audience3Title": "Vwazen ki santi rezilta a",
+      "Audience3Emotion": "Enpak la ta dwe vizib nan katye a.",
+      "Audience3Body": "Pi bon limyè, dlo ki pi pwòp, boutik ki pi chaje, lari ki pi an sekirite — kalite chanjman ou remake lè w ap mache antre lakay ou, pa nan yon nòt pou laprès."
+    },
+    "Governance": {
+      "Eyebrow": "Kijan desizyon yo pran",
+      "Title": "Gouvènans san mistè.",
+      "Subtitle": "Paj akey la montre sik sibvansyon an. Men nivo responsabilite ki anba li.",
+      "Step1Title": "Aplikasyon yo rive",
+      "Step1Body": "Pandan yon sik louvri, kreyatè yo soumèt lide yo, pyès idantite yo, ak dokiman sipò yo atravè yon fòm piblik ki estriktire.",
+      "Step2Title": "Revizyon Komite a",
+      "Step2Body": "Komite evalyasyon an verifye si aplikasyon yo konplè, si yo ka fèt, ak si yo apwopriye pou kominote a. Aplikan ki apwouve yo ka parèt kòm finalis piblik.",
+      "Step3Title": "Gayan & peman",
+      "Step3Body": "Yo chwazi yon sèl gayan pou chak peryòd. Lajan yo transfere manyèlman bay benefisyè ki verifye yo — andeyò paj kanpay endividyèl yo."
+    },
+    "Connect": {
+      "Eyebrow": "Rete an kontak",
+      "Title": "Pare pou w ale pi lwen?",
+      "Body": "Règ sibvansyon ak kalandriye yo sou paj sibvansyon an. Kesyon sou pwogram nan — oswa kijan pou patnè avèk nou — merite yon konvèsasyon, se pa yon lòt piblisite sou paj akey la.",
+      "ReadDetails": "Li detay sibvansyon yo",
+      "ContactTeam": "Kontakte ekip la"
+    }
   }
 }
