@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import { Sora, Source_Sans_3 } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
 import { SiteProviders } from "@/components/layout/site-providers";
+import { getDictionary } from "@/lib/dictionaries";
+import { TranslationProvider } from "@/components/providers/translation-provider";
 import {
   DEFAULT_KEYWORDS,
   SITE_NAME,
@@ -65,17 +67,30 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export function generateStaticParams() {
+  return [{ lang: "en" }, { lang: "ht" }];
+}
+
+export default async function LangRootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang: currentLang } = await params;
+  const dict = await getDictionary(currentLang);
+
   return (
-    <html lang="en" className={`${sora.variable} ${sourceSans.variable}`}>
+    <html lang={currentLang} className={`${sora.variable} ${sourceSans.variable}`}>
       <body className="min-h-screen bg-cream text-cloud antialiased scroll-smooth">
-        <SiteProviders>
-          <Navbar />
-          <main className="relative">{children}</main>
-          <Footer />
-        </SiteProviders>
+        <TranslationProvider messages={dict}>
+          <SiteProviders>
+            <Navbar />
+            <main className="relative">{children}</main>
+            <Footer />
+          </SiteProviders>
+        </TranslationProvider>
       </body>
     </html>
   );

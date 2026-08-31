@@ -1,15 +1,21 @@
+"use client";
+
 import { Heart, ShieldCheck } from "lucide-react";
 
 import { DonationForm } from "@/components/donation/donation-form";
 import { Container } from "@/components/shared/container";
-
-const TRUST_POINTS = [
-  "Gifts go to the IFundAyiti Program Fund",
-  "Not linked to an individual applicant",
-  "Payments secured by Stripe — trusted by millions worldwide",
-];
+import { useTranslation } from "@/components/providers/translation-provider";
 
 export function FloatingDonationCard() {
+  const dict = useTranslation();
+  const t = dict.FloatingDonate;
+
+  const trustPoints = [
+    t.Trust1,
+    t.Trust2,
+    t.Trust3,
+  ];
+
   return (
     <Container className="relative z-20 -mt-33 md:-mt-37">
       <div className="overflow-hidden rounded-[1.75rem] border border-white/70 bg-white shadow-[0_32px_90px_-36px_rgba(11,61,46,0.55)] ring-1 ring-forest/8">
@@ -20,16 +26,15 @@ export function FloatingDonationCard() {
               <div className="inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-forest text-white shadow-[0_12px_28px_-14px_rgba(11,61,46,0.65)]">
                 <Heart className="h-5 w-5 fill-white/20" />
               </div>
-              <p className="eyebrow mt-6">Program Fund</p>
+              <p className="eyebrow mt-6">{t.ProgramFund}</p>
               <h2 className="mt-3 font-display text-[2rem] font-semibold leading-[1.08] tracking-tight text-forest-deep">
-                Give in a minute
+                {t.GiveInAMinute}
               </h2>
               <p className="mt-4 text-sm leading-relaxed text-mist">
-                A quick way to support the next grant cycle — warm, simple, and
-                built for trust.
+                {t.Subtitle}
               </p>
               <ul className="mt-8 space-y-3">
-                {TRUST_POINTS.map((point) => (
+                {trustPoints.map((point) => (
                   <li
                     key={point}
                     className="flex items-start gap-2.5 text-sm text-forest-deep/85"
@@ -46,13 +51,13 @@ export function FloatingDonationCard() {
             <div className="mb-6 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-forest">
-                  Quick donate
+                  {t.QuickDonate}
                 </p>
                 <p className="mt-1 font-display text-xl text-forest-deep">
-                  Choose an amount and leave your details
+                  {t.ChooseAmount}
                 </p>
               </div>
-              <p className="text-xs text-mist">Secured by Stripe · 256-bit encryption</p>
+              <p className="text-xs text-mist">{t.SecuredStripeShort}</p>
             </div>
             <DonationForm compact />
           </div>

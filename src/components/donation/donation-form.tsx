@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { z } from "zod";
 import { toast } from "sonner";
@@ -10,20 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { createDonation } from "@/helpers/next-fetch/donationActions";
-
-const PRESETS = [
-  { amount: 25, impact: "Essential supplies" },
-  { amount: 50, impact: "5% of a micro-grant" },
-  { amount: 100, impact: "10% of a micro-grant" },
-  { amount: 250, impact: "Quarterly batch sponsor" },
-  { amount: 1000, impact: "Sponsor 1 Full Micro-Grant" },
-];
-
-const donationSchema = z.object({
-  name: z.string().min(2, "Please enter your name"),
-  email: z.string().email("Enter a valid email address"),
-  amount: z.number().min(5, "Minimum donation is $5"),
-});
+import { useTranslation } from "@/components/providers/translation-provider";
 
 export function DonationForm({
   compact = false,
@@ -32,6 +17,23 @@ export function DonationForm({
   compact?: boolean;
   className?: string;
 }) {
+  const dict = useTranslation();
+  const t = dict.DonationForm;
+
+  const presets = [
+    { amount: 25, impact: t.Preset1 },
+    { amount: 50, impact: t.Preset2 },
+    { amount: 100, impact: t.Preset3 },
+    { amount: 250, impact: t.Preset4 },
+    { amount: 1000, impact: t.Preset5 },
+  ];
+
+  const donationSchema = z.object({
+    name: z.string().min(2, t.ErrName),
+    email: z.string().email(t.ErrEmail),
+    amount: z.number().min(5, t.ErrAmount),
+  });
+
   const [selected, setSelected] = React.useState<number | "custom">(100);
   const [custom, setCustom] = React.useState("");
   const [name, setName] = React.useState("");
@@ -41,20 +43,20 @@ export function DonationForm({
   const amount = selected === "custom" ? Number(custom) || 0 : selected;
 
   function getImpactText(val: number) {
-    if (val >= 1000) return "🇭🇹 Your extraordinary gift sponsors an ENTIRE $1,000 micro-grant for a Haitian entrepreneur!";
-    if (val >= 500) return "🌟 Your gift funds over half of an equity-free micro-grant for a local business.";
-    if (val >= 250) return "🚀 Your gift covers a quarter of a micro-grant and sponsors entrepreneur incubator training.";
-    if (val >= 100) return "🌱 Your $100 gift provides 10% of a micro-grant, opening new opportunities for local builders.";
-    if (val >= 50) return "💡 Your gift supplies 5% of a micro-grant and essential equipment for small businesses.";
-    if (val >= 25) return "🤝 Every contribution fuels the central program fund that powers upcoming grant cycles.";
-    return "❤️ Every dollar brings a Haitian entrepreneur closer to funding their dream.";
+    if (val >= 1000) return t.Impact1000;
+    if (val >= 500) return t.Impact500;
+    if (val >= 250) return t.Impact250;
+    if (val >= 100) return t.Impact100;
+    if (val >= 50) return t.Impact50;
+    if (val >= 25) return t.Impact25;
+    return t.ImpactDefault;
   }
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     const parsed = donationSchema.safeParse({ name, email, amount });
     if (!parsed.success) {
-      toast.error(parsed.error.errors[0]?.message || "Please complete the form");
+      toast.error(parsed.error.errors[0]?.message || t.ErrGeneric);
       return;
     }
 
@@ -82,12 +84,12 @@ export function DonationForm({
       <div>
         <div className="flex items-center justify-between mb-2">
           <Label className="text-xs font-semibold uppercase tracking-wider text-forest">
-            Select Donation Amount (USD)
+            {t.SelectAmount}
           </Label>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-          {PRESETS.map((p) => {
+          {presets.map((p) => {
             const active = selected === p.amount;
             return (
               <button
@@ -127,9 +129,9 @@ export function DonationForm({
                 : "border-hairline bg-white hover:border-forest/40 hover:bg-sand-soft/30 text-forest-deep",
             )}
           >
-            <span className="text-sm font-bold">Custom</span>
+            <span className="text-sm font-bold">{t.Custom}</span>
             <span className={cn("text-[11px] mt-1", selected === "custom" ? "text-sand/90" : "text-mist")}>
-              Any amount
+              {t.AnyAmount}
             </span>
           </button>
         </div>
@@ -143,7 +145,7 @@ export function DonationForm({
             <Input
               type="number"
               min={5}
-              placeholder="Enter custom amount..."
+              placeholder={t.EnterCustom}
               value={custom}
               onChange={(e) => setCustom(e.target.value)}
               className="h-12 rounded-xl border-hairline pl-8 font-semibold"
@@ -163,20 +165,20 @@ export function DonationForm({
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <Label htmlFor="donor-name" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-forest">
-              Your Name *
+              {t.YourName}
             </Label>
             <Input
               id="donor-name"
               required
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="e.g. Jean-Luc"
+              placeholder={t.PlaceholderName}
               className="h-11 rounded-xl border-hairline bg-sand-soft/20 focus:bg-white"
             />
           </div>
           <div>
             <Label htmlFor="donor-email" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-forest">
-              Email Address *
+              {t.EmailAddress}
             </Label>
             <Input
               id="donor-email"
@@ -202,19 +204,19 @@ export function DonationForm({
           {submitting ? (
             <span className="flex items-center gap-2">
               <Loader2 className="h-5 w-5 animate-spin" />
-              Redirecting to Secure Payment...
+              {t.Redirecting}
             </span>
           ) : (
             <span className="flex items-center gap-2">
               <Heart className="h-4 w-4 fill-white/20" />
-              Fuel the Program Fund · {amount > 0 ? formatPrice(amount) : "Donate"}
+              {t.FuelFund} {amount > 0 ? formatPrice(amount) : t.Donate}
             </span>
           )}
         </Button>
 
         <div className="flex items-center justify-center gap-2 text-xs text-mist">
           <Lock className="h-3.5 w-3.5 text-forest" />
-          <span>Secure Stripe checkout · 100% of donations fund micro-grants.</span>
+          <span>{t.SecureCheckout}</span>
         </div>
       </div>
     </form>

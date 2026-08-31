@@ -6,8 +6,15 @@ import { Reveal } from "@/components/ui/reveal";
 import { nextFetch } from "@/helpers/next-fetch/NextFetch";
 import { getImageUrl } from "@/lib/getImageUrl";
 import { formatPrice } from "@/lib/utils";
+import { getDictionary } from "@/lib/dictionaries";
 
-export async function SuccessStory({ id }: { id?: string }) {
+export async function SuccessStory({
+  id,
+  lang,
+}: {
+  id?: string;
+  lang: string;
+}) {
   const res = await nextFetch("/application?status=winner&limit=1", {
     cache: "default",
   });
@@ -15,6 +22,9 @@ export async function SuccessStory({ id }: { id?: string }) {
   const winner = winners[0];
 
   if (!winner) return null;
+
+  const dict = await getDictionary(lang);
+  const t = dict.SuccessStory;
 
   return (
     <section id={id} className="scroll-mt-28 bg-cream-dark py-24 md:py-32">
@@ -31,7 +41,7 @@ export async function SuccessStory({ id }: { id?: string }) {
           </div>
         </Reveal>
         <Reveal delay={80} className="lg:col-span-6">
-          <p className="eyebrow">Winner story</p>
+          <p className="eyebrow">{t.Eyebrow}</p>
           <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight text-forest-deep md:text-5xl">
             {winner.personal?.name}
           </h2>
@@ -43,7 +53,7 @@ export async function SuccessStory({ id }: { id?: string }) {
             {winner.successStory || winner.grant?.expectedImpact}
           </p>
           <Button asChild className="mt-10" size="lg">
-            <Link href={`/winners/${winner._id}`}>Read the full story</Link>
+            <Link href={`/${lang}/winners/${winner._id}`}>{t.ReadStory}</Link>
           </Button>
         </Reveal>
       </Container>

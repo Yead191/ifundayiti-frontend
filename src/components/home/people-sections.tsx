@@ -4,16 +4,20 @@ import { SectionHeading } from "@/components/sections/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { LEADERSHIP, VOLUNTEERS, type PersonProfile } from "@/data/people";
 import { DEMO_NOTICE } from "@/data/site";
+import { getDictionary } from "@/lib/dictionaries";
 
 import { Mail, Linkedin, Twitter, MapPin } from "lucide-react";
 import { nextFetch } from "@/helpers/next-fetch/NextFetch";
 import { getImageUrl } from "@/lib/getImageUrl";
 
-export async function LeadershipSection() {
+export async function LeadershipSection({ lang }: { lang: string }) {
   const res = await nextFetch("/team?category=director", { cache: "default" });
   const leaders = res.success ? res.data || [] : [];
 
   if (leaders.length === 0) return null;
+
+  const dict = await getDictionary(lang);
+  const t = dict.People;
 
   return (
     <section className="bg-sand-soft/50 py-24 md:py-32 relative overflow-hidden">
@@ -24,14 +28,14 @@ export async function LeadershipSection() {
       <Container className="relative z-10">
         <SectionHeading
           align="left"
-          eyebrow="Leadership"
-          title="The people who steward the mission"
-          subtitle="Our Board of Directors ensures policy, governance, and fund management remain strictly objective, transparent, and dignified."
+          eyebrow={t.LeadershipEyebrow}
+          title={t.LeadershipTitle}
+          subtitle={t.LeadershipSubtitle}
         />
         <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {leaders.map((person: any, i: number) => (
             <Reveal key={person._id} delay={i * 70}>
-              <DirectorCard person={person} />
+              <DirectorCard person={person} lang={lang} />
             </Reveal>
           ))}
         </div>
@@ -40,11 +44,14 @@ export async function LeadershipSection() {
   );
 }
 
-export async function VolunteersSection() {
+export async function VolunteersSection({ lang }: { lang: string }) {
   const res = await nextFetch("/team?category=volunteer", { cache: "default" });
   const volunteers = res.success ? res.data || [] : [];
 
   if (volunteers.length === 0) return null;
+
+  const dict = await getDictionary(lang);
+  const t = dict.People;
 
   return (
     <section className="py-24 md:py-32 relative overflow-hidden bg-white/20">
@@ -53,14 +60,14 @@ export async function VolunteersSection() {
       <Container>
         <SectionHeading
           align="left"
-          eyebrow="Community"
-          title="Volunteers who keep the work moving"
-          subtitle="A passionate community of local ambassadors and diaspora volunteers helping verify projects and translate forms."
+          eyebrow={t.CommunityEyebrow}
+          title={t.CommunityTitle}
+          subtitle={t.CommunitySubtitle}
         />
         <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {volunteers.map((person: any, i: number) => (
             <Reveal key={person._id} delay={i * 70}>
-              <VolunteerCard person={person} />
+              <VolunteerCard person={person} lang={lang} />
             </Reveal>
           ))}
         </div>
@@ -69,7 +76,9 @@ export async function VolunteersSection() {
   );
 }
 
-function VolunteerCard({ person }: { person: any }) {
+function VolunteerCard({ person, lang }: { person: any; lang: string }) {
+  const roleText = lang === "ht" ? "Volontè & Anbasadè" : "Volunteer & Ambassador";
+  
   return (
     <article className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/80 bg-white p-5 shadow-[0_15px_40px_-20px_rgba(11,61,46,0.15)] transition-all duration-500 hover:-translate-y-2 hover:border-forest/20 hover:shadow-[0_20px_50px_-20px_rgba(11,61,46,0.25)]">
       <div>
@@ -97,7 +106,7 @@ function VolunteerCard({ person }: { person: any }) {
             {person.name}
           </h3>
           <p className="text-xs font-semibold uppercase tracking-wider text-forest/80 mt-1">
-            Volunteer & Ambassador
+            {roleText}
           </p>
 
           {/* Focus Areas Badges */}
@@ -157,7 +166,9 @@ function VolunteerCard({ person }: { person: any }) {
   );
 }
 
-function DirectorCard({ person }: { person: any }) {
+function DirectorCard({ person, lang }: { person: any; lang: string }) {
+  const roleText = lang === "ht" ? "Manm Komite" : "Board Director";
+
   return (
     <article className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/80 bg-white p-5 shadow-[0_15px_40px_-20px_rgba(11,61,46,0.15)] transition-all duration-500 hover:-translate-y-2 hover:border-forest/20 hover:shadow-[0_20px_50px_-20px_rgba(11,61,46,0.25)]">
       <div>
@@ -185,7 +196,7 @@ function DirectorCard({ person }: { person: any }) {
             {person.name}
           </h3>
           <p className="text-xs font-semibold uppercase tracking-wider text-forest/80 mt-1">
-            Board Director
+            {roleText}
           </p>
           {/* <p className="mt-3 text-sm leading-relaxed text-mist line-clamp-3">
             {person.bio}

@@ -1,0 +1,149 @@
+{
+  "Navbar": {
+    "Home": "Home",
+    "About": "About",
+    "AboutUs": "About Us",
+    "OurTeam": "Our Team",
+    "Grants": "Grants",
+    "Impact": "Impact",
+    "OurImpact": "Our Impact",
+    "Projects": "Projects",
+    "Winners": "Winners",
+    "Finalists": "Finalists",
+    "SuccessStories": "Success Stories",
+    "Events": "Events",
+    "Shop": "Shop",
+    "Contact": "Contact",
+    "Track": "Track",
+    "Donate": "Donate",
+    "Apply": "Apply"
+  },
+  "Hero": {
+    "ApplicationsOpen": "Applications open now",
+    "GrantProgram": "Grant program",
+    "Title1": "Capital for ideas",
+    "Title2": "rooted in Ayiti.",
+    "Subtitle": "Equity-free micro-grants of up to $1,000 for Haitian builders — food, light, water, craft, and livelihoods that stay in the neighborhood.",
+    "ApplyBtn": "Apply for a Grant",
+    "ViewGrantsBtn": "View Grant Details",
+    "ExploreBtn": "Explore the work",
+    "CurrentCycle": "Current cycle",
+    "MaximumGrant": "Maximum grant",
+    "Window": "Window",
+    "CycleNotice": "One winner per cycle. Donations fuel the Program Fund — not a single applicant."
+  },
+  "FloatingDonate": {
+    "QuickDonate": "Quick donate",
+    "ChooseAmount": "Choose an amount and leave your details",
+    "SecuredStripeShort": "Secured by Stripe · 256-bit encryption",
+    "ProgramFund": "Program Fund",
+    "GiveInAMinute": "Give in a minute",
+    "Subtitle": "A quick way to support the next grant cycle — warm, simple, and built for trust.",
+    "Trust1": "Gifts go to the IFundAyiti Program Fund",
+    "Trust2": "Not linked to an individual applicant",
+    "Trust3": "Payments secured by Stripe — trusted by millions worldwide"
+  },
+  "CurrentGrant": {
+    "CurrentCycle": "Current cycle",
+    "SubtitlePre": "A single open window. One winner. Grants up to ",
+    "Opens": "Opens",
+    "Closes": "Closes",
+    "ApplyNow": "Apply now",
+    "ViewDetails": "View grant details"
+  },
+  "WhatWeDo": {
+    "Eyebrow": "What we do",
+    "Title": "Small grants. Local hands. Visible change.",
+    "Description": "IFundAyiti moves practical capital to Haitian entrepreneurs and community builders — without equity, and without tying a gift to one applicant.",
+    "Quote": "Donations fund the program. Grants fund the work.",
+    "OurStory": "Our story"
+  },
+  "HowItWorks": {
+    "Eyebrow": "How it works",
+    "Title": "Five steps from idea to impact",
+    "Subtitle": "A grant lifecycle designed so applicants always know what happens next.",
+    "Step1Title": "Apply",
+    "Step1Body": "Submit your idea and the required information during an open grant cycle.",
+    "Step2Title": "Review",
+    "Step2Body": "The IFundAyiti team reviews applications for completeness, feasibility, and community impact.",
+    "Step3Title": "Finalists",
+    "Step3Body": "Outstanding approved applicants become finalists for the current cycle.",
+    "Step4Title": "Winner",
+    "Step4Body": "One finalist is selected as the winner and receives grant funding.",
+    "Step5Title": "Impact",
+    "Step5Body": "Funding helps turn the idea into real-world impact in Haitian communities."
+  },
+  "ImpactStats": {
+    "Eyebrow": "Impact",
+    "Title": "A growing record of community support",
+    "Notice": "Figures below are replaceable demo values.",
+    "Stat1": "Applications received",
+    "Stat2": "Grants awarded",
+    "Stat3": "Projects supported",
+    "Stat4": "Funds awarded"
+  },
+  "FeaturedProjects": {
+    "Eyebrow": "Selected work",
+    "Title": "Projects already in public view",
+    "AllProjects": "All projects"
+  },
+  "People": {
+    "LeadershipEyebrow": "Leadership",
+    "LeadershipTitle": "The people who steward the mission",
+    "LeadershipSubtitle": "Our Board of Directors ensures policy, governance, and fund management remain strictly objective, transparent, and dignified.",
+    "CommunityEyebrow": "Community",
+    "CommunityTitle": "Volunteers who keep the work moving",
+    "CommunitySubtitle": "A passionate community of local ambassadors and diaspora volunteers helping verify projects and translate forms.",
+    "RoleDirector": "Board Director",
+    "RoleVolunteer": "Volunteer & Ambassador"
+  },
+  "SuccessStory": {
+    "Eyebrow": "Winner story",
+    "ReadStory": "Read the full story"
+  },
+  "DonationCta": {
+    "Title1": "Help turn the next idea",
+    "Title2": "into something neighbors can feel.",
+    "Subtitle": "Gifts go to the IFundAyiti Program Fund — fueling the next open grant cycle.",
+    "DonateNow": "Donate now"
+  },
+  "Footer": {
+    "Summary": "IFundAyiti supports Haitian entrepreneurs and community builders with equity-free micro-grants of up to $1,000.",
+    "Explore": "Explore",
+    "Participate": "Participate",
+    "Legal": "Legal",
+    "Copyright": "All rights reserved.",
+    "PrivacyPolicy": "Privacy Policy",
+    "Terms": "Terms & Conditions",
+    "FAQ": "FAQ"
+  },
+  "DonationForm": {
+    "SelectAmount": "Select Donation Amount (USD)",
+    "Custom": "Custom",
+    "AnyAmount": "Any amount",
+    "EnterCustom": "Enter custom amount...",
+    "YourName": "Your Name *",
+    "EmailAddress": "Email Address *",
+    "PlaceholderName": "e.g. Jean-Luc",
+    "Redirecting": "Redirecting to Secure Payment...",
+    "FuelFund": "Fuel the Program Fund · ",
+    "Donate": "Donate",
+    "SecureCheckout": "Secure Stripe checkout · 100% of donations fund micro-grants.",
+    "Preset1": "Essential supplies",
+    "Preset2": "5% of a micro-grant",
+    "Preset3": "10% of a micro-grant",
+    "Preset4": "Quarterly batch sponsor",
+    "Preset5": "Sponsor 1 Full Micro-Grant",
+    "ImpactDefault": "❤️ Every dollar brings a Haitian entrepreneur closer to funding their dream.",
+    "Impact25": "🤝 Every contribution fuels the central program fund that powers upcoming grant cycles.",
+    "Impact50": "💡 Your gift supplies 5% of a micro-grant and essential equipment for small businesses.",
+    "Impact100": "🌱 Your $100 gift provides 10% of a micro-grant, opening new opportunities for local builders.",
+    "Impact250": "🚀 Your gift covers a quarter of a micro-grant and sponsors entrepreneur incubator training.",
+    "Impact500": "🌟 Your gift funds over half of an equity-free micro-grant for a local business.",
+    "Impact1000": "🇭🇹 Your extraordinary gift sponsors an ENTIRE $1,000 micro-grant for a Haitian entrepreneur!",
+    "ErrName": "Please enter your name",
+    "ErrEmail": "Enter a valid email address",
+    "ErrAmount": "Minimum donation is $5",
+    "ErrGeneric": "Please complete the form"
+  }
+}

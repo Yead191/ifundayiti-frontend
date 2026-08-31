@@ -1,20 +1,33 @@
+"use client";
+
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/sections/section-heading";
 import { Reveal } from "@/components/ui/reveal";
-import { HOW_IT_WORKS } from "@/data/grant";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 export function HowItWorks() {
+  const dict = useTranslation();
+  const t = dict.HowItWorks;
+
+  const steps = [
+    { step: "01", title: t.Step1Title, body: t.Step1Body },
+    { step: "02", title: t.Step2Title, body: t.Step2Body },
+    { step: "03", title: t.Step3Title, body: t.Step3Body },
+    { step: "04", title: t.Step4Title, body: t.Step4Body },
+    { step: "05", title: t.Step5Title, body: t.Step5Body },
+  ];
+
   return (
     <section className="bg-sand-soft/60 py-24 md:py-32">
       <Container>
         <SectionHeading
           align="left"
-          eyebrow="How it works"
-          title="Five steps from idea to impact"
-          subtitle="A grant lifecycle designed so applicants always know what happens next."
+          eyebrow={t.Eyebrow}
+          title={t.Title}
+          subtitle={t.Subtitle}
         />
         <ol className="mt-16 divide-y divide-forest/10 border-t border-forest/10">
-          {HOW_IT_WORKS.map((item, i) => (
+          {steps.map((item, i) => (
             <Reveal key={item.step} delay={i * 60} as="li">
               <div className="grid gap-4 py-8 md:grid-cols-12 md:items-baseline md:gap-8">
                 <p className="font-display text-sm font-semibold tracking-[0.2em] text-forest md:col-span-2">

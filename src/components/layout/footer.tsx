@@ -1,11 +1,43 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { FaTiktok } from "react-icons/fa";
 import { Facebook, Instagram } from "lucide-react";
 import { Logo } from "@/components/layout/logo";
-import { footerNav } from "@/data/navigation";
 import { SITE } from "@/data/site";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 export function Footer() {
+  const pathname = usePathname();
+  const currentLocale = pathname.split("/")[1] === "ht" ? "ht" : "en";
+  const dict = useTranslation();
+  const t = dict.Navbar;
+  const f = dict.Footer;
+
+  const exploreLinks = [
+    { label: t.About, href: "/about" },
+    { label: t.OurTeam, href: "/team" },
+    { label: t.Grants, href: "/grants" },
+    { label: t.Impact, href: "/impact" },
+    { label: t.Projects, href: "/projects" },
+    { label: t.Winners, href: "/winners" },
+  ];
+
+  const participateLinks = [
+    { label: t.Apply, href: "/apply" },
+    { label: t.Track, href: "/track-application" },
+    { label: t.Events, href: "/events" },
+    { label: t.Donate, href: "/donate" },
+    { label: t.Shop, href: "/shop" },
+  ];
+
+  const legalLinks = [
+    { label: f.PrivacyPolicy, href: "/privacy-policy" },
+    { label: f.Terms, href: "/terms" },
+    { label: f.FAQ, href: "/faq" },
+  ];
+
   return (
     <footer className="relative mt-24 border-t border-hairline bg-forest text-sand-soft">
       <div className="relative mx-auto max-w-6xl px-6 pb-10 pt-14 lg:px-8">
@@ -13,7 +45,7 @@ export function Footer() {
           <div className="md:col-span-4">
             <Logo />
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-sand/90">
-              {SITE.summary}
+              {f.Summary}
             </p>
             <p className="mt-4 text-sm text-sand/80">
               {SITE.email}
@@ -23,15 +55,15 @@ export function Footer() {
           </div>
 
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:col-span-8">
-            <FooterCol heading="Explore" links={footerNav.explore} />
-            <FooterCol heading="Participate" links={footerNav.participate} />
-            <FooterCol heading="Legal" links={footerNav.legal} />
+            <FooterCol heading={f.Explore} links={exploreLinks} locale={currentLocale} />
+            <FooterCol heading={f.Participate} links={participateLinks} locale={currentLocale} />
+            <FooterCol heading={f.Legal} links={legalLinks} locale={currentLocale} />
           </div>
         </div>
 
         <div className="mt-12 flex flex-col-reverse items-center justify-between gap-6 border-t border-white/10 pt-8 md:flex-row">
           <p className="text-sm text-sand/70">
-            © {new Date().getFullYear()} IFundAyiti. All rights reserved.
+            © {new Date().getFullYear()} IFundAyiti. {f.Copyright}
           </p>
           <div className="flex gap-3">
             <Social href={SITE.social.facebook} label="Facebook">
@@ -53,9 +85,11 @@ export function Footer() {
 function FooterCol({
   heading,
   links,
+  locale,
 }: {
   heading: string;
   links: { label: string; href: string }[];
+  locale: string;
 }) {
   return (
     <div className="flex flex-col gap-4">
@@ -66,7 +100,7 @@ function FooterCol({
         {links.map((link) => (
           <li key={link.href}>
             <Link
-              href={link.href}
+              href={`/${locale}${link.href}`}
               className="text-sm text-sand/80 transition-colors hover:text-white"
             >
               {link.label}

@@ -1,0 +1,149 @@
+{
+  "Navbar": {
+    "Home": "Akèy",
+    "About": "Enfòmasyon",
+    "AboutUs": "Kiyès nou ye",
+    "OurTeam": "Ekip nou an",
+    "Grants": "Sibvansyon",
+    "Impact": "Enpak",
+    "OurImpact": "Enpak nou",
+    "Projects": "Pwojè yo",
+    "Winners": "Laureya yo",
+    "Finalists": "Finalis yo",
+    "SuccessStories": "Istwa Siksè",
+    "Events": "Evènman yo",
+    "Shop": "Boutik",
+    "Contact": "Kontak",
+    "Track": "Suiv",
+    "Donate": "Fè yon Don",
+    "Apply": "Postile"
+  },
+  "Hero": {
+    "ApplicationsOpen": "Aplikasyon yo louvri kounye a",
+    "GrantProgram": "Pwogram sibvansyon",
+    "Title1": "Kapital pou lide",
+    "Title2": "ki anrasinen nan Ayiti.",
+    "Subtitle": "Mikwo-sibvansyon san ekite jiska $1,000 pou kreyatè ayisyen — manje, limyè, dlo, atizana, ak aktivite ki rete nan katye a.",
+    "ApplyBtn": "Postile pou yon Sibvansyon",
+    "ViewGrantsBtn": "Gade Detay Sibvansyon",
+    "ExploreBtn": "Dekouvri travay la",
+    "CurrentCycle": "Sik aktyèl",
+    "MaximumGrant": "Maksimòm sibvansyon",
+    "Window": "Peryòd",
+    "CycleNotice": "Yon sèl gayan pou chak sik. Donasyon yo ale dirèkteman nan Fon Pwogram nan — pa nan yon sèl aplikan."
+  },
+  "FloatingDonate": {
+    "QuickDonate": "Fè yon don rapid",
+    "ChooseAmount": "Chwazi yon kantite lajan epi mete enfòmasyon ou yo",
+    "SecuredStripeShort": "Sekirize pa Stripe · Chifreman 256-bit",
+    "ProgramFund": "Fon Pwogram",
+    "GiveInAMinute": "Bay nan yon minit",
+    "Subtitle": "Yon fason rapid pou sipòte pwochen sik sibvansyon an — senp, sekirize, epi bati sou konfyans.",
+    "Trust1": "Donasyon yo ale nan Fon Pwogram IFundAyiti",
+    "Trust2": "Yo pa lye ak yon sèl aplikan patikilye",
+    "Trust3": "Peman sekirize pa Stripe — plizyè milyon moun fè l konfyans toupatou"
+  },
+  "CurrentGrant": {
+    "CurrentCycle": "Sik aktyèl",
+    "SubtitlePre": "Yon sèl peryòd ouvè. Yon sèl gayan. Sibvansyon jiska ",
+    "Opens": "Ouvri",
+    "Closes": "Fèmen",
+    "ApplyNow": "Postile kounye a",
+    "ViewDetails": "Gade detay sibvansyon"
+  },
+  "WhatWeDo": {
+    "Eyebrow": "Sa nou fè",
+    "Title": "Ti sibvansyon. Travay lokal. Chanjman vizib.",
+    "Description": "IFundAyiti bay kreyatè ak antreprenè ayisyen kapital pratik — san pran aksyon nan biznis yo, epi san lye yon don ak yon sèl aplikan.",
+    "Quote": "Donasyon yo finanse pwogram nan. Sibvansyon yo finanse travay la.",
+    "OurStory": "Istwa nou"
+  },
+  "HowItWorks": {
+    "Eyebrow": "Kijan sa mache",
+    "Title": "Senk etap soti nan lide rive nan enpak",
+    "Subtitle": "Yon sik sibvansyon ki fèt pou aplikan yo toujou konnen sa k ap swiv.",
+    "Step1Title": "Postile",
+    "Step1Body": "Mete lide w ak enfòmasyon ki nesesè yo pandan sik sibvansyon an louvri.",
+    "Step2Title": "Evalyasyon",
+    "Step2Body": "Ekip IFundAyiti a evalye aplikasyon yo pou wè si yo konplè, si yo ka fèt, ak enpak yo sou kominote a.",
+    "Step3Title": "Finalis yo",
+    "Step3Body": "Aplikan ki pi remakab yo vin finalis pou sik aktyèl la.",
+    "Step4Title": "Laureya",
+    "Step4Body": "Yo chwazi yon finalis kòm gayan epi li resevwa finansman sibvansyon an.",
+    "Step5Title": "Enpak",
+    "Step5Body": "Finansman an ede transfòme lide a an chanjman reyèl nan kominote ayisyen yo."
+  },
+  "ImpactStats": {
+    "Eyebrow": "Enpak",
+    "Title": "Yon dosye k ap grandi nan sipò kominote a",
+    "Notice": "Chif ki anba yo se valè demonstrasyon sèlman.",
+    "Stat1": "Aplikasyon yo resevwa",
+    "Stat2": "Sibvansyon yo bay",
+    "Stat3": "Pwojè yo sipòte",
+    "Stat4": "Lajan yo distribye"
+  },
+  "FeaturedProjects": {
+    "Eyebrow": "Pwojè chwazi",
+    "Title": "Pwojè ki deja nan je piblik la",
+    "AllProjects": "Tout pwojè yo"
+  },
+  "People": {
+    "LeadershipEyebrow": "Lidèchip",
+    "LeadershipTitle": "Moun k ap dirije misyon an",
+    "LeadershipSubtitle": "Komite Direktè nou an asire ke politik, gouvènans, ak jesyon fon yo rete nèt objektif, transparan, ak diy.",
+    "CommunityEyebrow": "Kominote",
+    "CommunityTitle": "Volontè k ap fè travay la mache",
+    "CommunitySubtitle": "Yon kominote pasyone ak anbasadè lokal yo ansanm ak volontè nan dyaspora a k ap ede verifye pwojè yo epi tradui fòm yo.",
+    "RoleDirector": "Manm Komite",
+    "RoleVolunteer": "Volontè & Anbasadè"
+  },
+  "SuccessStory": {
+    "Eyebrow": "Istwa gayan an",
+    "ReadStory": "Li tout istwa a"
+  },
+  "DonationCta": {
+    "Title1": "Ede transfòme pwochen lide a",
+    "Title2": "an yon pwojè reyèl katye a ka santi.",
+    "Subtitle": "Donasyon yo ale nan Fon Pwogram IFundAyiti a — k ap finanse pwochen sik sibvansyon an.",
+    "DonateNow": "Fè yon don kounye a"
+  },
+  "Footer": {
+    "Summary": "IFundAyiti sipòte antreprenè ak moun k ap bati kominote an Ayiti ak mikwo-sibvansyon san pran pati nan biznis jiska $1,000.",
+    "Explore": "Dekouvri",
+    "Participate": "Patisipe",
+    "Legal": "Legal",
+    "Copyright": "Tout dwa rezève.",
+    "PrivacyPolicy": "Règ sou Konfidansyalite",
+    "Terms": "Tèm ak Kondisyon yo",
+    "FAQ": "Kesyon yo poze souvan"
+  },
+  "DonationForm": {
+    "SelectAmount": "Chwazi Kantite Lajan Don (USD)",
+    "Custom": "Pèsonalize",
+    "AnyAmount": "Nenpòt kantite",
+    "EnterCustom": "Mete yon lòt kantite...",
+    "YourName": "Non Ou *",
+    "EmailAddress": "Adrès Imèl *",
+    "PlaceholderName": "e.g. Jean-Luc",
+    "Redirecting": "Redireksyon nan Peman Sekirize...",
+    "FuelFund": "Finanse Fon Pwogram nan · ",
+    "Donate": "Fè yon Don",
+    "SecureCheckout": "Peman sekirize pa Stripe · 100% donasyon yo ale nan mikwo-sibvansyon.",
+    "Preset1": "Materyèl esansyèl",
+    "Preset2": "5% nan yon mikwo-sibvansyon",
+    "Preset3": "10% nan yon mikwo-sibvansyon",
+    "Preset4": "Sponsò sik la",
+    "Preset5": "Sponsò 1 Mikwo-Sibvansyon antye",
+    "ImpactDefault": "❤️ Chak dola pote yon antreprenè ayisyen pi pre reyalize rèv li.",
+    "Impact25": "🤝 Chak kontribisyon ede founi fon santral ki asire sik sibvansyon k ap vini yo.",
+    "Impact50": "💡 Kado w la bay 5% nan yon mikwo-sibvansyon ak materyèl esansyèl pou yon ti biznis.",
+    "Impact100": "🌱 Kado $100 ou a bay 10% nan yon mikwo-sibvansyon, sa k ap louvri pòt pou kreyatè lokal yo.",
+    "Impact250": "🚀 Kado w la kouvri yon ka nan yon sibvansyon epi li ede sipòte fòmasyon pou antreprenè yo.",
+    "Impact500": "🌟 Kado w la finanse plis pase mwatye nan yon mikwo-sibvansyon san ekite pou yon biznis lokal.",
+    "Impact1000": "🇭🇹 Kado ekstraòdinè w la finanse yon mikwo-sibvansyon $1,000 ANTYE pou yon antreprenè ayisyen!",
+    "ErrName": "Tanpri mete non ou",
+    "ErrEmail": "Mete yon adrès imèl ki valab",
+    "ErrAmount": "Donasyon minimòm nan se $5",
+    "ErrGeneric": "Tanpri ranpli fòm nan"
+  }
+}

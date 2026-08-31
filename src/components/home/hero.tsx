@@ -7,6 +7,7 @@ import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { formatPrice } from "@/lib/utils";
 import { getCurrentApplicationPeriod } from "@/helpers/next-fetch/periodActions";
+import { getDictionary } from "@/lib/dictionaries";
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=1800&h=1200";
@@ -18,9 +19,11 @@ function formatDate(iso: string) {
   });
 }
 
-export async function HomeHero() {
+export async function HomeHero({ lang }: { lang: string }) {
   const currentPeriod = await getCurrentApplicationPeriod();
   const open = currentPeriod?.status === "Open";
+  const dict = await getDictionary(lang);
+  const t = dict.Hero;
 
   return (
     <section className="relative h-180 overflow-hidden bg-forest pt-24 text-white md:h-195 lg:h-210">
@@ -51,29 +54,27 @@ export async function HomeHero() {
             <Reveal>
               <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-4 py-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-sand backdrop-blur-md">
                 <Sparkles className="h-3.5 w-3.5 text-sand" />
-                {open ? "Applications open now" : "Grant program"}
+                {open ? t.ApplicationsOpen : t.GrantProgram}
               </div>
             </Reveal>
 
             <Reveal delay={80}>
               <h1 className="mt-7 max-w-2xl font-display text-[2.75rem] font-semibold leading-[1.02] tracking-tight text-white sm:text-6xl lg:text-[4.25rem]">
-                Capital for ideas
-                <span className="mt-1 block text-sand">rooted in Ayiti.</span>
+                {t.Title1}
+                <span className="mt-1 block text-sand">{t.Title2}</span>
               </h1>
             </Reveal>
 
             <Reveal delay={140}>
               <p className="mt-6 max-w-xl text-base leading-relaxed text-sand/90 sm:text-lg">
-                Equity-free micro-grants of up to $1,000 for Haitian builders —
-                food, light, water, craft, and livelihoods that stay in the
-                neighborhood.
+                {t.Subtitle}
               </p>
             </Reveal>
 
             <Reveal delay={200} className="mt-10 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg" variant="secondary" className="rounded-xl px-7">
                 <Link href={open ? "/apply" : "/grants"}>
-                  {open ? "Apply for a Grant" : "View Grant Details"}
+                  {open ? t.ApplyBtn : t.ViewGrantsBtn}
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -82,7 +83,7 @@ export async function HomeHero() {
                 size="lg"
                 className="rounded-xl border border-white/20 bg-white/8 px-7 text-white backdrop-blur-sm hover:bg-white/15"
               >
-                <Link href="/projects">Explore the work</Link>
+                <Link href="/projects">{t.ExploreBtn}</Link>
               </Button>
             </Reveal>
           </div>
@@ -91,20 +92,20 @@ export async function HomeHero() {
             <Reveal delay={120} className="lg:col-span-5">
               <div className="rounded-[1.5rem] border border-white/12 bg-white/8 p-6 backdrop-blur-md md:p-7">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sand/80">
-                  Current cycle · {currentPeriod.status}
+                  {t.CurrentCycle} · {currentPeriod.status}
                 </p>
                 <p className="mt-2 font-display text-2xl font-semibold text-white">
                   {currentPeriod.title}
                 </p>
                 <dl className="mt-6 grid grid-cols-2 gap-5 border-t border-white/10 pt-6">
                   <div>
-                    <dt className="text-xs text-sand/70">Maximum grant</dt>
+                    <dt className="text-xs text-sand/70">{t.MaximumGrant}</dt>
                     <dd className="mt-1 font-display text-2xl text-sand">
                       {formatPrice(currentPeriod.maximumGrantAmount)}
                     </dd>
                   </div>
                   <div>
-                    <dt className="text-xs text-sand/70">Window</dt>
+                    <dt className="text-xs text-sand/70">{t.Window}</dt>
                     <dd className="mt-1 text-sm font-medium leading-snug text-white">
                       {formatDate(currentPeriod.startDate)} –{" "}
                       {formatDate(currentPeriod.endDate)}
@@ -112,8 +113,7 @@ export async function HomeHero() {
                   </div>
                 </dl>
                 <p className="mt-5 text-xs leading-relaxed text-sand/75">
-                  One winner per cycle. Donations fuel the Program Fund — not a
-                  single applicant.
+                  {t.CycleNotice}
                 </p>
               </div>
             </Reveal>

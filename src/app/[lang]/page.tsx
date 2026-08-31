@@ -29,7 +29,12 @@ export const metadata: Metadata = buildMetadata({
   ],
 });
 
-export default function HomePage() {
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
   const site = getSiteUrl();
 
   return (
@@ -55,16 +60,16 @@ export default function HomePage() {
           ],
         }}
       />
-      <HomeHero />
+      <HomeHero lang={lang} />
       <FloatingDonationCard />
-      <CurrentGrant />
+      <CurrentGrant lang={lang} />
       <WhatWeDo />
       <HowItWorks />
       <ImpactStats />
       <FeaturedProjects />
-      <LeadershipSection />
-      <VolunteersSection />
-      <SuccessStory />
+      <LeadershipSection lang={lang} />
+      <VolunteersSection lang={lang} />
+      <SuccessStory lang={lang} />
       <DonationCta />
     </>
   );

@@ -6,10 +6,11 @@ import { usePathname } from "next/navigation";
 import { Menu, X, ChevronDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { navItems } from "@/data/navigation";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/layout/logo";
 import { CartMenu } from "@/components/layout/cart-menu";
+import { LanguageSelector } from "@/components/layout/language-selector";
+import { useTranslation } from "@/components/providers/translation-provider";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,15 +24,28 @@ import {
 } from "@/components/ui/collapsible";
 
 function isActive(pathname: string, href: string) {
-  if (href === "/") return pathname === "/";
+  // Extract segment after lang
+  const cleanPathname = "/" + pathname.split("/").slice(2).join("/");
+  if (href === "/") return cleanPathname === "/";
   const path = href.split("#")[0];
-  return pathname.startsWith(path);
+  return cleanPathname.startsWith(path);
 }
 
 export function Navbar() {
   const pathname = usePathname();
   const [scrolled, setScrolled] = React.useState(false);
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const dict = useTranslation();
+
+  // Determine current locale prefix
+  const segments = pathname.split("/");
+  const currentLocale = segments[1] === "ht" ? "ht" : "en";
+
+  const localize = (href: string) => {
+    if (href.startsWith("http") || href.startsWith("mailto:")) return href;
+    const cleanPath = href === "/" ? "" : href;
+    return `/${currentLocale}${cleanPath}`;
+  };
 
   React.useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -42,8 +56,37 @@ export function Navbar() {
 
   React.useEffect(() => setMobileOpen(false), [pathname]);
 
+  const t = dict.Navbar;
+
+  const navItems = [
+    { label: t.Home, href: "/" },
+    {
+      label: t.About,
+      href: "/about",
+      subItems: [
+        { label: t.AboutUs, href: "/about" },
+        { label: t.OurTeam, href: "/team" },
+      ],
+    },
+    { label: t.Grants, href: "/grants" },
+    {
+      label: t.Impact,
+      href: "/impact",
+      subItems: [
+        { label: t.OurImpact, href: "/impact" },
+        { label: t.Projects, href: "/projects" },
+        { label: t.Winners, href: "/winners" },
+        { label: t.Finalists, href: "/finalists" },
+        { label: t.SuccessStories, href: "/impact#success-stories" },
+      ],
+    },
+    { label: t.Events, href: "/events" },
+    { label: t.Shop, href: "/shop" },
+    { label: t.Contact, href: "/contact" },
+  ];
+
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3  sm:pt-4">
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-3 sm:pt-4">
       <div className="pointer-events-auto relative w-full max-w-6xl lg:px-8">
         <nav
           className={cn(
@@ -52,13 +95,16 @@ export function Navbar() {
               "bg-white/92 shadow-[0_16px_48px_-16px_rgba(15,23,42,0.28)]",
           )}
         >
-          <Logo />
+          {/* Logo redirecting to localized home */}
+          <Link href={localize("/")} className="pointer-events-auto">
+            <Logo />
+          </Link>
 
-          <ul className="hidden items-center gap-1 lg:flex">
+          <ul className="hidden items-center gap-4 lg:flex">
             {navItems.map((item) => {
               const active = isActive(pathname, item.href);
               const linkClass = cn(
-                "relative flex items-center gap-1 rounded-xl px-3 py-2 text-[15px] font-semibold tracking-tight outline-none transition-colors",
+                "relative flex items-center gap-1 rounded-xl py-2 text-[15px] font-semibold tracking-tight outline-none transition-colors",
                 active ? "text-forest" : "text-forest-deep hover:text-forest",
               );
 
@@ -79,7 +125,7 @@ export function Navbar() {
                         {item.subItems.map((subItem) => (
                           <DropdownMenuItem key={subItem.href} asChild>
                             <Link
-                              href={subItem.href}
+                              href={localize(subItem.href)}
                               className="w-full text-sm font-semibold text-forest-deep"
                             >
                               {subItem.label}
@@ -94,7 +140,7 @@ export function Navbar() {
 
               return (
                 <li key={item.href}>
-                  <Link href={item.href} className={linkClass}>
+                  <Link href={localize(item.href)} className={linkClass}>
                     {item.label}
                     {active && (
                       <span className="absolute inset-x-3 bottom-0.5 h-0.5 rounded-full bg-forest" />
@@ -107,18 +153,23 @@ export function Navbar() {
 
           <div className="flex items-center gap-1.5 sm:gap-2">
             <Link
-              href="/track-application"
+              href={localize("/track-application")}
               className="hidden rounded-xl px-3 py-2 text-[15px] font-semibold tracking-tight text-forest-deep transition-colors hover:text-forest xl:inline-flex"
             >
-              Track
+              {t.Track}
             </Link>
+
+            {/* Premium Language Selector */}
+            <LanguageSelector />
+
             <CartMenu />
+
             <Button
               asChild
               size="sm"
               className="hidden h-10 rounded-xl px-4 shadow-none md:inline-flex"
             >
-              <Link href="/donate">Donate</Link>
+              <Link href={localize("/donate")}>{t.Donate}</Link>
             </Button>
             <Button
               asChild
@@ -126,7 +177,7 @@ export function Navbar() {
               size="sm"
               className="hidden h-10 rounded-xl px-4 lg:inline-flex"
             >
-              <Link href="/apply">Apply</Link>
+              <Link href={localize("/apply")}>{t.Apply}</Link>
             </Button>
             <button
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
@@ -170,7 +221,7 @@ export function Navbar() {
                             {item.subItems.map((subItem) => (
                               <Link
                                 key={subItem.href}
-                                href={subItem.href}
+                                href={localize(subItem.href)}
                                 className="ml-2 rounded-xl px-3 py-2.5 text-sm font-medium text-forest-deep hover:bg-sand-soft hover:text-forest"
                               >
                                 {subItem.label}
@@ -185,7 +236,7 @@ export function Navbar() {
                 return (
                   <li key={item.href}>
                     <Link
-                      href={item.href}
+                      href={localize(item.href)}
                       className={cn(
                         "block rounded-xl px-3 py-3 text-base font-semibold",
                         active
@@ -201,13 +252,13 @@ export function Navbar() {
             </ul>
             <div className="mt-2 grid grid-cols-2 gap-2 border-t border-hairline pt-3">
               <Button asChild variant="outline" className="rounded-xl">
-                <Link href="/track-application">Track</Link>
+                <Link href={localize("/track-application")}>{t.Track}</Link>
               </Button>
               <Button asChild variant="outline" className="rounded-xl">
-                <Link href="/apply">Apply</Link>
+                <Link href={localize("/apply")}>{t.Apply}</Link>
               </Button>
               <Button asChild className="col-span-2 rounded-xl">
-                <Link href="/donate">Donate</Link>
+                <Link href={localize("/donate")}>{t.Donate}</Link>
               </Button>
             </div>
           </div>
