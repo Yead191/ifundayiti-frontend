@@ -418,5 +418,29 @@
       "DonateBtn": "Support the Program Fund",
       "GrantsBtn": "How grants work"
     }
+  },
+  "ProjectsPage": {
+    "Eyebrow": "Our work",
+    "Title1": "Projects that stay",
+    "TitleAccent": "in the neighborhood.",
+    "Subtitle": "A public archive of ideas IFundAyiti has put in view — food, light, water, craft, and livelihoods. Demo case studies until live data is connected.",
+    "All": "All",
+    "EmptyTitle": "No projects in this category",
+    "EmptyBody": "Try another filter, or view the full archive.",
+    "BackToAll": "All projects",
+    "BackToAllBtn": "All projects",
+    "Grant": "Grant",
+    "Status": "Status",
+    "Cycle": "Cycle",
+    "Lead": "Lead",
+    "TheStory": "The story",
+    "Challenge": "Challenge",
+    "Approach": "Approach",
+    "Outcome": "Outcome",
+    "SupportFund": "Support the fund",
+    "SupportFundBody": "This work is powered by the Program Fund — not a donor picking one applicant.",
+    "MoreWork": "More work",
+    "Archive": "Archive",
+    "ViewWork": "View work"
   }
 }

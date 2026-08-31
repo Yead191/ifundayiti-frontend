@@ -103,7 +103,7 @@
   },
   "DonationCta": {
     "Title1": "Ede transfòme pwochen lide a",
-    "Title2": "an yon pwojè reyèl katye a ka senti.",
+    "Title2": "an yon pwojè vwazen yo ka santi.",
     "Subtitle": "Donasyon yo ale nan Fon Pwogram IFundAyiti a — k ap finanse pwochen sik sibvansyon an.",
     "DonateNow": "Fè yon don kounye a"
   },
@@ -198,7 +198,7 @@
       "Audience2Body": "Bay nan yon pwogram ou ka eksplike yon zanmi: kote lajan an ale, ki jan yo chwazi gayan yo, ak poukisa non yo rete pwoteje.",
       "Audience3Title": "Vwazen ki santi rezilta a",
       "Audience3Emotion": "Enpak la ta dwe vizib nan katye a.",
-      "Audience3Body": "Pi bon limyè, dlo ki pi pwòp, boutik ki pi chaje, lari ki pi an sekirite — kalite chanjman ou remake lè w ap mache antre lakay ou, pa nan yon nòt pou laprès."
+      "Audience3Body": "Pi bon limyè, dlo ki pi pwòp, boutik ki pi chaje, lari ki pi an sekirite — kalite chanjman ou remarke lè w ap mache antre lakay ou, pa nan yon nòt pou laprès."
     },
     "Governance": {
       "Eyebrow": "Kijan desizyon yo pran",
@@ -310,7 +310,7 @@
       "Q3": "Ki dokiman ki nesesè?",
       "A3": "Yon pyès idantite gouvènman bay, prèv adrès, ak deskripsyon pwojè a obligatwa. Yo rekòmande yon plan biznis oswa foto pwojè a tou.",
       "Q4": "Kijan mwen ka postile?",
-      "A4": "Nou aksepte aplikasyon yo sèlman lè sik sibvansyon an louvri. Dat yo pibliye sou paj Sibvansyon an.",
+      "A4": "Nou aksepte aplikasyon yo swlman lè sik sibvansyon an louvri. Dat yo pibliye sou paj Sibvansyon an.",
       "Q5": "Kouman yo evalye aplikasyon yo?",
       "A5": "Ekip IFundAyiti a evalye si dosye a konplè, si pwojè a ka fèt, ak enpak li sou kominote a. Eta dosye a ap soti nan soumèt pou l pase nan evalyasyon.",
       "Q6": "Kouman yo chwazi finalis yo?",
@@ -418,5 +418,29 @@
       "DonateBtn": "Sipòte Fon Pwogram nan",
       "GrantsBtn": "Kijan sibvansyon yo mache"
     }
+  },
+  "ProjectsPage": {
+    "Eyebrow": "Travay nou",
+    "Title1": "Pwojè ki rete",
+    "TitleAccent": "nan katye a.",
+    "Subtitle": "Achiv piblik pwojè IFundAyiti sipòte yo — manje, limyè, dlo, atizana, ak aktivite yo. Istwa siksè demonstrasyon jiskaske nou konekte done dirèk yo.",
+    "All": "Tout",
+    "EmptyTitle": "Pa gen pwojè nan kategori sa a",
+    "EmptyBody": "Eseye yon lòt filtè, oswa gade tout achiv la.",
+    "BackToAll": "Tout pwojè yo",
+    "BackToAllBtn": "Tout pwojè yo",
+    "Grant": "Sibvansyon",
+    "Status": "Eta pwojè a",
+    "Cycle": "Sik",
+    "Lead": "Responsab",
+    "TheStory": "Istwa a",
+    "Challenge": "Defi a",
+    "Approach": "Apwòch la",
+    "Outcome": "Rezilta a",
+    "SupportFund": "Sipòte fon an",
+    "SupportFundBody": "Travay sa a baze sou Fon Pwogram nan — se pa yon donatè k ap chwazi yon sèl moun.",
+    "MoreWork": "Lòt pwojè",
+    "Archive": "Achiv",
+    "ViewWork": "Gade travay la"
   }
 }

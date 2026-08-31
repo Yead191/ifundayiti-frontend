@@ -44,12 +44,12 @@ export function FeaturedProjects({ id }: { id?: string }) {
 
         <div className="mt-12 grid gap-5 lg:grid-cols-12">
           <Reveal className="lg:col-span-7">
-            <ProjectCard project={lead} featured />
+            <ProjectCard project={lead} featured lang={currentLocale} />
           </Reveal>
           <div className="grid gap-5 lg:col-span-5">
             {side.map((project, i) => (
               <Reveal key={project.id} delay={100 + i * 80}>
-                <ProjectCard project={project} />
+                <ProjectCard project={project} lang={currentLocale} />
               </Reveal>
             ))}
           </div>

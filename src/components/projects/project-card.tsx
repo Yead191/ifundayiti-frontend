@@ -8,13 +8,19 @@ import type { PublicProject } from "@/data/projects";
 export function ProjectCard({
   project,
   featured = false,
+  lang = "en",
+  viewWorkLabel,
 }: {
   project: PublicProject;
   featured?: boolean;
+  lang?: string;
+  viewWorkLabel?: string;
 }) {
+  const label = viewWorkLabel || (lang === "ht" ? "Gade travay la" : "View work");
+
   return (
     <Link
-      href={`/projects/${project.slug}`}
+      href={`/${lang}/projects/${project.slug}`}
       className={cn(
         "group relative isolate flex flex-col overflow-hidden rounded-[1.75rem] bg-forest text-white",
         featured ? "min-h-[28rem] lg:min-h-[36rem]" : "min-h-[22rem]",
@@ -50,7 +56,7 @@ export function ProjectCard({
             {formatPrice(project.grantAmount)}
           </span>
           <span className="inline-flex items-center gap-1 font-semibold text-white">
-            View work
+            {label}
             <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
           </span>
         </div>
