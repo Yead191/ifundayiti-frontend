@@ -12,6 +12,7 @@ const nextConfig: NextConfig = {
       { protocol: "http", hostname: "68.178.164.48" },
       { protocol: "http", hostname: "10.10.26.159" },
       { protocol: "http", hostname: "10.10.26.173" },
+      { protocol: "http", hostname: "31.97.103.122" },
       { protocol: "https", hostname: "api.thehubology.com" },
     ],
   },
@@ -26,9 +27,17 @@ const nextConfig: NextConfig = {
       { source: "/store", destination: "/shop", permanent: false },
       { source: "/store/:path*", destination: "/shop", permanent: false },
       { source: "/office-supplies", destination: "/shop", permanent: false },
-      { source: "/office-supplies/:path*", destination: "/shop", permanent: false },
+      {
+        source: "/office-supplies/:path*",
+        destination: "/shop",
+        permanent: false,
+      },
       { source: "/ifundayiti", destination: "/", permanent: false },
-      { source: "/donate/track", destination: "/track-application", permanent: false },
+      {
+        source: "/donate/track",
+        destination: "/track-application",
+        permanent: false,
+      },
     ];
   },
 };
