@@ -18,39 +18,54 @@ import { getImageUrl } from "@/lib/getImageUrl";
 import { nextFetch } from "@/helpers/next-fetch/NextFetch";
 import { formatPrice } from "@/lib/utils";
 import { buildMetadata } from "@/lib/seo";
+import { getDictionary } from "@/lib/dictionaries";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Winners",
-  description:
-    "Celebrate IFundAyiti grant winners and read how awarded projects moved from idea to community outcome.",
-  path: "/winners",
-});
+interface PageProps {
+  params: Promise<{ lang: string }>;
+}
 
-export default async function WinnersPage() {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+
+  return buildMetadata({
+    title: dict.Navbar.Winners,
+    description: dict.WinnersPage.Hero.Subtitle,
+    path: `/${lang}/winners`,
+  });
+}
+
+export default async function WinnersPage({ params }: PageProps) {
+  const { lang } = await params;
   const res = await nextFetch("/application?status=winner", { cache: "no-store" });
   const winnersData = res.success ? res.data || [] : [];
   
   const [current, ...previous] = winnersData;
 
+  const dict = await getDictionary(lang);
+  const t = dict.WinnersPage;
+
   return (
     <>
       <PageHero
-        eyebrow="Our Winners"
-        title="Celebrating the people behind the impact."
-        subtitle="Discover the inspiring stories of our grant recipients who are turning bold ideas into thriving community realities."
+        eyebrow={t.Hero.Eyebrow}
+        title={t.Hero.Title}
+        subtitle={t.Hero.Subtitle}
       />
 
       <section className="py-20 relative">
         <Container>
           {!current ? (
             <EmptyState
-              title="Winner stories will appear here"
-              body="Winner stories will appear here after the current grant cycle concludes."
-              actionLabel="View grants"
-              actionHref="/grants"
+              title={t.EmptyState.Title}
+              body={t.EmptyState.Body}
+              actionLabel={t.EmptyState.ActionLabel}
+              actionHref={`/${lang}/grants`}
             />
           ) : (
-            <FeaturedWinnerCard winner={current} />
+            <FeaturedWinnerCard winner={current} lang={lang} />
           )}
         </Container>
       </section>
@@ -60,15 +75,14 @@ export default async function WinnersPage() {
           <Container>
             <div className="flex flex-col items-center text-center max-w-2xl mx-auto mb-16">
               <h2 className="font-display text-4xl text-forest-deep">
-                Previous Winners
+                {t.PreviousWinners.Title}
               </h2>
               <p className="mt-4 text-mist">
-                Explore the archive of past grant recipients who have made a
-                lasting impact in their communities.
+                {t.PreviousWinners.Subtitle}
               </p>
             </div>
 
-            <PreviousWinnersGrid winners={previous} />
+            <PreviousWinnersGrid winners={previous} lang={lang} />
           </Container>
         </section>
       )}

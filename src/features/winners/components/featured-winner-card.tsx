@@ -3,16 +3,22 @@ import Link from "next/link";
 import { Trophy, MapPin, BadgeDollarSign, ChevronRight } from "lucide-react";
 import { getImageUrl } from "@/lib/getImageUrl";
 import { formatPrice } from "@/lib/utils";
+import { getDictionary } from "@/lib/dictionaries";
 
 interface FeaturedWinnerCardProps {
   winner: any;
+  lang?: string;
 }
 
-export function FeaturedWinnerCard({ winner }: FeaturedWinnerCardProps) {
+export async function FeaturedWinnerCard({ winner, lang = "en" }: FeaturedWinnerCardProps) {
+  const dict = await getDictionary(lang);
+  const t = dict.WinnersPage.FeaturedWinner;
+  const tCommon = dict.WinnersPage.Identity;
+
   return (
     <div className="relative isolate group">
       <Link
-        href={`/winners/${winner._id}`}
+        href={`/${lang}/winners/${winner._id}`}
         className="grid overflow-hidden rounded-[2.5rem] bg-forest text-white lg:grid-cols-12 shadow-2xl transition-transform hover:-translate-y-1 duration-500"
       >
         <div className="relative min-h-100 lg:min-h-full lg:col-span-7 overflow-hidden">
@@ -33,17 +39,17 @@ export function FeaturedWinnerCard({ winner }: FeaturedWinnerCardProps) {
               <Trophy className="h-4 w-4" />
             </span>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-sand">
-              Featured Winner
+              {t.Eyebrow}
             </p>
           </div>
-
+ 
           <h2 className="font-display text-4xl lg:text-5xl leading-tight">
             {winner.personal?.name}
           </h2>
           <h3 className="mt-2 text-xl font-medium text-sand/90">
             {winner.grant?.projectName}
           </h3>
-
+ 
           <div className="mt-8 flex flex-col gap-3 text-sand/80">
             <div className="flex items-center gap-3">
               <MapPin className="h-5 w-5 text-sand" />
@@ -51,16 +57,16 @@ export function FeaturedWinnerCard({ winner }: FeaturedWinnerCardProps) {
             </div>
             <div className="flex items-center gap-3">
               <BadgeDollarSign className="h-5 w-5 text-sand" />
-              <span>{formatPrice(winner.awardedAmount)} Grant</span>
+              <span>{formatPrice(winner.awardedAmount)} {tCommon.Grant}</span>
             </div>
           </div>
-
+ 
           <p className="mt-8 line-clamp-4 text-sm leading-relaxed text-sand/70">
             {winner.successStory}
           </p>
-
+ 
           <div className="mt-10 flex items-center gap-2 text-sm font-semibold uppercase tracking-wider text-sand group-hover:text-white transition-colors">
-            Read full story
+            {t.ViewStory}
             <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </div>
         </div>

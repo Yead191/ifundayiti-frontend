@@ -12,13 +12,13 @@ import { nextFetch } from "@/helpers/next-fetch/NextFetch";
 import { buildMetadata } from "@/lib/seo";
 
 interface PageProps {
-  params: Promise<{ id: string }>;
+  params: Promise<{ id: string; lang: string }>;
 }
 
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { id } = await params;
+  const { id, lang } = await params;
   const res = await nextFetch("/application/" + id, { cache: "no-store" });
   const winner = res.success ? res.data : null;
 
@@ -26,34 +26,34 @@ export async function generateMetadata({
     return buildMetadata({
       title: "Winner not found",
       description: "This winner story could not be found.",
-      path: `/winners/${id}`,
+      path: `/${lang}/winners/${id}`,
       noIndex: true,
     });
   }
   return buildMetadata({
     title: `${winner.personal?.name} — ${winner.grant?.projectName}`,
     description: winner.successStory?.slice(0, 160) || "",
-    path: `/winners/${id}`,
+    path: `/${lang}/winners/${id}`,
     image: getImageUrl(winner.personal?.image) || "",
   });
 }
 
 export default async function WinnerDetailPage({ params }: PageProps) {
-  const { id } = await params;
+  const { id, lang } = await params;
   const res = await nextFetch("/application/" + id, { cache: "no-store" });
   const winner = res.success ? res.data : null;
   if (!winner) notFound();
 
   return (
     <article className="min-h-screen bg-sand-soft/10 pb-24">
-      <WinnerHero />
-      <WinnerIdentity winner={winner} />
+      <WinnerHero lang={lang} />
+      <WinnerIdentity winner={winner} lang={lang} />
 
       {/* Story & Gallery */}
       <Container className="mt-20">
         <div className="grid lg:grid-cols-12 gap-16 items-start">
-          <WinnerStory winner={winner} />
-          <WinnerGallery winner={winner} />
+          <WinnerStory winner={winner} lang={lang} />
+          <WinnerGallery winner={winner} lang={lang} />
         </div>
       </Container>
     </article>

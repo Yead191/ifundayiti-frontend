@@ -1,10 +1,15 @@
 import { Quote, Rocket, Sparkles } from "lucide-react";
+import { getDictionary } from "@/lib/dictionaries";
 
 interface WinnerStoryProps {
   winner: any;
+  lang?: string;
 }
 
-export function WinnerStory({ winner }: WinnerStoryProps) {
+export async function WinnerStory({ winner, lang = "en" }: WinnerStoryProps) {
+  const dict = await getDictionary(lang);
+  const t = dict.WinnersPage.Story;
+
   return (
     <div className="lg:col-span-7 space-y-16">
       {/* Project Overview Blocks */}
@@ -15,7 +20,7 @@ export function WinnerStory({ winner }: WinnerStoryProps) {
               <Rocket className="h-5 w-5" />
             </div>
             <h3 className="font-semibold text-forest-deep uppercase tracking-wider text-sm">
-              Fund Usage
+              {lang === "ht" ? "Itilizasyon Fon" : "Fund Usage"}
             </h3>
           </div>
           <p className="text-mist text-sm leading-relaxed">
@@ -29,7 +34,7 @@ export function WinnerStory({ winner }: WinnerStoryProps) {
               <Sparkles className="h-5 w-5" />
             </div>
             <h3 className="font-semibold text-forest-deep uppercase tracking-wider text-sm">
-              Expected Impact
+              {t.ExpectedImpact}
             </h3>
           </div>
           <p className="text-mist text-sm leading-relaxed">
@@ -43,7 +48,7 @@ export function WinnerStory({ winner }: WinnerStoryProps) {
         <div className="flex gap-4 mb-8">
           <Quote className="h-12 w-12 text-forest/20 shrink-0 transform -scale-x-100" />
           <h2 className="font-display text-3xl text-forest-deep">
-            The Story Behind the Impact
+            {t.TheStory}
           </h2>
         </div>
 

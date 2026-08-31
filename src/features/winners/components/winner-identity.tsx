@@ -3,12 +3,17 @@ import { Calendar, MapPin, User, BadgeDollarSign } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { getImageUrl } from "@/lib/getImageUrl";
 import { formatPrice } from "@/lib/utils";
+import { getDictionary } from "@/lib/dictionaries";
 
 interface WinnerIdentityProps {
   winner: any;
+  lang?: string;
 }
 
-export function WinnerIdentity({ winner }: WinnerIdentityProps) {
+export async function WinnerIdentity({ winner, lang = "en" }: WinnerIdentityProps) {
+  const dict = await getDictionary(lang);
+  const t = dict.WinnersPage.Identity;
+
   return (
     <>
       {/* Profile & Identity Section (Overlapping the hero) */}
@@ -55,7 +60,7 @@ export function WinnerIdentity({ winner }: WinnerIdentityProps) {
               </div>
               <div>
                 <p className="text-xs font-semibold text-mist uppercase tracking-wider">
-                  Location
+                  {t.Location}
                 </p>
                 <p className="text-lg font-medium text-forest-deep truncate">
                   {winner.personal?.location}
@@ -71,7 +76,7 @@ export function WinnerIdentity({ winner }: WinnerIdentityProps) {
               </div>
               <div>
                 <p className="text-xs font-semibold text-mist uppercase tracking-wider">
-                  Occupation
+                  {lang === "ht" ? "Okipasyon" : "Occupation"}
                 </p>
                 <p className="text-lg font-medium text-forest-deep truncate">
                   {winner.background?.occupation}
@@ -87,7 +92,7 @@ export function WinnerIdentity({ winner }: WinnerIdentityProps) {
               </div>
               <div>
                 <p className="text-xs font-semibold text-mist uppercase tracking-wider">
-                  Awarded
+                  {lang === "ht" ? "Kantite Lajan" : "Awarded"}
                 </p>
                 <p className="text-lg font-medium text-forest-deep truncate">
                   {formatPrice(winner.awardedAmount)}

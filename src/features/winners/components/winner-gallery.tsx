@@ -1,22 +1,27 @@
 import Image from "next/image";
 import { ImageIcon } from "lucide-react";
 import { getImageUrl } from "@/lib/getImageUrl";
+import { getDictionary } from "@/lib/dictionaries";
 
 interface WinnerGalleryProps {
   winner: any;
+  lang?: string;
 }
 
-export function WinnerGallery({ winner }: WinnerGalleryProps) {
+export async function WinnerGallery({ winner, lang = "en" }: WinnerGalleryProps) {
   if (!winner.projectGallery || winner.projectGallery.length === 0) {
     return null;
   }
+
+  const dict = await getDictionary(lang);
+  const t = dict.WinnersPage.Gallery;
 
   return (
     <div className="lg:col-span-5 space-y-8">
       <div className="flex items-center gap-2 border-b border-hairline pb-4">
         <ImageIcon className="h-5 w-5 text-forest" />
         <h3 className="font-semibold text-forest-deep uppercase tracking-wider">
-          Project Gallery
+          {t.Gallery}
         </h3>
       </div>
 

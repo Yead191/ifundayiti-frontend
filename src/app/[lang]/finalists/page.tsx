@@ -5,20 +5,31 @@ import { nextFetch } from "@/helpers/next-fetch/NextFetch";
 import { buildMetadata } from "@/lib/seo";
 import { FinalistsClient } from "@/features/finalists/components/finalists-client";
 import { EmptyState } from "@/components/shared/empty-state";
-
-export const metadata: Metadata = buildMetadata({
-  title: "Finalists",
-  description:
-    "Meet the finalists of the IFundAyiti grant cycles. Explore their inspiring projects and expected community impact.",
-  path: "/finalists",
-});
+import { getDictionary } from "@/lib/dictionaries";
 
 interface PageProps {
+  params: Promise<{ lang: string }>;
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }
 
-export default async function FinalistsPage({ searchParams }: PageProps) {
-  const params = await searchParams;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+
+  return buildMetadata({
+    title: dict.Navbar.Finalists,
+    description: dict.FinalistsPage.Hero.Subtitle,
+    path: `/${lang}/finalists`,
+  });
+}
+
+export default async function FinalistsPage({ params, searchParams }: PageProps) {
+  const { lang } = await params;
+  const sp = await searchParams;
   
   // 1. Fetch all periods
   const periodsRes = await nextFetch("/period", { cache: "no-store" });
@@ -31,7 +42,7 @@ export default async function FinalistsPage({ searchParams }: PageProps) {
 
   // Determine current period based on search param or fallback to latest
   const currentPeriodId = 
-    typeof params.period === "string" ? params.period : (latestPeriod?._id || "");
+    typeof sp.period === "string" ? sp.period : (latestPeriod?._id || "");
 
   // 2. Fetch finalists for the selected period
   let finalists: any[] = [];
@@ -40,28 +51,32 @@ export default async function FinalistsPage({ searchParams }: PageProps) {
     finalists = finalistsRes.success ? finalistsRes.data || [] : [];
   }
 
+  const dict = await getDictionary(lang);
+  const t = dict.FinalistsPage;
+
   return (
     <>
       <PageHero
-        eyebrow="Our Finalists"
-        title="Meet the visionaries behind the ideas."
-        subtitle="Explore the outstanding applicants who made it to the final stages of our grant cycles."
+        eyebrow={t.Hero.Eyebrow}
+        title={t.Hero.Title}
+        subtitle={t.Hero.Subtitle}
       />
 
       <section className="py-20 relative bg-sand-soft/30 min-h-[60vh]">
         <Container>
           {periods.length === 0 ? (
             <EmptyState
-              title="No grant cycles available"
-              body="We don't have any grant cycles to display finalists for right now."
-              actionLabel="View all grants"
-              actionHref="/grants"
+              title={t.EmptyState.Title}
+              body={t.EmptyState.Body}
+              actionLabel={t.EmptyState.ActionLabel}
+              actionHref={`/${lang}/grants`}
             />
           ) : (
             <FinalistsClient 
               periods={periods} 
               finalists={finalists} 
               currentPeriodId={currentPeriodId} 
+              lang={lang}
             />
           )}
         </Container>

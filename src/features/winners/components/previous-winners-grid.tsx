@@ -6,9 +6,10 @@ import { formatPrice } from "@/lib/utils";
 
 interface PreviousWinnersGridProps {
   winners: any[];
+  lang?: string;
 }
 
-export function PreviousWinnersGrid({ winners }: PreviousWinnersGridProps) {
+export function PreviousWinnersGrid({ winners, lang = "en" }: PreviousWinnersGridProps) {
   if (winners.length === 0) return null;
 
   return (
@@ -16,7 +17,7 @@ export function PreviousWinnersGrid({ winners }: PreviousWinnersGridProps) {
       {winners.map((w: any) => (
         <Link
           key={w._id}
-          href={`/winners/${w._id}`}
+          href={`/${lang}/winners/${w._id}`}
           className="group flex flex-col overflow-hidden rounded-4xl bg-white border border-hairline hover:border-forest/20 shadow-sm hover:shadow-xl transition-all duration-300"
         >
           <div className="relative aspect-4/3 overflow-hidden">

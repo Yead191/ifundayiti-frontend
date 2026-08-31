@@ -2,14 +2,19 @@ import Image from "next/image";
 import { MapPin, User, Rocket, Sparkles, X } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
 import { getImageUrl } from "@/lib/getImageUrl";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 interface FinalistModalProps {
   open: boolean;
   onClose: () => void;
   finalist: any | null;
+  lang?: string;
 }
 
 export function FinalistModal({ open, onClose, finalist }: FinalistModalProps) {
+  const dict = useTranslation();
+  const t = dict.FinalistsPage.Modal;
+
   if (!finalist) return null;
 
   return (
@@ -31,7 +36,7 @@ export function FinalistModal({ open, onClose, finalist }: FinalistModalProps) {
             }}
           />
           <span className="absolute -bottom-4 right-2 font-display text-[6rem] sm:text-[8rem] font-bold text-white/5 tracking-tighter select-none pointer-events-none leading-none">
-            FINALIST
+            {t.Watermark}
           </span>
         </div>
 
@@ -71,7 +76,7 @@ export function FinalistModal({ open, onClose, finalist }: FinalistModalProps) {
             </div>
             <div>
               <p className="text-[10px] font-semibold text-mist uppercase tracking-wider">
-                Location
+                {t.Location}
               </p>
               <p className="text-sm font-medium text-forest-deep">
                 {finalist.personal?.location}
@@ -85,7 +90,7 @@ export function FinalistModal({ open, onClose, finalist }: FinalistModalProps) {
             </div>
             <div>
               <p className="text-[10px] font-semibold text-mist uppercase tracking-wider">
-                Occupation
+                {t.Occupation}
               </p>
               <p className="text-sm font-medium text-forest-deep">
                 {finalist.background?.occupation}
@@ -99,7 +104,7 @@ export function FinalistModal({ open, onClose, finalist }: FinalistModalProps) {
             <div className="flex items-center gap-2 mb-2">
               <Rocket className="h-4 w-4 text-forest" />
               <h3 className="font-semibold text-forest-deep uppercase tracking-wider text-xs">
-                Proposed Fund Usage
+                {t.FundUsage}
               </h3>
             </div>
             <p className="text-mist text-sm leading-relaxed">
@@ -111,7 +116,7 @@ export function FinalistModal({ open, onClose, finalist }: FinalistModalProps) {
             <div className="flex items-center gap-2 mb-2">
               <Sparkles className="h-4 w-4 text-forest" />
               <h3 className="font-semibold text-forest-deep uppercase tracking-wider text-xs">
-                Expected Impact
+                {t.ExpectedImpact}
               </h3>
             </div>
             <p className="text-mist text-sm leading-relaxed">

@@ -3,24 +3,29 @@
 import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Calendar, MapPin, ChevronDown } from "lucide-react";
+import { Calendar, MapPin } from "lucide-react";
 import { getImageUrl } from "@/lib/getImageUrl";
 import { FinalistModal } from "./finalist-modal";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { EmptyState } from "@/components/shared/empty-state";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 interface FinalistsClientProps {
   periods: any[];
   finalists: any[];
   currentPeriodId: string;
+  lang?: string;
 }
 
-export function FinalistsClient({ periods, finalists, currentPeriodId }: FinalistsClientProps) {
+export function FinalistsClient({ periods, finalists, currentPeriodId, lang = "en" }: FinalistsClientProps) {
   const router = useRouter();
   const [selectedFinalist, setSelectedFinalist] = useState<any | null>(null);
+  
+  const dict = useTranslation();
+  const t = dict.FinalistsPage;
 
   const handlePeriodChange = (value: string) => {
-    router.push(`/finalists?period=${value}`);
+    router.push(`/${lang}/finalists?period=${value}`);
   };
 
   return (
@@ -28,16 +33,16 @@ export function FinalistsClient({ periods, finalists, currentPeriodId }: Finalis
       <div className="mb-12 flex flex-col md:flex-row md:items-center justify-between gap-6 bg-white p-6 rounded-3xl border border-hairline shadow-sm">
         <div>
           <h2 className="font-display text-2xl text-forest-deep mb-2">
-            Select Grant Cycle
+            {t.Client.SelectCycle}
           </h2>
           <p className="text-sm text-mist">
-            Browse finalists from our current and previous application periods.
+            {t.Client.SelectCycleSubtitle}
           </p>
         </div>
         <div className="w-full md:w-72">
           <Select value={currentPeriodId} onValueChange={handlePeriodChange}>
             <SelectTrigger className="w-full bg-sand-soft/30 border-hairline h-12 rounded-xl text-forest-deep font-medium">
-              <SelectValue placeholder="Select a period" />
+              <SelectValue placeholder={t.Client.SelectTriggerPlaceholder} />
             </SelectTrigger>
             <SelectContent>
               {periods.map((period) => (
@@ -52,10 +57,10 @@ export function FinalistsClient({ periods, finalists, currentPeriodId }: Finalis
 
       {finalists.length === 0 ? (
         <EmptyState
-          title="No finalists announced yet"
-          body="Finalists for this grant cycle have not been announced yet. Please check back later."
-          actionLabel="View all grants"
-          actionHref="/grants"
+          title={t.Client.EmptyTitle}
+          body={t.Client.EmptyBody}
+          actionLabel={t.EmptyState.ActionLabel}
+          actionHref={`/${lang}/grants`}
         />
       ) : (
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
@@ -92,7 +97,7 @@ export function FinalistsClient({ periods, finalists, currentPeriodId }: Finalis
                     <span>{f.personal?.location}</span>
                   </div>
                   <div className="text-forest font-medium text-sm flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                    View Details
+                    {t.Client.ViewDetails}
                   </div>
                 </div>
               </div>
@@ -105,6 +110,7 @@ export function FinalistsClient({ periods, finalists, currentPeriodId }: Finalis
         open={!!selectedFinalist}
         onClose={() => setSelectedFinalist(null)}
         finalist={selectedFinalist}
+        lang={lang}
       />
     </div>
   );

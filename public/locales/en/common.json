@@ -442,5 +442,70 @@
     "MoreWork": "More work",
     "Archive": "Archive",
     "ViewWork": "View work"
+  },
+  "WinnersPage": {
+    "Hero": {
+      "Eyebrow": "Our Winners",
+      "Title": "Celebrating the people behind the impact.",
+      "Subtitle": "Discover the inspiring stories of our grant recipients who are turning bold ideas into thriving community realities."
+    },
+    "EmptyState": {
+      "Title": "Winner stories will appear here",
+      "Body": "Winner stories will appear here after the current grant cycle concludes.",
+      "ActionLabel": "View grants"
+    },
+    "FeaturedWinner": {
+      "Eyebrow": "Featured Winner",
+      "WinnerBadge": "Winner",
+      "ViewStory": "View winner story"
+    },
+    "PreviousWinners": {
+      "Title": "Previous Winners",
+      "Subtitle": "Explore the archive of past grant recipients who have made a lasting impact in their communities."
+    },
+    "Identity": {
+      "Grant": "Grant",
+      "Cycle": "Cycle",
+      "Location": "Location",
+      "Lead": "Lead",
+      "BackToWinners": "Back to winners"
+    },
+    "Story": {
+      "TheStory": "The story",
+      "ExpectedImpact": "Expected Impact",
+      "PersonalNote": "Founder note",
+      "ProgramPillar": "Support warning",
+      "ProgramPillarBody": "This award was funded by the central Program Fund — made possible by public donations. We never crowdfund for single profiles in public view."
+    },
+    "Gallery": {
+      "Gallery": "Gallery"
+    }
+  },
+  "FinalistsPage": {
+    "Hero": {
+      "Eyebrow": "Our Finalists",
+      "Title": "Meet the visionaries behind the ideas.",
+      "Subtitle": "Explore the outstanding applicants who made it to the final stages of our grant cycles."
+    },
+    "EmptyState": {
+      "Title": "No grant cycles available",
+      "Body": "We don't have any grant cycles to display finalists for right now.",
+      "ActionLabel": "View all grants"
+    },
+    "Client": {
+      "SelectCycle": "Select Grant Cycle",
+      "SelectCycleSubtitle": "Browse finalists from our current and previous application periods.",
+      "SelectTriggerPlaceholder": "Select a period",
+      "EmptyTitle": "No finalists announced yet",
+      "EmptyBody": "Finalists for this grant cycle have not been announced yet. Please check back later.",
+      "ViewDetails": "View Details"
+    },
+    "Modal": {
+      "Watermark": "FINALIST",
+      "Location": "Location",
+      "Occupation": "Occupation",
+      "FundUsage": "Proposed Fund Usage",
+      "ExpectedImpact": "Expected Impact"
+    }
   }
 }
