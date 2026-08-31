@@ -12,7 +12,7 @@ export default function ImpactPageContent({ lang }: { lang: string }) {
     <>
       <ImpactHero lang={lang} />
       <ImpactMetrics lang={lang} />
-      <FeaturedProjects id="projects" lang={lang} />
+      <FeaturedProjects id="projects" />
       <ImpactSuccessStory lang={lang} />
       <ImpactFundFlow lang={lang} />
       <ImpactWinners lang={lang} />

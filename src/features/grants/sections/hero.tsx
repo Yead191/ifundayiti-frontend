@@ -54,7 +54,7 @@ export async function GrantsHero({ lang }: { lang: string }) {
           <div className="lg:col-span-7">
             <Reveal>
               <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-sand/85">
-                {t.Eyebrow}
+                {t.HeroEyebrow}
               </span>
               <h1 className="mt-5 max-w-2xl font-display text-4xl font-semibold leading-[1.04] tracking-tight sm:text-5xl lg:text-[3.35rem]">
                 {t.Title}
