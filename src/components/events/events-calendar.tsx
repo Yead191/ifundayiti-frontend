@@ -20,7 +20,7 @@ import {
   X,
 } from "lucide-react";
 
-import { cn, formatPrice } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import {
   EVENT_CATEGORIES,
   MOCK_EVENTS,
@@ -30,6 +30,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { EventDetailModal } from "@/components/events/event-detail-modal";
 import { Modal } from "@/components/ui/modal";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 const DAYS_OF_WEEK = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -48,7 +49,7 @@ const MONTH_NAMES = [
   "December",
 ];
 
-export function EventsCalendar() {
+export function EventsCalendar({ lang = "en" }: { lang?: string }) {
   // Dynamically start at the real current date (e.g. today's month & year)
   const [currentDate, setCurrentDate] = React.useState(() => new Date());
   const [selectedCategory, setSelectedCategory] = React.useState<
@@ -65,6 +66,36 @@ export function EventsCalendar() {
     dateStr: string;
     events: EventItem[];
   } | null>(null);
+
+  const dict = useTranslation();
+  const t = dict.EventsPage.Calendar;
+
+  const DAYS_OF_WEEK_LABELS = [
+    t.Sunday,
+    t.Monday,
+    t.Tuesday,
+    t.Wednesday,
+    t.Thursday,
+    t.Friday,
+    t.Saturday,
+  ];
+
+  function getCategoryLabel(catId: string) {
+    switch (catId) {
+      case "all":
+        return t.CategoryAll;
+      case "fundraiser":
+        return t.CategoryFundraiser;
+      case "pitch-night":
+        return t.CategoryPitchNight;
+      case "workshop":
+        return t.CategoryWorkshop;
+      case "gala":
+        return t.CategoryGala;
+      default:
+        return catId;
+    }
+  }
 
   const year = currentDate.getFullYear();
   const month = currentDate.getMonth();
@@ -129,6 +160,17 @@ export function EventsCalendar() {
     setModalOpen(true);
   }
 
+  const formattedMonth = React.useMemo(() => {
+    try {
+      const formatter = new Intl.DateTimeFormat(lang, { month: "long" });
+      const date = new Date(year, month, 1);
+      const str = formatter.format(date);
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    } catch (e) {
+      return MONTH_NAMES[month];
+    }
+  }, [lang, year, month]);
+
   function getCategoryBadgeColor(cat: EventCategory) {
     switch (cat) {
       case "fundraiser":
@@ -172,7 +214,7 @@ export function EventsCalendar() {
                     : "border border-hairline bg-sand-soft/50 text-forest-deep hover:border-forest/40 hover:bg-sand-soft",
                 )}
               >
-                {cat.label}
+                {getCategoryLabel(cat.id)}
               </button>
             );
           })}
@@ -191,7 +233,7 @@ export function EventsCalendar() {
                   : "text-mist",
               )}
             >
-              Month Grid
+              {t.MonthGrid}
             </button>
             <button
               type="button"
@@ -203,7 +245,7 @@ export function EventsCalendar() {
                   : "text-mist",
               )}
             >
-              List Feed
+              {t.ListFeed}
             </button>
           </div>
 
@@ -212,18 +254,18 @@ export function EventsCalendar() {
               type="button"
               onClick={prevMonth}
               className="grid h-9 w-9 place-items-center rounded-full border border-hairline bg-white text-forest hover:bg-sand-soft cursor-pointer transition"
-              aria-label="Previous Month"
+              aria-label={t.PrevMonth}
             >
               <ChevronLeft className="h-4 w-4" />
             </button>
             <span className="min-w-28 text-center font-display text-base font-bold text-forest-deep">
-              {MONTH_NAMES[month]} {year}
+              {formattedMonth} {year}
             </span>
             <button
               type="button"
               onClick={nextMonth}
               className="grid h-9 w-9 place-items-center rounded-full border border-hairline bg-white text-forest hover:bg-sand-soft cursor-pointer transition"
-              aria-label="Next Month"
+              aria-label={t.NextMonth}
             >
               <ChevronRight className="h-4 w-4" />
             </button>
@@ -239,7 +281,7 @@ export function EventsCalendar() {
             <div className="overflow-hidden rounded-3xl border border-hairline bg-white shadow-md">
               {/* Day Headers */}
               <div className="grid grid-cols-7 border-b border-hairline bg-sand-soft/60 py-3 text-center text-xs font-bold uppercase tracking-wider text-forest">
-                {DAYS_OF_WEEK.map((day) => (
+                {DAYS_OF_WEEK_LABELS.map((day) => (
                   <div key={day}>{day}</div>
                 ))}
               </div>
@@ -289,7 +331,7 @@ export function EventsCalendar() {
                             title="View all events on this day"
                           >
                             <Layers className="h-3 w-3" />
-                            {evts.length} events
+                            {evts.length} {t.EventsCount}
                           </button>
                         )}
                       </div>
@@ -330,7 +372,7 @@ export function EventsCalendar() {
                             }
                             className="w-full text-center text-[10px] font-semibold text-forest hover:underline pt-0.5 cursor-pointer"
                           >
-                            +{evts.length - 2} more events
+                            +{evts.length - 2} {t.MoreEvents}
                           </button>
                         )}
                       </div>
@@ -346,11 +388,10 @@ export function EventsCalendar() {
                 <div className="rounded-3xl border border-hairline bg-white p-12 text-center">
                   <CalendarIcon className="mx-auto h-10 w-10 text-mist mb-3" />
                   <p className="font-display text-xl text-forest-deep">
-                    No events found
+                    {t.NoEvents}
                   </p>
                   <p className="text-xs text-mist mt-1">
-                    Try clearing your category filter to browse all upcoming
-                    drives.
+                    {t.NoEventsDesc}
                   </p>
                 </div>
               ) : (
@@ -377,16 +418,16 @@ export function EventsCalendar() {
                               getCategoryBadgeColor(evt.category),
                             )}
                           >
-                            {evt.category.replace("-", " ")}
+                            {getCategoryLabel(evt.category)}
                           </span>
                           {evt.eventType === "virtual" && (
                             <span className="text-[10px] font-bold text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full flex items-center gap-1">
-                              <Video className="h-3 w-3" /> Zoom
+                              <Video className="h-3 w-3" /> {t.Zoom}
                             </span>
                           )}
                           {evt.eventType === "hybrid" && (
                             <span className="text-[10px] font-bold text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full flex items-center gap-1">
-                              <Video className="h-3 w-3" /> Hybrid
+                              <Video className="h-3 w-3" /> {t.Hybrid}
                             </span>
                           )}
                         </div>
@@ -415,7 +456,7 @@ export function EventsCalendar() {
                       variant="outline"
                       className="rounded-xl shrink-0"
                     >
-                      View Event →
+                      {t.ViewEvent} →
                     </Button>
                   </div>
                 ))
@@ -431,7 +472,7 @@ export function EventsCalendar() {
               <div className="rounded-3xl border border-hairline bg-white p-6 shadow-md space-y-5">
                 <div className="flex items-center justify-between border-b border-hairline pb-3">
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-forest">
-                    Event Spotlight
+                    {t.SpotlightTitle}
                   </p>
                   <span
                     className={cn(
@@ -439,7 +480,7 @@ export function EventsCalendar() {
                       getCategoryBadgeColor(selectedEvent.category),
                     )}
                   >
-                    {selectedEvent.category.replace("-", " ")}
+                    {getCategoryLabel(selectedEvent.category)}
                   </span>
                 </div>
 
@@ -452,12 +493,12 @@ export function EventsCalendar() {
                   />
                   {selectedEvent.eventType === "virtual" && (
                     <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-blue-600 px-3 py-1 text-[10px] font-bold text-white shadow-md">
-                      <Video className="h-3 w-3" /> Zoom Virtual
+                      <Video className="h-3 w-3" /> {t.Zoom} Virtual
                     </span>
                   )}
                   {selectedEvent.eventType === "hybrid" && (
                     <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-purple-600 px-3 py-1 text-[10px] font-bold text-white shadow-md">
-                      <Video className="h-3 w-3" /> Hybrid Event
+                      <Video className="h-3 w-3" /> {t.Hybrid} Event
                     </span>
                   )}
                 </div>
@@ -492,9 +533,8 @@ export function EventsCalendar() {
                 <div className="rounded-2xl border border-hairline bg-sand-soft/50 p-3.5 text-xs text-forest-deep leading-relaxed flex items-start gap-2">
                   <Info className="h-4 w-4 text-forest shrink-0 mt-0.5" />
                   <p>
-                    <strong>Central Organization Fund:</strong> All event
-                    fundraising benefits the central IFundAyiti Program Fund,
-                    allocated to verified grant winners.
+                    <strong>{dict.EventsPage.Modal.CentralNoticeTitle}</strong>{" "}
+                    {dict.EventsPage.Modal.CentralNoticeBody}
                   </p>
                 </div>
 
@@ -505,7 +545,7 @@ export function EventsCalendar() {
                     className="w-full rounded-xl"
                   >
                     <Users className="mr-2 h-4 w-4" />
-                    RSVP for Event ({selectedEvent.rsvpCount} Registered)
+                    {t.RsvpBtn} ({selectedEvent.rsvpCount} {t.RsvpCount})
                   </Button>
 
                   <Button
@@ -513,17 +553,16 @@ export function EventsCalendar() {
                     variant="outline"
                     className="w-full rounded-xl"
                   >
-                    <Link href="/donate">
+                    <Link href={`/${lang}/donate`}>
                       <Heart className="mr-2 h-4 w-4 text-forest" />
-                      Donate to IFundAyiti Program Fund
+                      {t.DonateBtn}
                     </Link>
                   </Button>
                 </div>
               </div>
             ) : (
               <div className="rounded-3xl border border-hairline bg-white p-6 text-center text-mist">
-                Select an event from the calendar grid to view spotlight
-                details.
+                {t.SpotlightPlaceholder}
               </div>
             )}
 
@@ -532,7 +571,7 @@ export function EventsCalendar() {
               <div className="flex items-center gap-2 text-forest mb-4">
                 <Sparkles className="h-4 w-4" />
                 <h4 className="font-display text-sm font-semibold text-forest-deep">
-                  Upcoming Community Drives
+                  {t.UpcomingDrives}
                 </h4>
               </div>
 
@@ -575,10 +614,10 @@ export function EventsCalendar() {
             <div className="flex items-center justify-between border-b border-hairline pb-3">
               <div>
                 <h3 className="font-display text-lg font-bold text-forest-deep">
-                  Events on {selectedDayEvents.dateStr}
+                  {t.EventsOn} {selectedDayEvents.dateStr}
                 </h3>
                 <p className="text-xs text-mist">
-                  {selectedDayEvents.events.length} events scheduled for this
+                  {selectedDayEvents.events.length} {t.EventsCount} scheduled for this
                   day
                 </p>
               </div>
@@ -603,7 +642,7 @@ export function EventsCalendar() {
                           getCategoryBadgeColor(evt.category),
                         )}
                       >
-                        {evt.category.replace("-", " ")}
+                        {getCategoryLabel(evt.category)}
                       </span>
                       <span className="text-[11px] text-forest font-semibold">
                         {evt.time}
@@ -629,6 +668,7 @@ export function EventsCalendar() {
         event={selectedEvent}
         open={modalOpen}
         onClose={() => setModalOpen(false)}
+        lang={lang}
       />
     </div>
   );

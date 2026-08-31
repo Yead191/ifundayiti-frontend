@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Calendar as CalendarIcon,
-  Globe,
   Heart,
   Info,
   ShieldCheck,
@@ -16,15 +15,55 @@ import { Container } from "@/components/shared/container";
 import { EventsCalendar } from "@/components/events/events-calendar";
 import { buildMetadata } from "@/lib/seo";
 import { Button } from "@/components/ui/button";
+import { getDictionary } from "@/lib/dictionaries";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Fundraising & Events Calendar",
-  description:
-    "Explore upcoming IFundAyiti community fundraisers, grant pitch nights, donor galas, and Zoom masterclasses that power equity-free micro-grants for Haitian entrepreneurs.",
-  path: "/events",
-});
+interface PageProps {
+  params: Promise<{ lang: string }>;
+}
 
-export default function EventsPage() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+
+  return buildMetadata({
+    title: dict.Navbar.Events,
+    description: dict.EventsPage.Hero.Subtitle,
+    path: `/${lang}/events`,
+  });
+}
+
+export default async function EventsPage({ params }: PageProps) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+  const t = dict.EventsPage;
+
+  const metricHighlights = [
+    {
+      icon: Zap,
+      title: t.Metrics.AllocationTitle,
+      desc: t.Metrics.AllocationDesc,
+    },
+    {
+      icon: Video,
+      title: t.Metrics.AccessTitle,
+      desc: t.Metrics.AccessDesc,
+    },
+    {
+      icon: Users,
+      title: t.Metrics.VoicesTitle,
+      desc: t.Metrics.VoicesDesc,
+    },
+    {
+      icon: ShieldCheck,
+      title: t.Metrics.FundTitle,
+      desc: t.Metrics.FundDesc,
+    },
+  ];
+
   return (
     <div className="bg-cream min-h-screen">
       {/* ULTRA-PREMIUM EMOTIONAL HERO SECTION */}
@@ -39,17 +78,17 @@ export default function EventsPage() {
             {/* Pill Eyebrow */}
             <div className="inline-flex items-center gap-2 rounded-full border border-forest/20 bg-sand-soft/80 px-3.5 py-1.5 text-xs font-semibold text-forest shadow-xs">
               <Sparkles className="h-3.5 w-3.5 text-forest" />
-              <span>Gather. Connect. Empower.</span>
+              <span>{t.Hero.Eyebrow}</span>
             </div>
 
             {/* Display Title */}
             <h1 className="mt-4 font-display text-4xl font-semibold leading-[1.08] tracking-tight text-forest-deep sm:text-5xl lg:text-[3.25rem]">
-              Where Haitian dreams meet the capital to rise.
+              {t.Hero.Title}
             </h1>
 
             {/* Emotional Story Narrative */}
             <p className="mt-5 text-base leading-relaxed text-mist sm:text-lg">
-              Every pitch night, community workshop, and fundraising drive brings us one step closer to a self-sustaining, economically empowered Haiti. Whether you join us in person in Port-au-Prince or virtually via Zoom from anywhere across the globe — <strong>100% of event contributions strengthen our central Program Fund.</strong>
+              {t.Hero.Subtitle}
             </p>
 
             {/* CTA buttons */}
@@ -57,13 +96,13 @@ export default function EventsPage() {
               <Button asChild size="lg" className="rounded-xl px-7">
                 <Link href="#calendar">
                   <CalendarIcon className="mr-2 h-4 w-4" />
-                  Explore Calendar Events
+                  {t.Hero.CalendarBtn}
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="rounded-xl px-7">
-                <Link href="/donate">
+                <Link href={`/${lang}/donate`}>
                   <Heart className="mr-2 h-4 w-4 text-forest" />
-                  Donate to Central Program Fund
+                  {t.Hero.DonateBtn}
                 </Link>
               </Button>
             </div>
@@ -71,28 +110,7 @@ export default function EventsPage() {
 
           {/* Metric Highlights Bar */}
           <div className="mt-12 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {[
-              {
-                icon: Zap,
-                title: "100% Direct Allocation",
-                desc: "All event gifts fund micro-grants",
-              },
-              {
-                icon: Video,
-                title: "Physical & Zoom Access",
-                desc: "In-person & global virtual streaming",
-              },
-              {
-                icon: Users,
-                title: "1,500+ Community Voices",
-                desc: "Entrepreneurs, donors & mentors",
-              },
-              {
-                icon: ShieldCheck,
-                title: "Central Program Fund",
-                desc: "Managed with 100% transparency",
-              },
-            ].map(({ icon: Icon, title, desc }) => (
+            {metricHighlights.map(({ icon: Icon, title, desc }) => (
               <div
                 key={title}
                 className="flex items-center gap-3 rounded-2xl border border-hairline/80 bg-white/80 p-4 shadow-2xs backdrop-blur-xs"
@@ -112,10 +130,8 @@ export default function EventsPage() {
           <div className="mt-8 rounded-2xl border border-hairline bg-white/90 p-4 shadow-xs flex items-start gap-3 text-xs text-forest-deep max-w-4xl">
             <Info className="h-4.5 w-4.5 text-forest shrink-0 mt-0.5" />
             <div>
-              <strong className="font-semibold text-forest">How Event Fundraising Works:</strong>{" "}
-              <span>
-                Donations made during events are not locked to individual presentations; they flow directly into the central IFundAyiti Program Fund. Our independent selection board allocates 100% of these resources to verified micro-grant winners during quarterly grant cycles.
-              </span>
+              <strong className="font-semibold text-forest">{t.Notice.Title}</strong>{" "}
+              <span>{t.Notice.Body}</span>
             </div>
           </div>
         </Container>
@@ -124,7 +140,7 @@ export default function EventsPage() {
       {/* MAIN CALENDAR SECTION */}
       <section id="calendar" className="py-12 lg:py-16">
         <Container>
-          <EventsCalendar />
+          <EventsCalendar lang={lang} />
         </Container>
       </section>
     </div>

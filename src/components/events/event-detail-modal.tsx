@@ -23,20 +23,26 @@ import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 export function EventDetailModal({
   event,
   open,
   onClose,
+  lang = "en",
 }: {
   event: EventItem | null;
   open: boolean;
   onClose: () => void;
+  lang?: string;
 }) {
   const [rsvpName, setRsvpName] = React.useState("");
   const [rsvpEmail, setRsvpEmail] = React.useState("");
   const [submitting, setSubmitting] = React.useState(false);
   const [registered, setRegistered] = React.useState(false);
+
+  const dict = useTranslation();
+  const t = dict.EventsPage.Modal;
 
   React.useEffect(() => {
     if (!open) {
@@ -51,7 +57,7 @@ export function EventDetailModal({
   function handleRsvp(e: React.FormEvent) {
     e.preventDefault();
     if (!rsvpEmail.trim() || !rsvpName.trim()) {
-      toast.error("Please provide your name and email.");
+      toast.error(t.ErrEmpty);
       return;
     }
 
@@ -59,28 +65,48 @@ export function EventDetailModal({
     setTimeout(() => {
       setSubmitting(false);
       setRegistered(true);
-      toast.success(`You're registered for "${event?.title}"! Confirmation sent to ${rsvpEmail}.`);
+      toast.success(
+        t.RsvpSuccessBody.replace("[title]", event?.title || "").replace("[email]", rsvpEmail)
+      );
     }, 800);
+  }
+
+  function getCategoryLabel(catId: string) {
+    const cal = dict.EventsPage.Calendar;
+    switch (catId) {
+      case "all":
+        return cal.CategoryAll;
+      case "fundraiser":
+        return cal.CategoryFundraiser;
+      case "pitch-night":
+        return cal.CategoryPitchNight;
+      case "workshop":
+        return cal.CategoryWorkshop;
+      case "gala":
+        return cal.CategoryGala;
+      default:
+        return catId;
+    }
   }
 
   function renderEventTypeBadge() {
     if (event?.eventType === "virtual") {
       return (
         <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-600 px-3 py-1 text-[11px] font-bold text-white shadow-xs">
-          <Video className="h-3.5 w-3.5" /> Zoom Virtual Meeting
+          <Video className="h-3.5 w-3.5" /> {t.ZoomMeeting}
         </span>
       );
     }
     if (event?.eventType === "hybrid") {
       return (
         <span className="inline-flex items-center gap-1.5 rounded-full bg-purple-600 px-3 py-1 text-[11px] font-bold text-white shadow-xs">
-          <Video className="h-3.5 w-3.5" /> Hybrid (In-Person + Zoom)
+          <Video className="h-3.5 w-3.5" /> {t.HybridMeeting}
         </span>
       );
     }
     return (
       <span className="inline-flex items-center gap-1.5 rounded-full bg-forest px-3 py-1 text-[11px] font-bold text-white shadow-xs">
-        <MapPin className="h-3.5 w-3.5" /> Physical In-Person Event
+        <MapPin className="h-3.5 w-3.5" /> {t.PhysicalMeeting}
       </span>
     );
   }
@@ -102,7 +128,7 @@ export function EventDetailModal({
           <div className="absolute bottom-4 left-5 right-5 space-y-2">
             <div className="flex flex-wrap gap-2">
               <span className="inline-block rounded-full bg-sand px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider text-forest">
-                {event.category.replace("-", " ")}
+                {getCategoryLabel(event.category)}
               </span>
               {renderEventTypeBadge()}
             </div>
@@ -120,7 +146,7 @@ export function EventDetailModal({
               <CalendarIcon className="h-4 w-4 text-forest shrink-0" />
               <div>
                 <p className="font-semibold">{event.date}</p>
-                <p className="text-[11px] text-mist">Date</p>
+                <p className="text-[11px] text-mist">{t.Date}</p>
               </div>
             </div>
 
@@ -128,7 +154,7 @@ export function EventDetailModal({
               <Clock className="h-4 w-4 text-forest shrink-0" />
               <div>
                 <p className="font-semibold">{event.time}</p>
-                <p className="text-[11px] text-mist">Time</p>
+                <p className="text-[11px] text-mist">{t.Time}</p>
               </div>
             </div>
 
@@ -140,7 +166,7 @@ export function EventDetailModal({
               )}
               <div className="min-w-0">
                 <p className="font-semibold truncate">{event.location}</p>
-                <p className="text-[11px] text-mist">Venue Format</p>
+                <p className="text-[11px] text-mist">{t.VenueFormat}</p>
               </div>
             </div>
           </div>
@@ -152,7 +178,7 @@ export function EventDetailModal({
                 <div className="flex items-start gap-2.5 text-forest-deep">
                   <Building2 className="h-4 w-4 text-forest shrink-0 mt-0.5" />
                   <div>
-                    <span className="font-semibold text-forest">Venue Address:</span>{" "}
+                    <span className="font-semibold text-forest">{t.VenueAddress}:</span>{" "}
                     <span className="text-mist">{event.venueAddress}</span>
                   </div>
                 </div>
@@ -161,7 +187,7 @@ export function EventDetailModal({
                 <div className="flex items-center justify-between gap-2 text-blue-700 bg-blue-50 border border-blue-200/80 p-2.5 rounded-xl">
                   <div className="flex items-center gap-2 min-w-0">
                     <Video className="h-4 w-4 shrink-0 text-blue-600" />
-                    <span className="font-semibold truncate">Zoom Meeting Room Available</span>
+                    <span className="font-semibold truncate">{t.ZoomMeetingRoom}</span>
                   </div>
                   <a
                     href={event.virtualLink}
@@ -169,7 +195,7 @@ export function EventDetailModal({
                     rel="noreferrer"
                     className="inline-flex items-center gap-1 font-bold hover:underline shrink-0 text-xs"
                   >
-                    Open Link <ExternalLink className="h-3 w-3" />
+                    {t.OpenLink} <ExternalLink className="h-3 w-3" />
                   </a>
                 </div>
               )}
@@ -179,7 +205,7 @@ export function EventDetailModal({
           {/* Description */}
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-forest mb-1.5">
-              Event Description & Purpose
+              {t.DescriptionTitle}
             </h4>
             <p className="text-sm leading-relaxed text-mist">
               {event.description}
@@ -190,10 +216,8 @@ export function EventDetailModal({
           <div className="rounded-2xl border border-hairline bg-sand-soft/60 p-4 text-xs text-forest-deep leading-relaxed flex items-start gap-2.5">
             <Info className="h-4 w-4 text-forest shrink-0 mt-0.5" />
             <div>
-              <strong className="font-semibold text-forest">Central Program Fund Allocation:</strong>{" "}
-              <span>
-                All donations support the central IFundAyiti Program Fund. Our selection committee awards 100% of these contributions directly to verified Haitian entrepreneurs during quarterly grant cycles.
-              </span>
+              <strong className="font-semibold text-forest">{t.CentralNoticeTitle}</strong>{" "}
+              <span>{t.CentralNoticeBody}</span>
             </div>
           </div>
 
@@ -201,7 +225,7 @@ export function EventDetailModal({
           {event.speakers && event.speakers.length > 0 && (
             <div>
               <h4 className="text-xs font-semibold uppercase tracking-wider text-forest mb-2.5">
-                Featured Speakers & Hosts
+                {t.SpeakersTitle}
               </h4>
               <div className="grid gap-2.5 sm:grid-cols-2">
                 {event.speakers.map((sp) => (
@@ -233,16 +257,16 @@ export function EventDetailModal({
               <div className="rounded-2xl bg-forest/10 border border-forest/20 p-6 text-center">
                 <CheckCircle2 className="mx-auto h-8 w-8 text-forest mb-2" />
                 <h4 className="font-display font-semibold text-lg text-forest-deep">
-                  Registration Confirmed!
+                  {t.RsvpSuccessTitle}
                 </h4>
                 <p className="text-xs text-mist mt-1 max-w-md mx-auto">
-                  You are registered for <strong>{event.title}</strong>. A confirmation pass has been sent to <strong>{rsvpEmail}</strong>.
+                  {t.RsvpSuccessBody.replace("[title]", event.title).replace("[email]", rsvpEmail)}
                 </p>
                 <div className="mt-4 flex justify-center gap-3">
                   <Button asChild size="sm" className="rounded-xl">
-                    <Link href="/donate" onClick={onClose}>
+                    <Link href={`/${lang}/donate`} onClick={onClose}>
                       <Heart className="mr-1.5 h-3.5 w-3.5" />
-                      Donate to IFundAyiti Program Fund
+                      {dict.EventsPage.Calendar.DonateBtn}
                     </Link>
                   </Button>
                 </div>
@@ -252,15 +276,15 @@ export function EventDetailModal({
                 <div className="flex items-center justify-between">
                   <h4 className="font-display font-semibold text-base text-forest-deep flex items-center gap-2">
                     <Users className="h-4 w-4 text-forest" />
-                    <span>RSVP for Event</span>
+                    <span>{t.RsvpTitle}</span>
                   </h4>
-                  <span className="text-xs text-mist">{event.rsvpCount} people registered</span>
+                  <span className="text-xs text-mist">{event.rsvpCount} {t.PeopleRegistered}</span>
                 </div>
 
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div>
                     <Label htmlFor="rsvp-name" className="text-xs font-semibold uppercase tracking-wider text-forest mb-1 block">
-                      Full Name *
+                      {t.FullName}
                     </Label>
                     <Input
                       id="rsvp-name"
@@ -274,7 +298,7 @@ export function EventDetailModal({
 
                   <div>
                     <Label htmlFor="rsvp-email" className="text-xs font-semibold uppercase tracking-wider text-forest mb-1 block">
-                      Email Address *
+                      {t.EmailAddress}
                     </Label>
                     <Input
                       id="rsvp-email"
@@ -297,10 +321,10 @@ export function EventDetailModal({
                   >
                     {submitting ? (
                       <span className="flex items-center gap-2">
-                        <Loader2 className="h-4 w-4 animate-spin" /> Registering...
+                        <Loader2 className="h-4 w-4 animate-spin" /> {t.RegisteringBtn}
                       </span>
                     ) : (
-                      "Confirm RSVP & Reserve Spot"
+                      t.ConfirmBtn
                     )}
                   </Button>
 
@@ -310,9 +334,9 @@ export function EventDetailModal({
                     size="lg"
                     className="w-full sm:flex-1 rounded-xl"
                   >
-                    <Link href="/donate" onClick={onClose}>
+                    <Link href={`/${lang}/donate`} onClick={onClose}>
                       <Heart className="mr-1.5 h-4 w-4 text-forest" />
-                      Donate to Program Fund
+                      {dict.EventsPage.Calendar.DonateBtn}
                     </Link>
                   </Button>
                 </div>

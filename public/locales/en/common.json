@@ -221,7 +221,7 @@
   },
   "GrantsPage": {
     "Hero": {
-      "Eyebrow": "Grant program",
+      "HeroEyebrow": "Grant program",
       "Title": "Read the cycle",
       "TitleAccent": "before you apply.",
       "Subtitle": "One open window, one winner, up to $1,000 in equity-free capital. This page is your checklist — eligibility, documents, selection, and what happens after you submit.",
@@ -506,6 +506,148 @@
       "Occupation": "Occupation",
       "FundUsage": "Proposed Fund Usage",
       "ExpectedImpact": "Expected Impact"
+    }
+  },
+  "EventsPage": {
+    "Hero": {
+      "Eyebrow": "Gather. Connect. Empower.",
+      "Title": "Where Haitian dreams meet the capital to rise.",
+      "Subtitle": "Every pitch night, community workshop, and fundraising drive brings us one step closer to a self-sustaining, economically empowered Haiti. Whether you join us in person in Port-au-Prince or virtually via Zoom from anywhere across the globe — 100% of event contributions strengthen our central Program Fund.",
+      "CalendarBtn": "Explore Calendar Events",
+      "DonateBtn": "Donate to Central Program Fund"
+    },
+    "Metrics": {
+      "AllocationTitle": "100% Direct Allocation",
+      "AllocationDesc": "All event gifts fund micro-grants",
+      "AccessTitle": "Physical & Zoom Access",
+      "AccessDesc": "In-person & global virtual streaming",
+      "VoicesTitle": "1,500+ Community Voices",
+      "VoicesDesc": "Entrepreneurs, donors & mentors",
+      "FundTitle": "Central Program Fund",
+      "FundDesc": "Managed with 100% transparency"
+    },
+    "Notice": {
+      "Title": "How Event Fundraising Works:",
+      "Body": "Donations made during events are not locked to individual presentations; they flow directly into the central IFundAyiti Program Fund. Our independent selection board allocates 100% of these resources to verified micro-grant winners during quarterly grant cycles."
+    },
+    "Calendar": {
+      "MonthGrid": "Month Grid",
+      "ListFeed": "List Feed",
+      "PrevMonth": "Previous Month",
+      "NextMonth": "Next Month",
+      "Sunday": "Sun",
+      "Monday": "Mon",
+      "Tuesday": "Tue",
+      "Wednesday": "Wed",
+      "Thursday": "Thu",
+      "Friday": "Fri",
+      "Saturday": "Sat",
+      "EventsCount": "events",
+      "MoreEvents": "more events",
+      "NoEvents": "No events found",
+      "NoEventsDesc": "Try clearing your category filter to browse all upcoming drives.",
+      "SpotlightTitle": "Event Spotlight",
+      "SpotlightPlaceholder": "Select an event from the calendar grid to view spotlight details.",
+      "UpcomingDrives": "Upcoming Community Drives",
+      "RsvpCount": "Registered",
+      "RsvpBtn": "RSVP for Event",
+      "DonateBtn": "Donate to IFundAyiti Program Fund",
+      "CategoryAll": "All Events",
+      "CategoryFundraiser": "Fundraisers",
+      "CategoryPitchNight": "Pitch Nights",
+      "CategoryWorkshop": "Workshops",
+      "CategoryGala": "Donor Galas",
+      "Zoom": "Zoom",
+      "Hybrid": "Hybrid",
+      "ViewEvent": "View Event",
+      "EventsOn": "Events on"
+    },
+    "Modal": {
+      "ZoomMeeting": "Zoom Virtual Meeting",
+      "HybridMeeting": "Hybrid (In-Person + Zoom)",
+      "PhysicalMeeting": "Physical In-Person Event",
+      "ZoomMeetingRoom": "Zoom Meeting Room Available",
+      "OpenLink": "Open Link",
+      "DescriptionTitle": "Event Description & Purpose",
+      "CentralNoticeTitle": "Central Program Fund Allocation:",
+      "CentralNoticeBody": "All donations support the central IFundAyiti Program Fund. Our selection committee awards 100% of these contributions directly to verified Haitian entrepreneurs during quarterly grant cycles.",
+      "SpeakersTitle": "Featured Speakers & Hosts",
+      "RsvpTitle": "RSVP for Event",
+      "PeopleRegistered": "people registered",
+      "FullName": "Full Name *",
+      "EmailAddress": "Email Address *",
+      "ConfirmBtn": "Confirm RSVP & Reserve Spot",
+      "RegisteringBtn": "Registering...",
+      "RsvpSuccessTitle": "Registration Confirmed!",
+      "RsvpSuccessBody": "You are registered for [title]. A confirmation pass has been sent to [email].",
+      "ErrEmpty": "Please provide your name and email.",
+      "Date": "Date",
+      "Time": "Time",
+      "VenueFormat": "Venue Format",
+      "VenueAddress": "Venue Address"
+    }
+  },
+  "DonatePage": {
+    "Hero": {
+      "Eyebrow": "🌱 Empower Haitian Innovation",
+      "Title": "Every dollar plants a seed. Every grant transforms a life.",
+      "Subtitle": "100% of public donations directly fund non-dilutive, equity-free micro-grants of up to $1,000 for visionary Haitian entrepreneurs, local creators, and community builders."
+    },
+    "Badges": {
+      "DirectTitle": "100% Direct Allocation",
+      "DirectDesc": "Every public dollar enters the grant pool",
+      "GrantTitle": "$1,000 Micro-Grants",
+      "GrantDesc": "Catalytic seed funding for local businesses",
+      "EquityTitle": "0% Equity Taken",
+      "EquityDesc": "Pure non-dilutive community capital",
+      "GrassrootsTitle": "Grassroots First",
+      "GrassrootsDesc": "Driven by Haitian builders on the ground"
+    },
+    "Narrative": {
+      "Eyebrow": "Make an Impactful Gift",
+      "Title": "Fuel the Program Fund",
+      "Body": "Behind every micro-grant is a Haitian dream waiting to take root — a bakery expanding, a solar kiosk powering a village, an eco-textile workshop training local youth. Select a gift amount below to empower the next batch of builders."
+    },
+    "Story": {
+      "Eyebrow": "Real Entrepreneur Story",
+      "Quote": "“The $1,000 micro-grant from IFundAyiti allowed our bakery to purchase our first solar power inverter. During grid outages, we stayed open, baked fresh bread, and kept 4 young bakers employed.”",
+      "Author": "Jean-Marc P.",
+      "AuthorRole": "Founder of Solèy Bakery · Cap-Haïtien"
+    },
+    "Transparency": {
+      "Eyebrow": "Transparency Guarantee",
+      "Title": "Where your money goes",
+      "Body": "We believe in 100% financial transparency. Every contribution is pooled into the Program Fund and audited for maximum community impact.",
+      "DirectGrants": "Direct Micro-Grants",
+      "DirectGrantsDesc": "Direct equity-free grants to selected Haitian applicants",
+      "Mentorship": "Mentorship & Technical Incubator",
+      "MentorshipDesc": "Business coaching, financial literacy & workshops",
+      "Verification": "Verification & Field Due Diligence",
+      "VerificationDesc": "On-the-ground project evaluation and reporting"
+    },
+    "WhyGrants": {
+      "Eyebrow": "Our Shared Collective Impact",
+      "Title": "Why non-dilutive grants matter",
+      "Body": "Traditional loans burden early-stage Haitian entrepreneurs with high interest rates. IFundAyiti micro-grants require zero debt and zero equity, giving founders full freedom to grow.",
+      "Item1": "$1,000 covers equipment, inventory, or first payroll",
+      "Item2": "Quarterly grant cycles keep momentum continuous",
+      "Item3": "Direct accountability through community tracking"
+    },
+    "ShopMerch": {
+      "Title": "Prefer to shop mission merchandise?",
+      "Body": "Every purchase from our shop directly contributes to the central Program Fund.",
+      "LinkBtn": "Browse Merch Shop"
+    },
+    "FAQ": {
+      "Eyebrow": "Donor Questions",
+      "Title": "Frequently Asked Questions",
+      "Subtitle": "Everything you need to know about donating to the IFundAyiti Program Fund.",
+      "Q1": "Where does my donation go?",
+      "A1": "Donations go to the IFundAyiti Program Fund. They are not linked to an individual applicant.",
+      "Q2": "Can I donate anonymously?",
+      "A2": "You may use a preferred public name. Payment details are still required for processing.",
+      "Q3": "How do I receive confirmation?",
+      "A3": "A confirmation is sent to the email provided on the donation form after a successful payment."
     }
   }
 }
