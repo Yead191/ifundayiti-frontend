@@ -3,8 +3,15 @@ import { TeamValues } from "@/features/team/sections/team-values";
 import { TeamGrid } from "@/features/team/sections/team-grid";
 import { TeamCta } from "@/features/team/sections/team-cta";
 import { getTeamStats, getTeamMembers } from "@/helpers/next-fetch/teamActions";
+import { getDictionary } from "@/lib/dictionaries";
 
-export default async function TeamPageContent({ searchParams }: { searchParams: Promise<any> }) {
+export default async function TeamPageContent({
+  lang,
+  searchParams,
+}: {
+  lang: string;
+  searchParams: Promise<any>;
+}) {
   const params = await searchParams;
   const activeCategory = typeof params.category === "string" ? params.category : "all";
   const searchQuery = typeof params.q === "string" ? params.q : "";
@@ -25,10 +32,12 @@ export default async function TeamPageContent({ searchParams }: { searchParams: 
     ? membersRes.pagination || { total: 0, limit: 9, page: 1, totalPage: 1 }
     : { total: 0, limit: 9, page: 1, totalPage: 1 };
 
+  const dict = await getDictionary(lang);
+
   return (
     <div className="min-h-screen bg-cream">
-      <TeamHero stats={statsData} />
-      <TeamValues />
+      <TeamHero stats={statsData} dict={dict.TeamPage.Hero} />
+      <TeamValues dict={dict.TeamPage.Values} />
       <TeamGrid
         members={members}
         pagination={pagination}
@@ -36,8 +45,9 @@ export default async function TeamPageContent({ searchParams }: { searchParams: 
         activeCategory={activeCategory}
         searchQuery={searchQuery}
         page={page}
+        lang={lang}
       />
-      <TeamCta />
+      <TeamCta dict={dict.TeamPage.Cta} />
     </div>
   );
 }

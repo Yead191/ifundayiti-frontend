@@ -5,13 +5,20 @@ import { MapPin, Mail, Linkedin, Twitter, Github } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
 import { getImageUrl } from "@/lib/getImageUrl";
 
+import { useTranslation } from "@/components/providers/translation-provider";
+
 interface TeamModalProps {
   member: any | null;
   isOpen: boolean;
   onClose: () => void;
+  lang?: string;
 }
 
-export function TeamModal({ member, isOpen, onClose }: TeamModalProps) {
+export function TeamModal({ member, isOpen, onClose, lang }: TeamModalProps) {
+  const dict = useTranslation();
+  const t = dict.TeamPage.Modal;
+  const grid = dict.TeamPage.Grid;
+
   if (!member) return null;
 
   const categoryBadgeColor =
@@ -23,10 +30,10 @@ export function TeamModal({ member, isOpen, onClose }: TeamModalProps) {
 
   const categoryLabel =
     member.category === "director"
-      ? "Board Director"
+      ? grid.RoleDirector
       : member.category === "member"
-        ? "Core Operations Member"
-        : "Volunteer & Ambassador";
+        ? grid.RoleMember
+        : grid.RoleVolunteer;
 
   return (
     <Modal
@@ -86,7 +93,7 @@ export function TeamModal({ member, isOpen, onClose }: TeamModalProps) {
           {/* Bio */}
           <div className="mt-5">
             <h4 className="text-xs font-bold uppercase tracking-wider text-mist">
-              About
+              {t.About}
             </h4>
             <p className="mt-2 text-sm leading-relaxed text-cloud">
               {member.bio}
@@ -97,7 +104,7 @@ export function TeamModal({ member, isOpen, onClose }: TeamModalProps) {
           {member.focusAreas && member.focusAreas.length > 0 && (
             <div className="mt-5">
               <h4 className="text-xs font-bold uppercase tracking-wider text-mist mb-2">
-                Focus Areas & Expertise
+                {t.Focus}
               </h4>
               <div className="flex flex-wrap gap-2">
                 {member.focusAreas.map((skill: string, idx: number) => (
@@ -115,7 +122,7 @@ export function TeamModal({ member, isOpen, onClose }: TeamModalProps) {
           {/* Social & Contact */}
           <div className="mt-6 flex items-center justify-between border-t border-hairline pt-4">
             <span className="text-xs font-medium text-mist">
-              IFundAyiti Verified Profile
+              {t.Verified}
             </span>
             <div className="flex items-center gap-2">
               {member.email && (

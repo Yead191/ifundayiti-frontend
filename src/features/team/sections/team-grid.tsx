@@ -18,6 +18,8 @@ import { TeamModal } from "@/features/team/sections/team-modal";
 import { PaginationControls } from "@/components/ui/pagination-controls";
 import { getImageUrl } from "@/lib/getImageUrl";
 
+import { useTranslation } from "@/components/providers/translation-provider";
+
 interface TeamGridProps {
   members: any[];
   pagination: any;
@@ -29,6 +31,7 @@ interface TeamGridProps {
   activeCategory: TeamCategory;
   searchQuery: string;
   page: number;
+  lang?: string;
 }
 
 export function TeamGrid({
@@ -38,10 +41,30 @@ export function TeamGrid({
   activeCategory,
   searchQuery,
   page,
+  lang,
 }: TeamGridProps) {
   const router = useRouter();
   const [searchInput, setSearchInput] = React.useState(searchQuery);
   const [selectedMember, setSelectedMember] = React.useState<any | null>(null);
+
+  const dict = useTranslation();
+  const t = dict.TeamPage.Grid;
+
+  const currentLang = lang || "en";
+
+  const categoryLabels: Record<string, string> = {
+    all: t.CatAllLabel,
+    directors: t.CatDirLabel,
+    members: t.CatMemLabel,
+    volunteers: t.CatVolLabel,
+  };
+
+  const categoryDescriptions: Record<string, string> = {
+    all: t.CatAllDesc,
+    directors: t.CatDirDesc,
+    members: t.CatMemDesc,
+    volunteers: t.CatVolDesc,
+  };
 
   // Sync state if searchQuery changes from outside (e.g. Back button)
   React.useEffect(() => {
@@ -60,9 +83,9 @@ export function TeamGrid({
       if (nextPage > 1) {
         params.set("page", nextPage.toString());
       }
-      router.replace(`/team?${params.toString()}`, { scroll: false });
+      router.replace(`/${currentLang}/team?${params.toString()}`, { scroll: false });
     },
-    [router]
+    [router, currentLang]
   );
 
   // Debounce search input changes
@@ -122,7 +145,7 @@ export function TeamGrid({
                       : "text-forest-deep hover:bg-sand-soft hover:text-forest"
                   }`}
                 >
-                  {cat.label}
+                  {categoryLabels[cat.id] || cat.label}
                   <span
                     className={`rounded-full px-2 py-0.5 text-xs font-bold ${
                       active
@@ -142,7 +165,7 @@ export function TeamGrid({
             <Search className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-mist" />
             <input
               type="text"
-              placeholder="Search by name or focus areas..."
+              placeholder={t.SearchPlaceholder}
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
               className="w-full rounded-2xl border border-hairline bg-white py-2.5 pl-10 pr-4 text-sm text-forest-deep placeholder:text-mist focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20"
@@ -152,7 +175,7 @@ export function TeamGrid({
                 onClick={handleReset}
                 className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-mist hover:text-forest"
               >
-                Clear
+                {t.Clear}
               </button>
             )}
           </div>
@@ -160,7 +183,7 @@ export function TeamGrid({
 
         {/* Category Description Banner */}
         <div className="mt-6 rounded-2xl border border-hairline bg-white/60 px-5 py-3 text-sm text-mist">
-          {TEAM_CATEGORIES.find((c) => c.id === activeCategory)?.description}
+          {categoryDescriptions[activeCategory]}
         </div>
 
         {/* Members Grid */}
@@ -168,16 +191,16 @@ export function TeamGrid({
           <div className="mt-12 rounded-3xl border border-dashed border-hairline bg-white p-12 text-center">
             <UserCheck className="mx-auto h-12 w-12 text-mist/60" />
             <h3 className="mt-4 font-display text-lg font-bold text-forest-deep">
-              No team members found
+              {t.NoMembersTitle}
             </h3>
             <p className="mt-1 text-sm text-mist">
-              Try adjusting your search criteria or category filter.
+              {t.NoMembersDesc}
             </p>
             <button
               onClick={handleReset}
               className="mt-4 inline-flex items-center rounded-xl bg-forest px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-forest-bright"
             >
-              Reset Filters
+              {t.ResetFilters}
             </button>
           </div>
         ) : (
@@ -187,24 +210,24 @@ export function TeamGrid({
                 const categoryBadge =
                   member.category === "director" ? (
                     <span className="inline-flex items-center gap-1 rounded-full border border-emerald-300 bg-emerald-100 px-2.5 py-0.5 text-[11px] font-semibold text-emerald-900">
-                      <Shield className="h-3 w-3" /> Director
+                      <Shield className="h-3 w-3" /> {t.BadgeDirector}
                     </span>
                   ) : member.category === "member" ? (
                     <span className="inline-flex items-center gap-1 rounded-full border border-amber-300 bg-amber-100 px-2.5 py-0.5 text-[11px] font-semibold text-amber-900">
-                      <UserCheck className="h-3 w-3" /> Core Member
+                      <UserCheck className="h-3 w-3" /> {t.BadgeMember}
                     </span>
                   ) : (
                     <span className="inline-flex items-center gap-1 rounded-full border border-teal-300 bg-teal-100 px-2.5 py-0.5 text-[11px] font-semibold text-teal-900">
-                      <Heart className="h-3 w-3" /> Volunteer
+                      <Heart className="h-3 w-3" /> {t.BadgeVolunteer}
                     </span>
                   );
 
                 const mappedRole =
                   member.category === "director"
-                    ? "Board Director"
+                    ? t.RoleDirector
                     : member.category === "member"
-                      ? "Core Operations Member"
-                      : "Volunteer & Ambassador";
+                      ? t.RoleMember
+                      : t.RoleVolunteer;
 
                 return (
                   <Reveal key={member._id} delay={index * 30}>
@@ -250,7 +273,7 @@ export function TeamGrid({
 
                       {/* Footer / Trigger detail */}
                       <div className="mt-4 flex items-center justify-between border-t border-hairline pt-3 text-xs font-semibold text-forest">
-                        <span>View profile & details</span>
+                        <span>{t.ViewProfile}</span>
                         <ExternalLink className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                       </div>
                     </article>
@@ -271,6 +294,7 @@ export function TeamGrid({
           member={selectedMember}
           isOpen={!!selectedMember}
           onClose={() => setSelectedMember(null)}
+          lang={lang}
         />
       </Container>
     </section>

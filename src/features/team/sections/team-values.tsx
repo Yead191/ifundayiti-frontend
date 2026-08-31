@@ -11,19 +11,26 @@ const ICON_MAP = {
   Globe,
 };
 
-export function TeamValues() {
+export function TeamValues({ dict }: { dict: any }) {
+  const values = [
+    { icon: "ShieldCheck", title: dict.Val1Title, description: dict.Val1Desc },
+    { icon: "MapPin", title: dict.Val2Title, description: dict.Val2Desc },
+    { icon: "HeartHandshake", title: dict.Val3Title, description: dict.Val3Desc },
+    { icon: "Globe", title: dict.Val4Title, description: dict.Val4Desc },
+  ];
+
   return (
     <section className="py-16 md:py-24 bg-cream">
       <Container>
         <SectionHeading
           align="center"
-          eyebrow="Our Ethos"
-          title="How our team works together"
-          subtitle="Four core principles that guide how our board, members, and volunteers make decisions every single day."
+          eyebrow={dict.Eyebrow}
+          title={dict.Title}
+          subtitle={dict.Subtitle}
         />
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {TEAM_VALUES.map((item, index) => {
+          {values.map((item, index) => {
             const IconComponent = ICON_MAP[item.icon as keyof typeof ICON_MAP] || ShieldCheck;
             return (
               <Reveal key={index} delay={index * 80}>

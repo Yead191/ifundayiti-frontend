@@ -9,12 +9,18 @@ import {
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
-export function TeamHero({ stats: statsData }: { stats: { totalDirectors: number; totalMembers: number; totalVolunteers: number } }) {
+export function TeamHero({
+  stats: statsData,
+  dict,
+}: {
+  stats: { totalDirectors: number; totalMembers: number; totalVolunteers: number };
+  dict: any;
+}) {
   const stats = [
-    { label: "Board Directors", value: statsData.totalDirectors.toString(), suffix: "" },
-    { label: "Core Operations", value: statsData.totalMembers.toString(), suffix: "" },
-    { label: "Active Volunteers", value: statsData.totalVolunteers.toString(), suffix: "+" },
-    { label: "Haiti Departments", value: "10", suffix: "/10" },
+    { label: dict.StatDirectors, value: statsData.totalDirectors.toString(), suffix: "" },
+    { label: dict.StatMembers, value: statsData.totalMembers.toString(), suffix: "" },
+    { label: dict.StatVolunteers, value: statsData.totalVolunteers.toString(), suffix: "+" },
+    { label: dict.StatDepartments, value: "10", suffix: "/10" },
   ];
   return (
     <section className="relative overflow-hidden bg-linear-to-b from-sand-soft/80 via-cream to-cream pb-16 pt-28 md:pb-24 md:pt-36">
@@ -28,25 +34,25 @@ export function TeamHero({ stats: statsData }: { stats: { totalDirectors: number
             <div className="inline-flex items-center gap-2 rounded-full border border-forest/15 bg-white/80 px-4 py-1.5 shadow-sm backdrop-blur-md">
               <span className="flex h-2 w-2 rounded-full bg-forest-bright animate-pulse" />
               <span className="eyebrow text-xs tracking-wider text-forest font-semibold">
-                People Behind IFundAyiti
+                {dict.Badge}
               </span>
             </div>
           </Reveal>
 
           <Reveal delay={100}>
             <h1 className="mt-6 font-display text-4xl font-bold tracking-tight text-forest-deep sm:text-5xl md:text-6xl md:leading-[1.12]">
-              Meet our <span className="text-gradient">Directors,</span> Core{" "}
-              <span className="text-gradient">Members</span> & Dedicated{" "}
-              <span className="text-gradient">Volunteers</span>
+              {dict.TitlePrefix}
+              <span className="text-gradient">{dict.TitleDirectors}</span>
+              {dict.TitleMiddle}
+              <span className="text-gradient">{dict.TitleMembers}</span>
+              {dict.TitleAnd}
+              <span className="text-gradient">{dict.TitleVolunteers}</span>
             </h1>
           </Reveal>
 
           <Reveal delay={150}>
             <p className="mt-6 text-lg text-mist md:text-xl md:leading-relaxed">
-              From Port-au-Prince to Cap-Haïtien and the Diaspora, our team of
-              directors, operational staff, and grassroots volunteers work
-              tirelessly to deliver transparent, equity-free micro-grants to
-              Haitian entrepreneurs and community builders.
+              {dict.Subtitle}
             </p>
           </Reveal>
 
@@ -58,7 +64,7 @@ export function TeamHero({ stats: statsData }: { stats: { totalDirectors: number
                 className="rounded-xl px-6 font-semibold shadow-md"
               >
                 <a href="#team-grid">
-                  Explore Team <ArrowRight className="ml-2 h-4 w-4" />
+                  {dict.ExploreBtn} <ArrowRight className="ml-2 h-4 w-4" />
                 </a>
               </Button>
               <Button
@@ -67,7 +73,7 @@ export function TeamHero({ stats: statsData }: { stats: { totalDirectors: number
                 size="lg"
                 className="rounded-xl border-forest/20 px-6 font-semibold"
               >
-                <a href="#volunteer-cta">Join as a Volunteer</a>
+                <a href="#volunteer-cta">{dict.JoinBtn}</a>
               </Button>
             </div>
           </Reveal>

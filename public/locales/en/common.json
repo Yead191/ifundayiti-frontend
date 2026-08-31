@@ -778,5 +778,79 @@
       "SubmittedDocs": "Submitted Documents",
       "ViewDoc": "View Document"
     }
+  },
+  "TeamPage": {
+    "Metadata": {
+      "Title": "Our Team — Directors, Members & Volunteers",
+      "Description": "Meet the board of directors, core operations team, and community volunteers driving transparent micro-grants across Haiti and the diaspora with IFundAyiti."
+    },
+    "Hero": {
+      "Badge": "People Behind IFundAyiti",
+      "TitlePrefix": "Meet our ",
+      "TitleDirectors": "Directors,",
+      "TitleMiddle": " Core ",
+      "TitleMembers": "Members",
+      "TitleAnd": " & Dedicated ",
+      "TitleVolunteers": "Volunteers",
+      "Subtitle": "From Port-au-Prince to Cap-Haïtien and the Diaspora, our team of directors, operational staff, and grassroots volunteers work tirelessly to deliver transparent, equity-free micro-grants to Haitian entrepreneurs and community builders.",
+      "ExploreBtn": "Explore Team",
+      "JoinBtn": "Join as a Volunteer",
+      "StatDirectors": "Board Directors",
+      "StatMembers": "Core Operations",
+      "StatVolunteers": "Active Volunteers",
+      "StatDepartments": "Haiti Departments"
+    },
+    "Values": {
+      "Eyebrow": "Our Ethos",
+      "Title": "How our team works together",
+      "Subtitle": "Four core principles that guide how our board, members, and volunteers make decisions every single day.",
+      "Val1Title": "Uncompromising Integrity",
+      "Val1Desc": "Every dollar donated is tracked with open public records. Governance rests on clear standards, not secret handshakes.",
+      "Val2Title": "Rooted in the Soil",
+      "Val2Desc": "Our staff and volunteers live in Port-au-Prince, Cap-Haïtien, Jacmel, and Les Cayes. We understand local realities.",
+      "Val3Title": "Dignity Over Pity",
+      "Val3Desc": "We fund Haitian micro-entrepreneurs as capable builders, providing equity-free capital to catalyze self-reliance.",
+      "Val4Title": "One Ayiti, Global Unity",
+      "Val4Desc": "Bridging local innovators with the global diaspora to build sustainable, long-term economic infrastructure."
+    },
+    "Grid": {
+      "SearchPlaceholder": "Search by name or focus areas...",
+      "Clear": "Clear",
+      "NoMembersTitle": "No team members found",
+      "NoMembersDesc": "Try adjusting your search criteria or category filter.",
+      "ResetFilters": "Reset Filters",
+      "BadgeDirector": "Director",
+      "BadgeMember": "Core Member",
+      "BadgeVolunteer": "Volunteer",
+      "RoleDirector": "Board Director",
+      "RoleMember": "Core Operations Member",
+      "RoleVolunteer": "Volunteer & Ambassador",
+      "ViewProfile": "View profile & details",
+      "CatAllLabel": "All Team",
+      "CatAllDesc": "Every director, staff member, and volunteer driving community micro-grants across Ayiti.",
+      "CatDirLabel": "Board of Directors",
+      "CatDirDesc": "Stewardship leaders guiding policy, governance, and transparent fund management.",
+      "CatMemLabel": "Core Members",
+      "CatMemDesc": "Full-time operations, grant review, verification, and tech infrastructure team.",
+      "CatVolLabel": "Volunteers & Ambassadors",
+      "CatVolDesc": "Ground-level community forces verifying projects, translating forms, and connecting local talent."
+    },
+    "Modal": {
+      "About": "About",
+      "Focus": "Focus Areas & Expertise",
+      "Verified": "IFundAyiti Verified Profile"
+    },
+    "Cta": {
+      "Badge": "Volunteers & Community Force",
+      "Title": "Want to serve Haitian builders with us?",
+      "Subtitle": "Whether you are based in Port-au-Prince, Cap-Haïtien, Jacmel, or the global diaspora, we are always looking for passionate volunteers, local ambassadors, and contributors.",
+      "Benefit1": "Verify & support local micro-grant applicants in your city",
+      "Benefit2": "Translate application forms & community documentation",
+      "Benefit3": "Connect Haitian diaspora communities with grassroots projects",
+      "Benefit4": "Help build open-source tools for grant transparency",
+      "JoinPrompt": "Ready to join as a Volunteer, Ambassador, or Core Member?",
+      "ApplyNow": "Apply Now",
+      "LearnMission": "Learn About Our Mission"
+    }
   }
 }

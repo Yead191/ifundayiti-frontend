@@ -778,5 +778,79 @@
       "SubmittedDocs": "Dokiman ki Soumèt",
       "ViewDoc": "Gade Dokiman"
     }
+  },
+  "TeamPage": {
+    "Metadata": {
+      "Title": "Ekip Nou An — Direktè, Manm & Volontè",
+      "Description": "Rankontre konsèy direktè yo, ekip operasyon nwayo a, ak volontè kominote a k ap mennen mikwo-sibvansyon transparan yo nan tout peyi Ayiti ak nan dyaspora a avèk IFundAyiti."
+    },
+    "Hero": {
+      "Badge": "Moun Dèyè IFundAyiti yo",
+      "TitlePrefix": "Rankontre Direktè ",
+      "TitleDirectors": "Direktè,",
+      "TitleMiddle": " nou yo, Manm ",
+      "TitleMembers": "Nwayo",
+      "TitleAnd": " yo & Volontè ",
+      "TitleVolunteers": "Devouye yo",
+      "Subtitle": "Soti Pòtoprens rive Okap ak nan Dyaspora a, ekip direktè nou yo, anplwaye operasyonèl yo, ak volontè nan kominote yo travay san pran souf pou bay antreprenè ayisyen ak kominote yo mikwo-sibvansyon transparan ak san ekite.",
+      "ExploreBtn": "Dekouvri Ekip la",
+      "JoinBtn": "Rejwenn nou kòm Volontè",
+      "StatDirectors": "Direktè Konsèy",
+      "StatMembers": "Operasyon Nwayo",
+      "StatVolunteers": "Volontè Aktif",
+      "StatDepartments": "Depatman Ayiti"
+    },
+    "Values": {
+      "Eyebrow": "Valè Nou Yo",
+      "Title": "Kouman ekip nou an travay ansanm",
+      "Subtitle": "Kat prensip fondamantal ki gide fason konsèy nou an, manm yo, ak volontè yo pran desizyon chak jou.",
+      "Val1Title": "Entegrite San Konsesyon",
+      "Val1Desc": "Chak dola yo bay suiv avèk dosye piblik ki louvri. Gouvènans lan chita sou estanda klè, pa sou kout kouto anba tab.",
+      "Val2Title": "Anrasine nan Tè a",
+      "Val2Desc": "Ekip nou an ak volontè yo ap viv nan Pòtoprens, Okap, Jakmèl, ak Okay. Nou konprann reyalite lokal yo.",
+      "Val3Title": "Diyite Anvan Pitie",
+      "Val3Desc": "Nou finanse mikwo-antreprenè ayisyen yo kòm moun ki kapab bati, nou bay kapital san ekite pou ankouraje otonomi.",
+      "Val4Title": "Yon Sèl Ayiti, Inite Global",
+      "Val4Desc": "Konekte inovatè lokal yo ak dyaspora mondyal la pou bati enfrastrikti ekonomik dirab ak alontèm."
+    },
+    "Grid": {
+      "SearchPlaceholder": "Chèche pa non oswa domèn enterè...",
+      "Clear": "Efase",
+      "NoMembersTitle": "Pa gen manm ekip ki jwenn",
+      "NoMembersDesc": "Eseye chanje kritè chèche w yo oswa filtè kategori a.",
+      "ResetFilters": "Reyisyalize Filtè yo",
+      "BadgeDirector": "Direktè",
+      "BadgeMember": "Manm Nwayo",
+      "BadgeVolunteer": "Volontè",
+      "RoleDirector": "Direktè Konsèy",
+      "RoleMember": "Manm Operasyon Nwayo",
+      "RoleVolunteer": "Volontè & Anbasadè",
+      "ViewProfile": "Gade pwofil & detay",
+      "CatAllLabel": "Tout Ekip la",
+      "CatAllDesc": "Chak direktè, manm anplwaye, ak volontè k ap mennen mikwo-sibvansyon kominotè yo nan tout peyi Ayiti.",
+      "CatDirLabel": "Konsèy Direktè yo",
+      "CatDirDesc": "Lidè k ap gide politik, gouvènans, ak jesyon fon transparan yo.",
+      "CatMemLabel": "Manm Nwayo yo",
+      "CatMemDesc": "Ekip operasyon aplentan, evalyasyon sibvansyon, verifikasyon, ak enfrastrikti teknolojik.",
+      "CatVolLabel": "Volontè & Anbasadè",
+      "CatVolDesc": "Moun k ap travay dirèkteman sou teren an pou verifye pwojè yo, tradui fòm yo, epi konekte talan lokal yo."
+    },
+    "Modal": {
+      "About": "Kiyès li ye",
+      "Focus": "Domèn Fokus & Eksperyans",
+      "Verified": "Pwofil Verifye IFundAyiti"
+    },
+    "Cta": {
+      "Badge": "Volontè & Fòs Kominotè",
+      "Title": "Èske w vle sèvi antreprenè ayisyen yo avèk nou?",
+      "Subtitle": "Kit ou baze nan Pòtoprens, Okap, Jakmèl, oswa nan dyaspora a, nou toujou ap chèche volontè pasyone, anbasadè lokal, ak kontribitè.",
+      "Benefit1": "Verifye & sipòte aplikan mikwo-sibvansyon lokal yo nan vil ou",
+      "Benefit2": "Tradui fòm aplikasyon yo & dokiman kominote a",
+      "Benefit3": "Konekte dyaspora ayisyen an ak pwojè kominote a sou teren",
+      "Benefit4": "Ede bati zouti louvri pou transparans sibvansyon yo",
+      "JoinPrompt": "Pare pou w rejwenn nou kòm Volontè, Anbasadè, oswa Manm Nwayo?",
+      "ApplyNow": "Aplike Kounye a",
+      "LearnMission": "Konprann Misyon Nou"
+    }
   }
 }

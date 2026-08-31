@@ -4,12 +4,13 @@ import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
 
-export function TeamCta() {
+export function TeamCta({ dict, lang }: { dict: any; lang?: string }) {
+  const currentLang = lang || "en";
   const benefits = [
-    "Verify & support local micro-grant applicants in your city",
-    "Translate application forms & community documentation",
-    "Connect Haitian diaspora communities with grassroots projects",
-    "Help build open-source tools for grant transparency",
+    dict.Benefit1,
+    dict.Benefit2,
+    dict.Benefit3,
+    dict.Benefit4,
   ];
 
   return (
@@ -25,16 +26,15 @@ export function TeamCta() {
               <div className="lg:col-span-7">
                 <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3.5 py-1 text-xs font-semibold tracking-wider text-sand backdrop-blur-md">
                   <HeartHandshake className="h-3.5 w-3.5 text-sand" />
-                  Volunteers & Community Force
+                  {dict.Badge}
                 </div>
 
                 <h2 className="mt-4 font-display text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl leading-tight text-white">
-                  Want to serve Haitian builders with us?
+                  {dict.Title}
                 </h2>
 
                 <p className="mt-4 text-base leading-relaxed text-sand-soft md:text-lg">
-                  Whether you are based in Port-au-Prince, Cap-Haïtien, Jacmel, or the global diaspora, 
-                  we are always looking for passionate volunteers, local ambassadors, and contributors.
+                  {dict.Subtitle}
                 </p>
 
                 <div className="mt-6 grid gap-2.5 sm:grid-cols-2">
@@ -50,15 +50,15 @@ export function TeamCta() {
               <div className="lg:col-span-5 lg:text-right">
                 <div className="inline-flex flex-col gap-3 rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur-md">
                   <p className="text-sm text-sand font-medium text-left">
-                    Ready to join as a Volunteer, Ambassador, or Core Member?
+                    {dict.JoinPrompt}
                   </p>
                   <Button asChild size="lg" className="rounded-xl bg-sand text-forest-deep hover:bg-white font-bold shadow-lg">
-                    <Link href="/become-a-volunteer">
-                      Apply Now <ArrowRight className="ml-2 h-4 w-4" />
+                    <Link href={`/${currentLang}/become-a-volunteer`}>
+                      {dict.ApplyNow} <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
                   <Button asChild variant="outline" size="sm" className="rounded-xl border-white/30 text-white hover:bg-white/20">
-                    <Link href="/about">Learn About Our Mission</Link>
+                    <Link href={`/${currentLang}/about`}>{dict.LearnMission}</Link>
                   </Button>
                 </div>
               </div>
