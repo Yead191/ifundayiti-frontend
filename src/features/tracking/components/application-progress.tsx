@@ -1,12 +1,16 @@
-import * as React from "react";
+import { useTranslation } from "@/components/providers/translation-provider";
 import { CheckCircle2 } from "lucide-react";
 import { TApplicationStatus, POSITIVE_STEPS } from "../types";
 
 interface ApplicationProgressProps {
   status: TApplicationStatus;
+  lang?: string;
 }
 
-export function ApplicationProgress({ status }: ApplicationProgressProps) {
+export function ApplicationProgress({ status, lang }: ApplicationProgressProps) {
+  const dict = useTranslation();
+  const t = dict.TrackingPage.Progress;
+
   const isRejected = status === "rejected";
   const isArchived = status === "archived";
 
@@ -15,10 +19,18 @@ export function ApplicationProgress({ status }: ApplicationProgressProps) {
     POSITIVE_STEPS.findIndex((s) => s.key === status)
   );
 
+  const stepLabels: Record<string, string> = {
+    submitted: t.StepSubmitted,
+    underReview: t.StepUnderReview,
+    approved: t.StepApproved,
+    finalist: t.StepFinalist,
+    winner: t.StepWinner,
+  };
+
   return (
     <div className="block">
       <h3 className="text-sm font-semibold text-forest-deep uppercase tracking-wider mb-6">
-        Application Progress
+        {t.Title}
       </h3>
       <div className="relative">
         {/* Background Line */}
@@ -58,7 +70,7 @@ export function ApplicationProgress({ status }: ApplicationProgressProps) {
                       isActive || isCompleted ? "text-forest-deep" : "text-mist/70"
                     }`}
                   >
-                    {step.label}
+                    {stepLabels[step.key] || step.label}
                   </p>
                 </div>
               </div>

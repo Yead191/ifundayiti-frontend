@@ -715,5 +715,68 @@
       "A3": "Order updates and shipping info can be managed directly on our checkout page.",
       "LinkText3": "View Checkout"
     }
+  },
+  "TrackingPage": {
+    "Metadata": {
+      "Title": "Track Application",
+      "Description": "Check your IFundAyiti grant application status using the email and date of birth from your submission."
+    },
+    "Hero": {
+      "Eyebrow": "Application Status",
+      "Title": "Track Your Journey",
+      "Subtitle": "Stay updated on your IFundAyiti grant application. Enter your registered email and date of birth below to view your real-time status and next steps securely."
+    },
+    "Form": {
+      "ErrEmail": "Enter a valid email address",
+      "ErrDob": "Date of birth is required",
+      "ErrNotFound": "No application found with these credentials.",
+      "ErrUnexpected": "An unexpected error occurred while fetching your status.",
+      "LabelEmail": "Registered Email",
+      "PlaceholderEmail": "you@email.com",
+      "LabelDob": "Date of Birth",
+      "LabelPeriod": "Grant Cycle (Optional)",
+      "PlaceholderPeriod": "All Cycles (Latest)",
+      "CheckStatus": "Check Status",
+      "NotFoundTitle": "Application Not Found",
+      "NotFoundDesc": "Please make sure you are using the exact credentials and selected cycle."
+    },
+    "Status": {
+      "Submitted": "Submitted Successfully",
+      "UnderReview": "Currently Under Review",
+      "Approved": "Application Approved",
+      "Finalist": "Top Finalist",
+      "Winner": "Grant Winner!",
+      "Rejected": "Application Declined",
+      "Archived": "Archived",
+      "ProjectLabel": "Project:",
+      "RejectionHeader": "Application Update",
+      "RejectionBody": "Thank you for applying. Unfortunately, your application has not been selected to move forward at this time.",
+      "RejectionNote": "Note:",
+      "WinnerHeader": "Congratulations!",
+      "WinnerBody": "You have been selected as a grant winner! We will be in touch shortly regarding the next steps for funding distribution.",
+      "WinnerAwarded": "Awarded Amount:",
+      "SubmittedOn": "Submitted On",
+      "LastUpdated": "Last Updated"
+    },
+    "Progress": {
+      "Title": "Application Progress",
+      "StepSubmitted": "Submitted",
+      "StepUnderReview": "Under Review",
+      "StepApproved": "Approved",
+      "StepFinalist": "Finalist",
+      "StepWinner": "Winner"
+    },
+    "Details": {
+      "Title": "Application Details",
+      "PersonalInfo": "Personal Info",
+      "ContactInfo": "Contact",
+      "BackgroundInfo": "Background",
+      "GrantInfo": "Grant Info",
+      "Requested": "Requested:",
+      "ProjectDesc": "Project Description",
+      "ExpectedImpact": "Expected Impact",
+      "SubmittedDocs": "Submitted Documents",
+      "ViewDoc": "View Document"
+    }
   }
 }

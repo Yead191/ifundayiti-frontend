@@ -3,25 +3,43 @@ import { PageHero } from "@/components/shared/page-hero";
 import { Container } from "@/components/shared/container";
 import { ApplicationTracker } from "@/components/tracking/application-tracker";
 import { buildMetadata } from "@/lib/seo";
+import { getDictionary } from "@/lib/dictionaries";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Track Application",
-  description:
-    "Check your IFundAyiti grant application status using the email and date of birth from your submission.",
-  path: "/track-application",
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+  const t = dict.TrackingPage.Metadata;
 
-export default function TrackApplicationPage() {
+  return buildMetadata({
+    title: t.Title,
+    description: t.Description,
+    path: `/${lang}/track-application`,
+  });
+}
+
+export default async function TrackApplicationPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+  const t = dict.TrackingPage.Hero;
+
   return (
     <>
       <PageHero
-        eyebrow="Application Status"
-        title="Track Your Journey"
-        subtitle="Stay updated on your IFundAyiti grant application. Enter your registered email and date of birth below to view your real-time status and next steps securely."
+        eyebrow={t.Eyebrow}
+        title={t.Title}
+        subtitle={t.Subtitle}
       />
       <section className="py-14">
         <Container>
-          <ApplicationTracker />
+          <ApplicationTracker lang={lang} />
         </Container>
       </section>
     </>

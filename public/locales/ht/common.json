@@ -715,5 +715,68 @@
       "A3": "Ou ka jere detay kòmand yo ak livrezon yo dirèkteman sou paj peman nou an.",
       "LinkText3": "Gade Paj Peman"
     }
+  },
+  "TrackingPage": {
+    "Metadata": {
+      "Title": "Suiv Aplikasyon",
+      "Description": "Tcheke eta aplikasyon sibvansyon IFundAyiti w la lè w sèvi ak imèl ak dat nesans ou te bay lè w t ap soumèt li a."
+    },
+    "Hero": {
+      "Eyebrow": "Eta Aplikasyon",
+      "Title": "Suiv Pwogrè Ou",
+      "Subtitle": "Rete enfòme sou aplikasyon sibvansyon IFundAyiti w la. Antre imèl ak dat nesans ou te anrejistre anba a pou w ka wè eta an tan reyèl ak pwochen etap yo an sekirite."
+    },
+    "Form": {
+      "ErrEmail": "Mete yon adrès imèl ki valab",
+      "ErrDob": "Dat nesans lan obligatwa",
+      "ErrNotFound": "Pa gen okenn aplikasyon ki jwenn ak enfòmasyon sa yo.",
+      "ErrUnexpected": "Gen yon erè ki te fèt pandan n ap chèche eta aplikasyon w lan.",
+      "LabelEmail": "Imèl Anrejistre",
+      "PlaceholderEmail": "you@email.com",
+      "LabelDob": "Dat Nesans",
+      "LabelPeriod": "Sik Sibvansyon (Si ou vle)",
+      "PlaceholderPeriod": "Tout Sik yo (Dènye a)",
+      "CheckStatus": "Tcheke Eta Aplikasyon",
+      "NotFoundTitle": "Aplikasyon pa Jwenn",
+      "NotFoundDesc": "Tanpri asire w ke w ap itilize enfòmasyon ki kòrèk yo ak sik ki koresponn lan."
+    },
+    "Status": {
+      "Submitted": "Soumèt avèk Siksè",
+      "UnderReview": "Ap Evalye Kounye a",
+      "Approved": "Aplikasyon Apwouve",
+      "Finalist": "Gwo Finalis",
+      "Winner": "Gayan Sibvansyon!",
+      "Rejected": "Aplikasyon Refize",
+      "Archived": "Achive",
+      "ProjectLabel": "Pwojè:",
+      "RejectionHeader": "Mizajou sou Aplikasyon an",
+      "RejectionBody": "Mèsi paske w te aplike. Malerezman, yo pa chwazi aplikasyon w lan pou peryòd sa a.",
+      "RejectionNote": "Nòt:",
+      "WinnerHeader": "Felisitasyon!",
+      "WinnerBody": "Yo chwazi w kòm gayan sibvansyon an! N ap kontakte w talè konsènan pwochen etap yo pou distribisyon finansman an.",
+      "WinnerAwarded": "Kantite Lajan yo Bay:",
+      "SubmittedOn": "Soumèt nan Dat",
+      "LastUpdated": "Dènye Mizajou"
+    },
+    "Progress": {
+      "Title": "Pwogrè Aplikasyon an",
+      "StepSubmitted": "Soumèt",
+      "StepUnderReview": "An Evalyasyon",
+      "StepApproved": "Apwouve",
+      "StepFinalist": "Finalis",
+      "StepWinner": "Gayan"
+    },
+    "Details": {
+      "Title": "Detay sou Aplikasyon an",
+      "PersonalInfo": "Enfòmasyon Pèsonèl",
+      "ContactInfo": "Kontak",
+      "BackgroundInfo": "Istorik",
+      "GrantInfo": "Detay sou Sibvansyon an",
+      "Requested": "Mande:",
+      "ProjectDesc": "Deskripsyon Pwojè a",
+      "ExpectedImpact": "Enpak ki Espere",
+      "SubmittedDocs": "Dokiman ki Soumèt",
+      "ViewDoc": "Gade Dokiman"
+    }
   }
 }

@@ -17,16 +17,22 @@ import {
 } from "@/components/ui/select";
 import { trackApplicationStatus } from "@/helpers/next-fetch/applicationActions";
 import { getAllApplicationPeriods } from "@/helpers/next-fetch/periodActions";
+import { useTranslation } from "@/components/providers/translation-provider";
 import { ApplicationTrackData } from "../types";
 import { PremiumStatusCard } from "./premium-status-card";
 
-const schema = z.object({
-  email: z.string().email("Enter a valid email address"),
-  dob: z.string().min(1, "Date of birth is required"),
-  periodId: z.string().optional(),
-});
+export function ApplicationTrackerForm({ lang }: { lang?: string }) {
+  const dict = useTranslation();
+  const t = dict.TrackingPage.Form;
 
-export function ApplicationTrackerForm() {
+  const schema = React.useMemo(() => {
+    return z.object({
+      email: z.string().email(t.ErrEmail),
+      dob: z.string().min(1, t.ErrDob),
+      periodId: z.string().optional(),
+    });
+  }, [t]);
+
   const [email, setEmail] = React.useState("");
   const [dob, setDob] = React.useState("");
   const [periods, setPeriods] = React.useState<any[]>([]);
@@ -73,15 +79,11 @@ export function ApplicationTrackerForm() {
         setResult(res.data);
       } else {
         setResult(null);
-        setErrorMsg(
-          res.message ||
-            res.error ||
-            "No application found with these credentials.",
-        );
+        setErrorMsg(t.ErrNotFound);
       }
     } catch (err: any) {
       setResult(null);
-      setErrorMsg("An unexpected error occurred while fetching your status.");
+      setErrorMsg(t.ErrUnexpected);
     } finally {
       setLoading(false);
     }
@@ -101,7 +103,7 @@ export function ApplicationTrackerForm() {
               htmlFor="track-email"
               className="text-xs font-semibold uppercase tracking-wider text-forest-deep"
             >
-              Registered Email
+              {t.LabelEmail}
             </Label>
             <div className="relative">
               <User className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-mist/60" />
@@ -110,7 +112,7 @@ export function ApplicationTrackerForm() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="you@email.com"
+                placeholder={t.PlaceholderEmail}
                 className="pl-12 h-14 rounded-2xl bg-sand-soft/30 border-hairline focus:bg-white transition-all text-forest-deep"
               />
             </div>
@@ -121,7 +123,7 @@ export function ApplicationTrackerForm() {
               htmlFor="track-dob"
               className="text-xs font-semibold uppercase tracking-wider text-forest-deep"
             >
-              Date of Birth
+              {t.LabelDob}
             </Label>
             <div className="relative">
               <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-mist/60" />
@@ -140,19 +142,19 @@ export function ApplicationTrackerForm() {
               htmlFor="track-period"
               className="text-xs font-semibold uppercase tracking-wider text-forest-deep"
             >
-              Grant Cycle (Optional)
+              {t.LabelPeriod}
             </Label>
             <Select value={selectedPeriod} onValueChange={setSelectedPeriod}>
               <SelectTrigger
                 id="track-period"
                 className="w-full bg-sand-soft/30 border-hairline h-14 rounded-2xl text-forest-deep font-medium focus:bg-white transition-all py-0 [&>span]:flex [&>span]:items-center [&>span]:h-full -bottom-2!"
               >
-                <SelectValue placeholder="All Cycles (Latest)" />
+                <SelectValue placeholder={t.PlaceholderPeriod} />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Cycles (Latest)</SelectItem>
+                <SelectItem value="all">{t.PlaceholderPeriod}</SelectItem>
                 {periods.map((period) => (
-                  <SelectItem key={period._id} value={period._id}>
+                   <SelectItem key={period._id} value={period._id}>
                     {period.title}
                   </SelectItem>
                 ))}
@@ -172,7 +174,7 @@ export function ApplicationTrackerForm() {
             ) : (
               <Search className="mr-2 h-5 w-5" />
             )}
-            Check Status
+            {t.CheckStatus}
           </Button>
         </div>
       </form>
@@ -183,18 +185,17 @@ export function ApplicationTrackerForm() {
             <Search className="h-8 w-8" />
           </div>
           <h3 className="font-display text-xl font-semibold text-red-900">
-            Application Not Found
+            {t.NotFoundTitle}
           </h3>
           <p className="mt-2 text-sm text-red-700/80 max-w-md">
-            {errorMsg} Please make sure you are using the exact credentials and
-            selected cycle.
+            {errorMsg} {t.NotFoundDesc}
           </p>
         </div>
       )}
 
       {result && (
         <div className="mt-8 animate-in fade-in slide-in-from-bottom-4">
-          <PremiumStatusCard applicant={result} />
+          <PremiumStatusCard applicant={result} lang={lang} />
         </div>
       )}
     </div>

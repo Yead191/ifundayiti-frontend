@@ -7,17 +7,23 @@ import { ApplicationProgress } from "./application-progress";
 import { ApplicationDetails } from "./application-details";
 import { getImageUrl } from "@/lib/getImageUrl";
 
+import { useTranslation } from "@/components/providers/translation-provider";
+
 interface PremiumStatusCardProps {
   applicant: ApplicationTrackData;
+  lang?: string;
 }
 
-export function PremiumStatusCard({ applicant }: PremiumStatusCardProps) {
+export function PremiumStatusCard({ applicant, lang }: PremiumStatusCardProps) {
+  const dict = useTranslation();
+  const t = dict.TrackingPage.Status;
+
   const status = applicant.status;
   const isRejected = status === "rejected";
   const isWinner = status === "winner";
 
   const formatDate = (isoStr: string) => {
-    return new Date(isoStr).toLocaleDateString("en-US", {
+    return new Date(isoStr).toLocaleDateString(lang === "ht" ? "ht-HT" : "en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -26,13 +32,13 @@ export function PremiumStatusCard({ applicant }: PremiumStatusCardProps) {
 
   const statusLabel =
     {
-      submitted: "Submitted Successfully",
-      underReview: "Currently Under Review",
-      approved: "Application Approved",
-      finalist: "Top Finalist",
-      winner: "Grant Winner!",
-      rejected: "Application Declined",
-      archived: "Archived",
+      submitted: t.Submitted,
+      underReview: t.UnderReview,
+      approved: t.Approved,
+      finalist: t.Finalist,
+      winner: t.Winner,
+      rejected: t.Rejected,
+      archived: t.Archived,
     }[status] || status;
 
   return (
@@ -62,7 +68,7 @@ export function PremiumStatusCard({ applicant }: PremiumStatusCardProps) {
           <div className="flex items-center justify-center sm:justify-start gap-2 text-mist text-sm mt-2">
             <FileText className="h-4 w-4 shrink-0" />
             <span className="font-medium text-forest-deep shrink-0">
-              Project:
+              {t.ProjectLabel}
             </span>
             <span className="truncate max-w-50 sm:max-w-75">
               {applicant.grant.projectName}
@@ -95,20 +101,19 @@ export function PremiumStatusCard({ applicant }: PremiumStatusCardProps) {
       </div>
 
       <div className="p-8 sm:p-10 space-y-10">
-        <ApplicationProgress status={applicant.status} />
+        <ApplicationProgress status={applicant.status} lang={lang} />
 
         {/* Conditional Messages based on Status */}
         {isRejected && (
           <div className="rounded-2xl border border-red-100 bg-red-50/50 p-6 flex gap-4">
             <XCircle className="h-6 w-6 text-red-500 shrink-0" />
             <div>
-              <h4 className="font-semibold text-red-900">Application Update</h4>
+              <h4 className="font-semibold text-red-900">{t.RejectionHeader}</h4>
               <p className="mt-1 text-sm text-red-700/80 leading-relaxed">
-                Thank you for applying. Unfortunately, your application has not
-                been selected to move forward at this time.
+                {t.RejectionBody}
                 {applicant.rejectionReason && (
                   <span className="block mt-2 font-medium bg-white/50 p-3 rounded-xl border border-red-100">
-                    Note: {applicant.rejectionReason}
+                    {t.RejectionNote} {applicant.rejectionReason}
                   </span>
                 )}
               </p>
@@ -121,15 +126,13 @@ export function PremiumStatusCard({ applicant }: PremiumStatusCardProps) {
             <Trophy className="h-8 w-8 text-amber-500 shrink-0" />
             <div>
               <h4 className="font-display text-xl font-bold text-amber-900">
-                Congratulations!
+                {t.WinnerHeader}
               </h4>
               <p className="mt-2 text-sm text-amber-800 leading-relaxed">
-                You have been selected as a grant winner! We will be in touch
-                shortly regarding the next steps for funding distribution.
+                {t.WinnerBody}
                 {applicant?.awardedAmount && (
                   <span className="block mt-2 font-semibold">
-                    Awarded Amount: $
-                    {applicant?.awardedAmount?.toLocaleString()}
+                    {t.WinnerAwarded} ${applicant?.awardedAmount?.toLocaleString()}
                   </span>
                 )}
                 {applicant?.successStory && (
@@ -142,7 +145,7 @@ export function PremiumStatusCard({ applicant }: PremiumStatusCardProps) {
           </div>
         )}
 
-        <ApplicationDetails applicant={applicant} />
+        <ApplicationDetails applicant={applicant} lang={lang} />
 
         {/* Timeline Details */}
         <div className="grid sm:grid-cols-2 gap-4 pt-6 border-t border-hairline">
@@ -150,7 +153,7 @@ export function PremiumStatusCard({ applicant }: PremiumStatusCardProps) {
             <Calendar className="h-5 w-5 text-forest/60 shrink-0" />
             <div>
               <p className="text-xs font-semibold uppercase text-mist">
-                Submitted On
+                {t.SubmittedOn}
               </p>
               <p className="mt-0.5 text-sm font-medium text-forest-deep">
                 {formatDate(applicant.createdAt)}
@@ -161,7 +164,7 @@ export function PremiumStatusCard({ applicant }: PremiumStatusCardProps) {
             <Clock className="h-5 w-5 text-forest/60 shrink-0" />
             <div>
               <p className="text-xs font-semibold uppercase text-mist">
-                Last Updated
+                {t.LastUpdated}
               </p>
               <p className="mt-0.5 text-sm font-medium text-forest-deep">
                 {formatDate(applicant.updatedAt)}
