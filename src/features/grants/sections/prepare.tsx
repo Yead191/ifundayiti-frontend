@@ -4,6 +4,7 @@ import { Reveal } from "@/components/ui/reveal";
 import { GRANTS_PREPARE } from "@/data/grants-page";
 import type { GrantsContentBlock } from "@/data/grants-page";
 import { GRANTS_ICONS } from "@/features/grants/lib/icons";
+import { getDictionary } from "@/lib/dictionaries";
 
 function PrepareColumn({
   title,
@@ -48,7 +49,33 @@ function PrepareColumn({
   );
 }
 
-export function GrantsPrepare() {
+export async function GrantsPrepare({ lang }: { lang: string }) {
+  const dict = await getDictionary(lang);
+  const t = dict.GrantsPage.Prepare;
+
+  const eligibility = {
+    title: t.EligTitle,
+    intro: t.EligIntro,
+    items: [
+      { icon: "map-pin" as const, title: t.EligItem1Title, body: t.EligItem1Body },
+      { icon: "target" as const, title: t.EligItem2Title, body: t.EligItem2Body },
+      { icon: "shield-check" as const, title: t.EligItem3Title, body: t.EligItem3Body },
+      { icon: "hand-coins" as const, title: t.EligItem4Title, body: t.EligItem4Body },
+    ],
+  };
+
+  const documents = {
+    title: t.DocTitle,
+    intro: t.DocIntro,
+    items: [
+      { icon: "file-check" as const, title: t.DocItem1Title, body: t.DocItem1Body },
+      { icon: "home" as const, title: t.DocItem2Title, body: t.DocItem2Body },
+      { icon: "clipboard" as const, title: t.DocItem3Title, body: t.DocItem3Body },
+      { icon: "sparkles" as const, title: t.DocItem4Title, body: t.DocItem4Body },
+      { icon: "image" as const, title: t.DocItem5Title, body: t.DocItem5Body },
+    ],
+  };
+
   return (
     <section
       id={GRANTS_PREPARE.id}
@@ -56,20 +83,20 @@ export function GrantsPrepare() {
     >
       <Container>
         <SectionHeading
-          eyebrow={GRANTS_PREPARE.eyebrow}
-          title={GRANTS_PREPARE.title}
-          subtitle={GRANTS_PREPARE.subtitle}
+          eyebrow={t.Eyebrow}
+          title={t.Title}
+          subtitle={t.Subtitle}
         />
         <div className="mt-14 grid gap-14 lg:grid-cols-2">
           <PrepareColumn
-            title={GRANTS_PREPARE.eligibility.title}
-            intro={GRANTS_PREPARE.eligibility.intro}
-            items={GRANTS_PREPARE.eligibility.items}
+            title={eligibility.title}
+            intro={eligibility.intro}
+            items={eligibility.items}
           />
           <PrepareColumn
-            title={GRANTS_PREPARE.documents.title}
-            intro={GRANTS_PREPARE.documents.intro}
-            items={GRANTS_PREPARE.documents.items}
+            title={documents.title}
+            intro={documents.intro}
+            items={documents.items}
             delayOffset={40}
           />
         </div>

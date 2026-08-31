@@ -5,9 +5,26 @@ import { ArrowDown } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { GRANTS_HERO } from "@/data/grants-page";
+import { getDictionary } from "@/lib/dictionaries";
 
-export function GrantsHero() {
-  const [primaryNav, ...secondaryNav] = GRANTS_HERO.navLinks;
+export async function GrantsHero({ lang }: { lang: string }) {
+  const dict = await getDictionary(lang);
+  const t = dict.GrantsPage.Hero;
+
+  const highlights = [
+    { label: t.HighlightMax, value: t.HighlightMaxVal },
+    { label: t.HighlightWinners, value: t.HighlightWinnersVal },
+    { label: t.HighlightEquity, value: t.HighlightEquityVal },
+  ];
+
+  const navLinks = [
+    { href: "#cycle", label: t.NavCycle },
+    { href: "#prepare", label: t.NavPrepare },
+    { href: "#selection", label: t.NavSelection },
+    { href: "#faq", label: t.NavFAQ },
+  ];
+
+  const [primaryNav, ...secondaryNav] = navLinks;
 
   return (
     <section className="relative overflow-hidden border-b border-hairline bg-forest text-white">
@@ -37,14 +54,14 @@ export function GrantsHero() {
           <div className="lg:col-span-7">
             <Reveal>
               <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-sand/85">
-                {GRANTS_HERO.eyebrow}
+                {t.Eyebrow}
               </span>
               <h1 className="mt-5 max-w-2xl font-display text-4xl font-semibold leading-[1.04] tracking-tight sm:text-5xl lg:text-[3.35rem]">
-                {GRANTS_HERO.title}
-                <span className="mt-1 block text-sand">{GRANTS_HERO.titleAccent}</span>
+                {t.Title}
+                <span className="mt-1 block text-sand">{t.TitleAccent}</span>
               </h1>
               <p className="mt-6 max-w-xl text-base leading-relaxed text-sand/90 sm:text-lg">
-                {GRANTS_HERO.subtitle}
+                {t.Subtitle}
               </p>
             </Reveal>
 
@@ -72,7 +89,7 @@ export function GrantsHero() {
 
           <Reveal delay={80} className="lg:col-span-5">
             <div className="grid gap-3 sm:grid-cols-3 lg:grid-cols-1">
-              {GRANTS_HERO.highlights.map((item) => (
+              {highlights.map((item) => (
                 <div
                   key={item.label}
                   className="rounded-2xl border border-white/12 bg-white/8 p-5 backdrop-blur-md"
@@ -87,7 +104,7 @@ export function GrantsHero() {
               ))}
             </div>
             <p className="mt-6 hidden font-display text-lg leading-snug text-sand/90 lg:block">
-              &ldquo;{GRANTS_HERO.imageQuote}&rdquo;
+              &ldquo;{t.ImageQuote}&rdquo;
             </p>
           </Reveal>
         </div>

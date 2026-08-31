@@ -4,11 +4,15 @@ import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
-import { CURRENT_PERIOD } from "@/data/grant";
-import { GRANTS_CTA } from "@/data/grants-page";
+import { getCurrentApplicationPeriod } from "@/helpers/next-fetch/periodActions";
+import { getDictionary } from "@/lib/dictionaries";
 
-export function GrantsApplyCta() {
-  const open = CURRENT_PERIOD.status === "Open";
+export async function GrantsApplyCta({ lang }: { lang: string }) {
+  const currentPeriod = await getCurrentApplicationPeriod();
+  const open = currentPeriod?.status === "Open";
+
+  const dict = await getDictionary(lang);
+  const t = dict.GrantsPage.CTA;
 
   return (
     <section className="pb-24 md:pb-32">
@@ -17,22 +21,22 @@ export function GrantsApplyCta() {
           <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
             <div className="lg:col-span-7">
               <h2 className="font-display text-3xl font-semibold leading-snug text-forest-deep md:text-4xl">
-                {open ? GRANTS_CTA.openTitle : GRANTS_CTA.closedTitle}
+                {open ? t.OpenTitle : t.ClosedTitle}
               </h2>
               <p className="mt-4 max-w-xl text-base leading-relaxed text-mist">
-                {open ? GRANTS_CTA.openBody : GRANTS_CTA.closedBody}
+                {open ? t.OpenBody : t.ClosedBody}
               </p>
             </div>
             <div className="flex flex-col gap-3 sm:flex-row lg:col-span-5 lg:flex-col">
               <Button asChild size="lg" className="rounded-xl">
-                <Link href={open ? GRANTS_CTA.primaryOpen.href : GRANTS_CTA.primaryClosed.href}>
-                  {open ? GRANTS_CTA.primaryOpen.label : GRANTS_CTA.primaryClosed.label}
+                <Link href={open ? `/${lang}/apply` : `/${lang}/track-application`}>
+                  {open ? t.StartApplication : t.TrackApplication}
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="rounded-xl">
-                <Link href={open ? GRANTS_CTA.secondaryOpen.href : GRANTS_CTA.secondaryClosed.href}>
-                  {open ? GRANTS_CTA.secondaryOpen.label : GRANTS_CTA.secondaryClosed.label}
+                <Link href={open ? `/${lang}/track-application` : `/${lang}/donate`}>
+                  {open ? t.TrackInstead : t.SupportFund}
                 </Link>
               </Button>
             </div>

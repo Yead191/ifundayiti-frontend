@@ -6,16 +6,16 @@ import { GrantsHistory } from "@/features/grants/sections/history";
 import { GrantsPrepare } from "@/features/grants/sections/prepare";
 import { GrantsSelection } from "@/features/grants/sections/selection";
 
-export default function GrantsPageContent() {
+export default function GrantsPageContent({ lang }: { lang: string }) {
   return (
     <>
-      <GrantsHero />
-      <GrantsCurrentCycle />
-      <GrantsPrepare />
-      <GrantsSelection />
-      <GrantsFaq />
-      <GrantsHistory />
-      <GrantsApplyCta />
+      <GrantsHero lang={lang} />
+      <GrantsCurrentCycle lang={lang} />
+      <GrantsPrepare lang={lang} />
+      <GrantsSelection lang={lang} />
+      <GrantsFaq lang={lang} />
+      <GrantsHistory lang={lang} />
+      <GrantsApplyCta lang={lang} />
     </>
   );
 }

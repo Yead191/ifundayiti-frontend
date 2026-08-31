@@ -1,11 +1,29 @@
 import type { Metadata } from "next";
 
 import GrantsPageContent from "@/features/grants";
-import { GRANTS_PAGE } from "@/data/grants-page";
 import { buildMetadata } from "@/lib/seo";
+import { getDictionary } from "@/lib/dictionaries";
 
-export const metadata: Metadata = buildMetadata(GRANTS_PAGE.metadata);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
 
-export default function GrantsPage() {
-  return <GrantsPageContent />;
+  return buildMetadata({
+    title: dict.Navbar.Grants,
+    description: dict.GrantsPage.Hero.Subtitle,
+    path: `/${lang}/grants`,
+  });
+}
+
+export default async function GrantsPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  return <GrantsPageContent lang={lang} />;
 }

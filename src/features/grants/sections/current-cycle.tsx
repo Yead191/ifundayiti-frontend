@@ -8,6 +8,7 @@ import { GRANTS_CYCLE, GRANTS_STATUS_LABELS } from "@/data/grants-page";
 import { formatGrantDate } from "@/features/grants/lib/format-grant-date";
 import { cn, formatPrice } from "@/lib/utils";
 import { getCurrentApplicationPeriod } from "@/helpers/next-fetch/periodActions";
+import { getDictionary } from "@/lib/dictionaries";
 
 const STATUS_STYLES = {
   open: "bg-emerald-500/15 text-emerald-100 border-emerald-400/25",
@@ -16,13 +17,16 @@ const STATUS_STYLES = {
   neutral: "bg-white/10 text-sand border-white/15",
 };
 
-export async function GrantsCurrentCycle() {
+export async function GrantsCurrentCycle({ lang }: { lang: string }) {
   const currentPeriod = await getCurrentApplicationPeriod();
   if (!currentPeriod) return null;
 
+  const dict = await getDictionary(lang);
+  const t = dict.GrantsPage.Cycle;
+
   const open = currentPeriod.status === "Open";
-  const statusMeta =
-    GRANTS_STATUS_LABELS[currentPeriod.status] ?? GRANTS_STATUS_LABELS.Closed;
+  const statusMeta = GRANTS_STATUS_LABELS[currentPeriod.status] ?? GRANTS_STATUS_LABELS.Closed;
+  const statusLabel = (dict.GrantsPage.StatusLabels as any)[currentPeriod.status] ?? dict.GrantsPage.StatusLabels.Closed;
 
   return (
     <section id={GRANTS_CYCLE.id} className="scroll-mt-24 py-20 md:py-24">
@@ -32,7 +36,7 @@ export async function GrantsCurrentCycle() {
             <div className="border-b border-white/10 p-8 md:p-10 lg:col-span-8 lg:border-b-0 lg:border-r">
               <div className="flex flex-wrap items-center gap-3">
                 <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-sand/80">
-                  {open ? GRANTS_CYCLE.eyebrow : GRANTS_CYCLE.closedEyebrow}
+                  {open ? t.Opportunity : t.Status}
                 </span>
                 <span
                   className={cn(
@@ -40,22 +44,22 @@ export async function GrantsCurrentCycle() {
                     STATUS_STYLES[statusMeta.tone],
                   )}
                 >
-                  {statusMeta.label}
+                  {statusLabel}
                 </span>
               </div>
               <h2 className="mt-4 font-display text-3xl font-semibold leading-snug md:text-4xl">
                 {currentPeriod.title}
               </h2>
               <p className="mt-4 max-w-2xl text-base leading-relaxed text-sand/90">
-                {open ? GRANTS_CYCLE.openLead : GRANTS_CYCLE.closedLead}
+                {open ? t.OpenLead : t.ClosedLead}
               </p>
               <div className="mt-8 flex items-start gap-3 rounded-2xl border border-white/12 bg-white/8 p-5">
                 <CalendarDays className="mt-0.5 h-5 w-5 shrink-0 text-sand" />
                 <p className="text-sm leading-relaxed text-sand/90">
-                  Application window:{" "}
+                  {t.Window}{" "}
                   <strong className="font-semibold text-white">
-                    {formatGrantDate(currentPeriod.startDate)} –{" "}
-                    {formatGrantDate(currentPeriod.endDate)}
+                    {formatGrantDate(currentPeriod.startDate, "long", lang)} –{" "}
+                    {formatGrantDate(currentPeriod.endDate, "long", lang)}
                   </strong>
                 </p>
               </div>
@@ -65,8 +69,8 @@ export async function GrantsCurrentCycle() {
                 size="lg"
                 className="mt-8 rounded-xl"
               >
-                <Link href={open ? "/apply" : "/track-application"}>
-                  {open ? "Apply for this cycle" : "Track an application"}
+                <Link href={open ? `/${lang}/apply` : `/${lang}/track-application`}>
+                  {open ? t.ApplyForThis : dict.Navbar.Track}
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </Button>
@@ -74,27 +78,27 @@ export async function GrantsCurrentCycle() {
 
             <div className="flex flex-col justify-center bg-forest-deep/30 p-8 md:p-10 lg:col-span-4">
               <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-sand/75">
-                Maximum grant
+                {t.MaxGrant}
               </p>
               <p className="mt-2 font-display text-5xl font-semibold tracking-tight text-sand">
                 {formatPrice(currentPeriod.maximumGrantAmount)}
               </p>
               <p className="mt-4 text-sm leading-relaxed text-sand/85">
-                {GRANTS_CYCLE.maxGrantNote}
+                {t.MaxGrantNote}
               </p>
               <dl className="mt-8 space-y-4 border-t border-white/10 pt-6 text-sm">
                 <div className="flex justify-between gap-4">
-                  <dt className="text-sand/70">Winners</dt>
-                  <dd className="font-medium text-white">1 per cycle</dd>
+                  <dt className="text-sand/70">{t.Winners}</dt>
+                  <dd className="font-medium text-white">{t.WinnersVal}</dd>
                 </div>
                 <div className="flex justify-between gap-4">
-                  <dt className="text-sand/70">Equity</dt>
-                  <dd className="font-medium text-white">None taken</dd>
+                  <dt className="text-sand/70">{t.Equity}</dt>
+                  <dd className="font-medium text-white">{t.EquityVal}</dd>
                 </div>
                 {open ||
                   (currentPeriod.status === "Closed" && (
                     <div className="flex justify-between gap-4">
-                      <dt className="text-sand/70">Applications received</dt>
+                      <dt className="text-sand/70">{t.ApplicationsReceived}</dt>
                       <dd className="font-medium text-white">
                         {currentPeriod.totalApplicationsSubmitted}
                       </dd>
