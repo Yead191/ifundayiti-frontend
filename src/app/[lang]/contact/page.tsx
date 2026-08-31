@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { z } from "zod";
 import { toast } from "sonner";
+import { useParams } from "next/navigation";
 import {
   ArrowRight,
   CheckCircle2,
@@ -26,41 +27,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { SITE } from "@/data/site";
-
-const schema = z.object({
-  name: z.string().min(2, "Name is required (at least 2 characters)"),
-  email: z.string().email("Enter a valid email address"),
-  topic: z.string().min(1, "Please select an inquiry topic"),
-  message: z.string().min(10, "Please share a message (at least 10 characters)"),
-});
-
-const TOPICS = [
-  { id: "grants", label: "Grants & Apply", icon: Sparkles },
-  { id: "donations", label: "Donations & Fund", icon: MessageSquare },
-  { id: "merch", label: "Shop & Orders", icon: Send },
-  { id: "general", label: "General Inquiry", icon: HelpCircle },
-];
-
-const FAQS_QUICK = [
-  {
-    q: "How fast does the IFundAyiti team respond?",
-    a: "We review inquiries daily and typically respond within 24 to 48 hours.",
-  },
-  {
-    q: "Need help tracking your grant application?",
-    a: "You can track your application status anytime on our dedicated tracking page.",
-    href: "/track-application",
-    linkText: "Track Status",
-  },
-  {
-    q: "Have questions about merchandise orders?",
-    a: "Order updates and shipping info can be managed directly on our checkout page.",
-    href: "/checkout",
-    linkText: "View Checkout",
-  },
-];
+import { useTranslation } from "@/components/providers/translation-provider";
 
 export default function ContactPage() {
+  const params = useParams();
+  const lang = (params?.lang as string) || "en";
+  const dict = useTranslation();
+  const t = dict.ContactPage;
+
   const [submitted, setSubmitted] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
   const [topic, setTopic] = React.useState("grants");
@@ -70,6 +44,41 @@ export default function ContactPage() {
     subject: "",
     message: "",
   });
+
+  const schema = React.useMemo(() => {
+    return z.object({
+      name: z.string().min(2, t.Form.ErrName),
+      email: z.string().email(t.Form.ErrEmail),
+      topic: z.string().min(1, t.Form.ErrTopic),
+      message: z.string().min(10, t.Form.ErrMessage),
+    });
+  }, [t]);
+
+  const TOPICS = React.useMemo(() => [
+    { id: "grants", label: t.Form.TopicGrants, icon: Sparkles },
+    { id: "donations", label: t.Form.TopicDonations, icon: MessageSquare },
+    { id: "merch", label: t.Form.TopicMerch, icon: Send },
+    { id: "general", label: t.Form.TopicGeneral, icon: HelpCircle },
+  ], [t]);
+
+  const FAQS_QUICK = React.useMemo(() => [
+    {
+      q: t.FAQ.Q1,
+      a: t.FAQ.A1,
+    },
+    {
+      q: t.FAQ.Q2,
+      a: t.FAQ.A2,
+      href: `/${lang}/track-application`,
+      linkText: t.FAQ.LinkText2,
+    },
+    {
+      q: t.FAQ.Q3,
+      a: t.FAQ.A3,
+      href: `/${lang}/checkout`,
+      linkText: t.FAQ.LinkText3,
+    },
+  ], [t, lang]);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -84,16 +93,25 @@ export default function ContactPage() {
     await new Promise((r) => setTimeout(r, 800));
     setLoading(false);
     setSubmitted(true);
-    toast.success("Your message has been sent successfully!");
+    toast.success(lang === "ht" ? "Mesaj ou a voye avèk siksè!" : "Your message has been sent successfully!");
   }
+
+  // Split success message for dynamic HTML styling
+  const topicLabel = TOPICS.find((t) => t.id === topic)?.label || "";
+  const emailLabel = form.email;
+  const partsTopic = t.Success.Body.split("[topic]");
+  const partBeforeTopic = partsTopic[0];
+  const partsEmail = partsTopic[1]?.split("[email]") || [""];
+  const partBetween = partsEmail[0];
+  const partAfterEmail = partsEmail[1];
 
   return (
     <div className="bg-cream min-h-screen">
       {/* Page Hero */}
       <PageHero
-        eyebrow="Contact Us"
-        title="We would love to hear from you."
-        subtitle="Have questions about grant applications, merchandise orders, or partnerships? Reach out directly to our team."
+        eyebrow={t.Hero.Eyebrow}
+        title={t.Hero.Title}
+        subtitle={t.Hero.Subtitle}
       />
 
       {/* Main Section */}
@@ -107,13 +125,13 @@ export default function ContactPage() {
               {/* Main Contact Card */}
               <div className="rounded-3xl border border-hairline bg-white p-6 shadow-xs sm:p-8">
                 <p className="text-xs font-semibold uppercase tracking-[0.18em] text-forest">
-                  Direct Lines
+                  {t.Direct.Eyebrow}
                 </p>
                 <h2 className="mt-2 font-display text-2xl font-semibold text-forest-deep">
-                  Reach out directly
+                  {t.Direct.Title}
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-mist">
-                  Our team is dedicated to supporting Haitian entrepreneurs and community members.
+                  {t.Direct.Body}
                 </p>
 
                 <div className="mt-6 space-y-4">
@@ -127,12 +145,12 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-forest">
-                        Email Us
+                        {t.Direct.EmailLabel}
                       </p>
                       <p className="text-sm font-semibold text-forest-deep group-hover:text-forest">
                         {SITE.email}
                       </p>
-                      <p className="text-xs text-mist mt-0.5">Send a message anytime</p>
+                      <p className="text-xs text-mist mt-0.5">{t.Direct.EmailDesc}</p>
                     </div>
                   </a>
 
@@ -143,12 +161,12 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-forest">
-                        Phone & Support
+                        {t.Direct.PhoneLabel}
                       </p>
                       <p className="text-sm font-semibold text-forest-deep">
                         {SITE.phone}
                       </p>
-                      <p className="text-xs text-mist mt-0.5">Available Mon–Fri, 9am–5pm EST</p>
+                      <p className="text-xs text-mist mt-0.5">{t.Direct.PhoneDesc}</p>
                     </div>
                   </div>
 
@@ -159,12 +177,12 @@ export default function ContactPage() {
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-forest">
-                        Headquarters
+                        {t.Direct.LocationLabel}
                       </p>
                       <p className="text-sm font-semibold text-forest-deep">
                         {SITE.location}
                       </p>
-                      <p className="text-xs text-mist mt-0.5">Community Grant Operations</p>
+                      <p className="text-xs text-mist mt-0.5">{t.Direct.LocationDesc}</p>
                     </div>
                   </div>
                 </div>
@@ -172,7 +190,13 @@ export default function ContactPage() {
                 {/* Hours Indicator */}
                 <div className="mt-6 flex items-center gap-2.5 rounded-xl border border-hairline bg-sand-soft/60 px-4 py-3 text-xs text-mist">
                   <Clock className="h-4 w-4 text-forest shrink-0" />
-                  <span>Typically responds within <strong className="text-forest-deep font-semibold">24 hours</strong></span>
+                  <span>
+                    {t.Direct.Responds.split("[time]")[0]}
+                    <strong className="text-forest-deep font-semibold">
+                      {lang === "ht" ? "24 èdtan" : "24 hours"}
+                    </strong>
+                    {t.Direct.Responds.split("[time]")[1]}
+                  </span>
                 </div>
               </div>
 
@@ -181,15 +205,15 @@ export default function ContactPage() {
                 <div className="flex items-center gap-2">
                   <HelpCircle className="h-5 w-5 text-forest" />
                   <h3 className="font-display text-lg font-semibold text-forest-deep">
-                    Looking for instant answers?
+                    {t.QuickFAQ.Title}
                   </h3>
                 </div>
                 <p className="mt-2 text-xs leading-relaxed text-mist">
-                  Check our FAQ center for quick answers on grant eligibility, funding timelines, and donation allocations.
+                  {t.QuickFAQ.Body}
                 </p>
                 <Button asChild variant="outline" size="sm" className="mt-4 rounded-xl">
-                  <Link href="/faq">
-                    Browse All FAQs
+                  <Link href={`/${lang}/faq`}>
+                    {t.QuickFAQ.LinkBtn}
                     <ArrowRight className="ml-2 h-3.5 w-3.5" />
                   </Link>
                 </Button>
@@ -208,13 +232,17 @@ export default function ContactPage() {
                       <CheckCircle2 className="h-10 w-10 text-forest" />
                     </div>
                     <p className="mt-6 text-xs font-semibold uppercase tracking-[0.2em] text-forest">
-                      Message Sent
+                      {t.Success.Eyebrow}
                     </p>
                     <h2 className="mt-2 font-display text-3xl font-semibold text-forest-deep">
-                      Thank you for contacting us!
+                      {t.Success.Title}
                     </h2>
                     <p className="mt-3 text-sm leading-relaxed text-mist max-w-md mx-auto">
-                      We have received your message regarding <strong className="text-forest-deep">{TOPICS.find((t) => t.id === topic)?.label}</strong>. A member of the IFundAyiti team will respond to <span className="font-semibold text-forest-deep">{form.email}</span> shortly.
+                      {partBeforeTopic}
+                      <strong className="text-forest-deep">{topicLabel}</strong>
+                      {partBetween}
+                      <span className="font-semibold text-forest-deep">{emailLabel}</span>
+                      {partAfterEmail}
                     </p>
 
                     <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -226,10 +254,10 @@ export default function ContactPage() {
                         variant="outline"
                         className="rounded-xl px-6 w-full sm:w-auto"
                       >
-                        Send Another Message
+                        {t.Success.AgainBtn}
                       </Button>
                       <Button asChild className="rounded-xl px-6 w-full sm:w-auto">
-                        <Link href="/">Return to Home</Link>
+                        <Link href={`/${lang}`}>{t.Success.HomeBtn}</Link>
                       </Button>
                     </div>
                   </div>
@@ -238,17 +266,17 @@ export default function ContactPage() {
                   <form onSubmit={(e) => void onSubmit(e)} className="space-y-6">
                     <div>
                       <h2 className="font-display text-2xl font-semibold text-forest-deep">
-                        Send a Message
+                        {t.Form.Title}
                       </h2>
                       <p className="mt-1 text-sm text-mist">
-                        Fill out the form below and we will get back to you as soon as possible.
+                        {t.Form.Subtitle}
                       </p>
                     </div>
 
                     {/* TOPIC SELECTOR PILLS */}
                     <div>
                       <Label className="mb-2.5 block text-xs font-semibold uppercase tracking-wider text-forest">
-                        Select Inquiry Topic *
+                        {t.Form.TopicLabel}
                       </Label>
                       <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
                         {TOPICS.map((t) => {
@@ -278,7 +306,7 @@ export default function ContactPage() {
                     <div className="grid gap-4 sm:grid-cols-2">
                       <div>
                         <Label htmlFor="c-name" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-forest">
-                          Your Name *
+                          {t.Form.NameLabel}
                         </Label>
                         <Input
                           id="c-name"
@@ -291,7 +319,7 @@ export default function ContactPage() {
                       </div>
                       <div>
                         <Label htmlFor="c-email" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-forest">
-                          Email Address *
+                          {t.Form.EmailLabel}
                         </Label>
                         <Input
                           id="c-email"
@@ -308,13 +336,13 @@ export default function ContactPage() {
                     {/* SUBJECT */}
                     <div>
                       <Label htmlFor="c-subject" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-forest">
-                        Subject / Brief Title (Optional)
+                        {t.Form.SubjectLabel}
                       </Label>
                       <Input
                         id="c-subject"
                         value={form.subject}
                         onChange={(e) => setForm({ ...form, subject: e.target.value })}
-                        placeholder="e.g. Question regarding grant cycle timeline"
+                        placeholder={t.Form.SubjectPlaceholder}
                         className="h-12 rounded-xl border-hairline bg-sand-soft/20 focus:bg-white"
                       />
                     </div>
@@ -322,7 +350,7 @@ export default function ContactPage() {
                     {/* MESSAGE */}
                     <div>
                       <Label htmlFor="c-msg" className="mb-1.5 block text-xs font-semibold uppercase tracking-wider text-forest">
-                        Message *
+                        {t.Form.MessageLabel}
                       </Label>
                       <Textarea
                         id="c-msg"
@@ -330,7 +358,7 @@ export default function ContactPage() {
                         rows={5}
                         value={form.message}
                         onChange={(e) => setForm({ ...form, message: e.target.value })}
-                        placeholder="Share the details of your inquiry here..."
+                        placeholder={t.Form.MessagePlaceholder}
                         className="rounded-xl border-hairline bg-sand-soft/20 p-4 text-sm focus:bg-white"
                       />
                     </div>
@@ -345,18 +373,18 @@ export default function ContactPage() {
                       {loading ? (
                         <span className="flex items-center gap-2">
                           <Loader2 className="h-5 w-5 animate-spin" />
-                          Sending Message...
+                          {t.Form.SendingBtn}
                         </span>
                       ) : (
                         <span className="flex items-center gap-2">
                           <Send className="h-4 w-4" />
-                          Send Message
+                          {t.Form.SendBtn}
                         </span>
                       )}
                     </Button>
 
                     <p className="text-center text-xs text-mist">
-                      🔒 We respect your privacy. Your information will only be used to respond to your inquiry.
+                      {t.Form.PrivacyNote}
                     </p>
                   </form>
                 )}
@@ -369,12 +397,12 @@ export default function ContactPage() {
           {/* FAQS QUICK ANSWERS SECTION */}
           <div className="mt-20 border-t border-hairline pt-16">
             <div className="text-center max-w-2xl mx-auto">
-              <p className="eyebrow">Quick Help</p>
+              <p className="eyebrow">{t.FAQ.Eyebrow}</p>
               <h2 className="mt-2 font-display text-3xl font-semibold text-forest-deep">
-                Frequently Asked Questions
+                {t.FAQ.Title}
               </h2>
               <p className="mt-2 text-sm text-mist">
-                Answers to common questions about IFundAyiti grant programs and merchandise.
+                {t.FAQ.Subtitle}
               </p>
             </div>
 

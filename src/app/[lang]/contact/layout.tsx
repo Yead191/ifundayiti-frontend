@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import { buildMetadata } from "@/lib/seo";
+import { getDictionary } from "@/lib/dictionaries";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Contact",
-  description:
-    "Contact IFundAyiti about grants, donations, applications, or the shop.",
-  path: "/contact",
-});
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+
+  return buildMetadata({
+    title: dict.Navbar.Contact,
+    description: dict.ContactPage.Hero.Subtitle,
+    path: `/${lang}/contact`,
+  });
+}
 
 export default function ContactLayout({
   children,

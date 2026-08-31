@@ -180,7 +180,7 @@
       "Principle1Title": "Piblik pa defo",
       "Principle1Body": "Aplikasyon eta yo, finalis yo, ak gayan yo vizib sou oa sit piblik — yo pa kache dèyè fil prive oswa apwobasyon anba tab.",
       "Principle2Title": "Je lokal sou chak dosye",
-      "Principle2Body": "Yon komite evalyasyon li chak aplikasyon ak kontèks katye a nan tèt yo. Kapital la swiv jijman moun, pa algoritm swlman.",
+      "Principle2Body": "Komite evalyasyon an li chak aplikasyon ak kontèks katye a nan tèt yo. Kapital la swiv jijman moun, pa algoritm swlman.",
       "Principle3Title": "Diyite nan pwosesis la",
       "Principle3Body": "Nou mande verifikasyon san fè espektak. Prèv pwoteje kominote a; li pa ta dwe janm santi l tankou oa pèfòmans nan mizè.",
       "Principle4Title": "Yon sèl fon, anpil desten",
@@ -207,7 +207,7 @@
       "Step1Title": "Aplikasyon yo rive",
       "Step1Body": "Pandan oa sik louvri, kreyatè yo soumèt lide yo, pyès idantite yo, ak dokiman sipò yo atravè oa fòm piblik ki estriktire.",
       "Step2Title": "Revizyon Komite a",
-      "Step2Body": "Komite evalyasyon an verifye si aplikasyon yo konplè, si yo ka fèt, ak si yo apwopriye pou kominote a. Aplikan ki apwouve yo ka parèt kòm finalis piblik.",
+      "Step2Body": "Komite evalyasyon an verifye si aplikasyon yo konplè, si pwojè a ka fèt, ak si yo apwopriye pou kominote a. Aplikan ki apwouve yo ka parèt kòm finalis piblik.",
       "Step3Title": "Gayan & peman",
       "Step3Body": "Yo chwazi oa sèl gayan pou chak peryòd. Lajan yo transfere manyèlman bay benefisyè ki verifye yo — andeyò paj kanpay endividyèl yo."
     },
@@ -282,7 +282,7 @@
     "Selection": {
       "Eyebrow": "Apre ou soumèt",
       "Title": "Kijan seleksyon an mache toutbon.",
-      "Subtitle": "Pa gen etap kache. Eta aplikasyon w lan parèt an piblik — depi nan premye soumisyon rive nan yon laureya ki jwenn finansman.",
+      "Subtitle": "Pa gen etap kache. Eta aplikasyon w lan parèt an piblik — depi nan premye soumisyon rive nan oa laureya ki jwenn finansman.",
       "Step1Title": "Soumèt",
       "Step1Emotion": "Dosye w la antre nan liy tann nan.",
       "Step1Body": "Ou resevwa yon konfimasyon epi ou ka suiv eta aplikasyon w lan ak imèl ak dat nesans ou te mete nan fòm lan.",
@@ -364,7 +364,7 @@
     "Stats": {
       "Eyebrow": "Daprè chif yo",
       "Title": "Yon dosye k ap grandi — toujou byen bonè, deja lokal.",
-      "Subtitle": "Chif ki anba yo se valè demonstrasyon swlman jiskaske nou konekte rapò ofisyèl yo. Yo montre fòm pwogram nan, se pa yon rapò finansye final.",
+      "Subtitle": "Chif ki anba yo se valè demonstrasyon swlman jiskaske nou konekte rapò ofisyèl yo. Yo montre fòm pwogram nan, se pa oa rapò finansye final.",
       "Stat1Label": "Aplikasyon yo resevwa",
       "Stat1Detail": "Lide yo soumèt pandan tout sik ki te louvri yo",
       "Stat2Label": "Sibvansyon yo bay",
@@ -420,7 +420,7 @@
     }
   },
   "ProjectsPage": {
-    "Eyebrow": "Travay nou",
+    "Eyebrow": "Pwojè nou",
     "Title1": "Pwojè ki rete",
     "TitleAccent": "nan katye a.",
     "Subtitle": "Achiv piblik pwojè IFundAyiti sipòte yo — manje, limyè, dlo, atizana, ak aktivite yo. Istwa siksè demonstrasyon jiskaske nou konekte done dirèk yo.",
@@ -512,7 +512,7 @@
     "Hero": {
       "Eyebrow": "Rasanble. Konekte. Ranfòse.",
       "Title": "Kote rèv ayisyen yo rankontre kapital pou yo grandi.",
-      "Subtitle": "Chak sware prezantasyon, atelye kominotè, ak kanpay ranmase lajan pote nou yon etap pi pre yon Ayiti k ap devlope ekonomikman. Kit ou patisipe an pèsòn nan Pòtoprens oswa sou Zoom depi nenpòt kote sou planèt la — 100% kontribisyon nan evènman yo ranfòse Fon Pwogram santral nou an.",
+      "Subtitle": "Chak sware prezantasyon, atelye kominotè, ak kanpay ranmase lajan pote nou oa etap pi pre yon Ayiti k ap devlope ekonomikman. Kit ou patisipe an pèsòn nan Pòtoprens oswa sou Zoom depi nenpòt kote sou planèt la — 100% kontribisyon nan evènman yo ranfòse Fon Pwogram santral nou an.",
       "CalendarBtn": "Dekouvri Evènman yo",
       "DonateBtn": "Fè yon don nan Fon Pwogram nan"
     },
@@ -547,7 +547,7 @@
       "NoEvents": "Pa gen evènman yo jwenn",
       "NoEventsDesc": "Eseye retire filtè kategori a pou w ka wè tout evènman yo.",
       "SpotlightTitle": "Konsantre sou Evènman sa a",
-      "SpotlightPlaceholder": "Chwazi yon evènman nan kalandriye a pou w wè detay li yo.",
+      "SpotlightPlaceholder": "Chwazi oa evènman nan kalandriye a pou w wè detay li yo.",
       "UpcomingDrives": "Evènman Kominotè k ap Vini yo",
       "RsvpCount": "Anrejistre",
       "RsvpBtn": "Rezève plas ou",
@@ -590,7 +590,7 @@
   "DonatePage": {
     "Hero": {
       "Eyebrow": "🌱 Sipòte Inovasyon an Ayiti",
-      "Title": "Chak dola plante yon grenn. Chak sibvansyon transfòme yon lavi.",
+      "Title": "Chak dola plante yon grenn. Chak sibvansyon transfòme oa lavi.",
       "Subtitle": "100% nan don piblik yo ale dirèkteman nan mikwo-sibvansyon san pran aksyon jiska $1,000 pou antreprenè ayisyen, kreyatè lokal, ak moun k ap bati kominote yo."
     },
     "Badges": {
@@ -647,7 +647,73 @@
       "Q2": "Èske mwen ka fè don anba kach?",
       "A2": "Ou ka sèvi ak yon non piblik ou chwazi. Detay peman yo toujou nesesè pou tretman don an.",
       "Q3": "Kouman m ap resevwa konfimasyon?",
-      "A3": "Yo voye oa konfimasyon nan imèl ou te bay nan fòm nan apre peman an fin fèt ak siksè."
+      "A3": "Yo voye yon konfimasyon nan imèl ou te bay nan fòm nan apre peman an fin fèt ak siksè."
+    }
+  },
+  "ContactPage": {
+    "Hero": {
+      "Eyebrow": "Kontakte Nou",
+      "Title": "Nou ta renmen tande pale de ou.",
+      "Subtitle": "Ou gen kesyon sou aplikasyon sibvansyon, kòmand boutique, oswa patenarya? Kontakte ekip nou an dirèkteman."
+    },
+    "Direct": {
+      "Eyebrow": "Liy Dirèk yo",
+      "Title": "Kontakte nou dirèkteman",
+      "Body": "Ekip nou an la pou sipòte antreprenè ayisyen ak manm kominote a.",
+      "EmailLabel": "Ekri nou nan Imèl",
+      "EmailDesc": "Voye oa mesaj nenpòt lè",
+      "PhoneLabel": "Telefòn & Sipò",
+      "PhoneDesc": "Disponib Lendi–Vandredi, 9am–5pm EST",
+      "LocationLabel": "Katye Jeneral",
+      "LocationDesc": "Operasyon Sibvansyon Kominotè",
+      "Responds": "An jeneral nou reponn nan [time]"
+    },
+    "QuickFAQ": {
+      "Title": "Èske w ap chèche repons rapid?",
+      "Body": "Vizite sant kesyon nou an pou w ka jwenn repons sou kalifikasyon pou sibvansyon, kalandriye finansman, ak distribisyon donasyon.",
+      "LinkBtn": "Navige nan tout Kesyon yo"
+    },
+    "Success": {
+      "Eyebrow": "Mesaj Voye",
+      "Title": "Mèsi paske ou kontakte nou!",
+      "Body": "Nou resevwa mesaj ou a konsènan [topic]. Yon manm nan ekip IFundAyiti a ap reponn ou nan [email] talè konsa.",
+      "AgainBtn": "Voye Yon Lòt Mesaj",
+      "HomeBtn": "Tounen nan Paj Akèy"
+    },
+    "Form": {
+      "Title": "Voye yon Mesaj",
+      "Subtitle": "Ranpli fòm anba a epi n ap kontakte w pi vit posib.",
+      "TopicLabel": "Chwazi Sijè Demand ou an *",
+      "TopicGrants": "Sibvansyon & Postile",
+      "TopicDonations": "Donasyon & Fon",
+      "TopicMerch": "Boutik & Kòmand",
+      "TopicGeneral": "Kesyon Jeneral",
+      "NameLabel": "Non Ou *",
+      "EmailLabel": "Adrès Imèl *",
+      "SubjectLabel": "Sijè / Tit Mesaj la (Si ou vle)",
+      "SubjectPlaceholder": "e.g. Kesyon sou dat limit sik sibvansyon an",
+      "MessageLabel": "Mesaj *",
+      "MessagePlaceholder": "Ekri detay demand ou an la a...",
+      "SendBtn": "Voye Mesaj la",
+      "SendingBtn": "N ap voye mesaj la...",
+      "PrivacyNote": "🔒 Nou respekte konfidansyalite w. Enfòmasyon ou yo ap sèvi sèlman pou reponn demand ou an.",
+      "ErrName": "Non an obligatwa (omwen 2 karaktè)",
+      "ErrEmail": "Mete oa adrès imèl ki valab",
+      "ErrTopic": "Tanpri chwazi oa sijè pou demand ou an",
+      "ErrMessage": "Tanpri ekri oa mesaj (omwen 10 karaktè)"
+    },
+    "FAQ": {
+      "Eyebrow": "Sipò Rapid",
+      "Title": "Kesyon yo Poze Souvan",
+      "Subtitle": "Repons pou kesyon ki pi komen yo sou pwogram sibvansyon ak boutik IFundAyiti a.",
+      "Q1": "Konbyen tan ekip IFundAyiti a pran pou l reponn?",
+      "A1": "Nou revize mesaj yo chak jou epi n ap reponn ou nan lespas 24 a 48 èdtan.",
+      "Q2": "Ou bezwen èd pou w suiv aplikasyon sibvansyon w lan?",
+      "A2": "Ou ka suiv eta aplikasyon w lan nenpòt lè sou paj swivi dedye nou an.",
+      "LinkText2": "Suiv Eta Aplikasyon w",
+      "Q3": "Ou gen kesyon sou kòmand boutique ou yo?",
+      "A3": "Ou ka jere detay kòmand yo ak livrezon yo dirèkteman sou paj peman nou an.",
+      "LinkText3": "Gade Paj Peman"
     }
   }
 }
