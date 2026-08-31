@@ -7,17 +7,17 @@ import { ImpactSuccessStory } from "@/features/impact/sections/success-story";
 import { ImpactWinners } from "@/features/impact/sections/winners";
 import { ImpactFinalists } from "@/features/impact/sections/finalists";
 
-export default function ImpactPageContent() {
+export default function ImpactPageContent({ lang }: { lang: string }) {
   return (
     <>
-      <ImpactHero />
-      <ImpactMetrics />
-      <FeaturedProjects id="projects" />
-      <ImpactSuccessStory />
-      <ImpactFundFlow />
-      <ImpactWinners />
-      <ImpactFinalists />
-      <ImpactCta />
+      <ImpactHero lang={lang} />
+      <ImpactMetrics lang={lang} />
+      <FeaturedProjects id="projects" lang={lang} />
+      <ImpactSuccessStory lang={lang} />
+      <ImpactFundFlow lang={lang} />
+      <ImpactWinners lang={lang} />
+      <ImpactFinalists lang={lang} />
+      <ImpactCta lang={lang} />
     </>
   );
 }

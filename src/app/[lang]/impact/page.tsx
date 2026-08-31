@@ -1,11 +1,29 @@
 import type { Metadata } from "next";
 
 import ImpactPageContent from "@/features/impact";
-import { IMPACT_PAGE } from "@/data/impact-page";
 import { buildMetadata } from "@/lib/seo";
+import { getDictionary } from "@/lib/dictionaries";
 
-export const metadata: Metadata = buildMetadata(IMPACT_PAGE.metadata);
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
 
-export default function ImpactPage() {
-  return <ImpactPageContent />;
+  return buildMetadata({
+    title: dict.Navbar.Impact,
+    description: dict.ImpactPage.Hero.Subtitle,
+    path: `/${lang}/impact`,
+  });
+}
+
+export default async function ImpactPage({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}) {
+  const { lang } = await params;
+  return <ImpactPageContent lang={lang} />;
 }

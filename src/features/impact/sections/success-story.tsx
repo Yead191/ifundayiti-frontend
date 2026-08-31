@@ -9,8 +9,9 @@ import { IMPACT_SUCCESS } from "@/data/impact-page";
 import { formatPrice } from "@/lib/utils";
 import { nextFetch } from "@/helpers/next-fetch/NextFetch";
 import { getImageUrl } from "@/lib/getImageUrl";
+import { getDictionary } from "@/lib/dictionaries";
 
-export async function ImpactSuccessStory() {
+export async function ImpactSuccessStory({ lang }: { lang: string }) {
   const res = await nextFetch("/application?status=winner", { cache: "no-store" });
   const winners = res.success ? res.data || [] : [];
   
@@ -18,6 +19,9 @@ export async function ImpactSuccessStory() {
   const winner = winners.find((w: any) => w.successStory) || winners[0];
 
   if (!winner) return null;
+
+  const dict = await getDictionary(lang);
+  const t = dict.ImpactPage.SuccessStory;
 
   return (
     <section
@@ -50,7 +54,7 @@ export async function ImpactSuccessStory() {
 
           <div className="lg:col-span-6">
             <Reveal>
-              <span className="eyebrow">{IMPACT_SUCCESS.eyebrow}</span>
+              <span className="eyebrow">{t.Eyebrow}</span>
               <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight text-forest-deep md:text-5xl">
                 {winner.grant?.projectName}
               </h2>
@@ -75,8 +79,8 @@ export async function ImpactSuccessStory() {
             
             <Reveal delay={120}>
               <Button asChild size="lg" className="mt-8 rounded-xl">
-                <Link href={`/winners/${winner._id}`}>
-                  {IMPACT_SUCCESS.ctaLabel}
+                <Link href={`/${lang}/winners/${winner._id}`}>
+                  {t.ReadStory}
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </Button>

@@ -7,8 +7,9 @@ import { SectionHeading } from "@/components/sections/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { nextFetch } from "@/helpers/next-fetch/NextFetch";
 import { getImageUrl } from "@/lib/getImageUrl";
+import { getDictionary } from "@/lib/dictionaries";
 
-export async function ImpactFinalists() {
+export async function ImpactFinalists({ lang }: { lang: string }) {
   // 1. Fetch latest period
   const periodRes = await nextFetch("/period?limit=1", { cache: "no-store" });
   const periods = periodRes.success ? periodRes.data || [] : [];
@@ -25,6 +26,9 @@ export async function ImpactFinalists() {
 
   if (finalists.length === 0) return null;
 
+  const dict = await getDictionary(lang);
+  const t = dict.ImpactPage.Finalists;
+
   return (
     <section className="py-24 md:py-32 bg-forest-deep relative overflow-hidden text-white">
       {/* Decorative Background */}
@@ -37,17 +41,17 @@ export async function ImpactFinalists() {
         <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between mb-16">
           <SectionHeading
             align="left"
-            eyebrow="The Future"
-            title="Recent Finalists"
-            subtitle={`Meet the brilliant minds from our ${latestPeriod.title} who are one step closer to making their vision a reality.`}
+            eyebrow={t.Eyebrow}
+            title={t.Title}
+            subtitle={`${t.SubtitlePre}${latestPeriod.title}${t.SubtitlePost}`}
             className="sm:max-w-2xl text-white"
             light={true}
           />
           <Link
-            href="/finalists"
+            href={`/${lang}/finalists`}
             className="inline-flex shrink-0 items-center gap-2 rounded-full bg-white/10 px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-white/20 hover:scale-105 backdrop-blur-md border border-white/10"
           >
-            View all finalists
+            {t.ViewAll}
             <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
@@ -71,7 +75,7 @@ export async function ImpactFinalists() {
                   <div className="translate-y-4 transition-transform duration-500 group-hover:translate-y-0">
                     <div className="flex items-center gap-1.5 text-[10px] font-bold uppercase tracking-widest text-sand-soft mb-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100 delay-100">
                       <Sparkles className="h-3 w-3" />
-                      Finalist
+                      {t.Label}
                     </div>
                     <h3 className="font-display text-2xl font-semibold text-white mb-1">
                       {finalist.personal?.name}

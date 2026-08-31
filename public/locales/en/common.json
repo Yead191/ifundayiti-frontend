@@ -340,5 +340,83 @@
       "WinnerSelection": "Selecting winner",
       "Closed": "Cycle closed"
     }
+  },
+  "ImpactPage": {
+    "Hero": {
+      "Eyebrow": "Field notes · Impact",
+      "Title": "Proof you can",
+      "TitleAccent": "walk past.",
+      "Subtitle": "Not a pitch deck — a record of what grants left behind: stalls still open, roofs that hold, and livelihoods neighbors notice on the way home.",
+      "Quote": "Impact is a walk home that feels different.",
+      "QuoteAttribution": "IFundAyiti field principle",
+      "Chapter1": "01 · Metrics",
+      "Chapter2": "02 · Projects",
+      "Chapter3": "03 · Stories",
+      "Chapter4": "04 · Winners",
+      "Livelihoods": "Livelihoods",
+      "Builders": "Builders",
+      "Community": "Community",
+      "StatWinners": "Grants awarded",
+      "StatProjects": "Projects in view",
+      "StatFund": "Put to work",
+      "StatCycle": "Winner / cycle"
+    },
+    "Stats": {
+      "Eyebrow": "By the numbers",
+      "Title": "A growing record — still early, already local.",
+      "Subtitle": "Figures below are replaceable demo values until official reporting is connected. They show the shape of the program, not a finished ledger.",
+      "Stat1Label": "Applications received",
+      "Stat1Detail": "Ideas submitted across open cycles",
+      "Stat2Label": "Grants awarded",
+      "Stat2Detail": "Winners funded with equity-free capital",
+      "Stat3Label": "Projects supported",
+      "Stat3Detail": "Builders whose work reached a public page",
+      "Stat4Label": "Funds awarded",
+      "Stat4Detail": "Pooled Program Fund dollars put to work",
+      "DemoNotice": "Demo figure"
+    },
+    "SuccessStory": {
+      "Eyebrow": "Winner story",
+      "PullQuote": "A small grant does not rewrite a whole economy. It can rewrite one week of work — and that is where trust begins.",
+      "ReadStory": "Read the full story"
+    },
+    "FundFlow": {
+      "Eyebrow": "How money moves",
+      "Title": "Donations fund the program. Grants fund the work.",
+      "Subtitle": "Gifts are never tied to a single applicant profile. They pool into one Program Fund, then leave as verified awards to selected winners.",
+      "Step1Title": "Program Fund",
+      "Step1Body": "Public donations and partners contribute to a shared pool — not to individual crowdfunding campaigns.",
+      "Step2Title": "Cycle award",
+      "Step2Body": "During each period, one winner is selected. The maximum award remains $1,000, equity-free.",
+      "Step3Title": "Verified payout",
+      "Step3Body": "Funds are transferred manually to verified recipients so capital stays accountable and protected.",
+      "Pillar1Title": "One shared fund",
+      "Pillar1Body": "Trust belongs to the mission — not a single profile chasing donations in public.",
+      "Pillar2Title": "One winner per cycle",
+      "Pillar2Body": "Focus stays sharp. Communities can follow a clear result instead of endless campaigns.",
+      "Pillar3Title": "Local, visible change",
+      "Pillar3Body": "Food, energy, water, craft, and livelihoods that neighbors can see on a walk home."
+    },
+    "Winners": {
+      "Eyebrow": "Recent winners",
+      "Title": "People whose ideas already left a mark.",
+      "Subtitle": "Each winner represents a full grant cycle — reviewed, selected, and funded from the Program Fund.",
+      "ViewAll": "View all winners"
+    },
+    "Finalists": {
+      "Eyebrow": "The Future",
+      "Title": "Recent Finalists",
+      "SubtitlePre": "Meet the brilliant minds from our ",
+      "SubtitlePost": " who are one step closer to making their vision a reality.",
+      "ViewAll": "View all finalists",
+      "Label": "Finalist"
+    },
+    "CTA": {
+      "Eyebrow": "Keep the fund moving",
+      "Title": "Help turn the next idea into something neighbors can feel.",
+      "Body": "Your gift strengthens the Program Fund for the next open cycle — not a one-off campaign, but a continuing promise to Haitian builders.",
+      "DonateBtn": "Support the Program Fund",
+      "GrantsBtn": "How grants work"
+    }
   }
 }

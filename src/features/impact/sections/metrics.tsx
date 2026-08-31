@@ -2,8 +2,39 @@ import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/sections/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { IMPACT_STATS } from "@/data/impact-page";
+import { getDictionary } from "@/lib/dictionaries";
 
-export function ImpactMetrics() {
+export async function ImpactMetrics({ lang }: { lang: string }) {
+  const dict = await getDictionary(lang);
+  const t = dict.ImpactPage.Stats;
+
+  const items = [
+    {
+      value: "148",
+      label: t.Stat1Label,
+      detail: t.Stat1Detail,
+      note: t.DemoNotice,
+    },
+    {
+      value: "12",
+      label: t.Stat2Label,
+      detail: t.Stat2Detail,
+      note: t.DemoNotice,
+    },
+    {
+      value: "36",
+      label: t.Stat3Label,
+      detail: t.Stat3Detail,
+      note: t.DemoNotice,
+    },
+    {
+      value: "$11.4k",
+      label: t.Stat4Label,
+      detail: t.Stat4Detail,
+      note: t.DemoNotice,
+    },
+  ];
+
   return (
     <section
       id={IMPACT_STATS.id}
@@ -12,13 +43,13 @@ export function ImpactMetrics() {
       <Container>
         <SectionHeading
           align="left"
-          eyebrow={IMPACT_STATS.eyebrow}
-          title={IMPACT_STATS.title}
-          subtitle={IMPACT_STATS.subtitle}
+          eyebrow={t.Eyebrow}
+          title={t.Title}
+          subtitle={t.Subtitle}
         />
 
         <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {IMPACT_STATS.items.map((stat, index) => (
+          {items.map((stat, index) => (
             <Reveal
               key={stat.label}
               delay={index * 70}

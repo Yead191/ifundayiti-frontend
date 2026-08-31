@@ -3,8 +3,24 @@ import { SectionHeading } from "@/components/sections/section-heading";
 import { Reveal } from "@/components/ui/reveal";
 import { IMPACT_FUND_FLOW } from "@/data/impact-page";
 import { IMPACT_ICONS } from "@/features/impact/lib/icons";
+import { getDictionary } from "@/lib/dictionaries";
 
-export function ImpactFundFlow() {
+export async function ImpactFundFlow({ lang }: { lang: string }) {
+  const dict = await getDictionary(lang);
+  const t = dict.ImpactPage.FundFlow;
+
+  const steps = [
+    { step: "01", title: t.Step1Title, body: t.Step1Body },
+    { step: "02", title: t.Step2Title, body: t.Step2Body },
+    { step: "03", title: t.Step3Title, body: t.Step3Body },
+  ];
+
+  const pillars = [
+    { icon: "landmark" as const, title: t.Pillar1Title, body: t.Pillar1Body },
+    { icon: "award" as const, title: t.Pillar2Title, body: t.Pillar2Body },
+    { icon: "heart-handshake" as const, title: t.Pillar3Title, body: t.Pillar3Body },
+  ];
+
   return (
     <section
       id={IMPACT_FUND_FLOW.id}
@@ -13,13 +29,13 @@ export function ImpactFundFlow() {
       <Container>
         <SectionHeading
           align="left"
-          eyebrow={IMPACT_FUND_FLOW.eyebrow}
-          title={IMPACT_FUND_FLOW.title}
-          subtitle={IMPACT_FUND_FLOW.subtitle}
+          eyebrow={t.Eyebrow}
+          title={t.Title}
+          subtitle={t.Subtitle}
         />
 
         <ol className="mt-14 space-y-0 divide-y divide-hairline border-y border-hairline">
-          {IMPACT_FUND_FLOW.steps.map((item, index) => (
+          {steps.map((item, index) => (
             <Reveal key={item.step} delay={index * 60} as="li">
               <div className="grid gap-4 py-8 md:grid-cols-12 md:items-start md:gap-8">
                 <p className="font-display text-sm font-semibold tracking-[0.2em] text-forest md:col-span-2">
@@ -37,7 +53,7 @@ export function ImpactFundFlow() {
         </ol>
 
         <div className="mt-14 grid gap-6 md:grid-cols-3">
-          {IMPACT_FUND_FLOW.pillars.map((item, index) => {
+          {pillars.map((item, index) => {
             const Icon = IMPACT_ICONS[item.icon];
             return (
               <Reveal

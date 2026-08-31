@@ -4,9 +4,47 @@ import { ArrowDownRight, MapPin, Sparkles } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
-import { IMPACT_HERO } from "@/data/impact-page";
+import { getDictionary } from "@/lib/dictionaries";
 
-export function ImpactHero() {
+export async function ImpactHero({ lang }: { lang: string }) {
+  const dict = await getDictionary(lang);
+  const t = dict.ImpactPage.Hero;
+
+  const chapters = [
+    { href: "#metrics", label: t.Chapter1, hint: lang === "ht" ? "Chif yo" : "The numbers" },
+    { href: "#projects", label: t.Chapter2, hint: lang === "ht" ? "Travay nan je" : "Work in view" },
+    { href: "#success-stories", label: t.Chapter3, hint: lang === "ht" ? "Lavi ki chanje" : "Lives changed" },
+    { href: "#winners", label: t.Chapter4, hint: lang === "ht" ? "Moun ki finanse" : "Who was funded" },
+  ];
+
+  const collage = [
+    {
+      src: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=900&h=1100",
+      alt: "Neighbors gathered in community",
+      caption: t.Community,
+      className: "col-span-7 row-span-2",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=80&w=700&h=500",
+      alt: "Local agricultural work",
+      caption: t.Livelihoods,
+      className: "col-span-5",
+    },
+    {
+      src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=700&h=500",
+      alt: "People working side by side",
+      caption: t.Builders,
+      className: "col-span-5",
+    },
+  ];
+
+  const proofStrip = [
+    { value: "12", label: t.StatWinners },
+    { value: "36", label: t.StatProjects },
+    { value: "$11.4k", label: t.StatFund },
+    { value: "1", label: t.StatCycle },
+  ];
+
   return (
     <section className="relative overflow-hidden border-b border-hairline bg-cream">
       <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-sand-soft/90 via-cream to-cream" />
@@ -19,16 +57,16 @@ export function ImpactHero() {
             <Reveal>
               <div className="inline-flex items-center gap-2 rounded-full border border-forest/12 bg-white/80 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-forest shadow-[0_12px_28px_-16px_rgba(11,61,46,0.4)] backdrop-blur-sm">
                 <Sparkles className="h-3.5 w-3.5" />
-                {IMPACT_HERO.eyebrow}
+                {t.Eyebrow}
               </div>
               <h1 className="mt-7 font-display text-[2.75rem] font-semibold leading-[1.02] tracking-tight text-forest-deep sm:text-5xl lg:text-[3.35rem]">
-                {IMPACT_HERO.title}
+                {t.Title}
                 <span className="mt-1 block italic text-forest">
-                  {IMPACT_HERO.titleAccent}
+                  {t.TitleAccent}
                 </span>
               </h1>
               <p className="mt-6 max-w-md text-base leading-relaxed text-mist sm:text-lg">
-                {IMPACT_HERO.subtitle}
+                {t.Subtitle}
               </p>
             </Reveal>
 
@@ -36,20 +74,20 @@ export function ImpactHero() {
               <blockquote className="relative mt-8 overflow-hidden rounded-2xl border border-hairline bg-white/70 p-5 shadow-[0_16px_40px_-28px_rgba(11,61,46,0.3)] backdrop-blur-sm">
                 <div className="absolute left-0 top-0 h-full w-1 bg-sand" />
                 <p className="pl-3 font-display text-lg leading-snug text-forest-deep sm:text-xl">
-                  &ldquo;{IMPACT_HERO.quote}&rdquo;
+                  &ldquo;{t.Quote}&rdquo;
                 </p>
                 <p className="mt-3 pl-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-forest/55">
-                  {IMPACT_HERO.quoteAttribution}
+                  {t.QuoteAttribution}
                 </p>
               </blockquote>
             </Reveal>
 
             <Reveal delay={140} className="mt-10">
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-faint">
-                In this report
+                {lang === "ht" ? "Nan rapò sa a" : "In this report"}
               </p>
               <nav className="mt-3 overflow-hidden rounded-2xl border border-hairline bg-white/60 backdrop-blur-sm">
-                {IMPACT_HERO.chapters.map((chapter, index) => (
+                {chapters.map((chapter, index) => (
                   <Link
                     key={chapter.href}
                     href={chapter.href}
@@ -81,7 +119,7 @@ export function ImpactHero() {
             </div>
 
             <div className="grid grid-cols-12 grid-rows-[minmax(150px,20vw)_minmax(150px,20vw)] gap-3 sm:gap-4 md:grid-rows-[230px_230px] lg:grid-rows-[250px_250px]">
-              {IMPACT_HERO.collage.map((frame, index) => (
+              {collage.map((frame, index) => (
                 <figure
                   key={frame.src}
                   className={`group relative overflow-hidden rounded-[1.35rem] bg-sand-soft shadow-[0_28px_70px_-40px_rgba(11,61,46,0.45)] ${frame.className}`}
@@ -108,14 +146,14 @@ export function ImpactHero() {
           <div className="overflow-hidden rounded-t-[1.5rem] border border-b-0 border-hairline bg-forest text-white shadow-[0_-12px_48px_-28px_rgba(11,61,46,0.4)]">
             <div className="flex flex-col gap-1 border-b border-white/10 px-6 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sand/85">
-                Impact proof strip · demo figures
+                {lang === "ht" ? "Bann prèv enpak · chif demonstrasyon" : "Impact proof strip · demo figures"}
               </p>
               <p className="text-xs text-sand/65">
-                Swap for official reporting when ready
+                {lang === "ht" ? "Ranplase ak chif ofisyèl yo lè yo pare" : "Swap for official reporting when ready"}
               </p>
             </div>
             <div className="grid grid-cols-2 divide-x divide-y divide-white/10 sm:grid-cols-4 sm:divide-y-0">
-              {IMPACT_HERO.proofStrip.map((item) => (
+              {proofStrip.map((item) => (
                 <div
                   key={item.label}
                   className="px-6 py-6 transition-colors hover:bg-white/5 sm:px-8 sm:py-8"

@@ -180,7 +180,7 @@
       "Principle1Title": "Piblik pa defo",
       "Principle1Body": "Eta aplikasyon yo, finalis yo, ak gayan yo vizib sou yon sit piblik — yo pa kache dèyè fil prive oswa apwobasyon anba tab.",
       "Principle2Title": "Je lokal sou chak dosye",
-      "Principle2Body": "Yon komite evalyasyon li chak aplikasyon ak kontèks katye a nan tèt yo. Kapital la swiv jijman moun, pa algoritm sèlman.",
+      "Principle2Body": "Yon komite evalyasyon li chak aplikasyon ak kontèks katye a nan tèt yo. Kapital la swiv jijman moun, pa algoritm swlman.",
       "Principle3Title": "Diyite nan pwosesis la",
       "Principle3Body": "Nou mande verifikasyon san fè espektak. Prèv pwoteje kominote a; li pa ta dwe janm santi l tankou yon pèfòmans nan mizè.",
       "Principle4Title": "Yon sèl fon, anpil desten",
@@ -339,6 +339,84 @@
       "Review": "Nan evalyasyon",
       "WinnerSelection": "Seleksyon laureya",
       "Closed": "Sik fèmen"
+    }
+  },
+  "ImpactPage": {
+    "Hero": {
+      "Eyebrow": "Nòt sou teren an · Enpak",
+      "Title": "Prèv ou ka",
+      "TitleAccent": "mache pase.",
+      "Subtitle": "Se pa yon plan prezantasyon — se yon dosye sou sa sibvansyon yo kite dèyè: boutik ki toujou louvri, twati ki kenbe fèm, ak aktivite vwazen yo remake lè y ap tounen lakay yo.",
+      "Quote": "Enpak se lè w ap mache antre lakay ou epi katye a santi l diferan.",
+      "QuoteAttribution": "Prensip teren IFundAyiti",
+      "Chapter1": "01 · Chif yo",
+      "Chapter2": "02 · Pwojè yo",
+      "Chapter3": "03 · Istwa yo",
+      "Chapter4": "04 · Laureya yo",
+      "Livelihoods": "Aktivite yo",
+      "Builders": "Kreyatè yo",
+      "Community": "Kominote a",
+      "StatWinners": "Sibvansyon yo bay",
+      "StatProjects": "Pwojè nan je piblik",
+      "StatFund": "Mete nan travay",
+      "StatCycle": "Gayan / sik"
+    },
+    "Stats": {
+      "Eyebrow": "Daprè chif yo",
+      "Title": "Yon dosye k ap grandi — toujou byen bonè, deja lokal.",
+      "Subtitle": "Chif ki anba yo se valè demonstrasyon swlman jiskaske nou konekte rapò ofisyèl yo. Yo montre fòm pwogram nan, se pa yon rapò finansye final.",
+      "Stat1Label": "Aplikasyon yo resevwa",
+      "Stat1Detail": "Lide yo soumèt pandan tout sik ki te louvri yo",
+      "Stat2Label": "Sibvansyon yo bay",
+      "Stat2Detail": "Laureya ki finanse ak kapital san pran aksyon",
+      "Stat3Label": "Pwojè yo sipòte",
+      "Stat3Detail": "Kreyatè ki gen travay yo pibliye sou sit la",
+      "Stat4Label": "Lajan yo distribye",
+      "Stat4Detail": "Dola Fon Pwogram nan ki deja ap travay nan kominote yo",
+      "DemoNotice": "Chif demonstrasyon"
+    },
+    "SuccessStory": {
+      "Eyebrow": "Istwa gayan an",
+      "PullQuote": "Yon ti sibvansyon pa chanje tout ekonomi an. Men li ka chanje yon semèn travay — epi se la konfyans kòmanse.",
+      "ReadStory": "Li tout istwa a"
+    },
+    "FundFlow": {
+      "Eyebrow": "Kijan lajan an deplase",
+      "Title": "Donasyon yo finanse pwogram nan. Sibvansyon yo finanse travay la.",
+      "Subtitle": "Donasyon yo pa janm lye ak yon sèl aplikan. Yo rasanble nan yon Fon Pwogram inik, answit yo pati kòm finansman verifye bay laureya yo chwazi yo.",
+      "Step1Title": "Fon Pwogram",
+      "Step1Body": "Donasyon piblik ak patnè yo kontribye nan yon fon pataje — pa nan kanpay crowdfunding endividyèl.",
+      "Step2Title": "Sibvansyon sik la",
+      "Step2Body": "Pandan chak peryòd, nou chwazi yon sèl gayan. Sibvansyon maksimòm nan rete $1,000, san pran aksyon.",
+      "Step3Title": "Peman verifye",
+      "Step3Body": "Lajan yo transfere manyèlman bay benefisyè ki verifye pou kapital la ka rete an sekirite epi responsab.",
+      "Pillar1Title": "Yon fon pataje",
+      "Pillar1Body": "Konfyans nan ale nan misyon an — pa nan yon sèl moun k ap kouri dèyè don an piblik.",
+      "Pillar2Title": "Yon laureya pa sik",
+      "Pillar2Body": "Konsantrasyon an rete klè. Kominote a ka swiv yon rezilta presi pito pase kanpay san fen.",
+      "Pillar3Title": "Chanjman lokal, vizib",
+      "Pillar3Body": "Manje, enèji, dlo, atizana, ak aktivite vwazen yo ka wè lè y ap mache antre lakay yo."
+    },
+    "Winners": {
+      "Eyebrow": "Laureya ki fèk pase",
+      "Title": "Moun ki gen lide yo deja kite mak yo.",
+      "Subtitle": "Chak laureya reprezante yon sik sibvansyon antye — ki te evalye, chwazi, epi finanse nan Fon Pwogram nan.",
+      "ViewAll": "Gade tout laureya yo"
+    },
+    "Finalists": {
+      "Eyebrow": "Lavni",
+      "Title": "Finalis ki fèk pase",
+      "SubtitlePre": "Rankontre kreyatè remakab nan peryòd ",
+      "SubtitlePost": " an ki toupre reyalize rèv yo.",
+      "ViewAll": "Gade tout finalis yo",
+      "Label": "Finalis"
+    },
+    "CTA": {
+      "Eyebrow": "Kenbe fon an ap deplase",
+      "Title": "Ede transfòme pwochen lide a an yon pwojè vwazen yo ka santi.",
+      "Body": "Kado ou a ranfòse Fon Pwogram nan pou pwochen sik la — se pa yon sèl kanpay, se yon pwomès dirab bay kreyatè ayisyen yo.",
+      "DonateBtn": "Sipòte Fon Pwogram nan",
+      "GrantsBtn": "Kijan sibvansyon yo mache"
     }
   }
 }

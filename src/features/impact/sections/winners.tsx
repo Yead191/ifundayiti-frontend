@@ -9,12 +9,16 @@ import { IMPACT_WINNERS } from "@/data/impact-page";
 import { formatPrice } from "@/lib/utils";
 import { nextFetch } from "@/helpers/next-fetch/NextFetch";
 import { getImageUrl } from "@/lib/getImageUrl";
+import { getDictionary } from "@/lib/dictionaries";
 
-export async function ImpactWinners() {
+export async function ImpactWinners({ lang }: { lang: string }) {
   const res = await nextFetch("/application?status=winner&limit=4", { cache: "no-store" });
   const winners = res.success ? res.data || [] : [];
 
   if (winners.length === 0) return null;
+
+  const dict = await getDictionary(lang);
+  const t = dict.ImpactPage.Winners;
 
   return (
     <section
@@ -26,15 +30,15 @@ export async function ImpactWinners() {
           <SectionHeading
             align="left"
             className="sm:max-w-2xl"
-            eyebrow={IMPACT_WINNERS.eyebrow}
-            title={IMPACT_WINNERS.title}
-            subtitle={IMPACT_WINNERS.subtitle}
+            eyebrow={t.Eyebrow}
+            title={t.Title}
+            subtitle={t.Subtitle}
           />
           <Link
-            href={IMPACT_WINNERS.viewAllHref}
+            href={`/${lang}/winners`}
             className="inline-flex shrink-0 items-center gap-1.5 text-sm font-semibold text-forest transition-colors hover:text-forest-deep"
           >
-            {IMPACT_WINNERS.viewAllLabel}
+            {t.ViewAll}
             <ArrowUpRight className="h-4 w-4" />
           </Link>
         </div>
@@ -43,7 +47,7 @@ export async function ImpactWinners() {
           {winners.map((winner: any, index: number) => (
             <Reveal key={winner._id} delay={index * 80}>
               <Link
-                href={`/winners/${winner._id}`}
+                href={`/${lang}/winners/${winner._id}`}
                 className="group flex h-full overflow-hidden rounded-[1.5rem] border border-hairline bg-white shadow-[0_20px_50px_-40px_rgba(11,61,46,0.35)] transition-all duration-300 hover:-translate-y-1 hover:border-forest/25 hover:shadow-[0_28px_60px_-36px_rgba(11,61,46,0.4)]"
               >
                 <div className="relative hidden w-36 shrink-0 sm:block md:w-40">
