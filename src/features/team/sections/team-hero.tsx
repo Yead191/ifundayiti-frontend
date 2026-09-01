@@ -13,13 +13,29 @@ export function TeamHero({
   stats: statsData,
   dict,
 }: {
-  stats: { totalDirectors: number; totalMembers: number; totalVolunteers: number };
+  stats: {
+    totalDirectors: number;
+    totalMembers: number;
+    totalVolunteers: number;
+  };
   dict: any;
 }) {
   const stats = [
-    { label: dict.StatDirectors, value: statsData.totalDirectors.toString(), suffix: "" },
-    { label: dict.StatMembers, value: statsData.totalMembers.toString(), suffix: "" },
-    { label: dict.StatVolunteers, value: statsData.totalVolunteers.toString(), suffix: "+" },
+    {
+      label: dict.StatDirectors,
+      value: statsData.totalDirectors.toString(),
+      suffix: "",
+    },
+    {
+      label: dict.StatMembers,
+      value: statsData.totalMembers.toString(),
+      suffix: "",
+    },
+    {
+      label: dict.StatVolunteers,
+      value: statsData.totalVolunteers.toString(),
+      suffix: "+",
+    },
     { label: dict.StatDepartments, value: "10", suffix: "/10" },
   ];
   return (

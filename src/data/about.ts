@@ -1,8 +1,4 @@
-export type AboutIconId =
-  | "scale"
-  | "shield-check"
-  | "hand-heart"
-  | "landmark";
+export type AboutIconId = "scale" | "shield-check" | "hand-heart" | "landmark";
 
 export interface AboutHighlight {
   label: string;
@@ -45,10 +41,10 @@ export const ABOUT_HERO = {
   eyebrow: "About IFundAyiti",
   title: "The people and principles",
   titleAccent: "behind every grant.",
-  subtitleSuffix: "This page is for the story, the standards, and the team — not the application form.",
-  image:
-    "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&q=80&w=1400&h=1600",
-  imageAlt: "Hands working together on a community project",
+  subtitleSuffix:
+    "This page is for the story, the standards, and the team — not the application form.",
+  image: "/assets/images/hero/about-bg.jpeg",
+  imageAlt: "Haitian youth showcasing local ingenuity with handcrafted cart",
   highlights: [
     { label: "Origin", value: "Hubology initiative" },
     { label: "Focus", value: "Haiti-first grants" },

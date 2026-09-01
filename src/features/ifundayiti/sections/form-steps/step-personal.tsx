@@ -3,16 +3,20 @@
 import * as React from "react";
 import Image from "next/image";
 import { useFormContext } from "react-hook-form";
-import { AlertCircle, Camera, Upload, User, X } from "lucide-react";
+import { AlertCircle, Camera, User, X } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 export function StepPersonal({
   setImageFile,
 }: {
   setImageFile?: (file: File | null) => void;
 } = {}) {
+  const dict = useTranslation();
+  const t = dict.ApplyPage.Step1;
+
   const {
     register,
     watch,
@@ -27,7 +31,7 @@ export function StepPersonal({
     const file = e.target.files?.[0];
     if (file) {
       if (file.size > 5 * 1024 * 1024) {
-        alert("File size should be less than 5MB");
+        alert(t.ErrFileSize);
         return;
       }
       setImageFile?.(file);
@@ -52,10 +56,10 @@ export function StepPersonal({
       {/* PROFILE PHOTO UPLOAD SECTION */}
       <div className="rounded-2xl border border-dashed border-hairline bg-sand-soft/30 p-5 sm:p-6">
         <Label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-forest">
-          Applicant Profile Photo (Recommended)
+          {t.PhotoLabel}
         </Label>
         <p className="mb-4 text-xs text-mist leading-relaxed">
-          Upload a clear headshot or profile photo. This helps grant reviewers identify you and your team.
+          {t.PhotoDesc}
         </p>
 
         <div className="flex flex-col sm:flex-row items-center gap-5">
@@ -92,7 +96,7 @@ export function StepPersonal({
                 className="inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-forest/90"
               >
                 <Camera className="h-3.5 w-3.5" />
-                {photoUrl ? "Change Photo" : "Upload Photo"}
+                {photoUrl ? t.ChangePhoto : t.UploadPhoto}
               </label>
 
               {photoUrl && (
@@ -102,11 +106,11 @@ export function StepPersonal({
                   className="inline-flex items-center justify-center gap-1.5 rounded-xl border border-hairline bg-white px-3.5 py-2.5 text-xs font-semibold text-mist hover:text-red-600 transition-colors"
                 >
                   <X className="h-3.5 w-3.5" />
-                  Remove
+                  {t.Remove}
                 </button>
               )}
             </div>
-            <span className="text-[11px] text-mist">JPEG, PNG or WebP · Max 5MB</span>
+            <span className="text-[11px] text-mist">{t.PhotoFormat}</span>
           </div>
         </div>
       </div>
@@ -114,13 +118,13 @@ export function StepPersonal({
       {/* FULL NAME */}
       <div>
         <Label htmlFor="name" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-forest">
-          Full Name (Must match National ID) *
+          {t.NameLabel}
         </Label>
         <Input
           id="name"
           {...register("name")}
           className="h-12 rounded-xl border-hairline bg-sand-soft/20 text-forest-deep focus:bg-white focus:border-forest focus:ring-2 focus:ring-forest/15"
-          placeholder="e.g. Jean-Baptiste Pierre"
+          placeholder={t.NamePlaceholder}
         />
         {errors.name && (
           <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-600">
@@ -134,7 +138,7 @@ export function StepPersonal({
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <Label htmlFor="dob" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-forest">
-            Date of Birth *
+            {t.DobLabel}
           </Label>
           <Input
             id="dob"
@@ -152,12 +156,13 @@ export function StepPersonal({
 
         <div>
           <Label htmlFor="nationality" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-forest">
-            Nationality
+            {t.NationalityLabel}
           </Label>
           <Input
             id="nationality"
             {...register("nationality")}
             disabled
+            value={t.NationalityVal}
             className="h-12 rounded-xl border-hairline bg-sand-soft/40 text-mist"
           />
         </div>
@@ -166,14 +171,14 @@ export function StepPersonal({
       {/* LOCATION */}
       <div>
         <Label htmlFor="location" className="mb-2 block text-xs font-semibold uppercase tracking-wider text-forest">
-          Location (Department / City / Full Address) *
+          {t.LocationLabel}
         </Label>
         <Textarea
           id="location"
           {...register("location")}
           rows={3}
           className="rounded-xl border-hairline bg-sand-soft/20 p-3.5 text-sm text-forest-deep focus:bg-white focus:border-forest focus:ring-2 focus:ring-forest/15"
-          placeholder="e.g. Cap-Haïtien, Rue 24 A, House #14"
+          placeholder={t.LocationPlaceholder}
         />
         {errors.location && (
           <p className="mt-1 flex items-center gap-1 text-xs font-medium text-red-600">

@@ -716,94 +716,214 @@
       "LinkText3": "View Checkout"
     }
   },
-  "TrackingPage": {
-    "Metadata": {
-      "Title": "Track Application",
-      "Description": "Check your IFundAyiti grant application status using the email and date of birth from your submission."
-    },
+  "ApplyPage": {
     "Hero": {
-      "Eyebrow": "Application Status",
-      "Title": "Track Your Journey",
-      "Subtitle": "Stay updated on your IFundAyiti grant application. Enter your registered email and date of birth below to view your real-time status and next steps securely."
+      "Eyebrow": "🎯 Equity-Free Micro-Grant Application",
+      "Title": "Turn your vision into reality.",
+      "Subtitle": "Request up to $1,000 equity-free funding for your business or community initiative. Follow our guided application below."
     },
-    "Form": {
+    "NoCycles": {
+      "Title": "No active grant cycles",
+      "Desc": "Please check back later for upcoming grant opportunities.",
+      "BackHome": "Back to Home"
+    },
+    "Badges": {
+      "MaxGrantTitle": "$1,000 Max Grant",
+      "MaxGrantDesc": "Equity-free seed funding",
+      "EquityTitle": "0% Equity Taken",
+      "EquityDesc": "Non-dilutive community capital",
+      "QuarterlyTitle": "Quarterly Cycle",
+      "QuarterlyDesc": "Active review & selection",
+      "SecureTitle": "Encrypted & Secure",
+      "SecureDesc": "Confidential application review"
+    },
+    "ClosedState": {
+      "Title": "Applications are currently [status]",
+      "NotOpen": "The application window for the [title] is not open at this time.",
+      "OpenOn": "It will open on [date].",
+      "ClosedOn": "The window closed on [date].",
+      "Reviewing": "We are currently reviewing applications. The window closed on [date].",
+      "Selecting": "We are finalizing our winner selection. The window closed on [date].",
+      "TrackTitle": "Track your application",
+      "TrackDesc": "Already applied for a grant? You can check the live status of your submission at any time.",
+      "TrackBtn": "Track Status",
+      "GuidelinesTitle": "Program guidelines",
+      "GuidelinesDesc": "Read about our selection criteria, eligibility requirements, and the impact of the IFundAyiti program.",
+      "GuidelinesBtn": "Read Details"
+    },
+    "Stepper": {
+      "Progress": "Application Progress",
+      "StepOf": "Step [current] of [total]",
+      "Step1Label": "Personal & Photo",
+      "Step1Desc": "Basic details & photo",
+      "Step2Label": "Contact Info",
+      "Step2Desc": "Email & phone",
+      "Step3Label": "Identification",
+      "Step3Desc": "National ID / NIF",
+      "Step4Label": "Project & Grant",
+      "Step4Desc": "Project & fund usage",
+      "Step5Label": "Background",
+      "Step5Desc": "Occupation & history",
+      "Step6Label": "Documents",
+      "Step6Desc": "ID & address uploads",
+      "Step7Label": "Review & Submit",
+      "Step7Desc": "Final agreement"
+    },
+    "Tips": {
+      "Title": "Tips for a Strong Application",
+      "Tip1": "Upload a clear profile photo & valid ID.",
+      "Tip2": "Be specific about how the $1,000 grant will be spent.",
+      "Tip3": "Explain the tangible community benefits of your project."
+    },
+    "Nav": {
+      "Previous": "Previous Step",
+      "Continue": "Continue",
+      "Submit": "Submit Grant Application",
+      "Submitting": "Submitting..."
+    },
+    "Step1": {
+      "PhotoLabel": "Applicant Profile Photo (Recommended)",
+      "PhotoDesc": "Upload a clear headshot or profile photo. This helps grant reviewers identify you and your team.",
+      "UploadPhoto": "Upload Photo",
+      "ChangePhoto": "Change Photo",
+      "Remove": "Remove",
+      "PhotoFormat": "JPEG, PNG or WebP · Max 5MB",
+      "NameLabel": "Full Name (Must match National ID) *",
+      "NamePlaceholder": "e.g. Jean-Baptiste Pierre",
+      "DobLabel": "Date of Birth *",
+      "NationalityLabel": "Nationality",
+      "NationalityVal": "Haitian",
+      "LocationLabel": "Location (Department / City / Full Address) *",
+      "LocationPlaceholder": "e.g. Cap-Haïtien, Rue 24 A, House #14",
+      "ErrFileSize": "File size should be less than 5MB",
+      "ErrName": "Full Name must match your National ID",
+      "ErrDob": "Date of Birth is required",
+      "ErrLocation": "Full Address is required"
+    },
+    "Step2": {
+      "EmailLabel": "Email Address *",
+      "EmailPlaceholder": "e.g. name@domain.com",
+      "PhoneLabel": "Phone Number *",
+      "PhonePlaceholder": "e.g. +509 3712-3456",
       "ErrEmail": "Enter a valid email address",
-      "ErrDob": "Date of birth is required",
-      "ErrNotFound": "No application found with these credentials.",
-      "ErrUnexpected": "An unexpected error occurred while fetching your status.",
-      "LabelEmail": "Registered Email",
-      "PlaceholderEmail": "you@email.com",
-      "LabelDob": "Date of Birth",
-      "LabelPeriod": "Grant Cycle (Optional)",
-      "PlaceholderPeriod": "All Cycles (Latest)",
-      "CheckStatus": "Check Status",
-      "NotFoundTitle": "Application Not Found",
-      "NotFoundDesc": "Please make sure you are using the exact credentials and selected cycle."
+      "ErrPhone": "Enter a valid phone number"
     },
-    "Status": {
-      "Submitted": "Submitted Successfully",
-      "UnderReview": "Currently Under Review",
-      "Approved": "Application Approved",
-      "Finalist": "Top Finalist",
-      "Winner": "Grant Winner!",
-      "Rejected": "Application Declined",
-      "Archived": "Archived",
-      "ProjectLabel": "Project:",
-      "RejectionHeader": "Application Update",
-      "RejectionBody": "Thank you for applying. Unfortunately, your application has not been selected to move forward at this time.",
-      "RejectionNote": "Note:",
-      "WinnerHeader": "Congratulations!",
-      "WinnerBody": "You have been selected as a grant winner! We will be in touch shortly regarding the next steps for funding distribution.",
-      "WinnerAwarded": "Awarded Amount:",
-      "SubmittedOn": "Submitted On",
-      "LastUpdated": "Last Updated"
+    "Step3": {
+      "IdLabel": "National Identification ID (CIN / NIF) *",
+      "IdPlaceholder": "e.g. 01-01-99-1994-04-00101",
+      "PassportLabel": "Passport Number",
+      "Optional": "(Optional)",
+      "PassportPlaceholder": "e.g. HH123456",
+      "ErrId": "National ID Number is required"
     },
-    "Progress": {
-      "Title": "Application Progress",
-      "StepSubmitted": "Submitted",
-      "StepUnderReview": "Under Review",
-      "StepApproved": "Approved",
-      "StepFinalist": "Finalist",
-      "StepWinner": "Winner"
+    "Step4": {
+      "ProjectNameLabel": "Business / Project Name *",
+      "ProjectNamePlaceholder": "e.g. Cap-Haïtien Solar Kiosk",
+      "AmountLabel": "Requested ($) *",
+      "DescLabel": "Project Description & Story *",
+      "DescPlaceholder": "Explain what your business is and the story behind it...",
+      "FundUsageLabel": "How the money will be used *",
+      "FundUsagePlaceholder": "Detailed breakdown: e.g. solar panels, battery, cables...",
+      "ImpactLabel": "Expected Community Impact *",
+      "ImpactPlaceholder": "How will this support your neighbors or city?...",
+      "ErrProjectName": "Project Name is required",
+      "ErrAmountNumber": "Requested amount must be a number",
+      "ErrAmountMin": "Minimum request is $50",
+      "ErrAmountMax": "Maximum grant request is $1,000",
+      "ErrDesc": "Please provide a detailed description (min 15 chars)",
+      "ErrFundUsage": "Explain how the fund will be utilized (min 15 chars)",
+      "ErrImpact": "Explain the expected community impact (min 15 chars)"
     },
-    "Details": {
-      "Title": "Application Details",
-      "PersonalInfo": "Personal Info",
-      "ContactInfo": "Contact",
-      "BackgroundInfo": "Background",
-      "GrantInfo": "Grant Info",
-      "Requested": "Requested:",
-      "ProjectDesc": "Project Description",
-      "ExpectedImpact": "Expected Impact",
-      "SubmittedDocs": "Submitted Documents",
-      "ViewDoc": "View Document"
+    "Step5": {
+      "OccupationLabel": "Current Occupation *",
+      "OccupationPlaceholder": "e.g. Unemployed / Market Vendor / Carpenter",
+      "FinancialLabel": "Brief Financial Background / Challenge *",
+      "FinancialPlaceholder": "Explain your income situation and why this grant is critical to your business growth...",
+      "ErrOccupation": "Current occupation is required",
+      "ErrFinancial": "Brief financial background is required (min 15 chars)"
+    },
+    "Step6": {
+      "Warning": "Missing required documents may result in your application being delayed or rejected during screening.",
+      "WarningPrefix": "Note:",
+      "GovIdTitle": "Government-issued ID *",
+      "GovIdDesc": "National ID Card or Passport Scan (Required)",
+      "UploadId": "Upload ID Scan",
+      "ChangeFile": "Change File",
+      "ProofAddrTitle": "Proof of Address *",
+      "ProofAddrDesc": "Utility Bill, Tax Record, or Rent Slip (Required)",
+      "UploadAddr": "Upload Address Scan",
+      "PlanTitle": "Business Plan",
+      "PlanDesc": "Project outline or budget breakdown (Optional)",
+      "UploadPlan": "Upload Business Plan",
+      "GalleryTitle": "Project Gallery Images",
+      "GalleryDesc": "Photos of your project, workspace, stall, products, or team (Max 5 images)",
+      "UploadGallery": "Upload Images",
+      "ErrMaxGallery": "You can only upload a maximum of 5 gallery images.",
+      "SupportTitle": "Supporting Documents",
+      "SupportDesc": "Additional photos, licenses, etc. (Max 5 files)",
+      "UploadFiles": "Upload Files",
+      "ErrMaxFiles": "You can only upload a maximum of 5 supporting documents.",
+      "ErrRequiredDocs": "Government ID and proof of address are required."
+    },
+    "Step7": {
+      "ApplicantPhoto": "Applicant Profile Photo",
+      "ReviewPersonal": "Personal Information",
+      "ReviewContact": "Contact & ID",
+      "ReviewProject": "Project Proposal",
+      "FullName": "Full Name",
+      "Dob": "Date of Birth",
+      "Location": "Location",
+      "Email": "Email",
+      "Phone": "Phone",
+      "NationalId": "National ID / NIF",
+      "ProjectName": "Project Name",
+      "RequestedAmount": "Requested Amount",
+      "TermsTitle": "Declarations & Terms",
+      "TermsBody": "By submitting this application, you confirm that all information provided is accurate and truthful to the best of your knowledge. Selections are conducted by our reviewing committee based on merit, project viability, and community impact.",
+      "Check1": "I certify that all information provided in this application is accurate and matches my official documentation.",
+      "Check2": "I understand that submitting an application does not guarantee selection for funding.",
+      "Check3": "I understand that providing false or misleading details will result in immediate disqualification.",
+      "ErrCheck1": "You must certify accuracy of details",
+      "ErrCheck2": "You must acknowledge funding is not guaranteed",
+      "ErrCheck3": "You must acknowledge falsification terms"
+    },
+    "Success": {
+      "Eyebrow": "Application Submitted",
+      "Title": "Good luck, [name]!",
+      "Body": "Your grant application has been successfully received by our review board.",
+      "ImportantPrefix": "Important:",
+      "ImportantNotice": "You will need your registered email and date of birth to track your application status later. Please keep them safe.",
+      "RegEmail": "Registered Email",
+      "Dob": "Date of Birth",
+      "TrackBtn": "Track Application Status",
+      "ReturnGrants": "Return to Grants"
     }
   },
   "TeamPage": {
     "Metadata": {
-      "Title": "Our Team — Directors, Members & Volunteers",
-      "Description": "Meet the board of directors, core operations team, and community volunteers driving transparent micro-grants across Haiti and the diaspora with IFundAyiti."
+      "Title": "Our Team & Leadership",
+      "Description": "Meet the board of directors, core team members, and dedicated volunteers behind IFundAyiti."
     },
     "Hero": {
-      "Badge": "People Behind IFundAyiti",
-      "TitlePrefix": "Meet our ",
-      "TitleDirectors": "Directors,",
-      "TitleMiddle": " Core ",
+      "Badge": "Our People · Our Mission",
+      "TitlePrefix": "Guided by ",
+      "TitleDirectors": "Directors",
+      "TitleMiddle": ", driven by ",
       "TitleMembers": "Members",
-      "TitleAnd": " & Dedicated ",
+      "TitleAnd": ", & powered by ",
       "TitleVolunteers": "Volunteers",
-      "Subtitle": "From Port-au-Prince to Cap-Haïtien and the Diaspora, our team of directors, operational staff, and grassroots volunteers work tirelessly to deliver transparent, equity-free micro-grants to Haitian entrepreneurs and community builders.",
+      "Subtitle": "Meet the dedicated team, leaders, and community volunteers building transparent micro-grant opportunities across Haiti.",
       "ExploreBtn": "Explore Team",
-      "JoinBtn": "Join as a Volunteer",
+      "JoinBtn": "Become a Volunteer",
       "StatDirectors": "Board Directors",
-      "StatMembers": "Core Operations",
+      "StatMembers": "Core Members",
       "StatVolunteers": "Active Volunteers",
-      "StatDepartments": "Haiti Departments"
+      "StatDepartments": "Departments Covered"
     },
     "Values": {
-      "Eyebrow": "Our Ethos",
-      "Title": "How our team works together",
-      "Subtitle": "Four core principles that guide how our board, members, and volunteers make decisions every single day.",
+      "Eyebrow": "Our Foundation",
+      "Title": "Core Values Driving Our Team",
+      "Subtitle": "How we work together with integrity, transparency, and deep respect for Haitian communities.",
       "Val1Title": "Uncompromising Integrity",
       "Val1Desc": "Every dollar donated is tracked with open public records. Governance rests on clear standards, not secret handshakes.",
       "Val2Title": "Rooted in the Soil",
@@ -814,43 +934,106 @@
       "Val4Desc": "Bridging local innovators with the global diaspora to build sustainable, long-term economic infrastructure."
     },
     "Grid": {
-      "SearchPlaceholder": "Search by name or focus areas...",
+      "CatAllLabel": "All Team",
+      "CatDirLabel": "Board of Directors",
+      "CatMemLabel": "Core Members",
+      "CatVolLabel": "Volunteers & Ambassadors",
+      "CatAllDesc": "Every director, staff member, and volunteer driving community micro-grants across Ayiti.",
+      "CatDirDesc": "Stewardship leaders guiding policy, governance, and transparent fund management.",
+      "CatMemDesc": "Full-time operations, grant review, verification, and tech infrastructure team.",
+      "CatVolDesc": "Ground-level community forces verifying projects, translating forms, and connecting local talent.",
+      "SearchPlaceholder": "Search team by name, role, or focus...",
       "Clear": "Clear",
       "NoMembersTitle": "No team members found",
-      "NoMembersDesc": "Try adjusting your search criteria or category filter.",
+      "NoMembersDesc": "Try adjusting your search query or selecting another category filter.",
       "ResetFilters": "Reset Filters",
-      "BadgeDirector": "Director",
-      "BadgeMember": "Core Member",
+      "BadgeDirector": "Board Director",
+      "BadgeMember": "Core Team",
       "BadgeVolunteer": "Volunteer",
       "RoleDirector": "Board Director",
-      "RoleMember": "Core Operations Member",
+      "RoleMember": "Core Member",
       "RoleVolunteer": "Volunteer & Ambassador",
-      "ViewProfile": "View profile & details",
-      "CatAllLabel": "All Team",
-      "CatAllDesc": "Every director, staff member, and volunteer driving community micro-grants across Ayiti.",
-      "CatDirLabel": "Board of Directors",
-      "CatDirDesc": "Stewardship leaders guiding policy, governance, and transparent fund management.",
-      "CatMemLabel": "Core Members",
-      "CatMemDesc": "Full-time operations, grant review, verification, and tech infrastructure team.",
-      "CatVolLabel": "Volunteers & Ambassadors",
-      "CatVolDesc": "Ground-level community forces verifying projects, translating forms, and connecting local talent."
+      "ViewProfile": "View Profile"
     },
     "Modal": {
-      "About": "About",
+      "About": "About & Background",
       "Focus": "Focus Areas & Expertise",
-      "Verified": "IFundAyiti Verified Profile"
+      "Verified": "Verified IFundAyiti Member"
     },
     "Cta": {
-      "Badge": "Volunteers & Community Force",
-      "Title": "Want to serve Haitian builders with us?",
-      "Subtitle": "Whether you are based in Port-au-Prince, Cap-Haïtien, Jacmel, or the global diaspora, we are always looking for passionate volunteers, local ambassadors, and contributors.",
-      "Benefit1": "Verify & support local micro-grant applicants in your city",
-      "Benefit2": "Translate application forms & community documentation",
-      "Benefit3": "Connect Haitian diaspora communities with grassroots projects",
-      "Benefit4": "Help build open-source tools for grant transparency",
-      "JoinPrompt": "Ready to join as a Volunteer, Ambassador, or Core Member?",
-      "ApplyNow": "Apply Now",
-      "LearnMission": "Learn About Our Mission"
+      "Badge": "Join Our Movement",
+      "Title": "Want to make a direct impact in Haitian communities?",
+      "Subtitle": "We are always looking for passionate volunteers, translators, and community ambassadors to join the IFundAyiti mission.",
+      "Benefit1": "Verify local micro-grant applicants",
+      "Benefit2": "Translate materials to Kreyòl & French",
+      "Benefit3": "Organize diaspora support initiatives",
+      "Benefit4": "Gain non-profit leadership experience",
+      "JoinPrompt": "Ready to stand with Haitian entrepreneurs?",
+      "ApplyNow": "Join as a Volunteer",
+      "LearnMission": "Learn More About Our Mission"
+    }
+  },
+  "TrackingPage": {
+    "Metadata": {
+      "Title": "Track Application Status",
+      "Description": "Check the live status, progress, and review updates for your IFundAyiti grant application."
+    },
+    "Hero": {
+      "Eyebrow": "Status Check",
+      "Title": "Track Your Application",
+      "Subtitle": "Enter your email and date of birth to check real-time progress on your grant submission."
+    },
+    "Form": {
+      "LabelEmail": "Registered Email Address",
+      "LabelDob": "Date of Birth",
+      "LabelPeriod": "Grant Cycle / Period",
+      "PlaceholderEmail": "e.g. name@example.com",
+      "PlaceholderPeriod": "All Application Cycles",
+      "CheckStatus": "Check Application Status",
+      "NotFoundTitle": "No Application Found",
+      "NotFoundDesc": "Please double-check your email and date of birth.",
+      "ErrEmail": "Please enter a valid email address",
+      "ErrDob": "Date of birth is required",
+      "ErrNotFound": "No application matched the provided details.",
+      "ErrUnexpected": "An unexpected error occurred while checking application status. Please try again."
+    },
+    "Status": {
+      "ProjectLabel": "Project:",
+      "Submitted": "Submitted",
+      "UnderReview": "Under Review",
+      "Approved": "Approved",
+      "Finalist": "Finalist",
+      "Winner": "Grant Winner",
+      "Rejected": "Not Selected",
+      "Archived": "Archived",
+      "RejectionHeader": "Application Status Update",
+      "RejectionBody": "Thank you for applying. After careful review, this application was not selected for the current grant cycle.",
+      "RejectionNote": "Feedback:",
+      "WinnerHeader": "Congratulations! You are a Grant Winner!",
+      "WinnerBody": "Your application has been selected for grant funding.",
+      "WinnerAwarded": "Awarded Amount:",
+      "SubmittedOn": "Submitted On",
+      "LastUpdated": "Last Updated"
+    },
+    "Progress": {
+      "Title": "Application Roadmap",
+      "StepSubmitted": "Submitted",
+      "StepUnderReview": "Under Review",
+      "StepApproved": "Approved",
+      "StepFinalist": "Finalist",
+      "StepWinner": "Awarded"
+    },
+    "Details": {
+      "Title": "Application Summary",
+      "PersonalInfo": "Personal Information",
+      "ContactInfo": "Contact Information",
+      "BackgroundInfo": "Background",
+      "GrantInfo": "Grant Request",
+      "Requested": "Requested Amount:",
+      "ProjectDesc": "Project Description",
+      "ExpectedImpact": "Expected Impact",
+      "SubmittedDocs": "Submitted Verification Documents",
+      "ViewDoc": "Download / View Document"
     }
   }
 }

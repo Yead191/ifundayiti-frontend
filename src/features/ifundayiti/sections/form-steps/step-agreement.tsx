@@ -2,8 +2,12 @@
 
 import { useFormContext } from "react-hook-form";
 import { Label } from "@/components/ui/label";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 export function StepAgreement() {
+  const dict = useTranslation();
+  const t = dict.ApplyPage.Step7;
+
   const {
     register,
     formState: { errors },
@@ -13,9 +17,9 @@ export function StepAgreement() {
     <div className="space-y-6">
       <div className="border border-hairline p-5 rounded-2xl bg-sand-soft/50 text-xs text-mist leading-relaxed">
         <span className="block font-semibold text-forest-deep mb-1 uppercase tracking-wide">
-          Declarations & Terms
+          {t.TermsTitle}
         </span>
-        By submitting this application, you confirm that all information provided is accurate and truthful to the best of your knowledge. Selections are conducted by our reviewing committee based on merit, project viability, and community impact.
+        {t.TermsBody}
       </div>
 
       <div className="space-y-4">
@@ -28,7 +32,7 @@ export function StepAgreement() {
             className="h-4 w-4 rounded border-hairline accent-forest mt-0.5 cursor-pointer"
           />
           <Label htmlFor="certifyAccurate" className="text-xs text-forest-deep leading-normal select-none cursor-pointer">
-            I certify that all information provided in this application is accurate and matches my official documentation.
+            {t.Check1}
           </Label>
         </div>
         {errors.certifyAccurate && (
@@ -46,7 +50,7 @@ export function StepAgreement() {
             className="h-4 w-4 rounded border-hairline accent-forest mt-0.5 cursor-pointer"
           />
           <Label htmlFor="noGuarantee" className="text-xs text-forest-deep leading-normal select-none cursor-pointer">
-            I understand that submitting an application does not guarantee selection for funding.
+            {t.Check2}
           </Label>
         </div>
         {errors.noGuarantee && (
@@ -64,7 +68,7 @@ export function StepAgreement() {
             className="h-4 w-4 rounded border-hairline accent-forest mt-0.5 cursor-pointer"
           />
           <Label htmlFor="disqualification" className="text-xs text-forest-deep leading-normal select-none cursor-pointer">
-            I understand that providing false or misleading details will result in immediate disqualification.
+            {t.Check3}
           </Label>
         </div>
         {errors.disqualification && (

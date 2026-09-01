@@ -9,8 +9,7 @@ import { formatPrice } from "@/lib/utils";
 import { getCurrentApplicationPeriod } from "@/helpers/next-fetch/periodActions";
 import { getDictionary } from "@/lib/dictionaries";
 
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=1800&h=1200";
+const HERO_IMAGE = "/assets/images/hero/hero-bg.png";
 
 function formatDate(iso: string) {
   return new Date(`${iso}`).toLocaleDateString("en-US", {
@@ -26,20 +25,34 @@ export async function HomeHero({ lang }: { lang: string }) {
   const t = dict.Hero;
 
   return (
-    <section className="relative h-180 overflow-hidden bg-forest pt-24 text-white md:h-195 lg:h-210">
-      <div className="absolute inset-0">
-        <Image
-          src={HERO_IMAGE}
-          alt="Community gathering in Haiti"
-          fill
-          priority
-          className="object-cover object-[center_30%] scale-105"
-          sizes="100vw"
-        />
-        <div className="absolute inset-0 bg-linear-to-r from-forest via-forest/88 to-forest/35" />
-        <div className="absolute inset-0 bg-linear-to-t from-forest via-forest/20 to-forest/55" />
+    <section className="relative min-h-180 overflow-hidden bg-forest pt-24 text-white md:min-h-195 lg:min-h-210 flex items-center">
+      {/* Background & Middle-Right Focused Hero Image */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Base dark forest background */}
+        <div className="absolute inset-0 bg-forest" />
+
+        {/* Middle-Right Image with natural portrait aspect ratio framing */}
+        <div className="absolute right-0 top-0 h-full w-full opacity-40 sm:opacity-60 md:opacity-85 lg:w-7/12 xl:w-1/2 lg:opacity-95 transition-opacity">
+          <Image
+            src={HERO_IMAGE}
+            alt="Children in Haiti smiling and celebrating community"
+            fill
+            priority
+            className="object-cover object-[center_35%] lg:object-[center_30%]"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
+          />
+          {/* Subtle multi-directional gradients to seamlessly blend image into forest background */}
+          <div className="absolute inset-0 bg-linear-to-r from-forest via-forest/60 md:via-forest/20 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-t from-forest via-transparent to-forest/30" />
+          <div className="absolute inset-0 bg-linear-to-b from-forest/40 via-transparent to-forest/80" />
+        </div>
+
+        {/* Text contrast gradient shield on left side */}
+        <div className="absolute inset-0 bg-linear-to-r from-forest via-forest/90 to-transparent lg:w-3/5" />
+
+        {/* Subtle decorative dot pattern */}
         <div
-          className="absolute inset-0 opacity-[0.07]"
+          className="absolute inset-0 opacity-[0.05] pointer-events-none"
           style={{
             backgroundImage:
               "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
@@ -48,7 +61,7 @@ export async function HomeHero({ lang }: { lang: string }) {
         />
       </div>
 
-      <Container className="relative flex h-full flex-col justify-center pb-40 pt-8 md:pb-45 md:pt-4">
+      <Container className="relative z-10 flex h-full w-full flex-col justify-center pb-32 pt-8 md:pb-36 md:pt-4">
         <div className="grid items-end gap-12 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-7">
             <Reveal>
@@ -71,9 +84,17 @@ export async function HomeHero({ lang }: { lang: string }) {
               </p>
             </Reveal>
 
-            <Reveal delay={200} className="mt-10 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg" variant="secondary" className="rounded-xl px-7">
-                <Link href={open ? "/apply" : "/grants"}>
+            <Reveal
+              delay={200}
+              className="mt-10 flex flex-col gap-3 sm:flex-row"
+            >
+              <Button
+                asChild
+                size="lg"
+                variant="secondary"
+                className="rounded-xl px-7"
+              >
+                <Link href={open ? `/${lang}/apply` : `/${lang}/grants`}>
                   {open ? t.ApplyBtn : t.ViewGrantsBtn}
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>
@@ -83,7 +104,7 @@ export async function HomeHero({ lang }: { lang: string }) {
                 size="lg"
                 className="rounded-xl border border-white/20 bg-white/8 px-7 text-white backdrop-blur-sm hover:bg-white/15"
               >
-                <Link href="/projects">{t.ExploreBtn}</Link>
+                <Link href={`/${lang}/projects`}>{t.ExploreBtn}</Link>
               </Button>
             </Reveal>
           </div>

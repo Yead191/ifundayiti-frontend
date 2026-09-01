@@ -1,10 +1,10 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { FaTiktok } from "react-icons/fa";
 import { Facebook, Instagram } from "lucide-react";
-import { Logo } from "@/components/layout/logo";
 import { SITE } from "@/data/site";
 import { useTranslation } from "@/components/providers/translation-provider";
 
@@ -39,11 +39,39 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative mt-24 border-t border-hairline bg-forest text-sand-soft">
-      <div className="relative mx-auto max-w-6xl px-6 pb-10 pt-14 lg:px-8">
+    <footer className="relative mt-24 overflow-hidden border-t border-hairline bg-forest-deep text-sand-soft">
+      {/* Background Image with Balanced Overlay */}
+      <div className="absolute inset-0">
+        <Image
+          src="/assets/images/footer/footer-bg.jpeg"
+          alt="Haitian community landscape"
+          fill
+          priority
+          className="object-cover object-bottom"
+          sizes="100vw"
+        />
+        {/* Balanced gradient overlay: provides text legibility while keeping the painting clearly visible */}
+        <div className="absolute inset-0 bg-forest-deep/55" />
+        <div className="absolute inset-0 bg-linear-to-t from-forest-deep/95 via-forest-deep/30 to-forest-deep/70" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-6xl px-6 pb-10 pt-14 lg:px-8">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-4">
-            <Logo />
+            <Link
+              href={`/${currentLocale}`}
+              aria-label="IFundAyiti — home"
+              className="group inline-flex items-center overflow-hidden rounded-2xl bg-white p-2.5 shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
+            >
+              <Image
+                src="/logo-ifundayiti.png"
+                alt="IFundAyiti"
+                width={200}
+                height={200}
+                className="h-16 w-auto object-contain sm:h-20"
+                priority
+              />
+            </Link>
             <p className="mt-5 max-w-sm text-sm leading-relaxed text-sand/90">
               {f.Summary}
             </p>
@@ -55,14 +83,26 @@ export function Footer() {
           </div>
 
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:col-span-8">
-            <FooterCol heading={f.Explore} links={exploreLinks} locale={currentLocale} />
-            <FooterCol heading={f.Participate} links={participateLinks} locale={currentLocale} />
-            <FooterCol heading={f.Legal} links={legalLinks} locale={currentLocale} />
+            <FooterCol
+              heading={f.Explore}
+              links={exploreLinks}
+              locale={currentLocale}
+            />
+            <FooterCol
+              heading={f.Participate}
+              links={participateLinks}
+              locale={currentLocale}
+            />
+            <FooterCol
+              heading={f.Legal}
+              links={legalLinks}
+              locale={currentLocale}
+            />
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col-reverse items-center justify-between gap-6 border-t border-white/10 pt-8 md:flex-row">
-          <p className="text-sm text-sand/70">
+        <div className="mt-12 flex flex-col-reverse items-center justify-between gap-6 border-t border-white/15 pt-8 md:flex-row">
+          <p className="text-sm text-sand/75">
             © {new Date().getFullYear()} IFundAyiti. {f.Copyright}
           </p>
           <div className="flex gap-3">

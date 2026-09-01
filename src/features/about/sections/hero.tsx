@@ -88,25 +88,38 @@ export async function AboutHero({ lang }: { lang: string }) {
           </Container>
         </div>
 
-        <Reveal delay={80} className="relative min-h-90 lg:min-h-full">
-          <Image
-            src={ABOUT_HERO.image}
-            alt={ABOUT_HERO.imageAlt}
-            fill
-            priority
-            className="object-cover object-center"
-            sizes="(max-width: 1024px) 100vw, 50vw"
-          />
-          <div className="absolute inset-0 bg-linear-to-t from-forest/50 via-forest/10 to-transparent lg:bg-linear-to-l lg:from-cream/20 lg:via-transparent lg:to-transparent" />
-          <div className="absolute bottom-6 left-6 right-6 sm:bottom-8 sm:left-8 sm:right-auto sm:max-w-xs">
-            <div className="rounded-xl border border-white/20 bg-white/12 p-5 text-white backdrop-blur-md">
-              <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-sand/90">
-                <MapPin className="h-3.5 w-3.5" />
-                {locationCard.label}
+        {/* Visual Showcase Right Column */}
+        <Reveal delay={80} className="relative flex items-center justify-center p-4 sm:p-6 lg:p-8 xl:p-12">
+          {/* Subtle ambient glows */}
+          <div className="aurora -top-10 -right-10 h-72 w-72 opacity-25" />
+          <div className="aurora -bottom-10 -left-10 h-64 w-64 opacity-20" />
+
+          <div className="group relative aspect-4/3 w-full min-h-100 sm:min-h-120 lg:aspect-auto lg:h-full lg:min-h-140 overflow-hidden rounded-[2rem] border border-forest/15 bg-sand-soft/60 shadow-[0_25px_60px_-25px_rgba(11,61,46,0.35)]">
+            <Image
+              src={ABOUT_HERO.image}
+              alt={ABOUT_HERO.imageAlt}
+              fill
+              priority
+              className="object-cover object-[center_35%] transition-transform duration-700 group-hover:scale-105"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+            />
+
+            {/* Seamless gradients for depth and text legibility */}
+            <div className="absolute inset-0 bg-linear-to-t from-forest-deep/85 via-forest-deep/20 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-r from-forest-deep/30 via-transparent to-transparent hidden lg:block" />
+
+            {/* Floating Location Card */}
+            <div className="absolute bottom-6 left-6 right-6 sm:bottom-8 sm:left-8 sm:right-8 lg:max-w-sm">
+              <div className="rounded-2xl border border-white/20 bg-forest-deep/80 p-5 text-white shadow-2xl backdrop-blur-xl sm:p-6">
+                <div className="flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-sand">
+                  <span className="flex h-2 w-2 rounded-full bg-forest-bright animate-pulse" />
+                  <MapPin className="h-3.5 w-3.5 text-sand" />
+                  {locationCard.label}
+                </div>
+                <p className="mt-2.5 font-display text-base font-medium leading-snug sm:text-lg text-white/95">
+                  {locationCard.quote}
+                </p>
               </div>
-              <p className="mt-2 font-display text-lg leading-snug">
-                {locationCard.quote}
-              </p>
             </div>
           </div>
         </Reveal>

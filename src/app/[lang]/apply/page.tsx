@@ -16,15 +16,32 @@ import { getCurrentApplicationPeriod } from "@/helpers/next-fetch/periodActions"
 import { formatGrantDate } from "@/features/grants/lib/format-grant-date";
 import { buildMetadata } from "@/lib/seo";
 import { Button } from "@/components/ui/button";
+import { getDictionary } from "@/lib/dictionaries";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Apply for a Micro-Grant",
-  description:
-    "Apply for an IFundAyiti equity-free micro-grant of up to $1,000. Complete your personal, project, and document details in a guided 7-step application.",
-  path: "/apply",
-});
+interface PageProps {
+  params: Promise<{ lang: string }>;
+}
 
-export default async function ApplyPage() {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>;
+}): Promise<Metadata> {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+
+  return buildMetadata({
+    title: dict.Navbar.Apply,
+    description: dict.ApplyPage.Hero.Subtitle,
+    path: `/${lang}/apply`,
+  });
+}
+
+export default async function ApplyPage({ params }: PageProps) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+  const t = dict.ApplyPage;
+
   const currentPeriod = await getCurrentApplicationPeriod();
 
   if (!currentPeriod) {
@@ -32,14 +49,14 @@ export default async function ApplyPage() {
       <div className="bg-cream min-h-screen flex flex-col items-center justify-center py-20">
         <Container className="max-w-2xl text-center">
           <h1 className="font-display text-3xl font-semibold text-forest-deep">
-            No active grant cycles
+            {t.NoCycles.Title}
           </h1>
           <p className="mt-4 text-mist">
-            Please check back later for upcoming grant opportunities.
+            {t.NoCycles.Desc}
           </p>
           <Button asChild className="mt-8 rounded-xl">
-            <Link href="/">
-              <ArrowLeft className="mr-2 h-4 w-4" /> Back to Home
+            <Link href={`/${lang}`}>
+              <ArrowLeft className="mr-2 h-4 w-4" /> {t.NoCycles.BackHome}
             </Link>
           </Button>
         </Container>
@@ -53,9 +70,9 @@ export default async function ApplyPage() {
     <div className="bg-cream min-h-screen">
       {/* Page Hero */}
       <PageHero
-        eyebrow="🎯 Equity-Free Micro-Grant Application"
-        title="Turn your vision into reality."
-        subtitle={`${currentPeriod.title} · Request up to $1,000 equity-free funding for your business or community initiative. Follow our guided application below.`}
+        eyebrow={t.Hero.Eyebrow}
+        title={t.Hero.Title}
+        subtitle={`${currentPeriod.title} · ${t.Hero.Subtitle}`}
       />
 
       {/* Trust & Guarantee Bar */}
@@ -65,23 +82,23 @@ export default async function ApplyPage() {
             {[
               {
                 icon: Zap,
-                title: "$1,000 Max Grant",
-                desc: "Equity-free seed funding",
+                title: t.Badges.MaxGrantTitle,
+                desc: t.Badges.MaxGrantDesc,
               },
               {
                 icon: ShieldCheck,
-                title: "0% Equity Taken",
-                desc: "Non-dilutive community capital",
+                title: t.Badges.EquityTitle,
+                desc: t.Badges.EquityDesc,
               },
               {
                 icon: Sparkles,
-                title: "Quarterly Cycle",
-                desc: "Active review & selection",
+                title: t.Badges.QuarterlyTitle,
+                desc: t.Badges.QuarterlyDesc,
               },
               {
                 icon: Lock,
-                title: "Encrypted & Secure",
-                desc: "Confidential application review",
+                title: t.Badges.SecureTitle,
+                desc: t.Badges.SecureDesc,
               },
             ].map(({ icon: Icon, title, desc }) => (
               <div key={title} className="flex items-center gap-3">
@@ -112,23 +129,21 @@ export default async function ApplyPage() {
                   <Clock className="h-10 w-10" />
                 </div>
                 <h2 className="mt-6 font-display text-3xl font-semibold text-forest-deep sm:text-4xl">
-                  Applications are currently{" "}
-                  {currentPeriod.status.toLowerCase()}
+                  {t.ClosedState.Title.replace(
+                    "[status]",
+                    (dict.GrantsPage?.StatusLabels?.[currentPeriod.status as keyof typeof dict.GrantsPage.StatusLabels] || currentPeriod.status).toLowerCase(),
+                  )}
                 </h2>
                 <p className="mt-4 text-base leading-relaxed text-mist">
-                  The application window for the{" "}
-                  <strong className="text-forest-deep">
-                    {currentPeriod.title}
-                  </strong>{" "}
-                  is not open at this time.
+                  {t.ClosedState.NotOpen.replace("[title]", currentPeriod.title)}
                   {currentPeriod.status === "Upcoming" &&
-                    ` It will open on ${formatGrantDate(currentPeriod.startDate)}.`}
+                    ` ${t.ClosedState.OpenOn.replace("[date]", formatGrantDate(currentPeriod.startDate, "long", lang))}`}
                   {currentPeriod.status === "Closed" &&
-                    ` The window closed on ${formatGrantDate(currentPeriod.endDate)}.`}
+                    ` ${t.ClosedState.ClosedOn.replace("[date]", formatGrantDate(currentPeriod.endDate, "long", lang))}`}
                   {currentPeriod.status === "Review" &&
-                    ` We are currently reviewing applications. The window closed on ${formatGrantDate(currentPeriod.endDate)}.`}
+                    ` ${t.ClosedState.Reviewing.replace("[date]", formatGrantDate(currentPeriod.endDate, "long", lang))}`}
                   {currentPeriod.status === "WinnerSelection" &&
-                    ` We are finalizing our winner selection. The window closed on ${formatGrantDate(currentPeriod.endDate)}.`}
+                    ` ${t.ClosedState.Selecting.replace("[date]", formatGrantDate(currentPeriod.endDate, "long", lang))}`}
                 </p>
               </div>
 
@@ -136,35 +151,37 @@ export default async function ApplyPage() {
                 <div className="bg-white p-8">
                   <div className="flex items-center gap-3 text-forest-deep">
                     <Sparkles className="h-5 w-5 text-forest" />
-                    <h3 className="font-semibold">Track your application</h3>
+                    <h3 className="font-semibold">{t.ClosedState.TrackTitle}</h3>
                   </div>
                   <p className="mt-2 text-sm text-mist leading-relaxed">
-                    Already applied for a grant? You can check the live status
-                    of your submission at any time.
+                    {t.ClosedState.TrackDesc}
                   </p>
                   <Button
                     asChild
                     variant="outline"
                     className="mt-6 w-full rounded-xl border-forest/20"
                   >
-                    <Link href="/track-application">Track Status</Link>
+                    <Link href={`/${lang}/track-application`}>
+                      {t.ClosedState.TrackBtn}
+                    </Link>
                   </Button>
                 </div>
                 <div className="bg-white p-8">
                   <div className="flex items-center gap-3 text-forest-deep">
                     <ShieldCheck className="h-5 w-5 text-forest" />
-                    <h3 className="font-semibold">Program guidelines</h3>
+                    <h3 className="font-semibold">{t.ClosedState.GuidelinesTitle}</h3>
                   </div>
                   <p className="mt-2 text-sm text-mist leading-relaxed">
-                    Read about our selection criteria, eligibility requirements,
-                    and the impact of the IFundAyiti program.
+                    {t.ClosedState.GuidelinesDesc}
                   </p>
                   <Button
                     asChild
                     variant="outline"
                     className="mt-6 w-full rounded-xl border-forest/20"
                   >
-                    <Link href="/grants">Read Details</Link>
+                    <Link href={`/${lang}/grants`}>
+                      {t.ClosedState.GuidelinesBtn}
+                    </Link>
                   </Button>
                 </div>
               </div>

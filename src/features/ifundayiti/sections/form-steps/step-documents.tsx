@@ -2,6 +2,7 @@
 
 import React, { useRef } from "react";
 import { AlertCircle, FileUp, Check, X } from "lucide-react";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 interface StepDocumentsProps {
   govIdFile: File | null;
@@ -10,6 +11,8 @@ interface StepDocumentsProps {
   setProofAddrFile: (f: File | null) => void;
   businessPlanFile: File | null;
   setBusinessPlanFile: (f: File | null) => void;
+  projectGallery?: File[];
+  setProjectGallery?: (f: File[]) => void;
   supportingDocs: File[];
   setSupportingDocs: (f: File[]) => void;
   fileError: string;
@@ -27,13 +30,19 @@ export function StepDocuments({
   setProofAddrFile,
   businessPlanFile,
   setBusinessPlanFile,
+  projectGallery = [],
+  setProjectGallery = () => {},
   supportingDocs,
   setSupportingDocs,
   fileError,
 }: StepDocumentsProps) {
+  const dict = useTranslation();
+  const t = dict.ApplyPage.Step6;
+
   const idRef = useRef<HTMLInputElement>(null);
   const addrRef = useRef<HTMLInputElement>(null);
   const planRef = useRef<HTMLInputElement>(null);
+  const galleryRef = useRef<HTMLInputElement>(null);
   const supportRef = useRef<HTMLInputElement>(null);
 
   const handleSingleFile = (
@@ -44,10 +53,24 @@ export function StepDocuments({
     if (file) setter(file);
   };
 
+  const handleGalleryFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (projectGallery.length + files.length > 5) {
+      alert(t.ErrMaxGallery);
+      return;
+    }
+    setProjectGallery([...projectGallery, ...files]);
+    if (galleryRef.current) galleryRef.current.value = "";
+  };
+
+  const removeGalleryImage = (index: number) => {
+    setProjectGallery(projectGallery.filter((_, i) => i !== index));
+  };
+
   const handleMultipleFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     if (supportingDocs.length + files.length > 5) {
-      alert("You can only upload a maximum of 5 supporting documents.");
+      alert(t.ErrMaxFiles);
       return;
     }
     setSupportingDocs([...supportingDocs, ...files]);
@@ -64,7 +87,7 @@ export function StepDocuments({
       <div className="rounded-2xl bg-amber-500/10 border border-amber-500/20 p-4 flex items-start gap-3 text-amber-900">
         <AlertCircle className="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
         <p className="text-xs leading-relaxed text-amber-950">
-          <strong>Note:</strong> Missing required documents may result in your application being delayed or rejected during screening.
+          <strong>{t.WarningPrefix}</strong> {t.Warning}
         </p>
       </div>
 
@@ -72,10 +95,10 @@ export function StepDocuments({
       <div className="border border-hairline rounded-2xl p-4 bg-sand-soft/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex-1">
           <span className="block text-sm font-semibold text-forest-deep">
-            Government-issued ID *
+            {t.GovIdTitle}
           </span>
           <span className="text-xs text-mist block mt-0.5">
-            National ID Card or Passport Scan (Required)
+            {t.GovIdDesc}
           </span>
           {govIdFile && (
             <span className="mt-2 text-xs font-semibold text-forest flex items-center gap-1 bg-forest/10 border border-forest/20 px-2.5 py-1 rounded-lg w-fit">
@@ -100,7 +123,7 @@ export function StepDocuments({
           className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-forest-deep px-4 py-2.5 border border-hairline bg-white hover:bg-sand-soft rounded-xl transition-all cursor-pointer shadow-xs"
         >
           <FileUp className="h-4 w-4 text-forest" />
-          <span>{govIdFile ? "Change File" : "Upload ID Scan"}</span>
+          <span>{govIdFile ? t.ChangeFile : t.UploadId}</span>
         </button>
       </div>
 
@@ -108,10 +131,10 @@ export function StepDocuments({
       <div className="border border-hairline rounded-2xl p-4 bg-sand-soft/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex-1">
           <span className="block text-sm font-semibold text-forest-deep">
-            Proof of Address *
+            {t.ProofAddrTitle}
           </span>
           <span className="text-xs text-mist block mt-0.5">
-            Utility Bill, Tax Record, or Rent Slip (Required)
+            {t.ProofAddrDesc}
           </span>
           {proofAddrFile && (
             <span className="mt-2 text-xs font-semibold text-forest flex items-center gap-1 bg-forest/10 border border-forest/20 px-2.5 py-1 rounded-lg w-fit">
@@ -136,7 +159,7 @@ export function StepDocuments({
           className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-forest-deep px-4 py-2.5 border border-hairline bg-white hover:bg-sand-soft rounded-xl transition-all cursor-pointer shadow-xs"
         >
           <FileUp className="h-4 w-4 text-forest" />
-          <span>{proofAddrFile ? "Change File" : "Upload Address Scan"}</span>
+          <span>{proofAddrFile ? t.ChangeFile : t.UploadAddr}</span>
         </button>
       </div>
 
@@ -144,10 +167,10 @@ export function StepDocuments({
       <div className="border border-hairline rounded-2xl p-4 bg-sand-soft/30 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex-1">
           <span className="block text-sm font-semibold text-forest-deep">
-            Business Plan
+            {t.PlanTitle}
           </span>
           <span className="text-xs text-mist block mt-0.5">
-            Project outline or budget breakdown (Optional)
+            {t.PlanDesc}
           </span>
           {businessPlanFile && (
             <span className="mt-2 text-xs font-semibold text-forest flex items-center gap-1 bg-forest/10 border border-forest/20 px-2.5 py-1 rounded-lg w-fit">
@@ -172,19 +195,71 @@ export function StepDocuments({
           className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-forest-deep px-4 py-2.5 border border-hairline bg-white hover:bg-sand-soft rounded-xl transition-all cursor-pointer shadow-xs"
         >
           <FileUp className="h-4 w-4 text-forest" />
-          <span>{businessPlanFile ? "Change File" : "Upload Business Plan"}</span>
+          <span>{businessPlanFile ? t.ChangeFile : t.UploadPlan}</span>
         </button>
       </div>
 
-      {/* Upload Item 4: Supporting Documents */}
+      {/* Upload Item 4: Project Gallery */}
       <div className="border border-hairline rounded-2xl p-4 bg-sand-soft/30 flex flex-col gap-4">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex-1">
             <span className="block text-sm font-semibold text-forest-deep">
-              Supporting Documents
+              {t.GalleryTitle}
             </span>
             <span className="text-xs text-mist block mt-0.5">
-              Additional photos, licenses, etc. (Max 5 files)
+              {t.GalleryDesc}
+            </span>
+          </div>
+
+          <input
+            type="file"
+            multiple
+            ref={galleryRef}
+            onChange={handleGalleryFiles}
+            className="hidden"
+            accept="image/png, image/jpeg, image/webp"
+          />
+
+          <button
+            type="button"
+            onClick={() => galleryRef.current?.click()}
+            disabled={projectGallery.length >= 5}
+            className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-forest-deep px-4 py-2.5 border border-hairline bg-white hover:bg-sand-soft rounded-xl transition-all cursor-pointer shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            <FileUp className="h-4 w-4 text-forest" />
+            <span>{t.UploadGallery}</span>
+          </button>
+        </div>
+
+        {projectGallery.length > 0 && (
+          <div className="flex flex-wrap gap-2 pt-2 border-t border-hairline">
+            {projectGallery.map((doc, i) => (
+              <span key={i} className="text-xs font-semibold text-forest flex items-center gap-1.5 bg-forest/10 border border-forest/20 pl-2.5 pr-1.5 py-1 rounded-lg w-fit">
+                <Check className="h-3 w-3 shrink-0" />
+                <span className="truncate max-w-[150px]">{doc.name}</span>
+                <span className="text-[10px] opacity-75">({formatSize(doc.size)})</span>
+                <button
+                  type="button"
+                  onClick={() => removeGalleryImage(i)}
+                  className="ml-1 text-forest/60 hover:text-red-600 transition-colors"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Upload Item 5: Supporting Documents */}
+      <div className="border border-hairline rounded-2xl p-4 bg-sand-soft/30 flex flex-col gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="flex-1">
+            <span className="block text-sm font-semibold text-forest-deep">
+              {t.SupportTitle}
+            </span>
+            <span className="text-xs text-mist block mt-0.5">
+              {t.SupportDesc}
             </span>
           </div>
 
@@ -204,7 +279,7 @@ export function StepDocuments({
             className="inline-flex items-center justify-center gap-1.5 text-xs font-semibold text-forest-deep px-4 py-2.5 border border-hairline bg-white hover:bg-sand-soft rounded-xl transition-all cursor-pointer shadow-xs disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <FileUp className="h-4 w-4 text-forest" />
-            <span>Upload Files</span>
+            <span>{t.UploadFiles}</span>
           </button>
         </div>
 

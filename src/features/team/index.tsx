@@ -47,7 +47,7 @@ export default async function TeamPageContent({
         page={page}
         lang={lang}
       />
-      <TeamCta dict={dict.TeamPage.Cta} />
+      <TeamCta dict={dict.TeamPage.Cta} lang={lang} />
     </div>
   );
 }
