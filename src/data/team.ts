@@ -3,6 +3,7 @@ export type TeamCategory = "all" | "directors" | "members" | "volunteers";
 export interface TeamMember {
   id: string;
   name: string;
+  title?: string;
   role: string;
   category: "directors" | "members" | "volunteers";
   location: string;

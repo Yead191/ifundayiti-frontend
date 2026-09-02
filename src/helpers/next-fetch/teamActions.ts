@@ -13,7 +13,8 @@ export interface TeamStats {
 export async function getTeamStats() {
   const result = await nextFetch<TeamStats>("/team/stats", {
     method: "GET",
-    cache: "no-store",
+    next: { revalidate: 120 },
+    tags: ["team-stats"],
   });
   return result;
 }
@@ -32,7 +33,7 @@ export async function getTeamMembers(params: {
     if (params.category === "directors") dbCategory = "director";
     if (params.category === "members") dbCategory = "member";
     if (params.category === "volunteers") dbCategory = "volunteer";
-    
+
     queryParams.append("category", dbCategory);
   }
   if (params.searchTerm) {
@@ -47,7 +48,8 @@ export async function getTeamMembers(params: {
 
   const result = await nextFetch(`/team?${queryParams.toString()}`, {
     method: "GET",
-    cache: "no-store",
+    next: { revalidate: 60 },
+    tags: ["team"],
   });
   return result;
 }

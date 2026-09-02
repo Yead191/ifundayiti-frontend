@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import {
   CheckCircle2,
   Heart,
@@ -15,104 +15,114 @@ import {
 } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 type PaymentType = "donation" | "order" | "grant" | "subscription";
 
-const PAYMENT_CONFIG: Record<
-  PaymentType,
-  {
-    icon: React.ElementType;
-    accentColor: string;
-    badgeText: string;
-    headline: string;
-    subheadline: string;
-    body: string;
-    primaryCta: { href: string; label: string };
-    secondaryCta: { href: string; label: string };
-    highlights: { icon: string; label: string; value: string }[];
-  }
-> = {
-  donation: {
-    icon: Heart,
-    accentColor: "from-forest-bright via-forest to-forest-deep",
-    badgeText: "Donation Confirmed",
-    headline: "Your generosity is making a real difference.",
-    subheadline: "Thank you for fueling the IFundAyiti Program Fund.",
-    body: "100% of your donation will be channeled directly into equity-free micro-grants for Haitian entrepreneurs. You will receive a receipt in your inbox shortly.",
-    primaryCta: { href: "/impact", label: "See the Impact" },
-    secondaryCta: { href: "/donate", label: "Donate Again" },
-    highlights: [
-      { icon: "🇭🇹", label: "Goes to", value: "Haiti Program Fund" },
-      { icon: "🔒", label: "Secured by", value: "Stripe" },
-      { icon: "📩", label: "Receipt sent to", value: "your email" },
-    ],
-  },
-  order: {
-    icon: ShoppingBag,
-    accentColor: "from-amber-600 via-amber-700 to-amber-900",
-    badgeText: "Order Confirmed",
-    headline: "Your order is confirmed and on its way!",
-    subheadline:
-      "Thank you for supporting IFundAyiti through our mission shop.",
-    body: "Every purchase from our shop directly contributes to the IFundAyiti Program Fund. Your order details and tracking information will be sent to your email.",
-    primaryCta: { href: "/shop", label: "Continue Shopping" },
-    secondaryCta: { href: "/", label: "Back to Home" },
-    highlights: [
-      { icon: "📦", label: "Order status", value: "Processing" },
-      { icon: "🔒", label: "Secured by", value: "Stripe" },
-      { icon: "📩", label: "Confirmation sent to", value: "your email" },
-    ],
-  },
-  grant: {
-    icon: FileText,
-    accentColor: "from-teal-600 via-teal-700 to-teal-900",
-    badgeText: "Application Submitted",
-    headline: "Your grant application has been received.",
-    subheadline: "IFundAyiti will review your submission with care.",
-    body: "Our vetting board will review your application and you will receive a status update via email within 5–10 business days. You can track your application status anytime.",
-    primaryCta: { href: "/track-application", label: "Track Application" },
-    secondaryCta: { href: "/grants", label: "Read Grant Details" },
-    highlights: [
-      { icon: "📋", label: "Status", value: "Under Review" },
-      { icon: "⏱️", label: "Response time", value: "5–10 business days" },
-      { icon: "📩", label: "Updates sent to", value: "your email" },
-    ],
-  },
-  subscription: {
-    icon: Sparkles,
-    accentColor: "from-violet-600 via-violet-700 to-violet-900",
-    badgeText: "Subscription Active",
-    headline: "Welcome to the IFundAyiti community!",
-    subheadline: "Your recurring support keeps Haitian entrepreneurship alive.",
-    body: "Your subscription has been activated. Your monthly contribution will automatically enter the Program Fund and help us fund more grant cycles throughout the year.",
-    primaryCta: { href: "/impact", label: "See Our Impact" },
-    secondaryCta: { href: "/donate", label: "Manage Giving" },
-    highlights: [
-      { icon: "🔄", label: "Billing", value: "Monthly auto-renew" },
-      { icon: "🔒", label: "Secured by", value: "Stripe" },
-      { icon: "📩", label: "Receipt sent to", value: "your email" },
-    ],
-  },
-};
+export function PaymentSuccessContent({
+  lang: initialLang,
+}: {
+  lang?: string;
+} = {}) {
+  const params = useParams();
+  const lang = initialLang || (params?.lang as string) || "en";
+  const dict = useTranslation();
+  const t = dict.PaymentSuccessPage;
 
-export function PaymentSuccessContent() {
   const searchParams = useSearchParams();
   const rawType = searchParams.get("type") ?? "donation";
   const type: PaymentType =
-    rawType in PAYMENT_CONFIG ? (rawType as PaymentType) : "donation";
+    rawType === "order" || rawType === "grant" || rawType === "subscription"
+      ? rawType
+      : "donation";
 
-  const config = PAYMENT_CONFIG[type];
+  const config = React.useMemo(() => {
+    switch (type) {
+      case "donation":
+        return {
+          icon: Heart,
+          accentColor: "from-forest-bright via-forest to-forest-deep",
+          badgeText: t.Donation.BadgeText,
+          headline: t.Donation.Headline,
+          subheadline: t.Donation.Subheadline,
+          body: t.Donation.Body,
+          primaryCta: { href: `/${lang}/impact`, label: t.Donation.PrimaryCta },
+          secondaryCta: { href: `/${lang}/donate`, label: t.Donation.SecondaryCta },
+          highlights: [
+            { icon: "🇭🇹", label: t.Donation.H1Label, value: t.Donation.H1Val },
+            { icon: "🔒", label: t.Donation.H2Label, value: t.Donation.H2Val },
+            { icon: "📩", label: t.Donation.H3Label, value: t.Donation.H3Val },
+          ],
+        };
+      case "order":
+        return {
+          icon: ShoppingBag,
+          accentColor: "from-amber-600 via-amber-700 to-amber-900",
+          badgeText: t.Order.BadgeText,
+          headline: t.Order.Headline,
+          subheadline: t.Order.Subheadline,
+          body: t.Order.Body,
+          primaryCta: { href: `/${lang}/shop`, label: t.Order.PrimaryCta },
+          secondaryCta: { href: `/${lang}`, label: t.Order.SecondaryCta },
+          highlights: [
+            { icon: "📦", label: t.Order.H1Label, value: t.Order.H1Val },
+            { icon: "🔒", label: t.Order.H2Label, value: t.Order.H2Val },
+            { icon: "📩", label: t.Order.H3Label, value: t.Order.H3Val },
+          ],
+        };
+      case "grant":
+        return {
+          icon: FileText,
+          accentColor: "from-teal-600 via-teal-700 to-teal-900",
+          badgeText: t.Grant.BadgeText,
+          headline: t.Grant.Headline,
+          subheadline: t.Grant.Subheadline,
+          body: t.Grant.Body,
+          primaryCta: {
+            href: `/${lang}/track-application`,
+            label: t.Grant.PrimaryCta,
+          },
+          secondaryCta: { href: `/${lang}/grants`, label: t.Grant.SecondaryCta },
+          highlights: [
+            { icon: "📋", label: t.Grant.H1Label, value: t.Grant.H1Val },
+            { icon: "⏱️", label: t.Grant.H2Label, value: t.Grant.H2Val },
+            { icon: "📩", label: t.Grant.H3Label, value: t.Grant.H3Val },
+          ],
+        };
+      case "subscription":
+      default:
+        return {
+          icon: Sparkles,
+          accentColor: "from-violet-600 via-violet-700 to-violet-900",
+          badgeText: t.Subscription.BadgeText,
+          headline: t.Subscription.Headline,
+          subheadline: t.Subscription.Subheadline,
+          body: t.Subscription.Body,
+          primaryCta: { href: `/${lang}/impact`, label: t.Subscription.PrimaryCta },
+          secondaryCta: {
+            href: `/${lang}/donate`,
+            label: t.Subscription.SecondaryCta,
+          },
+          highlights: [
+            { icon: "🔄", label: t.Subscription.H1Label, value: t.Subscription.H1Val },
+            { icon: "🔒", label: t.Subscription.H2Label, value: t.Subscription.H2Val },
+            { icon: "📩", label: t.Subscription.H3Label, value: t.Subscription.H3Val },
+          ],
+        };
+    }
+  }, [type, t, lang]);
+
   const Icon = config.icon;
 
   const handleShare = () => {
-    if (navigator.share) {
+    if (typeof window !== "undefined" && navigator.share) {
       navigator.share({
-        title: "I just supported IFundAyiti 🇭🇹",
-        text: "Join me in empowering Haitian entrepreneurs with equity-free micro-grants.",
-        url: "https://ifundayiti.org/donate",
+        title: t.Share.Title,
+        text: t.Share.Text,
+        url: `${window.location.origin}/${lang}/donate`,
       });
-    } else {
-      navigator.clipboard.writeText("https://ifundayiti.org/donate");
+    } else if (typeof window !== "undefined") {
+      navigator.clipboard.writeText(`${window.location.origin}/${lang}/donate`);
     }
   };
 
@@ -211,18 +221,18 @@ export function PaymentSuccessContent() {
               {type === "donation" && (
                 <button
                   onClick={handleShare}
-                  className="flex items-center gap-2 text-xs font-semibold text-forest hover:underline"
+                  className="flex items-center gap-2 text-xs font-semibold text-forest hover:underline cursor-pointer"
                 >
                   <Share2 className="h-3.5 w-3.5" />
-                  Share the mission
+                  {t.Share.Btn}
                 </button>
               )}
               <Link
-                href="/"
+                href={`/${lang}`}
                 className="flex items-center gap-2 text-xs font-semibold text-mist hover:text-forest"
               >
                 <Home className="h-3.5 w-3.5" />
-                Back to Home
+                {t.BackHome}
               </Link>
             </div>
           </div>
@@ -230,14 +240,14 @@ export function PaymentSuccessContent() {
 
         {/* Footer note */}
         <p className="mt-8 text-center text-xs text-mist">
-          Questions?{" "}
+          {t.Footer.Questions}{" "}
           <Link
-            href="/contact"
+            href={`/${lang}/contact`}
             className="font-semibold text-forest hover:underline"
           >
-            Contact our team
+            {t.Footer.Contact}
           </Link>{" "}
-          — we are happy to help.
+          {t.Footer.Suffix}
         </p>
       </Container>
     </div>

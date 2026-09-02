@@ -22,6 +22,10 @@ export function LanguageSelector() {
   const handleLocaleChange = (newLocale: string) => {
     if (newLocale === currentLocale) return;
 
+    if (typeof document !== "undefined") {
+      document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000; SameSite=Lax`;
+    }
+
     const newSegments = [...segments];
     if (newSegments[1] === "en" || newSegments[1] === "ht") {
       newSegments[1] = newLocale;

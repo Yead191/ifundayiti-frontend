@@ -1035,5 +1035,136 @@
       "SubmittedDocs": "Submitted Verification Documents",
       "ViewDoc": "Download / View Document"
     }
+  },
+  "PaymentSuccessPage": {
+    "Metadata": {
+      "Title": "Payment Successful",
+      "Description": "Your payment was processed successfully. Thank you for supporting IFundAyiti."
+    },
+    "Donation": {
+      "BadgeText": "Donation Confirmed",
+      "Headline": "Your generosity is making a real difference.",
+      "Subheadline": "Thank you for fueling the IFundAyiti Program Fund.",
+      "Body": "100% of your donation will be channeled directly into equity-free micro-grants for Haitian entrepreneurs. You will receive a receipt in your inbox shortly.",
+      "PrimaryCta": "See the Impact",
+      "SecondaryCta": "Donate Again",
+      "H1Label": "Goes to",
+      "H1Val": "Haiti Program Fund",
+      "H2Label": "Secured by",
+      "H2Val": "Stripe",
+      "H3Label": "Receipt sent to",
+      "H3Val": "your email"
+    },
+    "Order": {
+      "BadgeText": "Order Confirmed",
+      "Headline": "Your order is confirmed and on its way!",
+      "Subheadline": "Thank you for supporting IFundAyiti through our mission shop.",
+      "Body": "Every purchase from our shop directly contributes to the IFundAyiti Program Fund. Your order details and tracking information will be sent to your email.",
+      "PrimaryCta": "Continue Shopping",
+      "SecondaryCta": "Back to Home",
+      "H1Label": "Order status",
+      "H1Val": "Processing",
+      "H2Label": "Secured by",
+      "H2Val": "Stripe",
+      "H3Label": "Confirmation sent to",
+      "H3Val": "your email"
+    },
+    "Grant": {
+      "BadgeText": "Application Submitted",
+      "Headline": "Your grant application has been received.",
+      "Subheadline": "IFundAyiti will review your submission with care.",
+      "Body": "Our vetting board will review your application and you will receive a status update via email within 5–10 business days. You can track your application status anytime.",
+      "PrimaryCta": "Track Application",
+      "SecondaryCta": "Read Grant Details",
+      "H1Label": "Status",
+      "H1Val": "Under Review",
+      "H2Label": "Response time",
+      "H2Val": "5–10 business days",
+      "H3Label": "Updates sent to",
+      "H3Val": "your email"
+    },
+    "Subscription": {
+      "BadgeText": "Subscription Active",
+      "Headline": "Welcome to the IFundAyiti community!",
+      "Subheadline": "Your recurring support keeps Haitian entrepreneurship alive.",
+      "Body": "Your subscription has been activated. Your monthly contribution will automatically enter the Program Fund and help us fund more grant cycles throughout the year.",
+      "PrimaryCta": "See Our Impact",
+      "SecondaryCta": "Manage Giving",
+      "H1Label": "Billing",
+      "H1Val": "Monthly auto-renew",
+      "H2Label": "Secured by",
+      "H2Val": "Stripe",
+      "H3Label": "Receipt sent to",
+      "H3Val": "your email"
+    },
+    "Share": {
+      "Btn": "Share the mission",
+      "Title": "I just supported IFundAyiti 🇭🇹",
+      "Text": "Join me in empowering Haitian entrepreneurs with equity-free micro-grants."
+    },
+    "BackHome": "Back to Home",
+    "Footer": {
+      "Questions": "Questions?",
+      "Contact": "Contact our team",
+      "Suffix": "— we are happy to help."
+    }
+  },
+  "PaymentFailedPage": {
+    "Metadata": {
+      "Title": "Payment Failed",
+      "Description": "Something went wrong with your payment. No charge was made — please try again."
+    },
+    "Donation": {
+      "BadgeText": "Donation Unsuccessful",
+      "Headline": "Your donation was not processed.",
+      "Subheadline": "No charge was made — your payment details are safe.",
+      "Body": "Something went wrong during checkout. This could be a temporary issue with Stripe or your payment method. Please try again — it usually works on the next attempt.",
+      "RetryCta": "Try Again",
+      "SecondaryCta": "Contact Support",
+      "Tip1": "Check that your card details are correct",
+      "Tip2": "Ensure your card allows international transactions",
+      "Tip3": "Try a different payment method or card"
+    },
+    "Order": {
+      "BadgeText": "Order Failed",
+      "Headline": "Your order could not be completed.",
+      "Subheadline": "No charge was applied to your payment method.",
+      "Body": "There was an issue processing your order. Your cart has been saved. Please try again or reach out if the problem persists.",
+      "RetryCta": "Return to Cart",
+      "SecondaryCta": "Contact Support",
+      "Tip1": "Verify your billing address matches your card",
+      "Tip2": "Check your card limit for online transactions",
+      "Tip3": "Try a different browser or incognito mode"
+    },
+    "Grant": {
+      "BadgeText": "Submission Error",
+      "Headline": "Your application could not be submitted.",
+      "Subheadline": "Your progress may have been saved — please try again.",
+      "Body": "An error occurred while submitting your grant application. Your draft may still be available. Please re-open the form and try submitting again.",
+      "RetryCta": "Re-open Application",
+      "SecondaryCta": "Get Help",
+      "Tip1": "Check all required fields are filled in",
+      "Tip2": "Ensure all documents are valid file types",
+      "Tip3": "Try on a stable internet connection"
+    },
+    "Subscription": {
+      "BadgeText": "Subscription Failed",
+      "Headline": "Your subscription could not be activated.",
+      "Subheadline": "Your payment method was not charged.",
+      "Body": "We were unable to activate your recurring donation. Please check your payment details and try again. Your generosity means everything to us.",
+      "RetryCta": "Try Again",
+      "SecondaryCta": "Contact Support",
+      "Tip1": "Ensure your card supports recurring charges",
+      "Tip2": "Verify there are no blocks on your account",
+      "Tip3": "Try a different payment method"
+    },
+    "Troubleshooting": "Quick Troubleshooting",
+    "BackHome": "Back to Home",
+    "VisitFaq": "Visit FAQ",
+    "Footer": {
+      "Trouble": "Still having trouble?",
+      "Contact": "Contact our team",
+      "Suffix": "— we will help you sort it out."
+    }
   }
 }

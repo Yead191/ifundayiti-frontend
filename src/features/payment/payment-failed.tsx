@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import {
   XCircle,
   Heart,
@@ -16,92 +16,93 @@ import {
 } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 type PaymentType = "donation" | "order" | "grant" | "subscription";
 
-const FAILED_CONFIG: Record<
-  PaymentType,
-  {
-    icon: React.ElementType;
-    accentColor: string;
-    badgeText: string;
-    headline: string;
-    subheadline: string;
-    body: string;
-    retryCta: { href: string; label: string };
-    secondaryCta: { href: string; label: string };
-    tips: string[];
-  }
-> = {
-  donation: {
-    icon: Heart,
-    accentColor: "from-rose-600 via-rose-700 to-rose-900",
-    badgeText: "Donation Unsuccessful",
-    headline: "Your donation was not processed.",
-    subheadline: "No charge was made — your payment details are safe.",
-    body: "Something went wrong during checkout. This could be a temporary issue with Stripe or your payment method. Please try again — it usually works on the next attempt.",
-    retryCta: { href: "/donate", label: "Try Again" },
-    secondaryCta: { href: "/contact", label: "Contact Support" },
-    tips: [
-      "Check that your card details are correct",
-      "Ensure your card allows international transactions",
-      "Try a different payment method or card",
-    ],
-  },
-  order: {
-    icon: ShoppingBag,
-    accentColor: "from-orange-600 via-orange-700 to-orange-900",
-    badgeText: "Order Failed",
-    headline: "Your order could not be completed.",
-    subheadline: "No charge was applied to your payment method.",
-    body: "There was an issue processing your order. Your cart has been saved. Please try again or reach out if the problem persists.",
-    retryCta: { href: "/cart", label: "Return to Cart" },
-    secondaryCta: { href: "/contact", label: "Contact Support" },
-    tips: [
-      "Verify your billing address matches your card",
-      "Check your card limit for online transactions",
-      "Try a different browser or incognito mode",
-    ],
-  },
-  grant: {
-    icon: FileText,
-    accentColor: "from-slate-600 via-slate-700 to-slate-900",
-    badgeText: "Submission Error",
-    headline: "Your application could not be submitted.",
-    subheadline: "Your progress may have been saved — please try again.",
-    body: "An error occurred while submitting your grant application. Your draft may still be available. Please re-open the form and try submitting again.",
-    retryCta: { href: "/apply", label: "Re-open Application" },
-    secondaryCta: { href: "/contact", label: "Get Help" },
-    tips: [
-      "Check all required fields are filled in",
-      "Ensure all documents are valid file types",
-      "Try on a stable internet connection",
-    ],
-  },
-  subscription: {
-    icon: Sparkles,
-    accentColor: "from-violet-600 via-violet-700 to-violet-900",
-    badgeText: "Subscription Failed",
-    headline: "Your subscription could not be activated.",
-    subheadline: "Your payment method was not charged.",
-    body: "We were unable to activate your recurring donation. Please check your payment details and try again. Your generosity means everything to us.",
-    retryCta: { href: "/donate", label: "Try Again" },
-    secondaryCta: { href: "/contact", label: "Contact Support" },
-    tips: [
-      "Ensure your card supports recurring charges",
-      "Verify there are no blocks on your account",
-      "Try a different payment method",
-    ],
-  },
-};
+export function PaymentFailedContent({
+  lang: initialLang,
+}: {
+  lang?: string;
+} = {}) {
+  const params = useParams();
+  const lang = initialLang || (params?.lang as string) || "en";
+  const dict = useTranslation();
+  const t = dict.PaymentFailedPage;
 
-export function PaymentFailedContent() {
   const searchParams = useSearchParams();
   const rawType = searchParams.get("type") ?? "donation";
   const type: PaymentType =
-    rawType in FAILED_CONFIG ? (rawType as PaymentType) : "donation";
+    rawType === "order" || rawType === "grant" || rawType === "subscription"
+      ? rawType
+      : "donation";
 
-  const config = FAILED_CONFIG[type];
+  const config = React.useMemo(() => {
+    switch (type) {
+      case "donation":
+        return {
+          icon: Heart,
+          accentColor: "from-rose-600 via-rose-700 to-rose-900",
+          badgeText: t.Donation.BadgeText,
+          headline: t.Donation.Headline,
+          subheadline: t.Donation.Subheadline,
+          body: t.Donation.Body,
+          retryCta: { href: `/${lang}/donate`, label: t.Donation.RetryCta },
+          secondaryCta: {
+            href: `/${lang}/contact`,
+            label: t.Donation.SecondaryCta,
+          },
+          tips: [t.Donation.Tip1, t.Donation.Tip2, t.Donation.Tip3],
+        };
+      case "order":
+        return {
+          icon: ShoppingBag,
+          accentColor: "from-orange-600 via-orange-700 to-orange-900",
+          badgeText: t.Order.BadgeText,
+          headline: t.Order.Headline,
+          subheadline: t.Order.Subheadline,
+          body: t.Order.Body,
+          retryCta: { href: `/${lang}/cart`, label: t.Order.RetryCta },
+          secondaryCta: {
+            href: `/${lang}/contact`,
+            label: t.Order.SecondaryCta,
+          },
+          tips: [t.Order.Tip1, t.Order.Tip2, t.Order.Tip3],
+        };
+      case "grant":
+        return {
+          icon: FileText,
+          accentColor: "from-slate-600 via-slate-700 to-slate-900",
+          badgeText: t.Grant.BadgeText,
+          headline: t.Grant.Headline,
+          subheadline: t.Grant.Subheadline,
+          body: t.Grant.Body,
+          retryCta: { href: `/${lang}/apply`, label: t.Grant.RetryCta },
+          secondaryCta: {
+            href: `/${lang}/contact`,
+            label: t.Grant.SecondaryCta,
+          },
+          tips: [t.Grant.Tip1, t.Grant.Tip2, t.Grant.Tip3],
+        };
+      case "subscription":
+      default:
+        return {
+          icon: Sparkles,
+          accentColor: "from-violet-600 via-violet-700 to-violet-900",
+          badgeText: t.Subscription.BadgeText,
+          headline: t.Subscription.Headline,
+          subheadline: t.Subscription.Subheadline,
+          body: t.Subscription.Body,
+          retryCta: { href: `/${lang}/donate`, label: t.Subscription.RetryCta },
+          secondaryCta: {
+            href: `/${lang}/contact`,
+            label: t.Subscription.SecondaryCta,
+          },
+          tips: [t.Subscription.Tip1, t.Subscription.Tip2, t.Subscription.Tip3],
+        };
+    }
+  }, [type, t, lang]);
+
   const Icon = config.icon;
 
   return (
@@ -169,7 +170,7 @@ export function PaymentFailedContent() {
               <div className="mb-3 flex items-center gap-2">
                 <HelpCircle className="h-4 w-4 text-forest" />
                 <span className="text-xs font-bold uppercase tracking-wider text-forest">
-                  Quick Troubleshooting
+                  {t.Troubleshooting}
                 </span>
               </div>
               <ul className="space-y-2">
@@ -214,18 +215,18 @@ export function PaymentFailedContent() {
             {/* Back to home row */}
             <div className="mt-5 flex items-center justify-center gap-6 border-t border-hairline pt-5">
               <Link
-                href="/"
+                href={`/${lang}`}
                 className="flex items-center gap-2 text-xs font-semibold text-mist hover:text-forest"
               >
                 <Home className="h-3.5 w-3.5" />
-                Back to Home
+                {t.BackHome}
               </Link>
               <Link
-                href="/faq"
+                href={`/${lang}/faq`}
                 className="flex items-center gap-2 text-xs font-semibold text-mist hover:text-forest"
               >
                 <ArrowLeft className="h-3.5 w-3.5" />
-                Visit FAQ
+                {t.VisitFaq}
               </Link>
             </div>
           </div>
@@ -233,14 +234,14 @@ export function PaymentFailedContent() {
 
         {/* Footer note */}
         <p className="mt-8 text-center text-xs text-mist">
-          Still having trouble?{" "}
+          {t.Footer.Trouble}{" "}
           <Link
-            href="/contact"
+            href={`/${lang}/contact`}
             className="font-semibold text-forest hover:underline"
           >
-            Contact our team
+            {t.Footer.Contact}
           </Link>{" "}
-          — we will help you sort it out.
+          {t.Footer.Suffix}
         </p>
       </Container>
     </div>

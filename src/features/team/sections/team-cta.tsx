@@ -57,8 +57,15 @@ export function TeamCta({ dict, lang }: { dict: any; lang?: string }) {
                       {dict.ApplyNow} <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
-                  <Button asChild variant="outline" size="sm" className="rounded-xl border-white/30 text-white hover:bg-white/20">
-                    <Link href={`/${currentLang}/about`}>{dict.LearnMission}</Link>
+                  <Button
+                    asChild
+                    variant="ghost"
+                    size="sm"
+                    className="rounded-xl border border-white/35 bg-white/10 text-white hover:bg-white/20 hover:text-white hover:border-white/60 font-semibold transition-all"
+                  >
+                    <Link href={`/${currentLang}/about`}>
+                      {dict.LearnMission}
+                    </Link>
                   </Button>
                 </div>
               </div>

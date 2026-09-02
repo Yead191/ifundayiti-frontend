@@ -1035,5 +1035,136 @@
       "SubmittedDocs": "Dokiman Verifikasyon Soumèt",
       "ViewDoc": "Telechaje / Wè Dokiman"
     }
+  },
+  "PaymentSuccessPage": {
+    "Metadata": {
+      "Title": "Peman Akonpli Avèk Siksè",
+      "Description": "Peman ou an te trete avèk siksè. Mèsi pou sipò ou bay IFundAyiti."
+    },
+    "Donation": {
+      "BadgeText": "Donasyon Konfime",
+      "Headline": "Jenerozite ou ap fè yon diferans reyèl.",
+      "Subheadline": "Mèsi paske w ap ede founi Fon Pwogram IFundAyiti a.",
+      "Body": "100% nan donasyon w lan pral ale dirèkteman nan mikwo-sibvansyon san pran aksyon pou antreprenè ayisyen yo. W ap resevwa yon resi nan imèl ou talè konsa.",
+      "PrimaryCta": "Wè Enpak la",
+      "SecondaryCta": "Fè yon Lòt Don",
+      "H1Label": "Ale nan",
+      "H1Val": "Fon Pwogram Ayiti",
+      "H2Label": "Sekirize pa",
+      "H2Val": "Stripe",
+      "H3Label": "Resi voye nan",
+      "H3Val": "imèl ou"
+    },
+    "Order": {
+      "BadgeText": "Kòmand Konfime",
+      "Headline": "Kòmand ou an konfime epi li nan wout!",
+      "Subheadline": "Mèsi paske w sipòte IFundAyiti atravè boutik misyon nou an.",
+      "Body": "Chak acha nan boutik nou an kontribye dirèkteman nan Fon Pwogram IFundAyiti a. Detay kòmand ou ak enfòmasyon swivi ap voye nan imèl ou.",
+      "PrimaryCta": "Kontinye Achte",
+      "SecondaryCta": "Tounen nan Paj Akèy",
+      "H1Label": "Eta kòmand la",
+      "H1Val": "Nan Tretman",
+      "H2Label": "Sekirize pa",
+      "H2Val": "Stripe",
+      "H3Label": "Konfimasyon voye nan",
+      "H3Val": "imèl ou"
+    },
+    "Grant": {
+      "BadgeText": "Aplikasyon Soumèt",
+      "Headline": "Nou resevwa aplikasyon sibvansyon w lan.",
+      "Subheadline": "IFundAyiti pral evalye dosye w la avèk anpil atansyon.",
+      "Body": "Komite evalyasyon nou an pral revize aplikasyon w lan epi w ap resevwa yon mizajou nan imèl nan 5–10 jou ouvrab. Ou ka suiv eta aplikasyon w lan nenpòt lè.",
+      "PrimaryCta": "Suiv Aplikasyon an",
+      "SecondaryCta": "Li Detay Sibvansyon",
+      "H1Label": "Eta",
+      "H1Val": "An Revizyon",
+      "H2Label": "Tan repons",
+      "H2Val": "5–10 jou ouvrab",
+      "H3Label": "Mizajou voye nan",
+      "H3Val": "imèl ou"
+    },
+    "Subscription": {
+      "BadgeText": "Abònman Aktif",
+      "Headline": "Byenvini nan kominote IFundAyiti a!",
+      "Subheadline": "Sipò regilye w la kenbe antreprenarya ayisyen an vivan.",
+      "Body": "Abònman ou an aktive kounye a. Kontribisyon chak mwa w la pral antre otomatikman nan Fon Pwogram nan pou ede nou finanse plis sik sibvansyon pandan ane a.",
+      "PrimaryCta": "Wè Enpak Nou",
+      "SecondaryCta": "Jere Donasyon yo",
+      "H1Label": "Faktirasyon",
+      "H1Val": "Renouvèlman chak mwa",
+      "H2Label": "Sekirize pa",
+      "H2Val": "Stripe",
+      "H3Label": "Resi voye nan",
+      "H3Val": "imèl ou"
+    },
+    "Share": {
+      "Btn": "Pataje misyon an",
+      "Title": "Mwen fèk sipòte IFundAyiti 🇭🇹",
+      "Text": "Vin jwenn mwen pou nou soutni antreprenè ayisyen yo ak mikwo-sibvansyon san pran aksyon."
+    },
+    "BackHome": "Tounen nan Paj Akèy",
+    "Footer": {
+      "Questions": "Kesyon?",
+      "Contact": "Kontakte ekip nou an",
+      "Suffix": "— nou kontan ede w."
+    }
+  },
+  "PaymentFailedPage": {
+    "Metadata": {
+      "Title": "Peman Pa Pase",
+      "Description": "Gen yon erè ki pase pandan peman an. Yo pa te retire okenn lajan sou kont ou — tanpri re-eseye."
+    },
+    "Donation": {
+      "BadgeText": "Donasyon Pa Reisi",
+      "Headline": "Donasyon ou an pa t ka trete.",
+      "Subheadline": "Yo pa te retire okenn lajan — enfòmasyon peman w yo an sekirite.",
+      "Body": "Gen yon erè ki pase pandan peman an. Sa ka yon pwoblèm tanporè ak Stripe oswa kat ou a. Tanpri re-eseye — li souvan mache nan pwochen esè a.",
+      "RetryCta": "Re-eseye",
+      "SecondaryCta": "Kontakte Sipò",
+      "Tip1": "Verifye si nimewo ak detay kat ou a kòrèk",
+      "Tip2": "Asire w ke kat ou a otorize tranzaksyon entènasyonal",
+      "Tip3": "Eseye yon lòt mwayen peman oswa yon lòt kat"
+    },
+    "Order": {
+      "BadgeText": "Kòmand la Pa Pase",
+      "Headline": "Kòmand ou an pa t ka fini.",
+      "Subheadline": "Yo pa te debite okenn lajan sou mwayen peman w la.",
+      "Body": "Te gen yon pwoblèm pandan n ap trete kòmand ou an. Panye w la sovgade. Tanpri re-eseye oswa kontakte nou si pwoblèm nan kontinye.",
+      "RetryCta": "Tounen nan Panye",
+      "SecondaryCta": "Kontakte Sipò",
+      "Tip1": "Verifye si adrès bòdwo w la matche ak kat ou a",
+      "Tip2": "Tcheke limit kat ou pou acha sou entènèt",
+      "Tip3": "Eseye yon lòt navigatè oswa fenèt prive"
+    },
+    "Grant": {
+      "BadgeText": "Erè Nan Soumisyon",
+      "Headline": "Aplikasyon w lan pa t ka soumèt.",
+      "Subheadline": "Pwogrè w la ka sovgade — tanpri re-eseye.",
+      "Body": "Gen yon erè ki rive pandan w t ap soumèt aplikasyon sibvansyon w lan. Brouyon w la ka disponib toujou. Tanpri relouvri fòm nan epi eseye soumèt li ankò.",
+      "RetryCta": "Relouvri Aplikasyon an",
+      "SecondaryCta": "Jwenn Èd",
+      "Tip1": "Verifye si tout chan obligatwa yo ranpli",
+      "Tip2": "Asire w tout dokiman yo gen fòma ki valab",
+      "Tip3": "Eseye sou yon koneksyon entènèt ki estab"
+    },
+    "Subscription": {
+      "BadgeText": "Abònman an Pa Pase",
+      "Headline": "Abònman ou an pa t ka aktive.",
+      "Subheadline": "Yo pa te retire okenn lajan sou kat ou a.",
+      "Body": "Nou pa t ka aktive donasyon renouvlab ou a. Tanpri verifye enfòmasyon peman w yo epi re-eseye. Jenerozite w la enpòtan anpil pou nou.",
+      "RetryCta": "Re-eseye",
+      "SecondaryCta": "Kontakte Sipò",
+      "Tip1": "Asire w ke kat ou a aksepte peman otomatik chak mwa",
+      "Tip2": "Verifye si pa gen okenn blokaj sou kont ou",
+      "Tip3": "Eseye yon lòt mwayen peman"
+    },
+    "Troubleshooting": "Gid Rezolisyon Rapid",
+    "BackHome": "Tounen nan Paj Akèy",
+    "VisitFaq": "Vizite FAQ",
+    "Footer": {
+      "Trouble": "Ou toujou gen pwoblèm?",
+      "Contact": "Kontakte ekip nou an",
+      "Suffix": "— n ap ede w rezoud sa."
+    }
   }
 }

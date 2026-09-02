@@ -71,6 +71,11 @@ export function TeamModal({ member, isOpen, onClose, lang }: TeamModalProps) {
             </div>
 
             <div className="flex flex-wrap gap-2">
+              {member.title && (
+                <span className="inline-flex items-center rounded-full border border-forest/20 bg-forest/10 px-3 py-1 text-xs font-bold text-forest">
+                  {member.title}
+                </span>
+              )}
               <span
                 className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold ${categoryBadgeColor}`}
               >
@@ -87,7 +92,17 @@ export function TeamModal({ member, isOpen, onClose, lang }: TeamModalProps) {
             <h2 className="font-display text-2xl font-bold text-forest-deep">
               {member.name}
             </h2>
-            <p className="text-base font-semibold text-forest">{categoryLabel}</p>
+            {member.title ? (
+              <div className="flex items-center gap-2 mt-0.5">
+                <p className="text-base font-bold text-forest">
+                  {member.title}
+                </p>
+              </div>
+            ) : (
+              <p className="text-base font-semibold text-forest mt-0.5">
+                {categoryLabel}
+              </p>
+            )}
           </div>
 
           {/* Bio */}
@@ -121,9 +136,7 @@ export function TeamModal({ member, isOpen, onClose, lang }: TeamModalProps) {
 
           {/* Social & Contact */}
           <div className="mt-6 flex items-center justify-between border-t border-hairline pt-4">
-            <span className="text-xs font-medium text-mist">
-              {t.Verified}
-            </span>
+            <span className="text-xs font-medium text-mist">{t.Verified}</span>
             <div className="flex items-center gap-2">
               {member.email && (
                 <a
