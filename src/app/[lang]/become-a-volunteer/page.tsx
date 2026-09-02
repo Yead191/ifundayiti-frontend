@@ -3,17 +3,16 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useParams } from "next/navigation";
 import {
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
   Upload,
-  MapPin,
   Linkedin,
   Twitter,
   Sparkles,
   HeartHandshake,
-  Phone,
   Mail,
   User,
 } from "lucide-react";
@@ -24,19 +23,17 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { CheckboxCard } from "@/components/ui/checkbox-card";
 import { applyAsVolunteer } from "@/helpers/next-fetch/teamActions";
-
-const VOLUNTEER_FOCUS_AREAS = [
-  "Local Vetting & Auditing",
-  "Kreyòl Translation",
-  "Regional Outreach",
-  "Tech & Development",
-  "Visual Storytelling",
-  "Logistics & Events",
-];
+import { useTranslation } from "@/components/providers/translation-provider";
 
 export default function BecomeAVolunteerPage() {
+  const params = useParams();
+  const lang = (params?.lang as string) || "en";
+  const dict = useTranslation();
+  const t = dict.VolunteerPage;
+
   const [formData, setFormData] = useState({
     name: "",
+    title: "",
     email: "",
     phone: "",
     location: "",
@@ -53,15 +50,29 @@ export default function BecomeAVolunteerPage() {
   const [success, setSuccess] = useState(false);
   const [submittedData, setSubmittedData] = useState<any | null>(null);
 
+  const focusOptions = React.useMemo(
+    () => [
+      { id: "vetting", label: t.Focus.Areas.Vetting },
+      { id: "translation", label: t.Focus.Areas.Translation },
+      { id: "outreach", label: t.Focus.Areas.Outreach },
+      { id: "tech", label: t.Focus.Areas.Tech },
+      { id: "storytelling", label: t.Focus.Areas.Storytelling },
+      { id: "logistics", label: t.Focus.Areas.Logistics },
+    ],
+    [t],
+  );
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleFocusToggle = (area: string) => {
+  const handleFocusToggle = (areaLabel: string) => {
     setSelectedFocus((prev) =>
-      prev.includes(area) ? prev.filter((a) => a !== area) : [...prev, area],
+      prev.includes(areaLabel)
+        ? prev.filter((a) => a !== areaLabel)
+        : [...prev, areaLabel],
     );
   };
 
@@ -85,11 +96,11 @@ export default function BecomeAVolunteerPage() {
       !formData.location ||
       !formData.bio
     ) {
-      setError("Please fill out all required fields.");
+      setError(t.Errors.Required);
       return;
     }
     if (!imageFile) {
-      setError("Please upload your profile picture.");
+      setError(t.Errors.Photo);
       return;
     }
 
@@ -97,6 +108,9 @@ export default function BecomeAVolunteerPage() {
 
     const submissionForm = new FormData();
     submissionForm.append("name", formData.name);
+    if (formData.title.trim()) {
+      submissionForm.append("title", formData.title.trim());
+    }
     submissionForm.append("email", formData.email);
     submissionForm.append("phone", formData.phone);
     submissionForm.append("location", formData.location);
@@ -105,7 +119,7 @@ export default function BecomeAVolunteerPage() {
     if (formData.twitter) submissionForm.append("twitter", formData.twitter);
     submissionForm.append("image", imageFile);
 
-    // Append focus areas (each array element is appended separately for Nest.js/Express array parser)
+    // Append focus areas
     selectedFocus.forEach((area) => {
       submissionForm.append("focusAreas", area);
     });
@@ -116,15 +130,14 @@ export default function BecomeAVolunteerPage() {
     if (res.success) {
       setSubmittedData({
         name: formData.name,
+        title: formData.title.trim(),
         email: formData.email,
         location: formData.location,
         focusAreas: selectedFocus,
       });
       setSuccess(true);
     } else {
-      setError(
-        res.message || "Failed to submit application. Please try again.",
-      );
+      setError(res.message || t.Errors.Failed);
     }
   };
 
@@ -143,35 +156,48 @@ export default function BecomeAVolunteerPage() {
             </div>
 
             <h1 className="font-display text-4xl md:text-5xl font-bold text-forest-deep mb-4 relative z-10">
-              Application Received!
+              {t.Success.Title}
             </h1>
             <p className="text-mist text-lg max-w-md mb-8 relative z-10">
-              Mèsi anpil! Thank you for applying to be a part of the IFundAyiti
-              volunteer force.
+              {t.Success.Message}
             </p>
 
             {/* Glassmorphic Details Card */}
             <div className="w-full bg-sand-soft/30 border border-hairline rounded-3xl p-6 mb-8 text-left relative z-10 backdrop-blur-md">
               <h3 className="font-display text-lg font-bold text-forest-deep mb-4">
-                Application Details
+                {t.Success.DetailsHeading}
               </h3>
               <div className="grid gap-3 text-sm text-mist">
                 <div>
-                  <span className="font-semibold text-forest">Name:</span>{" "}
+                  <span className="font-semibold text-forest">
+                    {t.Success.Name}
+                  </span>{" "}
                   {submittedData?.name}
                 </div>
+                {submittedData?.title && (
+                  <div>
+                    <span className="font-semibold text-forest">
+                      {t.Success.Title}
+                    </span>{" "}
+                    {submittedData?.title}
+                  </div>
+                )}
                 <div>
-                  <span className="font-semibold text-forest">Email:</span>{" "}
+                  <span className="font-semibold text-forest">
+                    {t.Success.Email}
+                  </span>{" "}
                   {submittedData?.email}
                 </div>
                 <div>
-                  <span className="font-semibold text-forest">Location:</span>{" "}
+                  <span className="font-semibold text-forest">
+                    {t.Success.Location}
+                  </span>{" "}
                   {submittedData?.location}
                 </div>
                 {submittedData?.focusAreas.length > 0 && (
                   <div>
                     <span className="font-semibold text-forest">
-                      Focus Areas:
+                      {t.Success.FocusAreas}
                     </span>
                     <div className="flex flex-wrap gap-1.5 mt-2">
                       {submittedData?.focusAreas.map(
@@ -193,42 +219,33 @@ export default function BecomeAVolunteerPage() {
             {/* Next Steps List */}
             <div className="w-full text-left mb-8 relative z-10">
               <h4 className="font-semibold text-forest-deep mb-3 uppercase tracking-wider text-xs">
-                What Happens Next?
+                {t.Success.NextHeading}
               </h4>
               <ul className="space-y-3.5">
                 <li className="flex items-start gap-3">
                   <div className="h-5 w-5 rounded-full bg-forest/10 text-forest text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                     1
                   </div>
-                  <p className="text-sm text-mist">
-                    Our team will review your application profile within 2-3
-                    business days.
-                  </p>
+                  <p className="text-sm text-mist">{t.Success.Step1}</p>
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="h-5 w-5 rounded-full bg-forest/10 text-forest text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                     2
                   </div>
-                  <p className="text-sm text-mist">
-                    We will send a welcome email containing onboarding details
-                    and a Slack invitation link.
-                  </p>
+                  <p className="text-sm text-mist">{t.Success.Step2}</p>
                 </li>
                 <li className="flex items-start gap-3">
                   <div className="h-5 w-5 rounded-full bg-forest/10 text-forest text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
                     3
                   </div>
-                  <p className="text-sm text-mist">
-                    You will be matched with local project verifications or
-                    translation tasks based on your focus areas.
-                  </p>
+                  <p className="text-sm text-mist">{t.Success.Step3}</p>
                 </li>
               </ul>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 w-full relative z-10">
               <Button asChild size="lg" className="rounded-xl w-full">
-                <Link href="/team">Back to Team Page</Link>
+                <Link href={`/${lang}/team`}>{t.Success.BackBtn}</Link>
               </Button>
               <Button
                 asChild
@@ -236,7 +253,7 @@ export default function BecomeAVolunteerPage() {
                 size="lg"
                 className="rounded-xl w-full"
               >
-                <Link href="/">Return Home</Link>
+                <Link href={`/${lang}`}>{t.Success.HomeBtn}</Link>
               </Button>
             </div>
           </div>
@@ -254,23 +271,22 @@ export default function BecomeAVolunteerPage() {
       <Container className="max-w-3xl">
         <div className="mb-8">
           <Link
-            href="/team"
-            className="inline-flex items-center gap-2 text-sm font-semibold text-forest hover:text-forest-bright mb-6"
+            href={`/${lang}/team`}
+            className="inline-flex items-center gap-2 text-sm font-semibold text-forest hover:text-forest-bright mb-6 cursor-pointer"
           >
-            <ArrowLeft className="h-4 w-4" /> Back to Team
+            <ArrowLeft className="h-4 w-4" /> {t.BackToTeam}
           </Link>
-          <div className="inline-flex items-center gap-2 rounded-full border border-forest/15 bg-white/80 px-4 py-1.5 shadow-sm mb-4">
+          <div className="inline-flex items-center gap-2 rounded-full border border-forest/15 bg-white/80 px-4 py-1.5 shadow-sm mb-4 ml-4">
             <HeartHandshake className="h-4 w-4 text-forest" />
             <span className="eyebrow text-[10px] tracking-wider text-forest font-bold">
-              Volunteer Force
+              {t.Badge}
             </span>
           </div>
           <h1 className="font-display text-4xl md:text-5xl font-bold tracking-tight text-forest-deep leading-tight">
-            Apply to Join our Community Force
+            {t.HeroTitle}
           </h1>
           <p className="mt-3 text-mist text-lg leading-relaxed">
-            Help verify grant applicants, translate project proposals, and
-            connect local Haitian entrepreneurs with the resources they need.
+            {t.HeroSubtitle}
           </p>
         </div>
 
@@ -281,19 +297,19 @@ export default function BecomeAVolunteerPage() {
           {/* Personal Info Grid */}
           <div className="space-y-6">
             <h3 className="font-display text-lg font-bold text-forest-deep border-b border-hairline pb-2 flex items-center gap-2">
-              <User className="h-5 w-5 text-forest" /> Personal Details
+              <User className="h-5 w-5 text-forest" /> {t.Personal.Heading}
             </h3>
 
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="name">
-                  Full Name <span className="text-red-500">*</span>
+                  {t.Personal.NameLabel} <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="name"
                   name="name"
                   required
-                  placeholder="e.g. Jean-Pierre"
+                  placeholder={t.Personal.NamePlaceholder}
                   value={formData.name}
                   onChange={handleInputChange}
                   className="rounded-xl h-11 border-hairline-strong bg-sand-soft/10 text-forest-deep"
@@ -301,15 +317,36 @@ export default function BecomeAVolunteerPage() {
               </div>
 
               <div className="space-y-2">
+                <Label
+                  htmlFor="title"
+                  className="flex items-center justify-between"
+                >
+                  <span>{t.Personal.TitleLabel}</span>
+                  <span className="text-[11px] text-mist font-normal">
+                    ({t.Personal.OptionalBadge})
+                  </span>
+                </Label>
+                <Input
+                  id="title"
+                  name="title"
+                  placeholder={t.Personal.TitlePlaceholder}
+                  value={formData.title}
+                  onChange={handleInputChange}
+                  className="rounded-xl h-11 border-hairline-strong bg-sand-soft/10 text-forest-deep"
+                />
+              </div>
+
+              <div className="space-y-2">
                 <Label htmlFor="email">
-                  Email Address <span className="text-red-500">*</span>
+                  {t.Personal.EmailLabel}{" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="email"
                   name="email"
                   type="email"
                   required
-                  placeholder="e.g. jean@example.com"
+                  placeholder={t.Personal.EmailPlaceholder}
                   value={formData.email}
                   onChange={handleInputChange}
                   className="rounded-xl h-11 border-hairline-strong bg-sand-soft/10 text-forest-deep"
@@ -318,29 +355,30 @@ export default function BecomeAVolunteerPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="phone">
-                  Phone Number <span className="text-red-500">*</span>
+                  {t.Personal.PhoneLabel}{" "}
+                  <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="phone"
                   name="phone"
                   required
-                  placeholder="e.g. +509 0000 0000"
+                  placeholder={t.Personal.PhonePlaceholder}
                   value={formData.phone}
                   onChange={handleInputChange}
                   className="rounded-xl h-11 border-hairline-strong bg-sand-soft/10 text-forest-deep"
                 />
               </div>
 
-              <div className="space-y-2">
+              <div className="space-y-2 sm:col-span-2">
                 <Label htmlFor="location">
-                  Location (City, Country){" "}
+                  {t.Personal.LocationLabel}{" "}
                   <span className="text-red-500">*</span>
                 </Label>
                 <Input
                   id="location"
                   name="location"
                   required
-                  placeholder="e.g. Cap-Haïtien, Haiti"
+                  placeholder={t.Personal.LocationPlaceholder}
                   value={formData.location}
                   onChange={handleInputChange}
                   className="rounded-xl h-11 border-hairline-strong bg-sand-soft/10 text-forest-deep"
@@ -352,13 +390,14 @@ export default function BecomeAVolunteerPage() {
           {/* Social Links */}
           <div className="space-y-6">
             <h3 className="font-display text-lg font-bold text-forest-deep border-b border-hairline pb-2 flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-forest" /> Professional Profiles
+              <Sparkles className="h-5 w-5 text-forest" /> {t.Social.Heading}
             </h3>
 
             <div className="grid gap-6 sm:grid-cols-2">
               <div className="space-y-2">
                 <Label htmlFor="linkedin" className="flex items-center gap-2">
-                  <Linkedin className="h-4 w-4 text-forest" /> LinkedIn Link
+                  <Linkedin className="h-4 w-4 text-forest" />{" "}
+                  {t.Social.LinkedinLabel}
                 </Label>
                 <Input
                   id="linkedin"
@@ -372,7 +411,8 @@ export default function BecomeAVolunteerPage() {
 
               <div className="space-y-2">
                 <Label htmlFor="twitter" className="flex items-center gap-2">
-                  <Twitter className="h-4 w-4 text-forest" /> Twitter Link
+                  <Twitter className="h-4 w-4 text-forest" />{" "}
+                  {t.Social.TwitterLabel}
                 </Label>
                 <Input
                   id="twitter"
@@ -389,20 +429,17 @@ export default function BecomeAVolunteerPage() {
           {/* Focus Areas */}
           <div className="space-y-6">
             <h3 className="font-display text-lg font-bold text-forest-deep border-b border-hairline pb-2 flex items-center gap-2">
-              <HeartHandshake className="h-5 w-5 text-forest" /> Select Focus
-              Areas
+              <HeartHandshake className="h-5 w-5 text-forest" />{" "}
+              {t.Focus.Heading}
             </h3>
-            <p className="text-xs text-mist">
-              Choose the categories where you would like to contribute your
-              skills. Select all that apply.
-            </p>
+            <p className="text-xs text-mist">{t.Focus.Description}</p>
             <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
-              {VOLUNTEER_FOCUS_AREAS.map((area) => (
+              {focusOptions.map((area) => (
                 <CheckboxCard
-                  key={area}
-                  label={area}
-                  checked={selectedFocus.includes(area)}
-                  onToggle={() => handleFocusToggle(area)}
+                  key={area.id}
+                  label={area.label}
+                  checked={selectedFocus.includes(area.label)}
+                  onToggle={() => handleFocusToggle(area.label)}
                 />
               ))}
             </div>
@@ -411,17 +448,17 @@ export default function BecomeAVolunteerPage() {
           {/* Bio / Experience */}
           <div className="space-y-4">
             <h3 className="font-display text-lg font-bold text-forest-deep border-b border-hairline pb-2 flex items-center gap-2">
-              <Mail className="h-5 w-5 text-forest" /> Tell Us About Yourself{" "}
+              <Mail className="h-5 w-5 text-forest" /> {t.Bio.Heading}{" "}
               <span className="text-red-500">*</span>
             </h3>
             <div className="space-y-2">
-              <Label htmlFor="bio">Your Background & Motivation</Label>
+              <Label htmlFor="bio">{t.Bio.Label}</Label>
               <Textarea
                 id="bio"
                 name="bio"
                 required
                 rows={4}
-                placeholder="Share your experience and why you want to support Haitian community micro-grants..."
+                placeholder={t.Bio.Placeholder}
                 value={formData.bio}
                 onChange={handleInputChange}
                 className="rounded-xl border-hairline-strong bg-sand-soft/10 text-forest-deep"
@@ -432,13 +469,10 @@ export default function BecomeAVolunteerPage() {
           {/* Profile Picture Uploader */}
           <div className="space-y-4">
             <h3 className="font-display text-lg font-bold text-forest-deep border-b border-hairline pb-2 flex items-center gap-2">
-              <Upload className="h-5 w-5 text-forest" /> Profile Picture{" "}
+              <Upload className="h-5 w-5 text-forest" /> {t.Photo.Heading}{" "}
               <span className="text-red-500">*</span>
             </h3>
-            <p className="text-xs text-mist">
-              Please upload a clear portrait image. This image will be shown on
-              the team board once approved.
-            </p>
+            <p className="text-xs text-mist">{t.Photo.Description}</p>
 
             <div className="flex flex-col sm:flex-row items-center gap-6 p-6 border border-dashed border-hairline-strong rounded-2xl bg-sand-soft/10">
               <div className="relative h-28 w-28 rounded-2xl border border-hairline bg-white overflow-hidden shrink-0 shadow-inner flex items-center justify-center text-mist">
@@ -465,16 +499,16 @@ export default function BecomeAVolunteerPage() {
                 <Button
                   type="button"
                   variant="outline"
-                  className="rounded-xl border-forest/20"
+                  className="rounded-xl border-forest/20 cursor-pointer"
                   onClick={() =>
                     document.getElementById("imageUpload")?.click()
                   }
                 >
-                  <Upload className="mr-2 h-4 w-4" /> Upload Photo
+                  <Upload className="mr-2 h-4 w-4" /> {t.Photo.UploadBtn}
                 </Button>
                 {imageFile && (
                   <p className="mt-2 text-xs font-medium text-forest">
-                    Selected: {imageFile.name} (
+                    {t.Photo.Selected} {imageFile.name} (
                     {(imageFile.size / 1024 / 1024).toFixed(2)} MB)
                   </p>
                 )}
@@ -488,17 +522,16 @@ export default function BecomeAVolunteerPage() {
               type="submit"
               size="lg"
               disabled={loading}
-              className="w-full rounded-xl bg-brand-gradient shadow-lg"
+              className="w-full rounded-xl bg-brand-gradient shadow-lg cursor-pointer"
             >
               {loading ? (
                 <span className="flex items-center gap-2">
                   <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-                  Submitting Application...
+                  {t.Submit.Loading}
                 </span>
               ) : (
                 <span className="flex items-center gap-2">
-                  Submit Volunteer Application{" "}
-                  <ArrowRight className="h-4 w-4" />
+                  {t.Submit.Btn} <ArrowRight className="h-4 w-4" />
                 </span>
               )}
             </Button>

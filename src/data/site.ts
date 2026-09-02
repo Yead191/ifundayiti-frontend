@@ -3,9 +3,10 @@ export const SITE = {
   tagline: "Funding ideas that strengthen Haitian communities.",
   summary:
     "IFundAyiti is a grant program that supports Haitian entrepreneurs and community builders with equity-free micro-grants of up to $1,000.",
-  email: "hello@ifundayiti.org",
-  phone: "+509 0000-0000",
-  location: "Port-au-Prince, Haiti",
+  email: "info@ifundayiti.org",
+  phone: "(518)509-1804",
+  location: "Mount Vernon, NY",
+  headquarters: "Mount Vernon, NY",
   social: {
     facebook: "#",
     instagram: "#",

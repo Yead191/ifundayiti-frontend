@@ -83,8 +83,7 @@ export const FEATURED_PROJECTS: PublicProject[] = [
     id: "p3",
     slug: "atelye-kreyatif",
     name: "Atelye Kreyatif Jacmel",
-    description:
-      "A workshop training youth in papier-mâché and recycled art.",
+    description: "A workshop training youth in papier-mâché and recycled art.",
     location: "Jacmel",
     grantAmount: 1000,
     status: "Finalist",
@@ -200,6 +199,7 @@ export const PROJECT_CATEGORIES = [
   "Water",
   "Craft",
   "Livelihood",
+  "Other",
 ] as const;
 
 export function getProjectBySlug(slug: string) {
@@ -208,7 +208,8 @@ export function getProjectBySlug(slug: string) {
 
 export function getRelatedProjects(project: PublicProject, limit = 3) {
   return FEATURED_PROJECTS.filter(
-    (p) => p.id !== project.id && (p.category === project.category || p.featured),
+    (p) =>
+      p.id !== project.id && (p.category === project.category || p.featured),
   ).slice(0, limit);
 }
 
@@ -238,8 +239,10 @@ export const WINNERS: WinnerStory[] = [
     period: "Spring 2026 Grant Cycle",
     location: "Saint-Marc",
     occupation: "Artisan Chocolate Maker",
-    fundUsage: "Purchased commercial-grade grinding equipment and eco-friendly packaging materials.",
-    expectedImpact: "Increase processing capacity by 400%, allowing us to hire two additional local women and supply three more regional grocers.",
+    fundUsage:
+      "Purchased commercial-grade grinding equipment and eco-friendly packaging materials.",
+    expectedImpact:
+      "Increase processing capacity by 400%, allowing us to hire two additional local women and supply three more regional grocers.",
     story:
       "A $1,000 grant helped purchase grinding equipment and packaging tools. Weekly cocoa processing grew from a small handmade batch to a regional supply of chocolate and cocoa powder, and two local women joined the packaging team.",
     photoUrl:
@@ -258,8 +261,10 @@ export const WINNERS: WinnerStory[] = [
     period: "Winter 2025 Grant Cycle",
     location: "Jacmel",
     occupation: "Master Carpenter",
-    fundUsage: "Acquired modern safety equipment, a table saw, and raw timber materials.",
-    expectedImpact: "Create a safer working environment and launch a weekend apprenticeship program to train local high-school students in woodworking.",
+    fundUsage:
+      "Acquired modern safety equipment, a table saw, and raw timber materials.",
+    expectedImpact:
+      "Create a safer working environment and launch a weekend apprenticeship program to train local high-school students in woodworking.",
     story:
       "With a micro-grant, Luc added safer power tools to a hand-tool workshop. The shop has since built school benches and repaired storm-damaged roof timbers, and now hosts weekend woodcraft sessions for high-school students.",
     photoUrl:
@@ -273,4 +278,3 @@ export const WINNERS: WinnerStory[] = [
 export function getWinnerBySlug(slug: string) {
   return WINNERS.find((w) => w.slug === slug) ?? null;
 }
-

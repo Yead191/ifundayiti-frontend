@@ -115,7 +115,10 @@
     "Copyright": "All rights reserved.",
     "PrivacyPolicy": "Privacy Policy",
     "Terms": "Terms & Conditions",
-    "FAQ": "FAQ"
+    "FAQ": "FAQ",
+    "Email": "Email:",
+    "Phone": "Phone:",
+    "Headquarters": "Headquarters:"
   },
   "DonationForm": {
     "SelectAmount": "Select Donation Amount (USD)",
@@ -1165,6 +1168,83 @@
       "Trouble": "Still having trouble?",
       "Contact": "Contact our team",
       "Suffix": "— we will help you sort it out."
+    }
+  },
+  "VolunteerPage": {
+    "Metadata": {
+      "Title": "Become a Volunteer · IFundAyiti",
+      "Description": "Join the IFundAyiti community force. Help verify grant applicants, translate proposals, and connect local entrepreneurs."
+    },
+    "BackToTeam": "Back to Team",
+    "Badge": "Volunteer Force",
+    "HeroTitle": "Apply to Join our Community Force",
+    "HeroSubtitle": "Help verify grant applicants, translate project proposals, and connect local Haitian entrepreneurs with the resources they need.",
+    "Personal": {
+      "Heading": "Personal Details",
+      "NameLabel": "Full Name",
+      "NamePlaceholder": "e.g. Jean-Pierre",
+      "TitleLabel": "Title / Designation",
+      "TitlePlaceholder": "e.g. Community Coordinator, Agronomist, Translator",
+      "OptionalBadge": "Optional",
+      "EmailLabel": "Email Address",
+      "EmailPlaceholder": "e.g. jean@example.com",
+      "PhoneLabel": "Phone Number",
+      "PhonePlaceholder": "e.g. +509 0000 0000",
+      "LocationLabel": "Location (City, Country)",
+      "LocationPlaceholder": "e.g. Cap-Haïtien, Haiti"
+    },
+    "Social": {
+      "Heading": "Professional Profiles",
+      "LinkedinLabel": "LinkedIn Link",
+      "TwitterLabel": "Twitter / X Link"
+    },
+    "Focus": {
+      "Heading": "Select Focus Areas",
+      "Description": "Choose the categories where you would like to contribute your skills. Select all that apply.",
+      "Areas": {
+        "Vetting": "Local Vetting & Auditing",
+        "Translation": "Kreyòl Translation",
+        "Outreach": "Regional Outreach",
+        "Tech": "Tech & Development",
+        "Storytelling": "Visual Storytelling",
+        "Logistics": "Logistics & Events"
+      }
+    },
+    "Bio": {
+      "Heading": "Tell Us About Yourself",
+      "Label": "Your Background & Motivation",
+      "Placeholder": "Share your experience and why you want to support Haitian community micro-grants..."
+    },
+    "Photo": {
+      "Heading": "Profile Picture",
+      "Description": "Please upload a clear portrait image. This image will be shown on the team board once approved.",
+      "UploadBtn": "Upload Photo",
+      "Selected": "Selected:"
+    },
+    "Submit": {
+      "Btn": "Submit Volunteer Application",
+      "Loading": "Submitting Application..."
+    },
+    "Errors": {
+      "Required": "Please fill out all required fields.",
+      "Photo": "Please upload your profile picture.",
+      "Failed": "Failed to submit application. Please try again."
+    },
+    "Success": {
+      "Title": "Application Received!",
+      "Message": "Mèsi anpil! Thank you for applying to be a part of the IFundAyiti volunteer force.",
+      "DetailsHeading": "Application Details",
+      "Name": "Name:",
+      "Title": "Title / Designation:",
+      "Email": "Email:",
+      "Location": "Location:",
+      "FocusAreas": "Focus Areas:",
+      "NextHeading": "What Happens Next?",
+      "Step1": "Our team will review your application profile within 2-3 business days.",
+      "Step2": "We will send a welcome email containing onboarding details and a Slack invitation link.",
+      "Step3": "You will be matched with local project verifications or translation tasks based on your focus areas.",
+      "BackBtn": "Back to Team Page",
+      "HomeBtn": "Return Home"
     }
   }
 }

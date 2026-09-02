@@ -55,31 +55,60 @@ export function Footer() {
         <div className="absolute inset-0 bg-linear-to-t from-forest-deep/95 via-forest-deep/30 to-forest-deep/70" />
       </div>
 
-      <div className="relative z-10 mx-auto max-w-6xl px-6 pb-10 pt-14 lg:px-8">
+      <div className="relative z-10 mx-auto max-w-6xl px-6 pb-10 pt-24 sm:pt-28 lg:px-8">
+        {/* Absolute Logo at Top of Footer */}
+        <div className="absolute top-5 sm:top-2 left-6 lg:left-8">
+          <Link
+            href={`/${currentLocale}`}
+            aria-label="IFundAyiti — home"
+            className="group inline-flex items-center transition-transform duration-300 hover:scale-[1.02]"
+          >
+            <Image
+              src="/logo-ifundayiti.png"
+              alt="IFundAyiti"
+              width={200}
+              height={200}
+              className="h-14 w-auto object-contain sm:h-24"
+              priority
+            />
+          </Link>
+        </div>
+
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-4">
-            <Link
-              href={`/${currentLocale}`}
-              aria-label="IFundAyiti — home"
-              className="group inline-flex items-center overflow-hidden rounded-2xl bg-white p-2.5 shadow-md transition-all duration-300 hover:scale-[1.02] hover:shadow-xl"
-            >
-              <Image
-                src="/logo-ifundayiti.png"
-                alt="IFundAyiti"
-                width={200}
-                height={200}
-                className="h-16 w-auto object-contain sm:h-20"
-                priority
-              />
-            </Link>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-sand/90">
+            <p className="max-w-sm text-sm leading-relaxed text-sand/90">
               {f.Summary}
             </p>
-            <p className="mt-4 text-sm text-sand/80">
-              {SITE.email}
-              <br />
-              {SITE.location}
-            </p>
+            <div className="mt-5 space-y-2 text-sm text-sand/85">
+              <p>
+                <span className="font-semibold text-white">
+                  {f.Email || "Email:"}
+                </span>{" "}
+                <a
+                  href={`mailto:${SITE.email}`}
+                  className="transition-colors hover:text-white"
+                >
+                  {SITE.email}
+                </a>
+              </p>
+              <p>
+                <span className="font-semibold text-white">
+                  {f.Phone || "Phone:"}
+                </span>{" "}
+                <a
+                  href={`tel:${SITE.phone.replace(/[^0-9+]/g, "")}`}
+                  className="transition-colors hover:text-white"
+                >
+                  {SITE.phone}
+                </a>
+              </p>
+              <p>
+                <span className="font-semibold text-white">
+                  {f.Headquarters || "Headquarters:"}
+                </span>{" "}
+                <span>{SITE.headquarters}</span>
+              </p>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 gap-8 sm:grid-cols-3 md:col-span-8">

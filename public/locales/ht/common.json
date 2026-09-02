@@ -115,7 +115,10 @@
     "Copyright": "Tout dwa rezève.",
     "PrivacyPolicy": "Règ sou Konfidansyalite",
     "Terms": "Tèm ak Kondisyon yo",
-    "FAQ": "Kesyon yo poze souvan"
+    "FAQ": "Kesyon yo poze souvan",
+    "Email": "Imèl:",
+    "Phone": "Telefòn:",
+    "Headquarters": "Katye Jeneral:"
   },
   "DonationForm": {
     "SelectAmount": "Chwazi Kantite Lajan Don (USD)",
@@ -1165,6 +1168,83 @@
       "Trouble": "Ou toujou gen pwoblèm?",
       "Contact": "Kontakte ekip nou an",
       "Suffix": "— n ap ede w rezoud sa."
+    }
+  },
+  "VolunteerPage": {
+    "Metadata": {
+      "Title": "Vin yon Volontè · IFundAyiti",
+      "Description": "Rejwenn fòs kominotè IFundAyiti a. Ede verifye aplikan sibvansyon yo, tradui pwojè yo, epi konekte antreprenè lokal yo."
+    },
+    "BackToTeam": "Tounen nan Paj Ekip la",
+    "Badge": "Fòs Volontè",
+    "HeroTitle": "Aplike Pou Rejwenn Fòs Kominotè Nou An",
+    "HeroSubtitle": "Ede verifye aplikan sibvansyon yo, tradui pwopozisyon pwojè yo, epi konekte antreprenè ayisyen lokal yo ak resous yo bezwen.",
+    "Personal": {
+      "Heading": "Detay Pèsonèl",
+      "NameLabel": "Non Konplè",
+      "NamePlaceholder": "egz. Jean-Pierre",
+      "TitleLabel": "Tit / Deziyasyon",
+      "TitlePlaceholder": "egz. Kòdonatè Kominotè, Agronòm, Tradiktè",
+      "OptionalBadge": "Si ou vle",
+      "EmailLabel": "Adrès Imèl",
+      "EmailPlaceholder": "egz. jean@example.com",
+      "PhoneLabel": "Nimewo Telefòn",
+      "PhonePlaceholder": "egz. +509 0000 0000",
+      "LocationLabel": "Kote w Ye (Vil, Peyi)",
+      "LocationPlaceholder": "egz. Okap, Ayiti"
+    },
+    "Social": {
+      "Heading": "Pwofil Pwofesyonèl",
+      "LinkedinLabel": "Lyen LinkedIn",
+      "TwitterLabel": "Lyen Twitter / X"
+    },
+    "Focus": {
+      "Heading": "Chwazi Domèn Enpòtans Ou Yo",
+      "Description": "Chwazi kategori kote ou ta renmen pote konpetans ou. Chwazi tout sa ki aplike.",
+      "Areas": {
+        "Vetting": "Verifikasyon & Odit Lokal",
+        "Translation": "Tradiksyon Kreyòl",
+        "Outreach": "Sensibilizasyon Rejyonal",
+        "Tech": "Teknoloji & Devlopman",
+        "Storytelling": "Foto & Pwodiksyon Vizyèl",
+        "Logistics": "Lojistik & Evènman"
+      }
+    },
+    "Bio": {
+      "Heading": "Pale Nou De Ou Menm",
+      "Label": "Eksperyans & Motivasyon W",
+      "Placeholder": "Pataje eksperyans ou ak poukisa ou vle sipòte mikwo-sibvansyon kominotè ayisyen yo..."
+    },
+    "Photo": {
+      "Heading": "Foto Pwofil",
+      "Description": "Tanpri chaje yon bèl foto pwofil klè. Foto sa a ap parèt sou tablo ekip la lè yo fin apwouve w.",
+      "UploadBtn": "Chaje Foto a",
+      "Selected": "Chwazi:"
+    },
+    "Submit": {
+      "Btn": "Soumèt Aplikasyon Volontè a",
+      "Loading": "N ap soumèt aplikasyon an..."
+    },
+    "Errors": {
+      "Required": "Tanpri ranpli tout chan ki obligatwa yo.",
+      "Photo": "Tanpri chaje yon foto pwofil.",
+      "Failed": "Aplikasyon an pa t ka soumèt. Tanpri re-eseye."
+    },
+    "Success": {
+      "Title": "Nou Resevwa Aplikasyon W Lan!",
+      "Message": "Mèsi anpil! Mèsi dèske w aplike pou fè pati fòs volontè IFundAyiti a.",
+      "DetailsHeading": "Detay Aplikasyon an",
+      "Name": "Non:",
+      "Title": "Tit / Deziyasyon:",
+      "Email": "Imèl:",
+      "Location": "Kote w Ye:",
+      "FocusAreas": "Domèn:",
+      "NextHeading": "Kisa K Ap Pase Kounye A?",
+      "Step1": "Ekip nou an pral revize dosye w la nan 2-3 jou ouvrab.",
+      "Step2": "N ap voye yon imèl byenvini ki gen detay entegrasyon ak yon lyen envitasyon Slack.",
+      "Step3": "Y ap asosye w ak verifikasyon pwojè lokal oswa travay tradiksyon dapre domèn ou te chwazi yo.",
+      "BackBtn": "Tounen nan Paj Ekip la",
+      "HomeBtn": "Tounen nan Paj Akèy"
     }
   }
 }
