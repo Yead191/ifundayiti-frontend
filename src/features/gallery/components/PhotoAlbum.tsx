@@ -5,7 +5,6 @@ import Masonry, { type Item } from "./Masonry";
 import { GalleryModal } from "./GalleryModal";
 import type { GalleryItem } from "@/helpers/next-fetch/galleryActions";
 import { getImageUrl } from "@/lib/getImageUrl";
-import photoAlbums from "@/data/photos";
 
 interface PhotoAlbumProps {
   galleryItems?: GalleryItem[];
@@ -24,7 +23,6 @@ export default function PhotoAlbum({
 }: PhotoAlbumProps) {
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
 
-  // If no items provided from API, fall back to local photoAlbums
   const sourceItems: Item[] = galleryItems.map((item, index) => {
     const height = HEIGHT_PATTERNS[index % HEIGHT_PATTERNS.length];
     const resolvedImg = getImageUrl(item.image) || item.image;
