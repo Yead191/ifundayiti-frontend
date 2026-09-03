@@ -4,13 +4,9 @@ import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { ProjectCard } from "@/components/projects/project-card";
 import { EmptyState } from "@/components/shared/empty-state";
-import { ProjectFeaturedSpotlight } from "@/features/projects/components/project-featured-spotlight";
 import { ProjectSearchFilter } from "@/features/projects/components/project-search-filter";
 import { ProjectPagination } from "@/features/projects/components/project-pagination";
-import {
-  getProjects,
-  getFeaturedProjects,
-} from "@/helpers/next-fetch/projectActions";
+import { getProjects } from "@/helpers/next-fetch/projectActions";
 import { buildMetadata } from "@/lib/seo";
 import { getDictionary } from "@/lib/dictionaries";
 import { Users, DollarSign, ShieldCheck } from "lucide-react";
@@ -26,9 +22,7 @@ interface PageProps {
 
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ lang: string }>;
-}): Promise<Metadata> {
+}: PageProps): Promise<Metadata> {
   const { lang } = await params;
   const dict = await getDictionary(lang);
   const t = dict.ProjectsPage;
@@ -60,16 +54,12 @@ export default async function ProjectsPage({
   const dict = await getDictionary(lang);
   const t = dict.ProjectsPage;
 
-  // Concurrent fetching of projects and featured spotlight
-  const [projectsRes, featuredProjects] = await Promise.all([
-    getProjects({
-      category: activeCategory,
-      searchTerm: activeSearch,
-      page: currentPage,
-      limit: 12,
-    }),
-    getFeaturedProjects(3),
-  ]);
+  const projectsRes = await getProjects({
+    category: activeCategory,
+    searchTerm: activeSearch,
+    page: currentPage,
+    limit: 12,
+  });
 
   const projects = projectsRes.data || [];
   const pagination = projectsRes.pagination || {
@@ -78,9 +68,6 @@ export default async function ProjectsPage({
     total: projects.length,
     totalPage: 1,
   };
-
-  const showSpotlight =
-    !activeSearch && activeCategory === "All" && featuredProjects.length > 0;
 
   return (
     <>
@@ -119,17 +106,8 @@ export default async function ProjectsPage({
         </Container>
       </section>
 
-      {/* Featured Spotlight Section */}
-      {showSpotlight && (
-        <ProjectFeaturedSpotlight
-          projects={featuredProjects}
-          lang={lang}
-          dict={dict}
-        />
-      )}
-
       {/* Interactive Explorer & Projects Grid */}
-      <section className="py-16 sm:py-24 bg-white" id="directory">
+      <section className="py-16 sm:py-24 bg-sand-soft/30" id="directory">
         <Container>
           {/* Search & Category Filter Bar */}
           <Suspense fallback={null}>
@@ -154,13 +132,18 @@ export default async function ProjectsPage({
             </div>
           ) : (
             <>
-              <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
+              <div className="mt-12 grid gap-5 sm:grid-cols-2">
                 {projects?.map((project, i) => (
                   <Reveal
                     key={project._id || project.id || project.slug || i}
-                    delay={i * 40}
+                    delay={i * 50}
                   >
-                    <ProjectCard project={project} lang={lang} dict={dict} />
+                    <ProjectCard
+                      project={project}
+                      featured={i === 0}
+                      lang={lang}
+                      dict={dict}
+                    />
                   </Reveal>
                 ))}
               </div>

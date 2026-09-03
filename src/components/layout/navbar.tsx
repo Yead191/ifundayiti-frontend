@@ -77,6 +77,7 @@ export function Navbar() {
         { label: t.Projects, href: "/projects" },
         { label: t.Winners, href: "/winners" },
         { label: t.Finalists, href: "/finalists" },
+        { label: t.Gallery || "Gallery", href: "/gallery" },
         { label: t.SuccessStories, href: "/impact#success-stories" },
       ],
     },

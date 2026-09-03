@@ -66,7 +66,7 @@ export default async function HomePage({
       <WhatWeDo />
       <HowItWorks />
       <ImpactStats />
-      <FeaturedProjects />
+      <FeaturedProjects lang={lang} />
       <LeadershipSection lang={lang} />
       <VolunteersSection lang={lang} />
       <SuccessStory lang={lang} />

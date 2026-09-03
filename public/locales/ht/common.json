@@ -10,6 +10,7 @@
     "Projects": "Pwojè yo",
     "Winners": "Laureya yo",
     "Finalists": "Finalis yo",
+    "Gallery": "Galeri",
     "SuccessStories": "Istwa Siksè",
     "Events": "Evènman yo",
     "Shop": "Boutik",
@@ -1311,6 +1312,47 @@
       "Step3": "Y ap asosye w ak verifikasyon pwojè lokal oswa travay tradiksyon dapre domèn ou te chwazi yo.",
       "BackBtn": "Tounen nan Paj Ekip la",
       "HomeBtn": "Tounen nan Paj Akèy"
+    }
+  },
+  "GalleryPage": {
+    "Hero": {
+      "Eyebrow": "Galeri Kominotè",
+      "Title": "Moman Enpak nan Katye yo",
+      "Subtitle": "Temwen foto reyèl sou teren an ki montre pwojè yo, seremoni sibvansyon, atelye kominotè, ak kreyatè lokal k ap bati yon pi bon avni an Ayiti."
+    },
+    "SearchPlaceholder": "Chèche pa tit, kote, kategori...",
+    "ResultsCount": "foto yo jwenn",
+    "All": "Tout",
+    "Categories": {
+      "All": "Tout Foto yo",
+      "Community Outreach": "Aktivite Kominotè",
+      "Grant Programs": "Pwogram Sibvansyon",
+      "Education": "Edikasyon",
+      "Food & Agriculture": "Manje & Agrikilti",
+      "Healthcare": "Sante",
+      "Community Development": "Devlopman Kominotè",
+      "Entrepreneurship": "Antreprenarya",
+      "Environment": "Anviwònman",
+      "Events": "Evènman yo",
+      "Volunteering": "Volontarya",
+      "Success Stories": "Istwa Siksè",
+      "Other": "Lòt"
+    },
+    "Modal": {
+      "CapturedOn": "Pran nan dat",
+      "Location": "Kote",
+      "Category": "Kategori",
+      "StoryNote": "Kontèks & Nòt sou Teren an",
+      "Spotlight": "Foto Vedèt",
+      "ViewOriginal": "Gwo Rezolisyon",
+      "Share": "Pataje",
+      "Copied": "Lyen Kopye!",
+      "Close": "Fèmen"
+    },
+    "Empty": {
+      "Title": "Pa gen foto yo jwenn",
+      "Body": "Pa gen foto pibliye ki koresponn ak rechèch ou oswa kategori ou chwazi a.",
+      "ResetBtn": "Gade tout foto yo"
     }
   }
 }

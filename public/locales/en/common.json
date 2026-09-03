@@ -10,6 +10,7 @@
     "Projects": "Projects",
     "Winners": "Winners",
     "Finalists": "Finalists",
+    "Gallery": "Gallery",
     "SuccessStories": "Success Stories",
     "Events": "Events",
     "Shop": "Shop",
@@ -1311,6 +1312,47 @@
       "Step3": "You will be matched with local project verifications or translation tasks based on your focus areas.",
       "BackBtn": "Back to Team Page",
       "HomeBtn": "Return Home"
+    }
+  },
+  "GalleryPage": {
+    "Hero": {
+      "Eyebrow": "Community Gallery",
+      "Title": "Moments of Grassroots Impact",
+      "Subtitle": "Witness authentic field photographs of community projects, grant ceremonies, workshops, and local builders creating sustainable futures across Haiti."
+    },
+    "SearchPlaceholder": "Search by title, location, category...",
+    "ResultsCount": "photos found",
+    "All": "All",
+    "Categories": {
+      "All": "All Photos",
+      "Community Outreach": "Community Outreach",
+      "Grant Programs": "Grant Programs",
+      "Education": "Education",
+      "Food & Agriculture": "Food & Agriculture",
+      "Healthcare": "Healthcare",
+      "Community Development": "Community Development",
+      "Entrepreneurship": "Entrepreneurship",
+      "Environment": "Environment",
+      "Events": "Events",
+      "Volunteering": "Volunteering",
+      "Success Stories": "Success Stories",
+      "Other": "Other"
+    },
+    "Modal": {
+      "CapturedOn": "Captured on",
+      "Location": "Location",
+      "Category": "Category",
+      "StoryNote": "Context & Field Note",
+      "Spotlight": "Spotlight",
+      "ViewOriginal": "Full Resolution",
+      "Share": "Share",
+      "Copied": "Link Copied!",
+      "Close": "Close preview"
+    },
+    "Empty": {
+      "Title": "No photos found",
+      "Body": "There are no published photos matching your current search or category filter.",
+      "ResetBtn": "View all photos"
     }
   }
 }
