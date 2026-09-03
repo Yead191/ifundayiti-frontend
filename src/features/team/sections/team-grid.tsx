@@ -15,7 +15,6 @@ import {
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { TEAM_CATEGORIES, type TeamCategory } from "@/data/team";
-import { TeamModal } from "@/features/team/sections/team-modal";
 import { PaginationControls } from "@/components/ui/pagination-controls";
 import { getImageUrl } from "@/lib/getImageUrl";
 
@@ -46,7 +45,6 @@ export function TeamGrid({
 }: TeamGridProps) {
   const router = useRouter();
   const [searchInput, setSearchInput] = React.useState(searchQuery);
-  const [selectedMember, setSelectedMember] = React.useState<any | null>(null);
   const [optimisticCategory, setOptimisticCategory] =
     React.useState<TeamCategory>(activeCategory);
 
@@ -261,9 +259,9 @@ export function TeamGrid({
 
                   return (
                     <Reveal key={member._id} delay={index * 30}>
-                      <article
-                        onClick={() => setSelectedMember(member)}
-                        className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/80 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-forest/30 hover:shadow-xl cursor-pointer"
+                      <Link
+                        href={`/${currentLang}/team/${member._id || member.id}`}
+                        className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/80 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-forest/30 hover:shadow-xl"
                       >
                         <div>
                           {/* Avatar & Badges */}
@@ -297,9 +295,11 @@ export function TeamGrid({
                             </div>
                           </div>
 
-                          {/* Bio preview */}
+                          {/* Bio preview (HTML stripped) */}
                           <p className="mt-4 text-xs leading-relaxed text-mist line-clamp-3">
-                            {member.bio}
+                            {member.bio
+                              ? member.bio.replace(/<[^>]*>?/gm, "").trim()
+                              : ""}
                           </p>
                         </div>
 
@@ -308,7 +308,7 @@ export function TeamGrid({
                           <span>{t.ViewProfile}</span>
                           <ExternalLink className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
                         </div>
-                      </article>
+                      </Link>
                     </Reveal>
                   );
                 })}
@@ -321,14 +321,6 @@ export function TeamGrid({
             </>
           )}
         </div>
-
-        {/* Modal detail */}
-        <TeamModal
-          member={selectedMember}
-          isOpen={!!selectedMember}
-          onClose={() => setSelectedMember(null)}
-          lang={lang}
-        />
       </Container>
     </section>
   );

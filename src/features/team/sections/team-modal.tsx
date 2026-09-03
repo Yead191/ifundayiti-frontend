@@ -59,7 +59,7 @@ export function TeamModal({ member, isOpen, onClose, lang }: TeamModalProps) {
 
         {/* Profile Header Content */}
         <div className="relative px-6 pb-6 pt-0 sm:px-8">
-          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 -mt-14">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 -mt-12">
             <div className="relative h-28 w-28 overflow-hidden rounded-2xl border-4 border-white shadow-lg bg-sand-soft">
               <Image
                 src={getImageUrl(member.image) || ""}
@@ -108,7 +108,7 @@ export function TeamModal({ member, isOpen, onClose, lang }: TeamModalProps) {
           {/* Bio */}
           <div className="mt-5">
             <h4 className="text-xs font-bold uppercase tracking-wider text-mist">
-              {t.About}
+              {t.Biography}
             </h4>
             <p className="mt-2 text-sm leading-relaxed text-cloud">
               {member.bio}

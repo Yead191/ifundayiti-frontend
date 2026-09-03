@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Container } from "@/components/shared/container";
 import { SectionHeading } from "@/components/sections/section-heading";
 import { Reveal } from "@/components/ui/reveal";
@@ -11,8 +12,14 @@ import { nextFetch } from "@/helpers/next-fetch/NextFetch";
 import { getImageUrl } from "@/lib/getImageUrl";
 
 export async function LeadershipSection({ lang }: { lang: string }) {
-  const res = await nextFetch("/team?category=director", { cache: "default" });
-  const leaders = res.success ? res.data || [] : [];
+  const res = await nextFetch("/team?category=director&limit=3", {
+    cache: "force-cache",
+    next: {
+      revalidate: 60 * 60,
+    },
+  });
+  const allLeaders = res.success ? res.data || [] : [];
+  const leaders = allLeaders.slice(0, 3);
 
   if (leaders.length === 0) return null;
 
@@ -32,8 +39,8 @@ export async function LeadershipSection({ lang }: { lang: string }) {
           title={t.LeadershipTitle}
           subtitle={t.LeadershipSubtitle}
         />
-        <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {leaders.map((person: any, i: number) => (
+        <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 ">
+          {leaders?.map((person: any, i: number) => (
             <Reveal key={person._id} delay={i * 70}>
               <DirectorCard person={person} lang={lang} />
             </Reveal>
@@ -45,7 +52,12 @@ export async function LeadershipSection({ lang }: { lang: string }) {
 }
 
 export async function VolunteersSection({ lang }: { lang: string }) {
-  const res = await nextFetch("/team?category=volunteer", { cache: "default" });
+  const res = await nextFetch("/team?category=volunteer", {
+    cache: "force-cache",
+    next: {
+      revalidate: 60 * 60,
+    },
+  });
   const volunteers = res.success ? res.data || [] : [];
 
   if (volunteers.length === 0) return null;
@@ -77,8 +89,9 @@ export async function VolunteersSection({ lang }: { lang: string }) {
 }
 
 function VolunteerCard({ person, lang }: { person: any; lang: string }) {
-  const roleText = lang === "ht" ? "Volontè & Anbasadè" : "Volunteer & Ambassador";
-  
+  const roleText =
+    lang === "ht" ? "Volontè & Anbasadè" : "Volunteer & Ambassador";
+
   return (
     <article className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/80 bg-white p-5 shadow-[0_15px_40px_-20px_rgba(11,61,46,0.15)] transition-all duration-500 hover:-translate-y-2 hover:border-forest/20 hover:shadow-[0_20px_50px_-20px_rgba(11,61,46,0.25)]">
       <div>
@@ -102,9 +115,11 @@ function VolunteerCard({ person, lang }: { person: any; lang: string }) {
 
         {/* Member Details */}
         <div className="mt-5">
-          <h3 className="font-display text-xl font-bold text-forest-deep transition-colors group-hover:text-forest">
-            {person.name}
-          </h3>
+          <Link href={`/${lang}/team/${person._id || person.id}`}>
+            <h3 className="font-display text-xl font-bold text-forest-deep transition-colors hover:text-forest">
+              {person.name}
+            </h3>
+          </Link>
           <p className="text-xs font-semibold uppercase tracking-wider text-forest/80 mt-1">
             {roleText}
           </p>
@@ -173,7 +188,7 @@ function DirectorCard({ person, lang }: { person: any; lang: string }) {
     <article className="group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl border border-white/80 bg-white p-5 shadow-[0_15px_40px_-20px_rgba(11,61,46,0.15)] transition-all duration-500 hover:-translate-y-2 hover:border-forest/20 hover:shadow-[0_20px_50px_-20px_rgba(11,61,46,0.25)]">
       <div>
         {/* Profile Image with Hover Zoom */}
-        <div className="relative aspect-3/4 w-full overflow-hidden rounded-2xl bg-sand-soft">
+        <div className="relative aspect-4/4 w-full overflow-hidden rounded-2xl bg-sand-soft">
           <Image
             src={getImageUrl(person.image) || ""}
             alt={person.name}
@@ -192,15 +207,19 @@ function DirectorCard({ person, lang }: { person: any; lang: string }) {
 
         {/* Member Details */}
         <div className="mt-5">
-          <h3 className="font-display text-xl font-bold text-forest-deep transition-colors group-hover:text-forest">
-            {person.name}
-          </h3>
-          <p className="text-xs font-semibold uppercase tracking-wider text-forest/80 mt-1">
-            {roleText}
+          <Link href={`/${lang}/team/${person._id || person.id}`}>
+            <h3 className="font-display text-xl font-bold text-forest-deep transition-colors hover:text-forest">
+              {person.name}
+            </h3>
+          </Link>
+          <p className="text-xs font-semibold uppercase tracking-wider text-forest/90 mt-1">
+            {person.title || roleText}
           </p>
-          {/* <p className="mt-3 text-sm leading-relaxed text-mist line-clamp-3">
-            {person.bio}
-          </p> */}
+          {person.title && (
+            <p className="text-[11px] font-medium text-mist mt-0.5">
+              {roleText}
+            </p>
+          )}
         </div>
       </div>
 

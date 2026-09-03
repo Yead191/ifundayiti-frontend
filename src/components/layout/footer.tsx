@@ -52,7 +52,7 @@ export function Footer() {
         />
         {/* Balanced gradient overlay: provides text legibility while keeping the painting clearly visible */}
         <div className="absolute inset-0 bg-forest-deep/55" />
-        <div className="absolute inset-0 bg-linear-to-t from-forest-deep/95 via-forest-deep/30 to-forest-deep/70" />
+        <div className="absolute inset-0 bg-linear-to-t from-forest-deep/95 via-forest-deep/30 to-forest-deep/90" />
       </div>
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 pb-10 pt-24 sm:pt-28 lg:px-8">
@@ -68,13 +68,13 @@ export function Footer() {
               alt="IFundAyiti"
               width={200}
               height={200}
-              className="h-14 w-auto object-contain sm:h-24"
+              className="h-20 w-auto object-contain sm:h-24"
               priority
             />
           </Link>
         </div>
 
-        <div className="grid gap-12 md:grid-cols-12">
+        <div className="grid gap-12 md:grid-cols-12 pt-6">
           <div className="md:col-span-4">
             <p className="max-w-sm text-sm leading-relaxed text-sand/90">
               {f.Summary}

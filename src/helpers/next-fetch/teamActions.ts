@@ -54,6 +54,34 @@ export async function getTeamMembers(params: {
   return result;
 }
 
+/** GET /team/:id — fetches a single active team member profile */
+export async function getTeamMemberById(id: string) {
+  const result = await nextFetch(`/team/${id}`, {
+    method: "GET",
+    next: { revalidate: 60 },
+    tags: ["team", id],
+  });
+
+  if (result.success && result.data) {
+    return result;
+  }
+
+  // Fallback check against list or mock items if direct ID query wasn't found
+  try {
+    const listRes = await getTeamMembers({ limit: 100 });
+    if (listRes.success && Array.isArray(listRes.data)) {
+      const match = listRes.data.find(
+        (m: any) => m._id === id || m.id === id || String(m._id) === String(id)
+      );
+      if (match) {
+        return { success: true, data: match };
+      }
+    }
+  } catch {}
+
+  return result;
+}
+
 /** POST /team/volunteer-apply — submits volunteer application */
 export async function applyAsVolunteer(formData: FormData) {
   const result = await nextFetch("/team/volunteer-apply", {
@@ -62,3 +90,4 @@ export async function applyAsVolunteer(formData: FormData) {
   });
   return result;
 }
+

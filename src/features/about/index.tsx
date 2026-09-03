@@ -15,7 +15,7 @@ export default function AboutPageContent({ lang }: { lang: string }) {
       <AboutAudiences lang={lang} />
       <AboutGovernance lang={lang} />
       <AboutConnectCta lang={lang} />
-      <AboutTeam lang={lang} />
+      {/* <AboutTeam lang={lang} /> */}
     </>
   );
 }
