@@ -28,6 +28,8 @@ function isActive(pathname: string, href: string) {
   const cleanPathname = "/" + pathname.split("/").slice(2).join("/");
   if (href === "/") return cleanPathname === "/";
   const path = href.split("#")[0];
+  if (path === "/calendar" && cleanPathname.startsWith("/events")) return true;
+  if (path === "/events" && cleanPathname.startsWith("/calendar")) return true;
   return cleanPathname.startsWith(path);
 }
 
@@ -77,11 +79,20 @@ export function Navbar() {
         { label: t.Projects, href: "/projects" },
         { label: t.Winners, href: "/winners" },
         { label: t.Finalists, href: "/finalists" },
-        { label: t.Gallery || "Gallery", href: "/gallery" },
         { label: t.SuccessStories, href: "/impact#success-stories" },
       ],
     },
-    { label: t.Events, href: "/events" },
+    {
+      label: t.Events || "Events",
+      href: "/calendar",
+      subItems: [
+        {
+          label: t.CalendarOfEvents || t.Calendar || "Calendar of Events",
+          href: "/calendar",
+        },
+        { label: t.Gallery || "Gallery", href: "/gallery" },
+      ],
+    },
     { label: t.Shop, href: "/shop" },
     { label: t.Contact, href: "/contact" },
   ];

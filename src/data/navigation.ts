@@ -23,11 +23,18 @@ export const navItems: NavItem[] = [
       { label: "Projects", href: "/projects" },
       { label: "Winners", href: "/winners" },
       { label: "Finalists", href: "/finalists" },
-      { label: "Gallery", href: "/gallery" },
       { label: "Success Stories", href: "/impact#success-stories" },
     ],
   },
-  { label: "Events", href: "/events" },
+  {
+    label: "Events",
+    href: "/calendar",
+    subItems: [
+      { label: "Calendar of Events", href: "/calendar" },
+      { label: "Gallery", href: "/gallery" },
+    ],
+  },
+  // { label: "Events", href: "/events" },
   { label: "Shop", href: "/shop" },
   { label: "Contact", href: "/contact" },
 ];

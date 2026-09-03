@@ -22,6 +22,12 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "10mb",
     },
   },
+  async rewrites() {
+    return [
+      { source: "/:lang/calendar", destination: "/:lang/events" },
+      { source: "/calendar", destination: "/events" },
+    ];
+  },
   async redirects() {
     return [
       { source: "/store", destination: "/shop", permanent: false },

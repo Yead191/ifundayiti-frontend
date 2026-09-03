@@ -124,7 +124,7 @@ const Masonry: React.FC<MasonryProps> = ({
       "(min-width:480px)",
     ],
     [4, 3, 2, 2],
-    1,
+    2,
   );
 
   const [containerRef, { width }] = useMeasure<HTMLDivElement>();
