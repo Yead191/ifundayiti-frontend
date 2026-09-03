@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { FaTiktok } from "react-icons/fa";
-import { Facebook, Instagram } from "lucide-react";
+import { Facebook, Instagram, Mail } from "lucide-react";
 import { SITE } from "@/data/site";
 import { useTranslation } from "@/components/providers/translation-provider";
 
@@ -135,6 +135,9 @@ export function Footer() {
             © {new Date().getFullYear()} IFundAyiti. {f.Copyright}
           </p>
           <div className="flex gap-3">
+            <Social href={`mailto:${SITE.email}`} label="Email">
+              <Mail className="h-4 w-4" />
+            </Social>
             <Social href={SITE.social.facebook} label="Facebook">
               <Facebook className="h-4 w-4" />
             </Social>

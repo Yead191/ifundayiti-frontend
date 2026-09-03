@@ -1,20 +1,27 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-
+import { Suspense } from "react";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { ProjectCard } from "@/components/projects/project-card";
 import { EmptyState } from "@/components/shared/empty-state";
+import { ProjectFeaturedSpotlight } from "@/features/projects/components/project-featured-spotlight";
+import { ProjectSearchFilter } from "@/features/projects/components/project-search-filter";
+import { ProjectPagination } from "@/features/projects/components/project-pagination";
 import {
-  FEATURED_PROJECTS,
-  PROJECT_CATEGORIES,
-} from "@/data/projects";
+  getProjects,
+  getFeaturedProjects,
+} from "@/helpers/next-fetch/projectActions";
 import { buildMetadata } from "@/lib/seo";
 import { getDictionary } from "@/lib/dictionaries";
+import { Users, DollarSign, ShieldCheck } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<{
+    category?: string;
+    searchTerm?: string;
+    page?: string;
+  }>;
 }
 
 export async function generateMetadata({
@@ -24,76 +31,120 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { lang } = await params;
   const dict = await getDictionary(lang);
+  const t = dict.ProjectsPage;
 
   return buildMetadata({
-    title: dict.Navbar.Projects,
-    description: dict.ProjectsPage.Subtitle,
+    title: `${dict.Navbar.Projects} — ${t.Eyebrow} · IFundAyiti`,
+    description: t.Subtitle,
     path: `/${lang}/projects`,
+    keywords: [
+      "Haiti grassroots projects",
+      "community micro-grants",
+      "funded initiatives",
+      "IFundAyiti",
+    ],
   });
 }
 
-export default async function ProjectsPage({ params, searchParams }: PageProps) {
+export default async function ProjectsPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { lang } = await params;
-  const { category } = await searchParams;
-  const active = category?.trim() || "All";
-  const projects =
-    active === "All"
-      ? FEATURED_PROJECTS
-      : FEATURED_PROJECTS.filter((p) => p.category === active);
+  const { category, searchTerm, page } = await searchParams;
+
+  const activeCategory = category?.trim() || "All";
+  const activeSearch = searchTerm?.trim() || "";
+  const currentPage = Math.max(1, parseInt(page || "1", 10));
 
   const dict = await getDictionary(lang);
   const t = dict.ProjectsPage;
 
+  // Concurrent fetching of projects and featured spotlight
+  const [projectsRes, featuredProjects] = await Promise.all([
+    getProjects({
+      category: activeCategory,
+      searchTerm: activeSearch,
+      page: currentPage,
+      limit: 12,
+    }),
+    getFeaturedProjects(3),
+  ]);
+
+  const projects = projectsRes.data || [];
+  const pagination = projectsRes.pagination || {
+    page: currentPage,
+    limit: 12,
+    total: projects.length,
+    totalPage: 1,
+  };
+
+  const showSpotlight =
+    !activeSearch && activeCategory === "All" && featuredProjects.length > 0;
+
   return (
     <>
+      {/* Hero Section */}
       <section className="relative overflow-hidden bg-forest pt-32 pb-20 text-white md:pt-40 md:pb-28">
-        <Container>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,var(--color-forest-bright)_0%,transparent_60%)] opacity-30 pointer-events-none" />
+        <Container className="relative">
           <Reveal>
-            <p className="eyebrow text-sand">{t.Eyebrow}</p>
-            <h1 className="mt-4 max-w-3xl font-display text-4xl font-semibold leading-[1.08] tracking-tight text-white sm:text-6xl">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-sand/30 bg-sand/10 px-3.5 py-1 text-xs font-bold uppercase tracking-wider text-sand backdrop-blur-md">
+              {t.Eyebrow}
+            </span>
+            <h1 className="mt-4 max-w-3xl font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-white sm:text-6xl">
               {t.Title1}
               <span className="block text-sand">{t.TitleAccent}</span>
             </h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-sand/90 sm:text-lg">
+            <p className="mt-6 max-w-2xl text-base leading-relaxed text-sand/90 sm:text-lg">
               {t.Subtitle}
             </p>
+
+            {/* Quick Impact Stat Pills */}
+            <div className="mt-10 flex flex-wrap items-center gap-3 sm:gap-4">
+              <div className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2 text-xs sm:text-sm font-semibold text-white backdrop-blur-md">
+                <Users className="h-4 w-4 text-sand" />
+                <span>{t.StatCommunities}</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2 text-xs sm:text-sm font-semibold text-white backdrop-blur-md">
+                <DollarSign className="h-4 w-4 text-sand" />
+                <span>{t.StatDeployed}</span>
+              </div>
+              <div className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2 text-xs sm:text-sm font-semibold text-white backdrop-blur-md">
+                <ShieldCheck className="h-4 w-4 text-sand" />
+                <span>{t.StatGrassroots}</span>
+              </div>
+            </div>
           </Reveal>
         </Container>
       </section>
 
-      <section className="py-16 md:py-20">
+      {/* Featured Spotlight Section */}
+      {showSpotlight && (
+        <ProjectFeaturedSpotlight
+          projects={featuredProjects}
+          lang={lang}
+          dict={dict}
+        />
+      )}
+
+      {/* Interactive Explorer & Projects Grid */}
+      <section className="py-16 sm:py-24 bg-white" id="directory">
         <Container>
-          <div className="flex flex-wrap gap-2">
-            {PROJECT_CATEGORIES.map((cat) => {
-              const href = cat === "All" ? `/${lang}/projects` : `/${lang}/projects?category=${encodeURIComponent(cat)}`;
-              const isActive = active === cat;
-              
-              let label: string = cat;
-              if (cat === "All") label = t.All;
-              else if (cat === "Food" && lang === "ht") label = "Manje";
-              else if (cat === "Energy" && lang === "ht") label = "Enèji";
-              else if (cat === "Water" && lang === "ht") label = "Dlo";
-              else if (cat === "Craft" && lang === "ht") label = "Atizana";
-              else if (cat === "Livelihood" && lang === "ht") label = "Aktivite yo";
+          {/* Search & Category Filter Bar */}
+          <Suspense fallback={null}>
+            <ProjectSearchFilter
+              lang={lang}
+              t={t}
+              activeCategory={activeCategory}
+              initialSearchTerm={activeSearch}
+              totalResults={pagination.total}
+            />
+          </Suspense>
 
-              return (
-                <Link
-                  key={cat}
-                  href={href}
-                  className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${
-                    isActive
-                      ? "bg-forest text-white"
-                      : "bg-sand-soft text-forest-deep hover:bg-sand"
-                  }`}
-                >
-                  {label}
-                </Link>
-              );
-            })}
-          </div>
-
+          {/* Projects Card Grid */}
           {projects.length === 0 ? (
-            <div className="mt-14">
+            <div className="mt-16">
               <EmptyState
                 title={t.EmptyTitle}
                 body={t.EmptyBody}
@@ -102,18 +153,23 @@ export default async function ProjectsPage({ params, searchParams }: PageProps) 
               />
             </div>
           ) : (
-            <div className="mt-12 grid gap-5 sm:grid-cols-2">
-              {projects.map((project, i) => (
-                <Reveal key={project.id} delay={i * 50}>
-                  <ProjectCard
-                    project={project}
-                    featured={i === 0 && active === "All"}
-                    lang={lang}
-                    viewWorkLabel={t.ViewWork}
-                  />
-                </Reveal>
-              ))}
-            </div>
+            <>
+              <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-8">
+                {projects?.map((project, i) => (
+                  <Reveal
+                    key={project._id || project.id || project.slug || i}
+                    delay={i * 40}
+                  >
+                    <ProjectCard project={project} lang={lang} dict={dict} />
+                  </Reveal>
+                ))}
+              </div>
+
+              {/* Pagination Controls */}
+              {pagination.totalPage > 1 && (
+                <ProjectPagination pagination={pagination} lang={lang} />
+              )}
+            </>
           )}
         </Container>
       </section>

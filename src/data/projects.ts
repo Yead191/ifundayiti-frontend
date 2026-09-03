@@ -194,11 +194,16 @@ export const FEATURED_PROJECTS: PublicProject[] = [
 
 export const PROJECT_CATEGORIES = [
   "All",
-  "Food",
-  "Energy",
-  "Water",
-  "Craft",
+  "Food & Agriculture",
+  "Clean Energy",
+  "Water & Sanitation",
+  "Education",
+  "Healthcare",
   "Livelihood",
+  "Small Business",
+  "Community Development",
+  "Environment",
+  "Arts & Crafts",
   "Other",
 ] as const;
 

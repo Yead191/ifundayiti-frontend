@@ -40,9 +40,7 @@ export async function AboutHero({ lang }: { lang: string }) {
               <span className="eyebrow">{t.Eyebrow}</span>
               <h1 className="mt-5 font-display text-[2.65rem] font-semibold leading-[1.02] tracking-tight text-forest-deep sm:text-5xl lg:text-[3.5rem]">
                 {t.Title}
-                <span className="mt-1 block text-forest">
-                  {t.TitleAccent}
-                </span>
+                <span className="mt-1 block text-forest">{t.TitleAccent}</span>
               </h1>
               <p className="mt-6 max-w-lg text-lg leading-relaxed text-mist">
                 {t.Tagline} {t.SubtitleSuffix}
@@ -65,7 +63,10 @@ export async function AboutHero({ lang }: { lang: string }) {
               ))}
             </Reveal>
 
-            <Reveal delay={160} className="mt-10 flex flex-wrap gap-4 text-sm font-semibold">
+            <Reveal
+              delay={160}
+              className="mt-10 flex flex-wrap gap-4 text-sm font-semibold"
+            >
               <Link
                 href={primaryNav.href}
                 className="inline-flex items-center gap-2 text-forest transition-colors hover:text-forest-deep"
@@ -89,12 +90,15 @@ export async function AboutHero({ lang }: { lang: string }) {
         </div>
 
         {/* Visual Showcase Right Column */}
-        <Reveal delay={80} className="relative flex items-center justify-center p-4 sm:p-6 lg:p-8 xl:p-12">
+        <Reveal
+          delay={80}
+          className="relative flex items-center justify-center p-4 sm:p-6 lg:p-8 xl:p-12"
+        >
           {/* Subtle ambient glows */}
           <div className="aurora -top-10 -right-10 h-72 w-72 opacity-25" />
           <div className="aurora -bottom-10 -left-10 h-64 w-64 opacity-20" />
 
-          <div className="group relative aspect-4/3 w-full min-h-100 sm:min-h-120 lg:aspect-auto lg:h-full lg:min-h-140 overflow-hidden rounded-[2rem] border border-forest/15 bg-sand-soft/60 shadow-[0_25px_60px_-25px_rgba(11,61,46,0.35)]">
+          <div className="group relative aspect-4/3 w-full min-h-100 sm:min-h-120 lg:aspect-auto lg:h-full lg:min-h-140 overflow-hidden rounded-4xl border border-forest/15 bg-sand-soft/60 shadow-[0_25px_60px_-25px_rgba(11,61,46,0.35)]">
             <Image
               src={ABOUT_HERO.image}
               alt={ABOUT_HERO.imageAlt}

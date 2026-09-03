@@ -11,15 +11,31 @@ export async function ImpactHero({ lang }: { lang: string }) {
   const t = dict.ImpactPage.Hero;
 
   const chapters = [
-    { href: "#metrics", label: t.Chapter1, hint: lang === "ht" ? "Chif yo" : "The numbers" },
-    { href: "#projects", label: t.Chapter2, hint: lang === "ht" ? "Travay nan je" : "Work in view" },
-    { href: "#success-stories", label: t.Chapter3, hint: lang === "ht" ? "Lavi ki chanje" : "Lives changed" },
-    { href: "#winners", label: t.Chapter4, hint: lang === "ht" ? "Moun ki finanse" : "Who was funded" },
+    {
+      href: "#metrics",
+      label: t.Chapter1,
+      hint: lang === "ht" ? "Chif yo" : "The numbers",
+    },
+    {
+      href: "#projects",
+      label: t.Chapter2,
+      hint: lang === "ht" ? "Travay nan je" : "Work in view",
+    },
+    {
+      href: "#success-stories",
+      label: t.Chapter3,
+      hint: lang === "ht" ? "Lavi ki chanje" : "Lives changed",
+    },
+    {
+      href: "#winners",
+      label: t.Chapter4,
+      hint: lang === "ht" ? "Moun ki finanse" : "Who was funded",
+    },
   ];
 
   const collage = [
     {
-      src: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=900&h=1100",
+      src: "/assets/images/hero/hero-bg.png",
       alt: "Neighbors gathered in community",
       caption: t.Community,
       className: "col-span-7 row-span-2",
@@ -31,7 +47,7 @@ export async function ImpactHero({ lang }: { lang: string }) {
       className: "col-span-5",
     },
     {
-      src: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&q=80&w=700&h=500",
+      src: "/assets/images/hero/about-bg.jpeg",
       alt: "People working side by side",
       caption: t.Builders,
       className: "col-span-5",
@@ -146,10 +162,14 @@ export async function ImpactHero({ lang }: { lang: string }) {
           <div className="overflow-hidden rounded-t-[1.5rem] border border-b-0 border-hairline bg-forest text-white shadow-[0_-12px_48px_-28px_rgba(11,61,46,0.4)]">
             <div className="flex flex-col gap-1 border-b border-white/10 px-6 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sand/85">
-                {lang === "ht" ? "Bann prèv enpak · chif demonstrasyon" : "Impact proof strip · demo figures"}
+                {lang === "ht"
+                  ? "Bann prèv enpak · chif demonstrasyon"
+                  : "Impact proof strip · demo figures"}
               </p>
               <p className="text-xs text-sand/65">
-                {lang === "ht" ? "Ranplase ak chif ofisyèl yo lè yo pare" : "Swap for official reporting when ready"}
+                {lang === "ht"
+                  ? "Ranplase ak chif ofisyèl yo lè yo pare"
+                  : "Swap for official reporting when ready"}
               </p>
             </div>
             <div className="grid grid-cols-2 divide-x divide-y divide-white/10 sm:grid-cols-4 sm:divide-y-0">
