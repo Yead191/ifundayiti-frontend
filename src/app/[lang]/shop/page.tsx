@@ -313,6 +313,8 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
                         inStock ? `&inStock=true` : ""
                       }`}
                       scroll={false}
+                      prefetch={true}
+                      replace={true}
                       className="flex h-10 items-center gap-1 rounded-xl border border-hairline bg-white px-3 text-xs font-semibold text-forest-deep shadow-2xs hover:bg-sand-soft"
                     >
                       <ChevronLeft className="h-4 w-4" />
@@ -335,6 +337,8 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
                         inStock ? `&inStock=true` : ""
                       }`}
                       scroll={false}
+                      prefetch={true}
+                      replace={true}
                       className={`grid h-10 w-10 place-items-center rounded-xl text-xs font-bold transition-colors ${
                         p === pagination.page
                           ? "bg-forest text-white shadow-xs"
@@ -356,6 +360,8 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
                         inStock ? `&inStock=true` : ""
                       }`}
                       scroll={false}
+                      prefetch={true}
+                      replace={true}
                       className="flex h-10 items-center gap-1 rounded-xl border border-hairline bg-white px-3 text-xs font-semibold text-forest-deep shadow-2xs hover:bg-sand-soft"
                     >
                       <span>Next</span>

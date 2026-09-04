@@ -1,10 +1,12 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowUpDown, Check, ChevronDown, Search, X } from "lucide-react";
 
 import { SHOP_SORT_OPTIONS } from "../constants";
+import { buildShopUrl, saveShopScroll, usePreserveScroll } from "../utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,27 +41,18 @@ export function ShopTopToolbar({
     setSearchInput(currentSearch);
   }, [currentSearch]);
 
+  // Keep scroll position preserved across searches
+  usePreserveScroll(searchParams);
+
   const t = dict?.ShopPage?.Filters;
-
-  const updateQuery = (updates: Record<string, string | null>) => {
-    const params = new URLSearchParams(searchParams.toString());
-    params.delete("page");
-
-    for (const [key, value] of Object.entries(updates)) {
-      if (!value || value === "all" || value === "featured") {
-        params.delete(key);
-      } else {
-        params.set(key, value);
-      }
-    }
-
-    const qs = params.toString();
-    router.push(`/${lang}/shop${qs ? `?${qs}` : ""}`, { scroll: false });
-  };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateQuery({ searchTerm: searchInput.trim() || null });
+    saveShopScroll();
+    const targetUrl = buildShopUrl(lang, searchParams, {
+      searchTerm: searchInput.trim() || null,
+    });
+    router.replace(targetUrl, { scroll: false });
   };
 
   const getSortLabel = (val: string) => {
@@ -97,16 +90,19 @@ export function ShopTopToolbar({
             className="h-11 w-full rounded-2xl border-hairline bg-white/90 pl-10 pr-9 text-xs sm:text-sm shadow-2xs focus-visible:ring-forest/20"
           />
           {searchInput && (
-            <button
-              type="button"
+            <Link
+              href={buildShopUrl(lang, searchParams, { searchTerm: null })}
+              scroll={false}
+              prefetch={true}
+              replace={true}
               onClick={() => {
+                saveShopScroll();
                 setSearchInput("");
-                updateQuery({ searchTerm: null });
               }}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-mist hover:text-forest-deep"
             >
               <X className="h-3.5 w-3.5" />
-            </button>
+            </Link>
           )}
         </form>
 
@@ -140,19 +136,24 @@ export function ShopTopToolbar({
               {SHOP_SORT_OPTIONS.map((opt) => {
                 const isSelected = currentSort === opt.value;
                 return (
-                  <DropdownMenuItem
-                    key={opt.value}
-                    onClick={() =>
-                      updateQuery({ sort: opt.value === "featured" ? null : opt.value })
-                    }
-                    className={`flex items-center justify-between rounded-xl px-3 py-2 text-xs font-medium cursor-pointer transition-colors ${
-                      isSelected
-                        ? "bg-sand-soft text-forest font-bold"
-                        : "text-forest-deep hover:bg-sand-soft/60"
-                    }`}
-                  >
-                    <span>{getSortLabel(opt.value)}</span>
-                    {isSelected && <Check className="h-3.5 w-3.5 text-forest" />}
+                  <DropdownMenuItem key={opt.value} asChild>
+                    <Link
+                      href={buildShopUrl(lang, searchParams, {
+                        sort: opt.value === "featured" ? null : opt.value,
+                      })}
+                      scroll={false}
+                      prefetch={true}
+                      replace={true}
+                      onClick={saveShopScroll}
+                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2 text-xs font-medium cursor-pointer transition-colors ${
+                        isSelected
+                          ? "bg-sand-soft text-forest font-bold"
+                          : "text-forest-deep hover:bg-sand-soft/60"
+                      }`}
+                    >
+                      <span>{getSortLabel(opt.value)}</span>
+                      {isSelected && <Check className="h-3.5 w-3.5 text-forest" />}
+                    </Link>
                   </DropdownMenuItem>
                 );
               })}
@@ -174,55 +175,67 @@ export function ShopTopToolbar({
           {currentCategory !== "all" && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-forest/20 bg-forest/10 px-3 py-1 text-xs font-bold text-forest">
               <span>Category</span>
-              <button
-                type="button"
-                onClick={() => updateQuery({ category: null })}
+              <Link
+                href={buildShopUrl(lang, searchParams, { category: null })}
+                scroll={false}
+                prefetch={true}
+                replace={true}
+                onClick={saveShopScroll}
                 className="rounded-full hover:bg-forest/20 p-0.5"
               >
                 <X className="h-3 w-3" />
-              </button>
+              </Link>
             </span>
           )}
 
           {currentGender !== "all" && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-forest/20 bg-forest/10 px-3 py-1 text-xs font-bold text-forest capitalize">
               <span>{currentGender}</span>
-              <button
-                type="button"
-                onClick={() => updateQuery({ gender: null })}
+              <Link
+                href={buildShopUrl(lang, searchParams, { gender: null })}
+                scroll={false}
+                prefetch={true}
+                replace={true}
+                onClick={saveShopScroll}
                 className="rounded-full hover:bg-forest/20 p-0.5"
               >
                 <X className="h-3 w-3" />
-              </button>
+              </Link>
             </span>
           )}
 
           {inStockOnly && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-forest/20 bg-forest/10 px-3 py-1 text-xs font-bold text-forest">
               <span>In Stock</span>
-              <button
-                type="button"
-                onClick={() => updateQuery({ inStock: null })}
+              <Link
+                href={buildShopUrl(lang, searchParams, { inStock: null })}
+                scroll={false}
+                prefetch={true}
+                replace={true}
+                onClick={saveShopScroll}
                 className="rounded-full hover:bg-forest/20 p-0.5"
               >
                 <X className="h-3 w-3" />
-              </button>
+              </Link>
             </span>
           )}
 
           {currentSearch && (
             <span className="inline-flex items-center gap-1.5 rounded-full border border-forest/20 bg-forest/10 px-3 py-1 text-xs font-bold text-forest">
               <span>"{currentSearch}"</span>
-              <button
-                type="button"
+              <Link
+                href={buildShopUrl(lang, searchParams, { searchTerm: null })}
+                scroll={false}
+                prefetch={true}
+                replace={true}
                 onClick={() => {
+                  saveShopScroll();
                   setSearchInput("");
-                  updateQuery({ searchTerm: null });
                 }}
                 className="rounded-full hover:bg-forest/20 p-0.5"
               >
                 <X className="h-3 w-3" />
-              </button>
+              </Link>
             </span>
           )}
         </div>
