@@ -1356,5 +1356,96 @@
       "Body": "There are no published photos matching your current search or category filter.",
       "ResetBtn": "View all photos"
     }
+  },
+  "ShopPage": {
+    "Hero": {
+      "Eyebrow": "Purpose-Driven Merchandise",
+      "Title": "Wear the Mission.",
+      "TitleHighlight": "Ethical Haitian Apparel.",
+      "Subtitle": "100% organic cotton garments and embroidered streetwear. Every purchase directly powers community development, clean solar energy, and equity-free micro-grants in Haiti.",
+      "Badge1": "100% Non-Profit Impact",
+      "Badge2": "Ethically Handcrafted",
+      "Badge3": "Worldwide Shipping"
+    },
+    "Filters": {
+      "SearchPlaceholder": "Search by title, tag, fabric...",
+      "AllCategories": "All Categories",
+      "Gender": {
+        "all": "All",
+        "unisex": "Unisex",
+        "men": "Men",
+        "women": "Women",
+        "kids": "Kids"
+      },
+      "Sort": {
+        "label": "Sort by:",
+        "featured": "Featured First",
+        "newest": "New Arrivals",
+        "priceAsc": "Price: Low to High",
+        "priceDesc": "Price: High to Low",
+        "bestSellers": "Best Sellers"
+      },
+      "InStockOnly": "In-Stock Only",
+      "PriceRange": "Price Range",
+      "FilterBtn": "Filters",
+      "ResetFilters": "Reset Filters",
+      "ResultsCount": "garments found",
+      "ResultCountSingular": "garment found"
+    },
+    "Card": {
+      "SaleBadge": "OFF",
+      "FeaturedBadge": "Featured",
+      "PreOrderBadge": "Pre-Order",
+      "InStockBadge": "In Stock",
+      "LowStockBadge": "Only [count] left",
+      "SoldOutBadge": "Sold Out",
+      "QuickView": "Quick View",
+      "AddToBag": "Add to Bag",
+      "ViewDetails": "View Details"
+    },
+    "Detail": {
+      "Home": "Home",
+      "Shop": "Shop",
+      "Save": "Save",
+      "Color": "Color:",
+      "Size": "Size:",
+      "SizeGuide": "Size & Fit Guide",
+      "InStockNotice": "✓ In Stock — Ships within 24–48 hours",
+      "PreOrderNotice": "⏳ Pre-Order Item — Expected dispatch: [date]",
+      "SoldOutNotice": "Out of stock in this size & color",
+      "Quantity": "Quantity",
+      "AddBtn": "Add to Shopping Bag",
+      "PreOrderBtn": "Pre-Order Now",
+      "BuyNowBtn": "Buy Now",
+      "AddedSuccess": "Added to your shopping bag",
+      "FreeShipping": "Free shipping on orders over $75",
+      "ReturnsGuarantee": "Easy 30-day returns & exchanges",
+      "EthicalCrafted": "Ethically crafted with 100% organic cotton",
+      "Tabs": {
+        "Description": "Fabric & Specifications",
+        "Impact": "The Social Impact",
+        "SizeFit": "Size & Fit Guide"
+      },
+      "ImpactStory": "100% of store profits from this garment directly fund community grants, solar power installations, and clean water projects across Haiti. By wearing this piece, you're directly fueling local sustainable independence.",
+      "ModelStats": "Model is 6'1\" wearing size Large in a relaxed fit. Pre-shrunk organic cotton ensures consistent fit after washing.",
+      "RelatedTitle": "Complete the Look",
+      "RelatedSubtitle": "Ethical apparel curated to match your style"
+    },
+    "SizeModal": {
+      "Title": "Garment Size Guide",
+      "Subtitle": "Find your perfect tailored fit. All garments are pre-shrunk for maximum comfort.",
+      "Inches": "Inches (in)",
+      "Centimeters": "Centimeters (cm)",
+      "Size": "Size",
+      "Chest": "Chest Width",
+      "Length": "Body Length",
+      "Sleeve": "Sleeve Length",
+      "Close": "Close Guide"
+    },
+    "Empty": {
+      "Title": "No garments found",
+      "Body": "Try changing your search term, adjusting price filters, or selecting another category.",
+      "ResetBtn": "Explore All Garments"
+    }
   }
 }

@@ -59,7 +59,7 @@ export function CartMenu() {
             {items.map((line) => (
               <Link
                 key={line.id}
-                href={`/product/${line.slug}`}
+                href={`/shop/${line.slug}`}
                 className="flex items-center gap-3 px-4 py-2 hover:bg-sand-soft"
               >
                 <div className="relative h-12 w-12 overflow-hidden rounded-lg bg-sand-soft">
@@ -75,9 +75,16 @@ export function CartMenu() {
                   <p className="truncate text-sm font-medium text-forest-deep">
                     {line.title}
                   </p>
-                  <p className="text-xs text-mist">
-                    {line.quantity} × {formatPrice(line.price)}
-                  </p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs text-mist">
+                      {line.quantity} × {formatPrice(line.price)}
+                    </p>
+                    {line.isPreOrder && (
+                      <span className="rounded-md bg-terracotta/10 px-1 py-0.5 text-[9px] font-semibold text-terracotta">
+                        Pre-order
+                      </span>
+                    )}
+                  </div>
                 </div>
               </Link>
             ))}

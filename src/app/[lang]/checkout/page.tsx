@@ -30,8 +30,6 @@ import { Label } from "@/components/ui/label";
 import { useCart } from "@/components/cart/cart-context";
 import { PageHero } from "@/components/shared/page-hero";
 import { Container } from "@/components/shared/container";
-import { SHOP_PRODUCTS } from "@/data/shop";
-import { ProductCard } from "@/components/shop/shop-experience";
 
 const COUPON_CODES: Record<string, number> = {
   MERCH10: 0.1,
@@ -175,8 +173,6 @@ export default function CheckoutPage() {
 
   // 2. EMPTY CART VIEW
   if (items.length === 0) {
-    const featuredItems = SHOP_PRODUCTS.filter((p) => p.featured).slice(0, 3);
-
     return (
       <>
         <PageHero
@@ -184,7 +180,7 @@ export default function CheckoutPage() {
           title="Your Shopping Bag"
           subtitle="Review products in your bag and proceed with checkout."
         />
-        <section className="py-14 bg-cream">
+        <section className="py-14 bg-cream min-h-[50vh]">
           <Container>
             <div className="mx-auto max-w-xl rounded-3xl border border-hairline bg-white p-10 text-center shadow-xs">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-sand-soft text-forest">
@@ -194,7 +190,7 @@ export default function CheckoutPage() {
                 Your shopping bag is empty
               </h2>
               <p className="mt-2 text-sm leading-relaxed text-mist">
-                Explore the IFundAyiti collection to add mission merch to your bag. Every item directly supports local business grant programs.
+                Explore the IFundAyiti apparel collection to add mission merch to your bag. Every piece directly powers local community and business grants.
               </p>
               <Button asChild size="lg" className="mt-6 rounded-xl px-8">
                 <Link href="/shop">
@@ -203,20 +199,6 @@ export default function CheckoutPage() {
                 </Link>
               </Button>
             </div>
-
-            {featuredItems.length > 0 && (
-              <div className="mt-16 border-t border-hairline pt-12">
-                <p className="eyebrow text-center">Featured Merch</p>
-                <h3 className="mt-2 text-center font-display text-2xl font-semibold text-forest-deep">
-                  Popular pieces in the collection
-                </h3>
-                <div className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
-                  {featuredItems.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
-              </div>
-            )}
           </Container>
         </section>
       </>

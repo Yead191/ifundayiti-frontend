@@ -359,10 +359,17 @@ export interface Inquiry {
  * Cart (legacy localStorage — checkout still uses this)
  * ------------------------------------------------------------------ */
 export interface CartItem {
-  id: string; // The product id
+  id: string; // Unique line key, e.g. `${productId}-${color}-${size}`
+  productId?: string;
   title: string;
   price: number;
+  compareAtPrice?: number;
   quantity: number;
   image: string;
   slug: string;
+  color?: string;
+  size?: string;
+  isPreOrder?: boolean;
+  expectedAvailableDate?: string;
 }
+
