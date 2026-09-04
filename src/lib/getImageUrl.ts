@@ -4,7 +4,7 @@ export function getImageUrl(imageurl: string | null | undefined) {
     const baseUrl = (
       process.env.IMAGE_BASE_URL ||
       process.env.NEXT_PUBLIC_IMAGE_BASE_URL ||
-      "http://31.97.103.122:5004"
+      "https://api.ifundayiti.org"
     )?.replace("/files", "");
 
     return `${baseUrl}${imageurl}`;
@@ -14,6 +14,6 @@ export function getImageUrl(imageurl: string | null | undefined) {
   return (
     (process.env.IMAGE_BASE_URL ||
       process.env.NEXT_PUBLIC_IMAGE_BASE_URL ||
-      "http://31.97.103.122:5004/files") + imageurl
+      "https://api.ifundayiti.org/files") + imageurl
   );
 }
