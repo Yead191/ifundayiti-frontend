@@ -87,7 +87,7 @@ export function Navbar() {
       href: "/calendar",
       subItems: [
         {
-          label: t.CalendarOfEvents || t.Calendar || "Calendar of Events",
+          label: t.Calendar || "Calendar",
           href: "/calendar",
         },
         { label: t.Gallery || "Gallery", href: "/gallery" },

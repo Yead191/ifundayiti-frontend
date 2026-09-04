@@ -1361,7 +1361,7 @@
     "Hero": {
       "Eyebrow": "Machandiz ki Gen Misyon",
       "Title": "Mete Misyon an Sou Ou.",
-      "TitleHighlight": "Rad Etik Kiltirèl Ayisyen.",
+      "TitleHighlight": "Pwodui Etik Kiltirèl Ayisyen.",
       "Subtitle": "Rad 100% koton òganik ak estil lari bwode ak men. Chak acha ale dirèkteman nan pwojè kominotè, kouran solè, ak mikwo-sibvansyon san enterè pou Ayiti.",
       "Badge1": "100% Enpak San Pwofi",
       "Badge2": "Fabrike ak Etik & Kalite",
@@ -1369,7 +1369,9 @@
     },
     "Filters": {
       "SearchPlaceholder": "Chèche pa non, etikèt, twal...",
-      "AllCategories": "Tout Kategori",
+      "CategoriesHeading": "Kategori yo",
+      "AllCategories": "Tout Pwodui yo",
+      "GenderHeading": "Sèks",
       "Gender": {
         "all": "Tout",
         "unisex": "Inisèks",
@@ -1388,9 +1390,9 @@
       "InStockOnly": "Sèlman sa ki Disponib",
       "PriceRange": "Pri",
       "FilterBtn": "Filtè yo",
-      "ResetFilters": "Retabli Filtè yo",
-      "ResultsCount": "rad yo jwenn",
-      "ResultCountSingular": "rad yo jwenn"
+      "ResetFilters": "Efase Tout Filtè yo",
+      "ResultsCount": "pwodui yo jwenn",
+      "ResultCountSingular": "pwodui yo jwenn"
     },
     "Card": {
       "SaleBadge": "RABAIS",
@@ -1401,7 +1403,8 @@
       "SoldOutBadge": "Fini",
       "QuickView": "Wè Rapid",
       "AddToBag": "Mete nan Sak",
-      "ViewDetails": "Wè Detay"
+      "ViewDetails": "Wè Detay",
+      "UnitsSold": "vann"
     },
     "Detail": {
       "Home": "Akèy",
@@ -1411,8 +1414,11 @@
       "Size": "Gwosè:",
       "SizeGuide": "Gid Gwosè & Mezi",
       "InStockNotice": "✓ Disponib — L ap voye nan 24–48 èdtan",
+      "StockAvailable": "[count] atik disponib nan stock",
+      "LowStockNotice": "Rete [count] atik sèlman nan stock",
       "PreOrderNotice": "⏳ Atik Pre-Kòmand — Dat livrezon prevwa: [date]",
       "SoldOutNotice": "Pa genyen nan gwosè ak koulè sa a ankò",
+      "TotalSold": "atik vann",
       "Quantity": "Kantite",
       "AddBtn": "Mete nan Sak Acha",
       "PreOrderBtn": "Pre-Kòmande Kounye a",
@@ -1426,13 +1432,13 @@
         "Impact": "Enpak Sosyal la",
         "SizeFit": "Gid Gwosè & Estil"
       },
-      "ImpactStory": "100% nan benefis machandiz sa a ale dirèkteman pou finanse sibvansyon antreprenè, panno solè, ak dlo potab an Ayiti. Lè w mete rad sa a, ou sipòte otonomi dirab lokal.",
+      "ImpactStory": "100% nan benefis pwodui sa a ale dirèkteman pou finanse sibvansyon antreprenè, panno solè, ak dlo potab an Ayiti. Lè w mete rad sa a, ou sipòte otonomi dirab lokal.",
       "ModelStats": "Modèl la mezire 6'1\" epi li mete gwosè Large. Koton òganik pre-retresi a garanti li p ap retresi nan lave.",
       "RelatedTitle": "Konplete Estil la",
-      "RelatedSubtitle": "Lòt rad etik ki mache byen ak sa w chwazi a"
+      "RelatedSubtitle": "Lòt pwodui etik ki mache byen ak sa w chwazi a"
     },
     "SizeModal": {
-      "Title": "Gid Gwosè Rad yo",
+      "Title": "Gid Gwosè Pwodui yo",
       "Subtitle": "Jwenn gwosè ki bon nèt pou ou a. Tout rad yo pre-retresi pou plis konfò.",
       "Inches": "Pous (in)",
       "Centimeters": "Santimèt (cm)",
@@ -1443,9 +1449,9 @@
       "Close": "Fèmen Gid la"
     },
     "Empty": {
-      "Title": "Pa gen okenn rad yo jwenn",
+      "Title": "Pa gen okenn pwodui yo jwenn",
       "Body": "Eseye chanje mo rechèch la, modifye pri a, oswa chwazi yon lòt kategori.",
-      "ResetBtn": "Gade Tout Rad yo"
+      "ResetBtn": "Gade Tout Pwodui yo"
     }
   }
 }

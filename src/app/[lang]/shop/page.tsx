@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import {
   ChevronLeft,
   ChevronRight,
+  Flame,
   Heart,
   RotateCcw,
   ShieldCheck,
@@ -21,7 +22,8 @@ import {
   getProducts,
 } from "@/helpers/next-fetch/shopActions";
 import { ProductCard } from "@/features/shop/components/ProductCard";
-import { ShopFiltersBar } from "@/features/shop/components/ShopFiltersBar";
+import { ShopSidebar } from "@/features/shop/components/ShopSidebar";
+import { ShopTopToolbar } from "@/features/shop/components/ShopTopToolbar";
 import { getImageUrl } from "@/lib/getImageUrl";
 import { formatPrice } from "@/lib/utils";
 
@@ -33,6 +35,7 @@ interface PageProps {
     gender?: string;
     sort?: string;
     page?: string;
+    inStock?: string;
   }>;
 }
 
@@ -62,6 +65,7 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
   const searchTerm = sp.searchTerm?.trim() || "";
   const gender = sp.gender?.trim() || "";
   const sort = sp.sort?.trim() || "featured";
+  const inStock = sp.inStock === "true";
   const page = Number(sp.page) || 1;
 
   // Concurrent data fetching
@@ -81,7 +85,15 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
 
   const t = dict?.ShopPage;
   const categories = categoriesRes?.data || [];
-  const products = productsRes?.data || [];
+  let products = productsRes?.data || [];
+
+  // In-stock client filter if requested
+  if (inStock) {
+    products = products.filter((p) =>
+      p.variants?.some((v) => v.stock > 0 || v.isPreOrder)
+    );
+  }
+
   const pagination = productsRes?.pagination || {
     page: 1,
     limit: 12,
@@ -93,6 +105,17 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
   const featuredImage = featuredProduct?.images?.[0]
     ? getImageUrl(featuredProduct.images[0]) || featuredProduct.images[0]
     : "https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=1200&h=1500";
+
+  const featuredHasDiscount =
+    !!featuredProduct?.compareAtPrice &&
+    featuredProduct.compareAtPrice > featuredProduct.price;
+  const featuredDiscountPercent = featuredHasDiscount
+    ? Math.round(
+        ((featuredProduct!.compareAtPrice! - featuredProduct!.price) /
+          featuredProduct!.compareAtPrice!) *
+          100
+      )
+    : 0;
 
   return (
     <>
@@ -141,11 +164,11 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
               </div>
             </div>
 
-            {/* RIGHT COLUMN: Featured Spotlight Garment Card */}
+            {/* RIGHT COLUMN: Featured Spotlight Card */}
             {featuredProduct && (
               <div className="hidden lg:block lg:col-span-5">
-                <div className="relative rounded-3xl border border-hairline bg-white/90 p-5 shadow-xl backdrop-blur-md transition-all hover:shadow-2xl group">
-                  <div className="absolute -top-3 -right-3 rounded-full border border-forest/30 bg-forest px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-sand shadow-md">
+                <div className="relative rounded-3xl border border-hairline bg-white/95 p-5 shadow-xl backdrop-blur-md transition-all hover:shadow-2xl group">
+                  <div className="absolute -top-3 -right-3 rounded-full border border-forest/30 bg-forest px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-sand shadow-md z-10">
                     Top Spotlight
                   </div>
 
@@ -157,6 +180,15 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
                       className="object-cover transition-transform duration-700 group-hover:scale-105"
                       priority
                     />
+
+                    {/* High-Contrast Discount Badge on Spotlight */}
+                    {featuredHasDiscount && (
+                      <div className="absolute left-3 top-3 z-10">
+                        <span className="inline-flex items-center rounded-full bg-[#b91c1c] px-3 py-1 text-xs font-black uppercase tracking-wider text-white shadow-md border border-white/20">
+                          −{featuredDiscountPercent}% {t?.Card?.SaleBadge || "OFF"}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="mt-4 flex items-center justify-between">
@@ -174,20 +206,27 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
                       <span className="font-display text-lg font-bold text-forest">
                         {formatPrice(featuredProduct.price)}
                       </span>
-                      {featuredProduct.compareAtPrice &&
-                        featuredProduct.compareAtPrice > featuredProduct.price && (
-                          <span className="block text-[11px] text-faint line-through">
-                            {formatPrice(featuredProduct.compareAtPrice)}
-                          </span>
-                        )}
+                      {featuredHasDiscount && (
+                        <span className="block text-[11px] text-faint line-through">
+                          {formatPrice(featuredProduct.compareAtPrice!)}
+                        </span>
+                      )}
                     </div>
                   </div>
 
                   <div className="mt-4 flex items-center justify-between border-t border-hairline pt-3 text-xs">
-                    <span className="flex items-center gap-1 font-semibold text-forest-deep">
-                      <Star className="h-3.5 w-3.5 fill-forest text-forest" />
-                      4.9 (Verified Quality)
-                    </span>
+                    {typeof featuredProduct.sold === "number" &&
+                    featuredProduct.sold > 0 ? (
+                      <span className="flex items-center gap-1 font-bold text-forest-deep">
+                        <Flame className="h-3.5 w-3.5 text-terracotta" />
+                        {featuredProduct.sold} {t?.Card?.UnitsSold || "sold"}
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1 font-semibold text-forest-deep">
+                        <Star className="h-3.5 w-3.5 fill-forest text-forest" />
+                        4.9 (Verified Quality)
+                      </span>
+                    )}
                     <Link
                       href={`/${lang}/shop/${featuredProduct._id}`}
                       className="font-bold text-forest hover:underline"
@@ -202,108 +241,129 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
         </Container>
       </section>
 
-      {/* SHOP CATALOG SECTION */}
+      {/* SHOP CATALOG SECTION WITH LEFT SIDEBAR */}
       <section className="py-12 md:py-20 min-h-[60vh]">
         <Container>
-          {/* Filter & Toolbar */}
-          <Suspense fallback={null}>
-            <ShopFiltersBar
-              categories={categories}
-              totalResults={pagination.total}
-              lang={lang}
-              dict={dict}
-            />
-          </Suspense>
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
+            {/* LEFT SIDEBAR: Category selection, gender, in-stock */}
+            <Suspense fallback={null}>
+              <ShopSidebar
+                categories={categories}
+                totalResults={pagination.total}
+                lang={lang}
+                dict={dict}
+              />
+            </Suspense>
 
-          {/* Product Grid or Empty State */}
-          {products.length === 0 ? (
-            <div className="mt-14 rounded-3xl border border-dashed border-hairline bg-sand-soft/30 px-8 py-20 text-center">
-              <p className="font-display text-2xl text-forest-deep font-semibold">
-                {t?.Empty?.Title || "No garments found"}
-              </p>
-              <p className="mx-auto mt-2 max-w-md text-sm text-mist leading-relaxed">
-                {t?.Empty?.Body ||
-                  "Try changing your search term, adjusting price filters, or switching categories to explore the collection."}
-              </p>
-              <Link
-                href={`/${lang}/shop`}
-                className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-forest px-5 py-2.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-forest/90"
-              >
-                <RotateCcw className="h-3.5 w-3.5" />
-                <span>{t?.Empty?.ResetBtn || "Explore All Garments"}</span>
-              </Link>
-            </div>
-          ) : (
-            <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-6 lg:gap-8">
-              {products.map((product) => (
-                <ProductCard
-                  key={product._id}
-                  product={product}
+            {/* RIGHT CONTENT AREA: Top Toolbar + Product Grid */}
+            <div className="lg:col-span-9">
+              {/* Top search & sort toolbar */}
+              <Suspense fallback={null}>
+                <ShopTopToolbar
+                  totalResults={pagination.total}
                   lang={lang}
                   dict={dict}
                 />
-              ))}
-            </div>
-          )}
+              </Suspense>
 
-          {/* PAGINATION CONTROLS */}
-          {pagination.totalPage > 1 && (
-            <div className="mt-16 flex items-center justify-center gap-2 border-t border-hairline pt-8">
-              {/* Prev Page Button */}
-              {pagination.page > 1 ? (
-                <Link
-                  href={`/${lang}/shop?page=${pagination.page - 1}${
-                    category ? `&category=${category}` : ""
-                  }${gender ? `&gender=${gender}` : ""}${
-                    searchTerm ? `&searchTerm=${searchTerm}` : ""
-                  }${sort ? `&sort=${sort}` : ""}`}
-                  scroll={false}
-                  className="flex h-10 items-center gap-1 rounded-xl border border-hairline bg-white px-3 text-xs font-semibold text-forest-deep shadow-2xs hover:bg-sand-soft"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                  <span>Prev</span>
-                </Link>
-              ) : null}
-
-              {/* Page Numbers */}
-              {Array.from({ length: pagination.totalPage }, (_, i) => i + 1).map(
-                (p) => (
+              {/* Product Grid or Empty State */}
+              {products.length === 0 ? (
+                <div className="mt-12 rounded-3xl border border-dashed border-hairline bg-sand-soft/30 px-8 py-20 text-center">
+                  <p className="font-display text-2xl text-forest-deep font-semibold">
+                    {t?.Empty?.Title || "No products found"}
+                  </p>
+                  <p className="mx-auto mt-2 max-w-md text-sm text-mist leading-relaxed">
+                    {t?.Empty?.Body ||
+                      "Try changing your search term, adjusting filters, or switching categories to explore the collection."}
+                  </p>
                   <Link
-                    key={p}
-                    href={`/${lang}/shop?page=${p}${
-                      category ? `&category=${category}` : ""
-                    }${gender ? `&gender=${gender}` : ""}${
-                      searchTerm ? `&searchTerm=${searchTerm}` : ""
-                    }${sort ? `&sort=${sort}` : ""}`}
-                    scroll={false}
-                    className={`grid h-10 w-10 place-items-center rounded-xl text-xs font-bold transition-colors ${
-                      p === pagination.page
-                        ? "bg-forest text-white shadow-xs"
-                        : "border border-hairline bg-white text-forest-deep hover:bg-sand-soft"
-                    }`}
+                    href={`/${lang}/shop`}
+                    className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-forest px-5 py-2.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-forest/90"
                   >
-                    {p}
+                    <RotateCcw className="h-3.5 w-3.5" />
+                    <span>{t?.Empty?.ResetBtn || "Explore All Products"}</span>
                   </Link>
-                )
+                </div>
+              ) : (
+                /* 2-Column on Mobile & Tablet, 3-Column on Desktop! */
+                <div className="mt-8 grid grid-cols-2 gap-3.5 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
+                  {products.map((product) => (
+                    <ProductCard
+                      key={product._id}
+                      product={product}
+                      lang={lang}
+                      dict={dict}
+                    />
+                  ))}
+                </div>
               )}
 
-              {/* Next Page Button */}
-              {pagination.page < pagination.totalPage ? (
-                <Link
-                  href={`/${lang}/shop?page=${pagination.page + 1}${
-                    category ? `&category=${category}` : ""
-                  }${gender ? `&gender=${gender}` : ""}${
-                    searchTerm ? `&searchTerm=${searchTerm}` : ""
-                  }${sort ? `&sort=${sort}` : ""}`}
-                  scroll={false}
-                  className="flex h-10 items-center gap-1 rounded-xl border border-hairline bg-white px-3 text-xs font-semibold text-forest-deep shadow-2xs hover:bg-sand-soft"
-                >
-                  <span>Next</span>
-                  <ChevronRight className="h-4 w-4" />
-                </Link>
-              ) : null}
+              {/* PAGINATION CONTROLS */}
+              {pagination.totalPage > 1 && (
+                <div className="mt-14 flex items-center justify-center gap-2 border-t border-hairline pt-8">
+                  {/* Prev Button */}
+                  {pagination.page > 1 ? (
+                    <Link
+                      href={`/${lang}/shop?page=${pagination.page - 1}${
+                        category ? `&category=${category}` : ""
+                      }${gender ? `&gender=${gender}` : ""}${
+                        searchTerm ? `&searchTerm=${searchTerm}` : ""
+                      }${sort ? `&sort=${sort}` : ""}${
+                        inStock ? `&inStock=true` : ""
+                      }`}
+                      scroll={false}
+                      className="flex h-10 items-center gap-1 rounded-xl border border-hairline bg-white px-3 text-xs font-semibold text-forest-deep shadow-2xs hover:bg-sand-soft"
+                    >
+                      <ChevronLeft className="h-4 w-4" />
+                      <span>Prev</span>
+                    </Link>
+                  ) : null}
+
+                  {/* Page Numbers */}
+                  {Array.from({ length: pagination.totalPage }, (_, i) => i + 1).map(
+                    (p) => (
+                      <Link
+                        key={p}
+                        href={`/${lang}/shop?page=${p}${
+                          category ? `&category=${category}` : ""
+                        }${gender ? `&gender=${gender}` : ""}${
+                          searchTerm ? `&searchTerm=${searchTerm}` : ""
+                        }${sort ? `&sort=${sort}` : ""}${
+                          inStock ? `&inStock=true` : ""
+                        }`}
+                        scroll={false}
+                        className={`grid h-10 w-10 place-items-center rounded-xl text-xs font-bold transition-colors ${
+                          p === pagination.page
+                            ? "bg-forest text-white shadow-xs"
+                            : "border border-hairline bg-white text-forest-deep hover:bg-sand-soft"
+                        }`}
+                      >
+                        {p}
+                      </Link>
+                    )
+                  )}
+
+                  {/* Next Button */}
+                  {pagination.page < pagination.totalPage ? (
+                    <Link
+                      href={`/${lang}/shop?page=${pagination.page + 1}${
+                        category ? `&category=${category}` : ""
+                      }${gender ? `&gender=${gender}` : ""}${
+                        searchTerm ? `&searchTerm=${searchTerm}` : ""
+                      }${sort ? `&sort=${sort}` : ""}${
+                        inStock ? `&inStock=true` : ""
+                      }`}
+                      scroll={false}
+                      className="flex h-10 items-center gap-1 rounded-xl border border-hairline bg-white px-3 text-xs font-semibold text-forest-deep shadow-2xs hover:bg-sand-soft"
+                    >
+                      <span>Next</span>
+                      <ChevronRight className="h-4 w-4" />
+                    </Link>
+                  ) : null}
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </Container>
       </section>
     </>

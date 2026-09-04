@@ -5,10 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  AlertTriangle,
   Check,
   ChevronLeft,
   ChevronRight,
   Clock,
+  Flame,
   Heart,
   Minus,
   Plus,
@@ -23,7 +25,10 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import type { ApparelProduct, ProductVariant } from "@/helpers/next-fetch/shopActions";
+import type {
+  ApparelProduct,
+  ProductVariant,
+} from "@/helpers/next-fetch/shopActions";
 import { getColorHex } from "../constants";
 import { formatPrice } from "@/lib/utils";
 import { getImageUrl } from "@/lib/getImageUrl";
@@ -54,7 +59,9 @@ export function ProductDetailView({
   const [activeImgIdx, setActiveImgIdx] = React.useState(0);
   const [lightboxOpen, setLightboxOpen] = React.useState(false);
   const [sizeModalOpen, setSizeModalOpen] = React.useState(false);
-  const [activeTab, setActiveTab] = React.useState<"specs" | "impact" | "fit">("specs");
+  const [activeTab, setActiveTab] = React.useState<"specs" | "impact" | "fit">(
+    "specs",
+  );
 
   // Selection states
   const variants = product.variants || [];
@@ -64,12 +71,14 @@ export function ProductDetailView({
   const sizesForColor = React.useMemo(() => {
     if (!variants.length) return [];
     return selectedColor
-      ? variants.filter((v) => v.color.toLowerCase() === selectedColor.toLowerCase())
+      ? variants.filter(
+          (v) => v.color.toLowerCase() === selectedColor.toLowerCase(),
+        )
       : variants;
   }, [variants, selectedColor]);
 
   const [selectedSize, setSelectedSize] = React.useState(
-    sizesForColor[0]?.size || ""
+    sizesForColor[0]?.size || "",
   );
   const [quantity, setQuantity] = React.useState(1);
 
@@ -77,7 +86,7 @@ export function ProductDetailView({
   const handleColorSelect = (c: string) => {
     setSelectedColor(c);
     const available = variants.filter(
-      (v) => v.color.toLowerCase() === c.toLowerCase()
+      (v) => v.color.toLowerCase() === c.toLowerCase(),
     );
     if (available.length > 0) {
       const match = available.find((v) => v.size === selectedSize);
@@ -92,7 +101,7 @@ export function ProductDetailView({
     return variants.find(
       (v) =>
         v.color.toLowerCase() === selectedColor.toLowerCase() &&
-        v.size.toLowerCase() === selectedSize.toLowerCase()
+        v.size.toLowerCase() === selectedSize.toLowerCase(),
     );
   }, [variants, selectedColor, selectedSize]);
 
@@ -105,7 +114,11 @@ export function ProductDetailView({
     product.images && product.images.length > 0
       ? product.images
       : ["/images/placeholder.webp"];
-  const activeImage = getImageUrl(images[activeImgIdx]) || images[0];
+  const activeImage =
+    getImageUrl(images[activeImgIdx]) ||
+    getImageUrl(images[0]) ||
+    images[0] ||
+    "/images/placeholder.webp";
 
   // Distinct colors
   const distinctColors = React.useMemo(() => {
@@ -115,7 +128,9 @@ export function ProductDetailView({
   // Pricing & Discounts
   const hasDiscount =
     !!product.compareAtPrice && product.compareAtPrice > product.price;
-  const discountSavings = hasDiscount ? product.compareAtPrice! - product.price : 0;
+  const discountSavings = hasDiscount
+    ? product.compareAtPrice! - product.price
+    : 0;
   const discountPercent = hasDiscount
     ? Math.round((discountSavings / product.compareAtPrice!) * 100)
     : 0;
@@ -123,7 +138,7 @@ export function ProductDetailView({
   const categoryName =
     typeof product.category === "object" && product.category
       ? product.category.name
-      : product.category || "Apparel";
+      : product.category || "Product";
 
   // Lightbox keyboard controls
   const prevImage = React.useCallback(() => {
@@ -185,7 +200,7 @@ export function ProductDetailView({
       <div className="min-h-screen bg-cream pt-28 pb-24 md:pt-32 md:pb-32">
         <Container>
           {/* BREADCRUMBS */}
-          <nav className="mb-8 flex items-center gap-2 text-xs font-medium text-mist">
+          <nav className="mb-8 flex items-center gap-2 text-xs font-semibold text-mist">
             <Link
               href={`/${lang}`}
               className="transition-colors hover:text-forest-deep"
@@ -202,7 +217,7 @@ export function ProductDetailView({
             <span className="text-faint">/</span>
             <span className="capitalize">{categoryName}</span>
             <span className="text-faint">/</span>
-            <span className="text-forest-deep font-semibold truncate max-w-xs">
+            <span className="text-forest-deep font-bold truncate max-w-xs">
               {product.name}
             </span>
           </nav>
@@ -214,7 +229,7 @@ export function ProductDetailView({
               <div className="flex flex-col-reverse gap-4 sm:flex-row">
                 {/* Thumbnails strip */}
                 {images.length > 1 && (
-                  <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-y-auto max-h-[560px] scrollbar-none py-1">
+                  <div className="flex sm:flex-col gap-3 overflow-x-auto sm:overflow-y-auto max-h-145 scrollbar-none py-1 px-2!">
                     {images.map((img, idx) => {
                       const resolved = getImageUrl(img) || img;
                       const isSelected = activeImgIdx === idx;
@@ -242,7 +257,7 @@ export function ProductDetailView({
                   </div>
                 )}
 
-                {/* Hero Viewport */}
+                {/* Main Image Viewport */}
                 <div className="relative aspect-3/4 flex-1 overflow-hidden rounded-3xl border border-hairline bg-sand-soft shadow-md group">
                   <Image
                     src={activeImage}
@@ -254,33 +269,33 @@ export function ProductDetailView({
                     sizes="(max-width: 1024px) 100vw, 60vw"
                   />
 
-                  {/* Zoom Hint Trigger */}
-                  <button
-                    type="button"
-                    onClick={() => setLightboxOpen(true)}
-                    aria-label="Zoom image"
-                    className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-2xl bg-white/90 text-forest-deep shadow-md backdrop-blur-md transition-colors hover:bg-forest hover:text-white"
-                  >
-                    <ZoomIn className="h-4 w-4" />
-                  </button>
-
-                  {/* Sale Pill */}
+                  {/* HIGH-CONTRAST DISCOUNT BADGE */}
                   {hasDiscount && (
-                    <div className="absolute left-4 top-4">
-                      <span className="inline-flex items-center rounded-full bg-terracotta px-3 py-1 text-xs font-bold uppercase tracking-wider text-white shadow-md">
+                    <div className="absolute left-4 top-4 z-10">
+                      <span className="inline-flex items-center rounded-full bg-[#b91c1c] px-3.5 py-1.5 text-xs font-black uppercase tracking-wider text-white shadow-lg border border-white/25">
                         −{discountPercent}% {cardT?.SaleBadge || "OFF"}
                       </span>
                     </div>
                   )}
 
-                  {/* Nav Chevrons */}
+                  {/* Zoom Trigger */}
+                  <button
+                    type="button"
+                    onClick={() => setLightboxOpen(true)}
+                    aria-label="Zoom image"
+                    className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-2xl bg-white/90 text-forest-deep shadow-md backdrop-blur-md transition-colors hover:bg-forest hover:text-white z-10"
+                  >
+                    <ZoomIn className="h-4 w-4" />
+                  </button>
+
+                  {/* Navigation Chevrons */}
                   {images.length > 1 && (
-                    <div className="absolute inset-x-3 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none">
+                    <div className="absolute inset-x-3 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none z-10">
                       <button
                         type="button"
                         onClick={prevImage}
                         aria-label="Previous"
-                        className="pointer-events-auto grid h-9 w-9 place-items-center rounded-full bg-white/80 text-forest-deep shadow-md backdrop-blur-sm transition-colors hover:bg-white"
+                        className="pointer-events-auto grid h-9 w-9 place-items-center rounded-full bg-white/85 text-forest-deep shadow-md backdrop-blur-sm transition-colors hover:bg-white"
                       >
                         <ChevronLeft className="h-4 w-4" />
                       </button>
@@ -288,7 +303,7 @@ export function ProductDetailView({
                         type="button"
                         onClick={nextImage}
                         aria-label="Next"
-                        className="pointer-events-auto grid h-9 w-9 place-items-center rounded-full bg-white/80 text-forest-deep shadow-md backdrop-blur-sm transition-colors hover:bg-white"
+                        className="pointer-events-auto grid h-9 w-9 place-items-center rounded-full bg-white/85 text-forest-deep shadow-md backdrop-blur-sm transition-colors hover:bg-white"
                       >
                         <ChevronRight className="h-4 w-4" />
                       </button>
@@ -298,21 +313,30 @@ export function ProductDetailView({
               </div>
             </div>
 
-            {/* RIGHT COLUMN: Garment Selection, Pricing & Buy CTAs */}
+            {/* RIGHT COLUMN: Selection, Pricing & Buy CTAs */}
             <div className="lg:col-span-5 flex flex-col justify-between">
               <div>
-                {/* Category, Gender & Spotlight */}
+                {/* Category, Gender, Spotlight & Sold Count Badges */}
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="rounded-full bg-forest/10 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-forest">
                     {categoryName}
                   </span>
-                  <span className="rounded-full bg-sand-soft px-3 py-1 text-[11px] font-semibold uppercase text-forest-deep border border-hairline/80">
+                  <span className="rounded-full bg-sand-soft px-3 py-1 text-[11px] font-bold uppercase text-forest-deep border border-hairline/80">
                     {product.gender}
                   </span>
                   {product.featured && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-forest px-2.5 py-1 text-[11px] font-semibold text-sand">
-                      <Sparkles className="h-3 w-3" />
+                    <span className="inline-flex items-center gap-1 rounded-full bg-forest px-2.5 py-1 text-[11px] font-bold text-sand shadow-2xs">
+                      <Sparkles className="h-3 w-3 text-sand" />
                       <span>{cardT?.FeaturedBadge || "Featured"}</span>
+                    </span>
+                  )}
+                  {/* Total Sold Badge */}
+                  {typeof product.sold === "number" && product.sold > 0 && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-sand-soft/90 px-3 py-1 text-[11px] font-bold text-forest-deep border border-hairline/80">
+                      <Flame className="h-3.5 w-3.5 text-terracotta" />
+                      <span>
+                        {product.sold} {t?.TotalSold || "units sold"}
+                      </span>
                     </span>
                   )}
                 </div>
@@ -324,7 +348,7 @@ export function ProductDetailView({
 
                 {/* Pricing & Savings */}
                 <div className="mt-4 flex flex-wrap items-baseline gap-3">
-                  <span className="font-display text-3xl font-bold text-forest">
+                  <span className="font-display text-3xl sm:text-4xl font-bold text-forest">
                     {formatPrice(product.price)}
                   </span>
                   {hasDiscount && (
@@ -332,7 +356,7 @@ export function ProductDetailView({
                       <span className="text-lg font-medium text-faint line-through">
                         {formatPrice(product.compareAtPrice!)}
                       </span>
-                      <span className="rounded-full bg-terracotta/10 px-2.5 py-0.5 text-xs font-bold text-terracotta">
+                      <span className="rounded-full bg-terracotta/10 px-3 py-1 text-xs font-bold text-terracotta border border-terracotta/20">
                         {t?.Save || "Save"} {formatPrice(discountSavings)}
                       </span>
                     </>
@@ -342,9 +366,9 @@ export function ProductDetailView({
                 {/* COLOR SELECTION */}
                 {distinctColors.length > 0 && (
                   <div className="mt-6 border-t border-hairline pt-6">
-                    <div className="flex items-center justify-between text-xs font-semibold text-forest-deep">
+                    <div className="flex items-center justify-between text-xs font-bold text-forest-deep">
                       <span>{t?.Color || "Color:"}</span>
-                      <span className="font-normal text-mist capitalize">
+                      <span className="font-semibold text-mist capitalize">
                         {selectedColor}
                       </span>
                     </div>
@@ -390,17 +414,17 @@ export function ProductDetailView({
                 {/* SIZE SELECTION & SIZE CHART LINK */}
                 {sizesForColor.length > 0 && (
                   <div className="mt-6 border-t border-hairline pt-6">
-                    <div className="flex items-center justify-between text-xs font-semibold text-forest-deep">
+                    <div className="flex items-center justify-between text-xs font-bold text-forest-deep">
                       <div className="flex items-center gap-1.5">
                         <span>{t?.Size || "Size:"}</span>
-                        <span className="font-normal text-mist uppercase">
+                        <span className="font-semibold text-mist uppercase">
                           {selectedSize}
                         </span>
                       </div>
                       <button
                         type="button"
                         onClick={() => setSizeModalOpen(true)}
-                        className="inline-flex items-center gap-1 text-xs font-semibold text-forest hover:underline"
+                        className="inline-flex items-center gap-1 text-xs font-bold text-forest hover:underline"
                       >
                         <Ruler className="h-3.5 w-3.5" />
                         <span>{t?.SizeGuide || "Size Guide"}</span>
@@ -423,17 +447,17 @@ export function ProductDetailView({
                               isSelected
                                 ? "bg-forest text-white shadow-md ring-2 ring-forest/20"
                                 : out
-                                ? "bg-sand-soft/40 text-faint line-through cursor-not-allowed border border-hairline/40"
-                                : "bg-white text-forest-deep hover:bg-sand-soft border border-hairline"
+                                  ? "bg-sand-soft/40 text-faint line-through cursor-not-allowed border border-hairline/40"
+                                  : "bg-white text-forest-deep hover:bg-sand-soft border border-hairline shadow-2xs"
                             }`}
                           >
                             <span>{v.size}</span>
                             {v.isPreOrder ? (
-                              <span className="mt-0.5 text-[9px] font-semibold text-terracotta">
+                              <span className="mt-0.5 text-[9px] font-bold text-terracotta">
                                 Pre-order
                               </span>
                             ) : isLow ? (
-                              <span className="mt-0.5 text-[9px] font-semibold text-amber-700">
+                              <span className="mt-0.5 text-[9px] font-bold text-amber-700">
                                 {v.stock} left
                               </span>
                             ) : null}
@@ -444,30 +468,60 @@ export function ProductDetailView({
                   </div>
                 )}
 
-                {/* REAL-TIME DYNAMIC STOCK CALLOUT BANNER */}
+                {/* REAL-TIME DYNAMIC STOCK AMOUNT CALLOUT BANNER */}
                 <div className="mt-6">
                   {isPreOrder ? (
                     <div className="flex items-center gap-3 rounded-2xl bg-terracotta/10 border border-terracotta/20 p-4 text-xs font-semibold text-terracotta">
                       <Clock className="h-4 w-4 shrink-0" />
-                      <span>
-                        {t?.PreOrderNotice?.replace(
-                          "[date]",
-                          activeVariant?.expectedAvailableDate
-                            ? new Date(
-                                activeVariant.expectedAvailableDate
-                              ).toLocaleDateString()
-                            : "Fall 2026"
-                        ) || "Pre-Order Available — Ships as soon as restocked"}
-                      </span>
+                      <div>
+                        <p className="font-bold">
+                          {t?.PreOrderNotice?.replace(
+                            "[date]",
+                            activeVariant?.expectedAvailableDate
+                              ? new Date(
+                                  activeVariant.expectedAvailableDate,
+                                ).toLocaleDateString()
+                              : "Soon",
+                          ) || "Pre-Order Available"}
+                        </p>
+                        {currentStock > 0 && (
+                          <p className="mt-0.5 text-[11px] opacity-85">
+                            {currentStock} units currently incoming in this
+                            variant
+                          </p>
+                        )}
+                      </div>
                     </div>
                   ) : inStock ? (
-                    <div className="flex items-center gap-2.5 rounded-2xl bg-forest/10 border border-forest/20 p-3.5 text-xs font-semibold text-forest">
-                      <Check className="h-4 w-4 shrink-0" />
-                      <span>{t?.InStockNotice || "✓ In Stock — Ships within 24–48 hours"}</span>
-                    </div>
+                    currentStock <= 3 ? (
+                      <div className="flex items-center gap-2.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 p-3.5 text-xs font-bold text-amber-800">
+                        <AlertTriangle className="h-4 w-4 shrink-0 text-amber-700" />
+                        <span>
+                          {t?.LowStockNotice?.replace(
+                            "[count]",
+                            String(currentStock),
+                          ) ||
+                            `Only ${currentStock} units remaining in stock — order soon!`}
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-2.5 rounded-2xl bg-forest/10 border border-forest/20 p-3.5 text-xs font-bold text-forest">
+                        <Check className="h-4 w-4 shrink-0" />
+                        <span>
+                          {t?.StockAvailable?.replace(
+                            "[count]",
+                            String(currentStock),
+                          ) || `${currentStock} units in stock`}{" "}
+                          — {t?.InStockNotice || "Ships in 24–48 hours"}
+                        </span>
+                      </div>
+                    )
                   ) : (
-                    <div className="flex items-center gap-2.5 rounded-2xl bg-sand-soft border border-hairline p-3.5 text-xs font-semibold text-mist">
-                      <span>{t?.SoldOutNotice || "Out of stock in this size & color"}</span>
+                    <div className="flex items-center gap-2.5 rounded-2xl bg-sand-soft border border-hairline p-3.5 text-xs font-bold text-mist">
+                      <span>
+                        {t?.SoldOutNotice ||
+                          "Out of stock in this size & color"}
+                      </span>
                     </div>
                   )}
                 </div>
@@ -490,7 +544,9 @@ export function ProductDetailView({
                       </span>
                       <button
                         type="button"
-                        onClick={() => setQuantity((q) => Math.min(maxQty, q + 1))}
+                        onClick={() =>
+                          setQuantity((q) => Math.min(maxQty, q + 1))
+                        }
                         disabled={quantity >= maxQty}
                         className="grid h-10 w-10 place-items-center rounded-xl text-mist hover:bg-sand-soft disabled:opacity-30 transition-colors"
                       >
@@ -498,7 +554,7 @@ export function ProductDetailView({
                       </button>
                     </div>
 
-                    {/* Main CTA */}
+                    {/* Main Add to Bag / Pre-Order CTA */}
                     <button
                       type="button"
                       onClick={() => handleAddToCart(false)}
@@ -527,17 +583,25 @@ export function ProductDetailView({
 
                 {/* VALUE PROPOSITION BADGES */}
                 <div className="mt-8 space-y-2.5 rounded-3xl border border-hairline/80 bg-white/80 p-4 backdrop-blur-xs">
-                  <div className="flex items-center gap-3 text-xs text-forest-deep">
+                  <div className="flex items-center gap-3 text-xs font-semibold text-forest-deep">
                     <Truck className="h-4 w-4 shrink-0 text-forest" />
-                    <span>{t?.FreeShipping || "Free shipping on orders over $75"}</span>
+                    <span>
+                      {t?.FreeShipping || "Free shipping on orders over $75"}
+                    </span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-forest-deep">
+                  <div className="flex items-center gap-3 text-xs font-semibold text-forest-deep">
                     <RotateCcw className="h-4 w-4 shrink-0 text-forest" />
-                    <span>{t?.ReturnsGuarantee || "Easy 30-day hassle-free returns & exchanges"}</span>
+                    <span>
+                      {t?.ReturnsGuarantee ||
+                        "Easy 30-day hassle-free returns & exchanges"}
+                    </span>
                   </div>
-                  <div className="flex items-center gap-3 text-xs text-forest-deep">
+                  <div className="flex items-center gap-3 text-xs font-semibold text-forest-deep">
                     <ShieldCheck className="h-4 w-4 shrink-0 text-forest" />
-                    <span>{t?.EthicalCrafted || "Ethically crafted with 100% organic cotton"}</span>
+                    <span>
+                      {t?.EthicalCrafted ||
+                        "Ethically crafted with 100% organic cotton"}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -593,7 +657,9 @@ export function ProductDetailView({
                   />
                 ) : (
                   <p className="text-mist text-sm">
-                    100% combed ringspun organic cotton. Pre-shrunk for a structured, comfortable fit. High-density embroidered accents. Machine wash cold, tumble dry low.
+                    100% combed ringspun organic cotton. Pre-shrunk for a
+                    structured, comfortable fit. High-density embroidered
+                    accents. Machine wash cold, tumble dry low.
                   </p>
                 )}
 
@@ -603,7 +669,7 @@ export function ProductDetailView({
                     {product.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="rounded-full bg-sand-soft/80 border border-hairline/80 px-3 py-1 text-xs font-medium text-forest-deep"
+                        className="rounded-full bg-sand-soft/80 border border-hairline/80 px-3 py-1 text-xs font-semibold text-forest-deep"
                       >
                         #{tag}
                       </span>
@@ -626,7 +692,7 @@ export function ProductDetailView({
                   </h3>
                   <p className="mt-3 text-sm sm:text-base leading-relaxed text-mist">
                     {t?.ImpactStory ||
-                      "100% of store profits from this garment directly fund community grants, solar power installations, and clean water projects across Haiti. By wearing this piece, you're directly fueling local sustainable independence."}
+                      "100% of store profits from this product directly fund community grants, solar power installations, and clean water projects across Haiti. By wearing this piece, you're directly fueling local sustainable independence."}
                   </p>
                 </div>
               </div>
@@ -643,7 +709,7 @@ export function ProductDetailView({
                   <button
                     type="button"
                     onClick={() => setSizeModalOpen(true)}
-                    className="inline-flex items-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-forest/90"
+                    className="inline-flex items-center gap-2 rounded-xl bg-forest px-4 py-2.5 text-xs font-bold text-white shadow-xs transition-colors hover:bg-forest/90"
                   >
                     <Ruler className="h-4 w-4" />
                     <span>View Measurements Table</span>
@@ -653,13 +719,14 @@ export function ProductDetailView({
             )}
           </div>
 
-          {/* RELATED PRODUCTS SECTION */}
+          {/* RELATED PRODUCTS SECTION (Complete the Look) */}
           {relatedProducts.length > 0 && (
             <div className="mt-20 sm:mt-32 border-t border-hairline pt-14">
               <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                 <div>
                   <p className="text-[11px] font-bold uppercase tracking-widest text-forest">
-                    {t?.RelatedSubtitle || "Ethical apparel curated to match your style"}
+                    {t?.RelatedSubtitle ||
+                      "Ethical products curated to match your style"}
                   </p>
                   <h2 className="mt-1 font-display text-2xl sm:text-3xl font-semibold text-forest-deep">
                     {t?.RelatedTitle || "Complete the Look"}
@@ -669,11 +736,12 @@ export function ProductDetailView({
                   href={`/${lang}/shop`}
                   className="text-xs font-bold text-forest hover:underline"
                 >
-                  Explore All Garments →
+                  Explore All Products →
                 </Link>
               </div>
 
-              <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {/* 2-Column on Mobile, 4-Column on Desktop */}
+              <div className="mt-8 grid grid-cols-2 gap-3.5 sm:gap-6 lg:grid-cols-4">
                 {relatedProducts.slice(0, 4).map((rel) => (
                   <ProductCard
                     key={rel._id}
@@ -688,51 +756,91 @@ export function ProductDetailView({
         </Container>
       </div>
 
-      {/* FULL-BLEED LIGHTBOX GALLERY MODAL */}
+      {/* FULL-BLEED LIGHTBOX / FULLSCREEN ZOOM MODAL */}
       {lightboxOpen && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center bg-forest-deep/95 backdrop-blur-xl p-4 sm:p-8 animate-in fade-in"
+          className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-forest-deep/95 backdrop-blur-2xl p-4 sm:p-6 animate-in fade-in"
         >
-          <button
-            type="button"
-            onClick={() => setLightboxOpen(false)}
-            aria-label="Close"
-            className="absolute right-6 top-6 z-10 grid h-12 w-12 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-          >
-            <X className="h-6 w-6" />
-          </button>
-
-          <div className="relative max-h-[85vh] max-w-[85vw] aspect-3/4 overflow-hidden rounded-3xl">
-            <Image
-              src={activeImage}
-              alt={product.name}
-              fill
-              className="object-contain"
-              sizes="85vw"
-            />
+          {/* Top Bar with Counter and Close */}
+          <div className="w-full flex items-center justify-between z-20">
+            <span className="text-xs font-bold uppercase tracking-widest text-sand/80">
+              {product.name} ({activeImgIdx + 1} / {images.length})
+            </span>
+            <button
+              type="button"
+              onClick={() => setLightboxOpen(false)}
+              aria-label="Close"
+              className="grid h-11 w-11 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/25"
+            >
+              <X className="h-5 w-5" />
+            </button>
           </div>
 
+          {/* Center Image Container with Guaranteed Explicit Dimensions */}
+          <div className="relative flex-1 w-full max-w-5xl my-4 flex items-center justify-center">
+            <div className="relative h-[65vh] sm:h-[75vh] w-full max-w-4xl overflow-hidden rounded-2xl sm:rounded-3xl">
+              <Image
+                src={activeImage}
+                alt={product.name}
+                fill
+                priority
+                className="object-contain"
+                sizes="(max-width: 1200px) 95vw, 1200px"
+              />
+            </div>
+
+            {/* Navigation Chevrons */}
+            {images.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={prevImage}
+                  aria-label="Previous"
+                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full bg-black/40 text-white backdrop-blur-md transition-colors hover:bg-black/70 z-20"
+                >
+                  <ChevronLeft className="h-6 w-6" />
+                </button>
+                <button
+                  type="button"
+                  onClick={nextImage}
+                  aria-label="Next"
+                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full bg-black/40 text-white backdrop-blur-md transition-colors hover:bg-black/70 z-20"
+                >
+                  <ChevronRight className="h-6 w-6" />
+                </button>
+              </>
+            )}
+          </div>
+
+          {/* Bottom Thumbnail Strip */}
           {images.length > 1 && (
-            <>
-              <button
-                type="button"
-                onClick={prevImage}
-                aria-label="Previous"
-                className="absolute left-6 top-1/2 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-              >
-                <ChevronLeft className="h-6 w-6" />
-              </button>
-              <button
-                type="button"
-                onClick={nextImage}
-                aria-label="Next"
-                className="absolute right-6 top-1/2 -translate-y-1/2 grid h-12 w-12 place-items-center rounded-full bg-white/10 text-white transition-colors hover:bg-white/20"
-              >
-                <ChevronRight className="h-6 w-6" />
-              </button>
-            </>
+            <div className="flex items-center gap-2 overflow-x-auto max-w-full pb-2 z-20">
+              {images.map((img, idx) => {
+                const resolved = getImageUrl(img) || img;
+                return (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => setActiveImgIdx(idx)}
+                    className={`relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border-2 transition-all ${
+                      activeImgIdx === idx
+                        ? "border-sand shadow-md scale-105"
+                        : "border-white/20 opacity-60 hover:opacity-100"
+                    }`}
+                  >
+                    <Image
+                      src={resolved}
+                      alt=""
+                      fill
+                      className="object-cover"
+                      sizes="56px"
+                    />
+                  </button>
+                );
+              })}
+            </div>
           )}
         </div>
       )}

@@ -1369,7 +1369,9 @@
     },
     "Filters": {
       "SearchPlaceholder": "Search by title, tag, fabric...",
-      "AllCategories": "All Categories",
+      "CategoriesHeading": "Categories",
+      "AllCategories": "All Products",
+      "GenderHeading": "Gender",
       "Gender": {
         "all": "All",
         "unisex": "Unisex",
@@ -1388,9 +1390,9 @@
       "InStockOnly": "In-Stock Only",
       "PriceRange": "Price Range",
       "FilterBtn": "Filters",
-      "ResetFilters": "Reset Filters",
-      "ResultsCount": "garments found",
-      "ResultCountSingular": "garment found"
+      "ResetFilters": "Clear All Filters",
+      "ResultsCount": "products found",
+      "ResultCountSingular": "product found"
     },
     "Card": {
       "SaleBadge": "OFF",
@@ -1401,7 +1403,8 @@
       "SoldOutBadge": "Sold Out",
       "QuickView": "Quick View",
       "AddToBag": "Add to Bag",
-      "ViewDetails": "View Details"
+      "ViewDetails": "View Details",
+      "UnitsSold": "sold"
     },
     "Detail": {
       "Home": "Home",
@@ -1411,8 +1414,11 @@
       "Size": "Size:",
       "SizeGuide": "Size & Fit Guide",
       "InStockNotice": "✓ In Stock — Ships within 24–48 hours",
+      "StockAvailable": "[count] units in stock",
+      "LowStockNotice": "Only [count] units remaining in stock",
       "PreOrderNotice": "⏳ Pre-Order Item — Expected dispatch: [date]",
       "SoldOutNotice": "Out of stock in this size & color",
+      "TotalSold": "units sold",
       "Quantity": "Quantity",
       "AddBtn": "Add to Shopping Bag",
       "PreOrderBtn": "Pre-Order Now",
@@ -1426,13 +1432,13 @@
         "Impact": "The Social Impact",
         "SizeFit": "Size & Fit Guide"
       },
-      "ImpactStory": "100% of store profits from this garment directly fund community grants, solar power installations, and clean water projects across Haiti. By wearing this piece, you're directly fueling local sustainable independence.",
+      "ImpactStory": "100% of store profits from this product directly fund community grants, solar power installations, and clean water projects across Haiti. By wearing this piece, you're directly fueling local sustainable independence.",
       "ModelStats": "Model is 6'1\" wearing size Large in a relaxed fit. Pre-shrunk organic cotton ensures consistent fit after washing.",
       "RelatedTitle": "Complete the Look",
-      "RelatedSubtitle": "Ethical apparel curated to match your style"
+      "RelatedSubtitle": "Ethical products curated to match your style"
     },
     "SizeModal": {
-      "Title": "Garment Size Guide",
+      "Title": "Product Size Guide",
       "Subtitle": "Find your perfect tailored fit. All garments are pre-shrunk for maximum comfort.",
       "Inches": "Inches (in)",
       "Centimeters": "Centimeters (cm)",
@@ -1443,9 +1449,9 @@
       "Close": "Close Guide"
     },
     "Empty": {
-      "Title": "No garments found",
+      "Title": "No products found",
       "Body": "Try changing your search term, adjusting price filters, or selecting another category.",
-      "ResetBtn": "Explore All Garments"
+      "ResetBtn": "Explore All Products"
     }
   }
 }

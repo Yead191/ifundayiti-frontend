@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import {
   getProducts,
   getSingleProduct,
+  type ApparelProduct,
 } from "@/helpers/next-fetch/shopActions";
 import { ProductDetailView } from "@/features/shop/components/ProductDetailView";
 import { getDictionary } from "@/lib/dictionaries";
@@ -22,8 +23,8 @@ export async function generateMetadata({
 
   if (!product) {
     return buildMetadata({
-      title: "Garment Not Found | IFundAyiti",
-      description: "The requested apparel merchandise could not be found.",
+      title: "Product Not Found | IFundAyiti",
+      description: "The requested apparel product could not be found.",
       path: `/${lang}/shop/${slug}`,
       noIndex: true,
     });
@@ -75,12 +76,24 @@ export default async function ShopDetailPage({ params }: PageProps) {
 
   const relatedRes = await getProducts({
     category: categoryId,
-    limit: 5,
+    limit: 6,
   });
 
-  const relatedProducts = (relatedRes?.data || []).filter(
-    (p) => p._id !== product._id
+  let relatedProducts: ApparelProduct[] = (relatedRes?.data || []).filter(
+    (p) => p._id !== product._id,
   );
+
+  // If fewer than 4 related in the same category, fetch additional general products
+  if (relatedProducts.length < 4) {
+    const fallbackRes = await getProducts({ limit: 8 });
+    const fallbackList = (fallbackRes?.data || []).filter(
+      (p) =>
+        p._id !== product._id && !relatedProducts.some((r) => r._id === p._id),
+    );
+    relatedProducts = [...relatedProducts, ...fallbackList].slice(0, 4);
+  } else {
+    relatedProducts = relatedProducts.slice(0, 4);
+  }
 
   return (
     <ProductDetailView

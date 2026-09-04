@@ -27,7 +27,7 @@ import {
   getRelatedProducts,
   type ShopProduct,
 } from "@/data/shop";
-
+import { getImageUrl } from "@/lib/getImageUrl";
 
 export function ProductDetail({ product }: { product: ShopProduct }) {
   const { addItem } = useCart();
@@ -95,10 +95,10 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
           <span className="text-forest-deep">{product.name}</span>
         </nav>
 
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
-          <div className="lg:col-span-7">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-14 ">
+          <div className="lg:col-span-7 ">
             <div className="flex gap-3 md:gap-4">
-              <div className="hidden w-20 shrink-0 flex-col gap-2.5 sm:flex">
+              <div className="hidden w-20 shrink-0 flex-col gap-2.5 sm:flex ">
                 {images.map((src, i) => (
                   <button
                     key={`${src}-${i}`}
@@ -113,7 +113,7 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
                     )}
                   >
                     <Image
-                      src={src}
+                      src={getImageUrl(src) || src}
                       alt=""
                       fill
                       className="object-cover"
@@ -131,7 +131,7 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
                   aria-label="Open zoom view"
                 >
                   <Image
-                    src={activeSrc}
+                    src={getImageUrl(activeSrc) || activeSrc}
                     alt={product.name}
                     fill
                     priority
@@ -292,9 +292,7 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
                   aria-label="Increase quantity"
                   className="grid h-11 w-11 place-items-center text-forest disabled:opacity-40"
                   disabled={qty >= product.stock}
-                  onClick={() =>
-                    setQty((q) => Math.min(product.stock, q + 1))
-                  }
+                  onClick={() => setQty((q) => Math.min(product.stock, q + 1))}
                 >
                   <Plus className="h-4 w-4" />
                 </button>
@@ -520,7 +518,7 @@ function ProductImageZoom({
           onClick={() => setScale((s) => (s === 1 ? 2 : 1))}
         >
           <Image
-            src={src}
+            src={getImageUrl(src) || ""}
             alt={productName}
             fill
             className="object-contain transition-transform duration-200 ease-out"
@@ -546,10 +544,17 @@ function ProductImageZoom({
               }}
               className={cn(
                 "relative h-14 w-12 overflow-hidden rounded-lg",
-                active === i ? "ring-2 ring-sand" : "opacity-60 hover:opacity-100",
+                active === i
+                  ? "ring-2 ring-sand"
+                  : "opacity-60 hover:opacity-100",
               )}
             >
-              <Image src={img} alt="" fill className="object-cover" />
+              <Image
+                src={getImageUrl(img) || img}
+                alt=""
+                fill
+                className="object-cover"
+              />
             </button>
           ))}
         </div>
