@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { FaTiktok } from "react-icons/fa";
-import { Facebook, Instagram, Mail } from "lucide-react";
+import { Facebook, Instagram, Mail, ShieldCheck } from "lucide-react";
 import { SITE } from "@/data/site";
 import { useTranslation } from "@/components/providers/translation-provider";
 
@@ -76,6 +76,15 @@ export function Footer() {
 
         <div className="grid gap-12 md:grid-cols-12 pt-6">
           <div className="md:col-span-4">
+            {/* Nonprofit Status Trust Badge */}
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-sand/30 bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-sand shadow-sm backdrop-blur-md">
+              <ShieldCheck className="h-3.5 w-3.5 text-sand shrink-0" />
+              <span>
+                {f.NonprofitNotice ||
+                  "IFundAyiti is a nonprofit organization. 501(c)(3) pending"}
+              </span>
+            </div>
+
             <p className="max-w-sm text-sm leading-relaxed text-sand/90">
               {f.Summary}
             </p>
@@ -130,10 +139,20 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 flex flex-col-reverse items-center justify-between gap-6 border-t border-white/15 pt-8 md:flex-row">
-          <p className="text-sm text-sand/75">
-            © {new Date().getFullYear()} IFundAyiti. {f.Copyright}
-          </p>
+        <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-white/15 pt-8 md:flex-row">
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
+            <p className="text-sm text-sand/75">
+              © {new Date().getFullYear()} IFundAyiti. {f.Copyright}
+            </p>
+            <span className="hidden sm:inline text-white/20">•</span>
+            <p className="inline-flex items-center gap-1.5 text-xs font-medium text-sand/90">
+              <ShieldCheck className="h-3.5 w-3.5 text-sand shrink-0" />
+              <span>
+                {f.NonprofitNotice ||
+                  "IFundAyiti is a nonprofit organization. 501(c)(3) pending"}
+              </span>
+            </p>
+          </div>
           <div className="flex gap-3">
             <Social href={`mailto:${SITE.email}`} label="Email">
               <Mail className="h-4 w-4" />
@@ -145,7 +164,7 @@ export function Footer() {
               <Instagram className="h-4 w-4" />
             </Social>
             <Social href={SITE.social.tiktok} label="TikTok">
-              <FaTiktok />
+              <FaTiktok className="h-4 w-4" />
             </Social>
           </div>
         </div>
@@ -193,13 +212,16 @@ function Social({
   label: string;
   children: React.ReactNode;
 }) {
+  const isExternal = href.startsWith("http");
   return (
-    <Link
+    <a
       href={href}
       aria-label={label}
-      className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sand transition-colors hover:bg-sand hover:text-forest"
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noopener noreferrer" : undefined}
+      className="flex h-10 w-10 items-center justify-center rounded-full bg-white/10 text-sand transition-all duration-200 hover:bg-sand hover:text-forest hover:scale-105"
     >
       {children}
-    </Link>
+    </a>
   );
 }

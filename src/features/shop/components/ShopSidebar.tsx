@@ -2,19 +2,10 @@
 
 import * as React from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import {
-  Check,
-  ChevronRight,
-  Filter,
-  Heart,
-  RotateCcw,
-  SlidersHorizontal,
-  Sparkles,
-  X,
-} from "lucide-react";
+import { RotateCcw, SlidersHorizontal, Sparkles, X } from "lucide-react";
 
 import type { ProductCategory } from "@/helpers/next-fetch/shopActions";
-import { SHOP_GENDERS, SHOP_SORT_OPTIONS } from "../constants";
+import { SHOP_GENDERS } from "../constants";
 
 interface ShopSidebarProps {
   categories: ProductCategory[];
@@ -103,11 +94,6 @@ export function ShopSidebar({
               }`}
             >
               <span>{t?.AllCategories || "All Products"}</span>
-              <ChevronRight
-                className={`h-3.5 w-3.5 transition-transform ${
-                  currentCategory === "all" ? "rotate-90 text-sand" : "text-faint"
-                }`}
-              />
             </button>
           </li>
 
@@ -129,11 +115,6 @@ export function ShopSidebar({
                   }`}
                 >
                   <span className="truncate pr-2">{cat.name}</span>
-                  <ChevronRight
-                    className={`h-3.5 w-3.5 shrink-0 transition-transform ${
-                      isActive ? "rotate-90 text-sand" : "text-faint"
-                    }`}
-                  />
                 </button>
               </li>
             );
@@ -210,7 +191,8 @@ export function ShopSidebar({
           <span>100% Non-Profit</span>
         </div>
         <p className="mt-3 text-xs leading-relaxed text-mist">
-          Every purchase directly fuels equity-free micro-grants and clean solar power in Haiti.
+          Every purchase directly fuels equity-free micro-grants and clean solar
+          power in Haiti.
         </p>
       </div>
     </div>

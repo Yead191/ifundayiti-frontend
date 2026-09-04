@@ -43,7 +43,7 @@ export function ProductCard({ product, lang = "en", dict }: ProductCardProps) {
   const discountPercent = hasDiscount
     ? Math.round(
         ((product.compareAtPrice! - product.price) / product.compareAtPrice!) *
-          100
+          100,
       )
     : 0;
 
@@ -51,8 +51,12 @@ export function ProductCard({ product, lang = "en", dict }: ProductCardProps) {
   const variants = product.variants || [];
   const totalStock = variants.reduce((acc, v) => acc + (v.stock || 0), 0);
   const hasPreOrder = variants.some((v) => v.isPreOrder);
-  const colors = Array.from(new Set(variants.map((v) => v.color).filter(Boolean)));
-  const sizes = Array.from(new Set(variants.map((v) => v.size).filter(Boolean)));
+  const colors = Array.from(
+    new Set(variants.map((v) => v.color).filter(Boolean)),
+  );
+  const sizes = Array.from(
+    new Set(variants.map((v) => v.size).filter(Boolean)),
+  );
 
   // Stock status text
   let stockBadge = {
@@ -119,8 +123,11 @@ export function ProductCard({ product, lang = "en", dict }: ProductCardProps) {
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* GARMENT IMAGE */}
-        <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl sm:rounded-2xl bg-sand-soft">
-          <Link href={`/${lang}/shop/${product._id}`} className="block h-full w-full">
+        <div className="relative aspect-4/5 w-full overflow-hidden rounded-xl sm:rounded-2xl bg-sand-soft">
+          <Link
+            href={`/${lang}/shop/${product._id}`}
+            className="block h-full w-full"
+          >
             <Image
               src={currentImage}
               alt={product.name}

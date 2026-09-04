@@ -90,7 +90,7 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
   // In-stock client filter if requested
   if (inStock) {
     products = products.filter((p) =>
-      p.variants?.some((v) => v.stock > 0 || v.isPreOrder)
+      p.variants?.some((v) => v.stock > 0 || v.isPreOrder),
     );
   }
 
@@ -113,7 +113,7 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
     ? Math.round(
         ((featuredProduct!.compareAtPrice! - featuredProduct!.price) /
           featuredProduct!.compareAtPrice!) *
-          100
+          100,
       )
     : 0;
 
@@ -185,7 +185,8 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
                     {featuredHasDiscount && (
                       <div className="absolute left-3 top-3 z-10">
                         <span className="inline-flex items-center rounded-full bg-[#b91c1c] px-3 py-1 text-xs font-black uppercase tracking-wider text-white shadow-md border border-white/20">
-                          −{featuredDiscountPercent}% {t?.Card?.SaleBadge || "OFF"}
+                          −{featuredDiscountPercent}%{" "}
+                          {t?.Card?.SaleBadge || "OFF"}
                         </span>
                       </div>
                     )}
@@ -198,7 +199,7 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
                           ? featuredProduct.category.name
                           : featuredProduct.category || "Apparel"}
                       </p>
-                      <h3 className="font-display text-lg font-semibold text-forest-deep truncate max-w-[240px]">
+                      <h3 className="font-display text-lg font-semibold text-forest-deep truncate max-w-60">
                         {featuredProduct.name}
                       </h3>
                     </div>
@@ -320,28 +321,29 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
                   ) : null}
 
                   {/* Page Numbers */}
-                  {Array.from({ length: pagination.totalPage }, (_, i) => i + 1).map(
-                    (p) => (
-                      <Link
-                        key={p}
-                        href={`/${lang}/shop?page=${p}${
-                          category ? `&category=${category}` : ""
-                        }${gender ? `&gender=${gender}` : ""}${
-                          searchTerm ? `&searchTerm=${searchTerm}` : ""
-                        }${sort ? `&sort=${sort}` : ""}${
-                          inStock ? `&inStock=true` : ""
-                        }`}
-                        scroll={false}
-                        className={`grid h-10 w-10 place-items-center rounded-xl text-xs font-bold transition-colors ${
-                          p === pagination.page
-                            ? "bg-forest text-white shadow-xs"
-                            : "border border-hairline bg-white text-forest-deep hover:bg-sand-soft"
-                        }`}
-                      >
-                        {p}
-                      </Link>
-                    )
-                  )}
+                  {Array.from(
+                    { length: pagination.totalPage },
+                    (_, i) => i + 1,
+                  ).map((p) => (
+                    <Link
+                      key={p}
+                      href={`/${lang}/shop?page=${p}${
+                        category ? `&category=${category}` : ""
+                      }${gender ? `&gender=${gender}` : ""}${
+                        searchTerm ? `&searchTerm=${searchTerm}` : ""
+                      }${sort ? `&sort=${sort}` : ""}${
+                        inStock ? `&inStock=true` : ""
+                      }`}
+                      scroll={false}
+                      className={`grid h-10 w-10 place-items-center rounded-xl text-xs font-bold transition-colors ${
+                        p === pagination.page
+                          ? "bg-forest text-white shadow-xs"
+                          : "border border-hairline bg-white text-forest-deep hover:bg-sand-soft"
+                      }`}
+                    >
+                      {p}
+                    </Link>
+                  ))}
 
                   {/* Next Button */}
                   {pagination.page < pagination.totalPage ? (

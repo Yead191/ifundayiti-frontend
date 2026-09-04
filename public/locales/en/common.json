@@ -33,7 +33,8 @@
     "CurrentCycle": "Current cycle",
     "MaximumGrant": "Maximum grant",
     "Window": "Window",
-    "CycleNotice": "One winner per cycle. Donations fuel the Program Fund — not a single applicant."
+    "CycleNotice": "One winner per cycle. Donations fuel the Program Fund — not a single applicant.",
+    "NonprofitNotice": "IFundAyiti is a nonprofit organization. 501(c)(3) pending"
   },
   "FloatingDonate": {
     "QuickDonate": "Quick donate",
@@ -121,7 +122,8 @@
     "FAQ": "FAQ",
     "Email": "Email:",
     "Phone": "Phone:",
-    "Headquarters": "Headquarters:"
+    "Headquarters": "Headquarters:",
+    "NonprofitNotice": "IFundAyiti is a nonprofit organization. 501(c)(3) pending"
   },
   "DonationForm": {
     "SelectAmount": "Select Donation Amount (USD)",

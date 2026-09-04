@@ -33,7 +33,8 @@
     "CurrentCycle": "Sik aktyèl",
     "MaximumGrant": "Maksimòm sibvansyon",
     "Window": "Peryòd",
-    "CycleNotice": "Yon swl gayan pou chak sik. Donasyon yo ale dirèkteman nan Fon Pwogram nan — pa nan oa sèl aplikan."
+    "CycleNotice": "Yon swl gayan pou chak sik. Donasyon yo ale dirèkteman nan Fon Pwogram nan — pa nan oa sèl aplikan.",
+    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif. 501(c)(3) an atant"
   },
   "FloatingDonate": {
     "QuickDonate": "Fè oa don rapid",
@@ -121,7 +122,8 @@
     "FAQ": "Kesyon yo poze souvan",
     "Email": "Imèl:",
     "Phone": "Telefòn:",
-    "Headquarters": "Katye Jeneral:"
+    "Headquarters": "Katye Jeneral:",
+    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif. 501(c)(3) an atant"
   },
   "DonationForm": {
     "SelectAmount": "Chwazi Kantite Lajan Don (USD)",

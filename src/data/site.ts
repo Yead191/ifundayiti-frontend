@@ -8,9 +8,9 @@ export const SITE = {
   location: "Mount Vernon, NY",
   headquarters: "Mount Vernon, NY",
   social: {
-    facebook: "#",
-    instagram: "#",
-    tiktok: "#",
+    facebook: "https://www.facebook.com/share/1csyUt17fY/?mibextid=wwXIfr",
+    instagram: "https://www.instagram.com/ifundayiti",
+    tiktok: "https://www.tiktok.com/@ifundayiti?_r=1&_t=ZT-99QQDiTCHRF",
   },
 } as const;
 
