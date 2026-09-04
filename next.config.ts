@@ -13,10 +13,10 @@ const nextConfig: NextConfig = {
       { protocol: "http", hostname: "10.10.26.159" },
       { protocol: "http", hostname: "10.10.26.173" },
       { protocol: "http", hostname: "31.97.103.122" },
-      { protocol: "https", hostname: "api.thehubology.com" },
+      { protocol: "https", hostname: "api.ifundayiti.org" },
     ],
   },
-  allowedDevOrigins: ["10.10.26.173", "api.thehubology.com"],
+  allowedDevOrigins: ["10.10.26.173", "api.ifundayiti.org"],
   experimental: {
     serverActions: {
       bodySizeLimit: "10mb",
