@@ -1,62 +1,76 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
-import { registrationOptions } from "@/data/registration";
-import { RoleCard } from "@/components/register/role-card";
-import { SectionHeading } from "@/components/sections/section-heading";
-import { Reveal } from "@/components/ui/reveal";
-import { Aurora } from "@/components/ui/aurora";
-
+import { AuthShell } from "@/components/auth/auth-shell";
+import { RegisterForm } from "@/components/auth/register-form";
+import { getDictionary } from "@/lib/dictionaries";
 import { buildMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = buildMetadata({
-  title: "Join Hubology",
-  description:
-    "Join Hubology as a member to access experts and the community forum, or apply as a verified expert to advise founders and grow your practice.",
-  path: "/join",
-  keywords: [
-    "join Hubology",
-    "sign up as member",
-    "apply as expert",
-    "become a verified consultant",
-    "founder membership signup",
-    "expert vendor application",
-  ],
-});
+interface PageProps {
+  params: Promise<{ lang: string }>;
+}
 
-export default function JoinPage() {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
+  const { lang } = await params;
+  const isHt = lang === "ht";
+
+  return buildMetadata({
+    title: isHt ? "Kreye Kont ou" : "Create an Account",
+    description: isHt
+      ? "Kreye yon kont sou IFundAyiti pou w ka postile pou mikwo-sibvansyon, sipòte pwojè yo, epi patisipe nan kominote a."
+      : "Join IFundAyiti to apply for micro-grants, support grassroots projects, and connect with Haitian pioneers.",
+    path: `/${lang}/join`,
+    keywords: [
+      "IFundAyiti register",
+      "create account",
+      "micro-grants Haiti",
+      "join IFundAyiti",
+      "Haitian entrepreneurs",
+    ],
+  });
+}
+
+export default async function JoinPage({ params }: PageProps) {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+  const isHt = lang === "ht";
+  const authT = dict?.Auth || {};
+
   return (
-    <section className="relative min-h-screen overflow-hidden pt-36 pb-20">
-      <Aurora
-        animated
-        className="-top-10 left-1/2 h-128 w-176 -translate-x-1/2 opacity-50"
-      />
-      <div className="relative mx-auto max-w-5xl px-6">
-        <SectionHeading
-          eyebrow="Join the Hub"
-          title={
-            <>
-              Choose how you want to{" "}
-              <span className="text-gradient">show up</span>
-            </>
-          }
-          subtitle="Whether you are looking for guidance or ready to share your expertise, there is a place for you at Hubology"
-        />
-
-        <div className="mt-16 grid gap-6 md:grid-cols-2">
-          {registrationOptions.map((option, i) => (
-            <Reveal key={option.id} delay={i * 100} className="h-full">
-              <RoleCard option={option} />
-            </Reveal>
-          ))}
-        </div>
-
-        <Reveal delay={200} className="mt-10 text-center text-sm text-mist">
-          Already a member?{" "}
-          <a href="/login" className="font-medium text-violet-bright hover:underline">
-            Sign in instead
-          </a>
-        </Reveal>
-      </div>
-    </section>
+    <AuthShell
+      lang={lang}
+      title={authT.JoinTitle || (isHt ? "Antre nan IFundAyiti" : "Join IFundAyiti")}
+      subtitle={
+        authT.JoinSubtitle ||
+        (isHt
+          ? "Kreye kont ou pou postile pou mikwo-sibvansyon, sipòte pwojè yo, epi patisipe nan kominote a."
+          : "Create your account to apply for micro-grants, support projects, and engage with the community.")
+      }
+      panelEyebrow={isHt ? "IFundAyiti Òganizasyon San Pwofi" : "IFundAyiti Nonprofit"}
+      panelTitle={
+        isHt
+          ? "Sibvansyon ki fè lide ayisyen yo vin reyalite dirab."
+          : "Grants that turn Haitian ideas into lasting impact."
+      }
+      panelPoints={
+        isHt
+          ? [
+              "Mikwo-sibvansyon transparan jiska $1,000 pou lidè lokal yo",
+              "Swivi aplikasyon an dirèk ak rapò pwojè verifye",
+              "Yon rezo mondyal ki ini Ayiti ak dyaspora a",
+            ]
+          : [
+              "Transparent, equity-free micro-grants up to $1,000",
+              "Direct application tracking and verified progress reports",
+              "A global network uniting Haiti and the diaspora",
+            ]
+      }
+    >
+      <Suspense fallback={null}>
+        <RegisterForm lang={lang} dict={dict} />
+      </Suspense>
+    </AuthShell>
   );
 }

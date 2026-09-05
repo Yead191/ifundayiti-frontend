@@ -33,18 +33,18 @@
     "CurrentCycle": "Sik aktyèl",
     "MaximumGrant": "Maksimòm sibvansyon",
     "Window": "Peryòd",
-    "CycleNotice": "Yon swl gayan pou chak sik. Donasyon yo ale dirèkteman nan Fon Pwogram nan — pa nan oa sèl aplikan.",
+    "CycleNotice": "Yon sèl gayan pou chak sik. Donasyon yo ale dirèkteman nan Fon Pwogram nan — pa nan yon sèl aplikan.",
     "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif. 501(c)(3) an atant"
   },
   "FloatingDonate": {
-    "QuickDonate": "Fè oa don rapid",
+    "QuickDonate": "Fè yon don rapid",
     "ChooseAmount": "Chwazi yon kantite lajan epi mete enfòmasyon ou yo",
     "SecuredStripeShort": "Sekirize pa Stripe · Chifreman 256-bit",
     "ProgramFund": "Fon Pwogram",
-    "GiveInAMinute": "Bay nan oa minit",
+    "GiveInAMinute": "Bay nan yon minit",
     "Subtitle": "Yon fason rapid pou sipòte pwochen sik sibvansyon an — senp, sekirize, epi bati sou konfyans.",
     "Trust1": "Donasyon yo ale nan Fon Pwogram IFundAyiti",
-    "Trust2": "Yo pa lye ak oa sèl aplikan patikilye",
+    "Trust2": "Yo pa lye ak yon sèl aplikan patikilye",
     "Trust3": "Peman sekirize pa Stripe — plizyè milyon moun fè l konfyans toupatou"
   },
   "CurrentGrant": {
@@ -58,7 +58,7 @@
   "WhatWeDo": {
     "Eyebrow": "Sa nou fè",
     "Title": "Ti sibvansyon. Travay lokal. Chanjman vizib.",
-    "Description": "IFundAyiti bay kreyatè ak antreprenè ayisyen kapital pratik — san pran aksyon nan biznis yo, epi san lye yon don ak oa swl aplikan.",
+    "Description": "IFundAyiti bay kreyatè ak antreprenè ayisyen kapital pratik — san pran aksyon nan biznis yo, epi san lye yon don ak yon sèl aplikan.",
     "Quote": "Donasyon yo finanse pwogram nan. Sibvansyon yo finanse travay la.",
     "OurStory": "Istwa nou"
   },
@@ -73,7 +73,7 @@
     "Step3Title": "Finalis yo",
     "Step3Body": "Aplikan ki pi remakab yo vin finalis pou sik aktyèl la.",
     "Step4Title": "Laureya",
-    "Step4Body": "Yo chwazi oa finalis kòm gayan epi li resevwa finansman sibvansyon an.",
+    "Step4Body": "Yo chwazi yon finalis kòm gayan epi li resevwa finansman sibvansyon an.",
     "Step5Title": "Enpak",
     "Step5Body": "Finansman an ede transfòme lide a an chanjman reyèl nan kominote ayisyen yo."
   },
@@ -109,7 +109,7 @@
     "Title1": "Ede transfòme pwochen lide a",
     "Title2": "an yon pwojè vwazen yo ka santi.",
     "Subtitle": "Donasyon yo ale nan Fon Pwogram IFundAyiti a — k ap finanse pwochen sik sibvansyon an.",
-    "DonateNow": "Fè oa don kounye a"
+    "DonateNow": "Fè yon don kounye a"
   },
   "Footer": {
     "Summary": "IFundAyiti sipòte antreprenè ak moun k ap bati kominote an Ayiti ak mikwo-sibvansyon san pran pati nan biznis jiska $1,000.",
@@ -129,28 +129,28 @@
     "SelectAmount": "Chwazi Kantite Lajan Don (USD)",
     "Custom": "Pèsonalize",
     "AnyAmount": "Nenpòt kantite",
-    "EnterCustom": "Mete oa lòt kantite...",
+    "EnterCustom": "Mete yon lòt kantite...",
     "YourName": "Non Ou *",
     "EmailAddress": "Adrès Imèl *",
     "PlaceholderName": "e.g. Jean-Luc",
     "Redirecting": "Redireksyon nan Peman Sekirize...",
     "FuelFund": "Finanse Fon Pwogram nan · ",
-    "Donate": "Fè oa Don",
+    "Donate": "Fè yon Don",
     "SecureCheckout": "Peman sekirize pa Stripe · 100% donasyon yo ale nan mikwo-sibvansyon.",
     "Preset1": "Materyèl esansyèl",
-    "Preset2": "5% nan oa mikwo-sibvansyon",
-    "Preset3": "10% nan oa mikwo-sibvansyon",
+    "Preset2": "5% nan yon mikwo-sibvansyon",
+    "Preset3": "10% nan yon mikwo-sibvansyon",
     "Preset4": "Sponsò sik la",
     "Preset5": "Sponsò 1 Mikwo-Sibvansyon antye",
-    "ImpactDefault": "❤️ Chak dola pote oa antreprenè ayisyen pi pre reyalize rèv li.",
+    "ImpactDefault": "❤️ Chak dola pote yon antreprenè ayisyen pi pre reyalize rèv li.",
     "Impact25": "🤝 Chak kontribisyon ede founi fon santral ki asire sik sibvansyon k ap vini yo.",
-    "Impact50": "💡 Kado w la bay 5% nan oa mikwo-sibvansyon ak materyèl esansyèl pou oa ti biznis.",
-    "Impact100": "🌱 Kado $100 ou a bay 10% nan oa mikwo-sibvansyon, sa k ap louvri pòt pou kreyatè lokal yo.",
-    "Impact250": "🚀 Kado w la kouvri oa ka nan oa sibvansyon epi li ede sipòte fòmasyon pou antreprenè yo.",
-    "Impact500": "🌟 Kado w la finanse plis pase mwatye nan oa mikwo-sibvansyon san ekite pou oa biznis lokal.",
-    "Impact1000": "🇭🇹 Kado ekstraòdinè w la finanse oa mikwo-sibvansyon $1,000 ANTYE pou oa antreprenè ayisyen!",
+    "Impact50": "💡 Kado w la bay 5% nan yon mikwo-sibvansyon ak materyèl esansyèl pou yon ti biznis.",
+    "Impact100": "🌱 Kado $100 ou a bay 10% nan yon mikwo-sibvansyon, sa k ap louvri pòt pou kreyatè lokal yo.",
+    "Impact250": "🚀 Kado w la kouvri yon ka nan yon sibvansyon epi li ede sipòte fòmasyon pou antreprenè yo.",
+    "Impact500": "🌟 Kado w la finanse plis pase mwatye nan yon mikwo-sibvansyon san ekite pou yon biznis lokal.",
+    "Impact1000": "🇭🇹 Kado ekstraòdinè w la finanse yon mikwo-sibvansyon $1,000 ANTYE pou yon antreprenè ayisyen!",
     "ErrName": "Tanpri mete non ou",
-    "ErrEmail": "Mete oa adrès imèl ki valab",
+    "ErrEmail": "Mete yon adrès imèl ki valab",
     "ErrAmount": "Donasyon minimòm nan se $5",
     "ErrGeneric": "Tanpri ranpli fòm nan"
   },
@@ -171,58 +171,58 @@
       "Principles": "Prensip yo",
       "Team": "Ekip la",
       "BasedInAyiti": "Baze an Ayiti",
-      "BasedInAyitiQuote": "Pwogram yo ta dwe santi yo toupre lari y ap sèvi yo — pa lwen nan oa tablodbò."
+      "BasedInAyitiQuote": "Pwogram yo ta dwe santi yo toupre lari y ap sèvi yo — pa lwen nan yon tablodbò."
     },
     "Story": {
       "Eyebrow": "Istwa nou",
       "Title": "Yon workflow sibvansyon ki grandi pou l vin piblik.",
-      "Subtitle": "IFundAyiti te kòmanse anndan Hubology kòm oa fason pou evalye lide lokal yo ak swen. Li te vin tounen pwòp sit li pou aplikan yo, donatè yo, ak kominote yo ka pataje oa sèl dosye klè.",
-      "Paragraph1": "Evolisyon sa a te entansyonèl. Fèy calcul prive ak bwat resepsyon fèmen fè espwa a santi l frajil. Yon platfòm piblik pèmèt fanmi yo suiv oa aplikasyon, pèmèt donatè yo wè kijan yo sèvi ak kado yo, epi pèmèt gayan yo selebre san yo pa ekspoze tout detay pèsonèl yo sou Entènèt.",
-      "Paragraph2": "Nou toujou nan konmansman — anpil nan sit sa a fonksyone sou kontni demonstrasyon pandan detay ofisyèl pwogram nan ap finalize. Angajman an deja reyèl: jere sibvansyon ak transparans, respè, ak oa pwen de vi ki mete Ayiti an premye.",
+      "Subtitle": "IFundAyiti te kòmanse anndan Hubology kòm yon fason pou evalye lide lokal yo ak swen. Li te vin tounen pwòp sit li pou aplikan yo, donatè yo, ak kominote yo ka pataje yon sèl dosye klè.",
+      "Paragraph1": "Evolisyon sa a te entansyonèl. Fèy calcul prive ak bwat resepsyon fèmen fè espwa a santi l frajil. Yon platfòm piblik pèmèt fanmi yo suiv yon aplikasyon, pèmèt donatè yo wè kijan yo sèvi ak kado yo, epi pèmèt gayan yo selebre san yo pa ekspoze tout detay pèsonèl yo sou Entènèt.",
+      "Paragraph2": "Nou toujou nan konmansman — anpil nan sit sa a fonksyone sou kontni demonstrasyon pandan detay ofisyèl pwogram nan ap finalize. Angajman an deja reyèl: jere sibvansyon ak transparans, respè, ak yon pwen de vi ki mete Ayiti an premye.",
       "Callout": "Ti ekip. Règleman klè. Non reyèl dèyè travay la."
     },
     "Principles": {
       "Eyebrow": "Sa nou defann",
       "Title": "Kat prensip ki pa tolere okenn devyasyon.",
-      "Subtitle": "Se pa slogan pou oa paj akey — se prensip nou itilize lè n ap revize dosye yo, n ap pale ak donatè yo, epi n ap chwazi gayan yo.",
+      "Subtitle": "Se pa slogan pou yon paj akey — se prensip nou itilize lè n ap revize dosye yo, n ap pale ak donatè yo, epi n ap chwazi gayan yo.",
       "Principle1Title": "Piblik pa defo",
-      "Principle1Body": "Aplikasyon eta yo, finalis yo, ak gayan yo vizib sou oa sit piblik — yo pa kache dèyè fil prive oswa apwobasyon anba tab.",
+      "Principle1Body": "Aplikasyon eta yo, finalis yo, ak gayan yo vizib sou yon sit piblik — yo pa kache dèyè fil prive oswa apwobasyon anba tab.",
       "Principle2Title": "Je lokal sou chak dosye",
-      "Principle2Body": "Komite evalyasyon an li chak aplikasyon ak kontèks katye a nan tèt yo. Kapital la swiv jijman moun, pa algoritm swlman.",
+      "Principle2Body": "Komite evalyasyon an li chak aplikasyon ak kontèks katye a nan tèt yo. Kapital la swiv jijman moun, pa algoritm sèlman.",
       "Principle3Title": "Diyite nan pwosesis la",
-      "Principle3Body": "Nou mande verifikasyon san fè espektak. Prèv pwoteje kominote a; li pa ta dwe janm santi l tankou oa pèfòmans nan mizè.",
+      "Principle3Body": "Nou mande verifikasyon san fè espektak. Prèv pwoteje kominote a; li pa ta dwe janm santi l tankou yon pèfòmans nan mizè.",
       "Principle4Title": "Yon sèl fon, anpil desten",
-      "Principle4Body": "Donasyon yo rasanble nan oa sèl Fon Pwogram. Sibvansyon yo ale jwenn gayan yo chwazi yo — pa nan pwofil crowdfunding endividyèl."
+      "Principle4Body": "Donasyon yo rasanble nan yon sèl Fon Pwogram. Sibvansyon yo ale jwenn gayan yo chwazi yo — pa nan pwofil crowdfunding endividyèl."
     },
     "Audiences": {
       "Eyebrow": "Pou ki moun sa fèt",
-      "Title": "Twa gwoup, oa sèl rezilta pataje.",
+      "Title": "Twa gwoup, yon sèl rezilta pataje.",
       "Subtitle": "IFundAyiti travay sèlman lè kreyatè yo, sipòtè yo, ak vwazen yo tout rekonèt tèt yo nan pwosesis la.",
       "Audience1Title": "Kreyatè & machann yo",
       "Audience1Emotion": "Ou deja pote tout risk yo.",
-      "Audience1Body": "Machann manje nan lari, moun k ap travay tè, ekip reparasyon, ak kreyatè nan katye yo ki bezwen oa premye sipò — se pa oa lòt prè ak kondisyon enposib.",
+      "Audience1Body": "Machann manje nan lari, moun k ap travay tè, ekip reparasyon, ak kreyatè nan katye yo ki bezwen yon premye sipò — se pa yon lòt prè ak kondisyon enposib.",
       "Audience2Title": "Donatè pre ak lwen",
       "Audience2Emotion": "Ou vle prèv, se pa presyon.",
-      "Audience2Body": "Bay nan oa pwogram ou ka eksplike oa zanmi: kote lajan an ale, kijan yo chwazi gayan yo, ak poukisa non yo rete pwoteje.",
+      "Audience2Body": "Bay nan yon pwogram ou ka eksplike yon zanmi: kote lajan an ale, kijan yo chwazi gayan yo, ak poukisa non yo rete pwoteje.",
       "Audience3Title": "Vwazen ki santi rezilta a",
       "Audience3Emotion": "Enpak la ta dwe vizib nan katye a.",
-      "Audience3Body": "Pi bon limyè, dlo ki pi pwòp, boutik ki pi chaje, lari ki pi an sekirite — kalite chanjman ou remarke lè w ap mache antre lakay ou, pa nan oa nòt pou laprès."
+      "Audience3Body": "Pi bon limyè, dlo ki pi pwòp, boutik ki pi chaje, lari ki pi an sekirite — kalite chanjman ou remarke lè w ap mache antre lakay ou, pa nan yon nòt pou laprès."
     },
     "Governance": {
       "Eyebrow": "Kijan desizyon yo pran",
       "Title": "Gouvènans san mistè.",
       "Subtitle": "Paj akey la montre sik sibvansyon an. Men nivo responsabilite ki anba li.",
       "Step1Title": "Aplikasyon yo rive",
-      "Step1Body": "Pandan oa sik louvri, kreyatè yo soumèt lide yo, pyès idantite yo, ak dokiman sipò yo atravè oa fòm piblik ki estriktire.",
+      "Step1Body": "Pandan yon sik louvri, kreyatè yo soumèt lide yo, pyès idantite yo, ak dokiman sipò yo atravè yon fòm piblik ki estriktire.",
       "Step2Title": "Revizyon Komite a",
       "Step2Body": "Komite evalyasyon an verifye si aplikasyon yo konplè, si pwojè a ka fèt, ak si yo apwopriye pou kominote a. Aplikan ki apwouve yo ka parèt kòm finalis piblik.",
       "Step3Title": "Gayan & peman",
-      "Step3Body": "Yo chwazi oa sèl gayan pou chak peryòd. Lajan yo transfere manyèlman bay benefisyè ki verifye yo — andeyò paj kanpay endividyèl yo."
+      "Step3Body": "Yo chwazi yon sèl gayan pou chak peryòd. Lajan yo transfere manyèlman bay benefisyè ki verifye yo — andeyò paj kanpay endividyèl yo."
     },
     "Connect": {
       "Eyebrow": "Rete an kontak",
       "Title": "Pare pou w ale pi lwen?",
-      "Body": "Règ sibvansyon ak kalandriye yo sou paj sibvansyon an. Kesyon sou pwogram nan — oswa kijan pou patnè avèk nou — merite oa konvèsasyon, se pa oa lòt piblisite sou paj akey la.",
+      "Body": "Règ sibvansyon ak kalandriye yo sou paj sibvansyon an. Kesyon sou pwogram nan — oswa kijan pou patnè avèk nou — merite yon konvèsasyon, se pa yon lòt piblisite sou paj akey la.",
       "ReadDetails": "Li detay sibvansyon yo",
       "ContactTeam": "Kontakte ekip la"
     }
@@ -232,14 +232,14 @@
       "HeroEyebrow": "Pwogram sibvansyon",
       "Title": "Li detay sik la",
       "TitleAccent": "anvan ou postile.",
-      "Subtitle": "Yon peryòd louvri, oa sèl gayan, jiska $1,000 kapital san pran pati nan biznis la. Paj sa a se lis verifikasyon ou — kalifikasyon, dokiman, seleksyon, ak sa k ap pase apre ou soumèt.",
+      "Subtitle": "Yon peryòd louvri, yon sèl gayan, jiska $1,000 kapital san pran pati nan biznis la. Paj sa a se lis verifikasyon ou — kalifikasyon, dokiman, seleksyon, ak sa k ap pase apre ou soumèt.",
       "HighlightMax": "Finansman maksimòm",
       "HighlightMaxVal": "$1,000 USD",
       "HighlightWinners": "Laureya pou chak sik",
       "HighlightWinnersVal": "Yon sèl",
       "HighlightEquity": "Aksyon yo pran",
       "HighlightEquityVal": "Okenn",
-      "ImageQuote": "Yon pwosesis klè pèmèt oa bon lide gen oa chans ekitab — se pa oa jwèt devinèt.",
+      "ImageQuote": "Yon pwosesis klè pèmèt yon bon lide gen yon chans ekitab — se pa yon jwèt devinèt.",
       "NavCycle": "Sik aktyèl la",
       "NavPrepare": "Prepare w",
       "NavSelection": "Seleksyon",
@@ -290,7 +290,7 @@
     "Selection": {
       "Eyebrow": "Apre ou soumèt",
       "Title": "Kijan seleksyon an mache toutbon.",
-      "Subtitle": "Pa gen etap kache. Eta aplikasyon w lan parèt an piblik — depi nan premye soumisyon rive nan oa laureya ki jwenn finansman.",
+      "Subtitle": "Pa gen etap kache. Eta aplikasyon w lan parèt an piblik — depi nan premye soumisyon rive nan yon laureya ki jwenn finansman.",
       "Step1Title": "Soumèt",
       "Step1Emotion": "Dosye w la antre nan liy tann nan.",
       "Step1Body": "Ou resevwa yon konfimasyon epi ou ka suiv eta aplikasyon w lan ak imèl ak dat nesans ou te mete nan fòm lan.",
@@ -302,7 +302,7 @@
       "Step3Body": "Aplikasyon solid ki apwouve yo kapab parèt kòm finalis piblik pou sik aktyèl la.",
       "Step4Title": "Finalis yo",
       "Step4Emotion": "Kantite aplikan yo redwi ak transparans.",
-      "Step4Body": "Yo prezante jiska senk finalis an piblik. Yo chwazi oa sèl laureya pou chak peryòd.",
+      "Step4Body": "Yo prezante jiska senk finalis an piblik. Yo chwazi yon sèl laureya pou chak peryòd.",
       "Step5Title": "Laureya & peman",
       "Step5Emotion": "Kapital la jwenn travay ki verifye a.",
       "Step5Body": "Laureya yo chwazi a resevwa jiska $1,000. Lajan yo transfere manywlman bay benefisyè ki verifye yo — andeyò paj kanpay endividyèl yo."
@@ -318,13 +318,13 @@
       "Q3": "Ki dokiman ki nesesè?",
       "A3": "Yon pyès idantite gouvènman bay, prèv adrès, ak deskripsyon pwojè a obligatwa. Yo rekòmande yon plan biznis oswa foto pwojè a tou.",
       "Q4": "Kijan mwen ka postile?",
-      "A4": "Nou aksepte aplikasyon yo swlman lè sik sibvansyon an louvri. Dat yo pibliye sou paj Sibvansyon an.",
+      "A4": "Nou aksepte aplikasyon yo sèlman lè sik sibvansyon an louvri. Dat yo pibliye sou paj Sibvansyon an.",
       "Q5": "Kouman yo evalye aplikasyon yo?",
       "A5": "Ekip IFundAyiti a evalye si dosye a konplè, si pwojè a ka fèt, ak enpak li sou kominote a. Eta dosye a ap soti nan soumèt pou l pase nan evalyasyon.",
       "Q6": "Kouman yo chwazi finalis yo?",
       "A6": "Aplikan ki gen dosye ki pi solid yo ka vin finalis pou sik aktyèl la.",
       "Q7": "Kouman yo chwazi gayan an?",
-      "A7": "Yo chwazi oa sèl finalis kòm laureya pou chak peryòd aplikasyon selon pwosesis seleksyon IFundAyiti a."
+      "A7": "Yo chwazi yon sèl finalis kòm laureya pou chak peryòd aplikasyon selon pwosesis seleksyon IFundAyiti a."
     },
     "History": {
       "Eyebrow": "Achiv yo",
@@ -372,7 +372,7 @@
     "Stats": {
       "Eyebrow": "Daprè chif yo",
       "Title": "Yon dosye k ap grandi — toujou byen bonè, deja lokal.",
-      "Subtitle": "Chif ki anba yo se valè demonstrasyon swlman jiskaske nou konekte rapò ofisyèl yo. Yo montre fòm pwogram nan, se pa oa rapò finansye final.",
+      "Subtitle": "Chif ki anba yo se valè demonstrasyon sèlman jiskaske nou konekte rapò ofisyèl yo. Yo montre fòm pwogram nan, se pa yon rapò finansye final.",
       "Stat1Label": "Aplikasyon yo resevwa",
       "Stat1Detail": "Lide yo soumèt pandan tout sik ki te louvri yo",
       "Stat2Label": "Sibvansyon yo bay",
@@ -391,15 +391,15 @@
     "FundFlow": {
       "Eyebrow": "Kijan lajan an deplase",
       "Title": "Donasyon yo finanse pwogram nan. Sibvansyon yo finanse travay la.",
-      "Subtitle": "Donasyon yo pa janm lye ak yon sèl aplikan. Yo rasanble nan oa Fon Pwogram inik, answit yo pati kòm finansman verifye bay laureya yo chwazi yo.",
+      "Subtitle": "Donasyon yo pa janm lye ak yon sèl aplikan. Yo rasanble nan yon Fon Pwogram inik, answit yo pati kòm finansman verifye bay laureya yo chwazi yo.",
       "Step1Title": "Fon Pwogram",
       "Step1Body": "Donasyon piblik ak patnè yo kontribye nan yon fon pataje — pa nan kanpay crowdfunding endividyèl.",
       "Step2Title": "Sibvansyon sik la",
-      "Step2Body": "Pandan chak peryòd, nou chwazi oa sèl gayan. Sibvansyon maksimòm nan rete $1,000, san pran aksyon.",
+      "Step2Body": "Pandan chak peryòd, nou chwazi yon sèl gayan. Sibvansyon maksimòm nan rete $1,000, san pran aksyon.",
       "Step3Title": "Peman verifye",
       "Step3Body": "Lajan yo transfere manyèlman bay benefisyè ki verifye pou kapital la ka rete an sekirite epi responsab.",
       "Pillar1Title": "Yon fon pataje",
-      "Pillar1Body": "Konfyans nan ale nan misyon an — pa nan oa sèl moun k ap kouri dèyè don an piblik.",
+      "Pillar1Body": "Konfyans nan ale nan misyon an — pa nan yon sèl moun k ap kouri dèyè don an piblik.",
       "Pillar2Title": "Yon laureya pa sik",
       "Pillar2Body": "Konsantrasyon an rete klè. Kominote a ka swiv yon rezilta presi pito pase kanpay san fen.",
       "Pillar3Title": "Chanjman lokal, vizib",
@@ -422,7 +422,7 @@
     "CTA": {
       "Eyebrow": "Kenbe fon an ap deplase",
       "Title": "Ede transfòme pwochen lide a an yon pwojè vwazen yo ka santi.",
-      "Body": "Kado ou a ranfòse Fon Pwogram nan pou pwochen sik la — se pa oa sèl kanpay, se yon pwomès dirab bay kreyatè ayisyen yo.",
+      "Body": "Kado ou a ranfòse Fon Pwogram nan pou pwochen sik la — se pa yon sèl kanpay, se yon pwomès dirab bay kreyatè ayisyen yo.",
       "DonateBtn": "Sipòte Fon Pwogram nan",
       "GrantsBtn": "Kijan sibvansyon yo mache"
     }
@@ -518,7 +518,7 @@
       "ExpectedImpact": "Enpak yo espere",
       "PersonalNote": "Nòt kreyatè a",
       "ProgramPillar": "Konsènan fon an",
-      "ProgramPillarBody": "Lajan sa a te soti dirèkteman nan Fon Pwogram IFundAyiti a — gras ak kontribisyon donatè yo. Nou pa janm fè crowdfunding pou oa sèl moun an piblik."
+      "ProgramPillarBody": "Lajan sa a te soti dirèkteman nan Fon Pwogram IFundAyiti a — gras ak kontribisyon donatè yo. Nou pa janm fè crowdfunding pou yon sèl moun an piblik."
     },
     "Gallery": {
       "Gallery": "Galeri foto"
@@ -555,7 +555,7 @@
     "Hero": {
       "Eyebrow": "Rasanble. Konekte. Ranfòse.",
       "Title": "Kote rèv ayisyen yo rankontre kapital pou yo grandi.",
-      "Subtitle": "Chak sware prezantasyon, atelye kominotè, ak kanpay ranmase lajan pote nou oa etap pi pre yon Ayiti k ap devlope ekonomikman. Kit ou patisipe an pèsòn nan Pòtoprens oswa sou Zoom depi nenpòt kote sou planèt la — 100% kontribisyon nan evènman yo ranfòse Fon Pwogram santral nou an.",
+      "Subtitle": "Chak sware prezantasyon, atelye kominotè, ak kanpay ranmase lajan pote nou yon etap pi pre yon Ayiti k ap devlope ekonomikman. Kit ou patisipe an pèsòn nan Pòtoprens oswa sou Zoom depi nenpòt kote sou planèt la — 100% kontribisyon nan evènman yo ranfòse Fon Pwogram santral nou an.",
       "CalendarBtn": "Dekouvri Evènman yo",
       "DonateBtn": "Fè yon don nan Fon Pwogram nan"
     },
@@ -590,7 +590,7 @@
       "NoEvents": "Pa gen evènman yo jwenn",
       "NoEventsDesc": "Eseye retire filtè kategori a pou w ka wè tout evènman yo.",
       "SpotlightTitle": "Konsantre sou Evènman sa a",
-      "SpotlightPlaceholder": "Chwazi oa evènman nan kalandriye a pou w wè detay li yo.",
+      "SpotlightPlaceholder": "Chwazi yon evènman nan kalandriye a pou w wè detay li yo.",
       "UpcomingDrives": "Evènman Kominotè k ap Vini yo",
       "RsvpCount": "Anrejistre",
       "RsvpBtn": "Rezève plas ou",
@@ -633,7 +633,7 @@
   "DonatePage": {
     "Hero": {
       "Eyebrow": "🌱 Sipòte Inovasyon an Ayiti",
-      "Title": "Chak dola plante yon grenn. Chak sibvansyon transfòme oa lavi.",
+      "Title": "Chak dola plante yon grenn. Chak sibvansyon transfòme yon lavi.",
       "Subtitle": "100% nan don piblik yo ale dirèkteman nan mikwo-sibvansyon san pran aksyon jiska $1,000 pou antreprenè ayisyen, kreyatè lokal, ak moun k ap bati kominote yo."
     },
     "Badges": {
@@ -704,7 +704,7 @@
       "Title": "Kontakte nou dirèkteman",
       "Body": "Ekip nou an la pou sipòte antreprenè ayisyen ak manm kominote a.",
       "EmailLabel": "Ekri nou nan Imèl",
-      "EmailDesc": "Voye oa mesaj nenpòt lè",
+      "EmailDesc": "Voye yon mesaj nenpòt lè",
       "PhoneLabel": "Telefòn & Sipò",
       "PhoneDesc": "Disponib Lendi–Vandredi, 9am–5pm EST",
       "LocationLabel": "Katye Jeneral",
@@ -741,9 +741,9 @@
       "SendingBtn": "N ap voye mesaj la...",
       "PrivacyNote": "🔒 Nou respekte konfidansyalite w. Enfòmasyon ou yo ap sèvi sèlman pou reponn demand ou an.",
       "ErrName": "Non an obligatwa (omwen 2 karaktè)",
-      "ErrEmail": "Mete oa adrès imèl ki valab",
-      "ErrTopic": "Tanpri chwazi oa sijè pou demand ou an",
-      "ErrMessage": "Tanpri ekri oa mesaj (omwen 10 karaktè)"
+      "ErrEmail": "Mete yon adrès imèl ki valab",
+      "ErrTopic": "Tanpri chwazi yon sijè pou demand ou an",
+      "ErrMessage": "Tanpri ekri yon mesaj (omwen 10 karaktè)"
     },
     "FAQ": {
       "Eyebrow": "Sipò Rapid",
@@ -1302,11 +1302,10 @@
       "Failed": "Aplikasyon an pa t ka soumèt. Tanpri re-eseye."
     },
     "Success": {
-      "Title": "Nou Resevwa Aplikasyon W Lan!",
+      "Title": "Tit / Deziyasyon:",
       "Message": "Mèsi anpil! Mèsi dèske w aplike pou fè pati fòs volontè IFundAyiti a.",
       "DetailsHeading": "Detay Aplikasyon an",
       "Name": "Non:",
-      "Title": "Tit / Deziyasyon:",
       "Email": "Imèl:",
       "Location": "Kote w Ye:",
       "FocusAreas": "Domèn:",
@@ -1455,5 +1454,45 @@
       "Body": "Eseye chanje mo rechèch la, modifye pri a, oswa chwazi yon lòt kategori.",
       "ResetBtn": "Gade Tout Pwodui yo"
     }
+  },
+  "Auth": {
+    "SignIn": "Konekte",
+    "SignUp": "Kreye yon kont",
+    "CreateAccount": "Kreye Kont",
+    "WelcomeBack": "Byenveni ankò",
+    "WelcomeSubtitle": "Konekte pou w jwenn aksè nan aplikasyon sibvansyon w, kòmand ou yo, ak pwofil kominote a.",
+    "JoinTitle": "Antre nan IFundAyiti",
+    "JoinSubtitle": "Kreye kont ou pou postile pou mikwo-sibvansyon, sipòte pwojè yo, epi patisipe nan kominote a.",
+    "FullName": "Non Konplè",
+    "FullNamePlaceholder": "Jean-Luc Baptiste",
+    "Email": "Adrès imèl",
+    "EmailPlaceholder": "ou@egzanp.com",
+    "Password": "Modpas",
+    "Phone": "Nimewo telefòn (opsyonèl)",
+    "PhonePlaceholder": "pa egzanp +1 (518) 509-1804",
+    "RememberMe": "Sonje mwen",
+    "ForgotPassword": "Ou bliye modpas ou?",
+    "ForgotSubtitle": "Mete adrès imèl ou pou nou voye yon kòd verifikasyon pou w ka chanje modpas ou.",
+    "SendResetCode": "Voye kòd verifikasyon",
+    "BackToSignIn": "Retounen nan paj koneksyon",
+    "ResetTitle": "Kreye yon nouvo modpas",
+    "ResetSubtitle": "Chwazi yon bon modpas ki gen omwen 8 karaktè.",
+    "NewPassword": "Nouvo modpas",
+    "ConfirmPassword": "Konfime modpas la",
+    "ResetPasswordBtn": "Chanje modpas la",
+    "VerifyTitle": "Mete kòd verifikasyon an",
+    "VerifySubtitle": "Nou voye yon kòd 4 chif nan imèl ou. Mete l anba a pou w ka kontinye.",
+    "VerifyBtn": "Verifye kòd la",
+    "ResendCode": "Voye kòd la ankò",
+    "ResendIn": "Voye kòd la ankò nan",
+    "DontHaveAccount": "Ou pa gen yon kont?",
+    "AlreadyHaveAccount": "Ou gen yon kont deja?",
+    "OrContinueWith": "oswa kontinye ak imèl",
+    "TermsAgree": "Lè w kreye yon kont, ou aksepte Kondisyon ak Règ sou Konfidansyalite IFundAyiti yo.",
+    "Account": "Kont",
+    "Profile": "Pwofil mwen",
+    "MyApplications": "Aplikasyon mwen yo",
+    "TrackApplication": "Suiv Aplikasyon",
+    "SignOut": "Dekonekte"
   }
 }

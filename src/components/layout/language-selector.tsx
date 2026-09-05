@@ -47,17 +47,20 @@ export function LanguageSelector() {
         <button
           className={cn(
             "group flex items-center gap-1.5 rounded-xl border border-white/80 bg-white/40 px-3 py-2 text-sm font-semibold tracking-tight text-forest-deep outline-none backdrop-blur-md transition-all duration-200",
-            "hover:border-forest/30 hover:bg-white hover:text-forest shadow-xs"
+            "hover:border-forest/30 hover:bg-white hover:text-forest shadow-xs",
           )}
         >
-          <Globe className="h-4 w-4 opacity-70 group-hover:text-forest transition-colors" />
+          <Globe className="h-4 w-4 opacity-70 group-hover:text-forest transition-colors hidden md:flex" />
           <span className="uppercase text-xs font-bold tracking-wider">
             {currentLocale}
           </span>
           <ChevronDown className="h-3 w-3 opacity-50 transition-transform duration-200 group-data-[state=open]:rotate-180" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-48 p-1.5 rounded-2xl border-hairline shadow-xl bg-white/95 backdrop-blur-xl">
+      <DropdownMenuContent
+        align="end"
+        className="w-48 p-1.5 rounded-2xl border-hairline shadow-xl bg-white/95 backdrop-blur-xl"
+      >
         {languages.map((lang) => {
           const active = currentLocale === lang.code;
           return (
@@ -68,7 +71,7 @@ export function LanguageSelector() {
                 "flex items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold cursor-pointer transition-colors",
                 active
                   ? "bg-forest/5 text-forest font-bold"
-                  : "text-forest-deep hover:bg-sand-soft hover:text-forest"
+                  : "text-forest-deep hover:bg-sand-soft hover:text-forest",
               )}
             >
               <div className="flex items-center gap-2">

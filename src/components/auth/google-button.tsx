@@ -31,9 +31,9 @@ export function GoogleButton({ label }: { label: string }) {
     <Button
       type="button"
       variant="outline"
-      className="w-full bg-white text-[#1f1f1f] hover:bg-white/90 hover:text-[#1f1f1f]"
+      className="h-11 w-full gap-2.5 rounded-xl border-hairline bg-white/95 text-sm font-semibold text-forest-deep shadow-2xs transition-colors hover:bg-sand-soft/50 hover:text-forest"
       onClick={() => {
-        // UI-only: wire to Auth.js / NextAuth signIn("google") later.
+        // Wire to social auth provider if configured
       }}
     >
       <GoogleIcon />
@@ -44,9 +44,11 @@ export function GoogleButton({ label }: { label: string }) {
 
 export function AuthDivider({ label = "or" }: { label?: string }) {
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3">
       <span className="h-px flex-1 bg-hairline" />
-      <span className="text-xs uppercase tracking-wider text-faint">{label}</span>
+      <span className="text-[11px] font-semibold uppercase tracking-wider text-mist">
+        {label}
+      </span>
       <span className="h-px flex-1 bg-hairline" />
     </div>
   );

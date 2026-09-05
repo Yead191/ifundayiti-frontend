@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
 
 import { Logo } from "@/components/layout/logo";
-import { Aurora } from "@/components/ui/aurora";
 
 interface FocusShellProps {
   /** Small pill/eyebrow above the icon. */
@@ -17,6 +16,7 @@ interface FocusShellProps {
   /** Back link target + label. */
   backHref?: string;
   backLabel?: string;
+  lang?: string;
 }
 
 /**
@@ -32,39 +32,47 @@ export function FocusShell({
   footer,
   backHref = "/login",
   backLabel = "Back to sign in",
+  lang = "en",
 }: FocusShellProps) {
+  const homeHref = `/${lang}`;
+
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden px-6 py-28">
-      <Aurora
-        animated
-        className="-top-16 left-1/2 h-128 w-152 -translate-x-1/2 opacity-45"
-      />
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-cream/60 px-4 py-24 sm:px-6 sm:py-28">
+      {/* Subtle ambient glows */}
+      <div className="pointer-events-none absolute -top-20 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-forest/5 blur-3xl" />
+      <div className="pointer-events-none absolute bottom-10 right-1/4 h-80 w-80 rounded-full bg-sand/30 blur-3xl" />
 
       <div className="relative w-full max-w-md">
-        <Link href="/" className="mb-8 flex justify-center">
-          <Logo />
-        </Link>
+        <div className="mb-8 flex justify-center">
+          <Link href={homeHref} className="transition-opacity hover:opacity-90">
+            <Logo />
+          </Link>
+        </div>
 
-        <div className="border-gradient relative rounded-[2rem] bg-panel/50 p-8 glow-soft sm:p-10">
+        <div className="relative rounded-[28px] border border-hairline/80 bg-white/95 p-7 shadow-[0_20px_50px_-15px_rgba(11,61,46,0.12)] backdrop-blur-xl sm:p-10">
           <div className="flex flex-col items-center text-center">
-            <span className="relative mb-6 grid h-16 w-16 place-items-center rounded-2xl bg-brand-gradient text-white shadow-[0_16px_44px_-12px_rgba(129,49,240,0.9)]">
+            <span className="relative mb-5 grid h-14 w-14 place-items-center rounded-2xl bg-forest text-sand ring-8 ring-forest/10 shadow-sm">
               {icon}
             </span>
-            {eyebrow ? <span className="eyebrow mb-2">{eyebrow}</span> : null}
-            <h1 className="text-2xl font-bold text-cloud sm:text-3xl">
+            {eyebrow ? (
+              <span className="mb-2 inline-block rounded-full bg-sand-soft px-3 py-0.5 text-xs font-bold uppercase tracking-wider text-forest">
+                {eyebrow}
+              </span>
+            ) : null}
+            <h1 className="text-2xl font-bold tracking-tight text-forest-deep sm:text-3xl">
               {title}
             </h1>
-            <p className="mt-3 text-sm leading-relaxed text-mist">{subtitle}</p>
+            <div className="mt-2.5 text-sm leading-relaxed text-mist">{subtitle}</div>
           </div>
 
-          <div className="mt-8">{children}</div>
+          <div className="mt-7">{children}</div>
         </div>
 
         <div className="mt-6 flex flex-col items-center gap-4">
           {footer}
           <Link
             href={backHref}
-            className="inline-flex items-center gap-1.5 text-sm text-mist transition-colors hover:text-cloud"
+            className="inline-flex items-center gap-1.5 text-sm font-semibold text-forest/90 transition-colors hover:text-forest hover:underline"
           >
             <ArrowLeft className="h-4 w-4" /> {backLabel}
           </Link>

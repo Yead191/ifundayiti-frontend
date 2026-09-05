@@ -13,6 +13,7 @@ import {
   absoluteUrl,
   getSiteUrl,
 } from "@/lib/seo";
+import NavServer from "@/components/layout/NavServer";
 
 const sora = Sora({
   subsets: ["latin"],
@@ -82,11 +83,14 @@ export default async function LangRootLayout({
   const dict = await getDictionary(currentLang);
 
   return (
-    <html lang={currentLang} className={`${sora.variable} ${sourceSans.variable}`}>
+    <html
+      lang={currentLang}
+      className={`${sora.variable} ${sourceSans.variable}`}
+    >
       <body className="min-h-screen bg-cream text-cloud antialiased scroll-smooth">
         <TranslationProvider messages={dict}>
           <SiteProviders>
-            <Navbar />
+            <NavServer />
             <main className="relative">{children}</main>
             <Footer />
           </SiteProviders>

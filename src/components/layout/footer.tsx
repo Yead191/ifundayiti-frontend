@@ -77,13 +77,13 @@ export function Footer() {
         <div className="grid gap-12 md:grid-cols-12 pt-6">
           <div className="md:col-span-4">
             {/* Nonprofit Status Trust Badge */}
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-sand/30 bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-sand shadow-sm backdrop-blur-md">
+            {/* <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-sand/30 bg-white/10 px-3.5 py-1.5 text-xs font-semibold tracking-wide text-sand shadow-sm backdrop-blur-md">
               <ShieldCheck className="h-3.5 w-3.5 text-sand shrink-0" />
               <span>
                 {f.NonprofitNotice ||
                   "IFundAyiti is a nonprofit organization. 501(c)(3) pending"}
               </span>
-            </div>
+            </div> */}
 
             <p className="max-w-sm text-sm leading-relaxed text-sand/90">
               {f.Summary}

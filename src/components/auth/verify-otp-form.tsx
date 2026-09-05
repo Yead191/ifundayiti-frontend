@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -9,16 +9,23 @@ import { nextFetch } from "@/helpers/next-fetch/NextFetch";
 import { useResendOtp } from "@/hooks/useResendOtp";
 import { Button } from "@/components/ui/button";
 import { OtpInput } from "@/components/ui/otp-input";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 /** sessionStorage key that carries the reset token to /reset-password. */
-export const RESET_TOKEN_KEY = "hubology:resetToken";
+export const RESET_TOKEN_KEY = "ifundayiti:resetToken";
 
-// Change to 4 if your backend issues 4-digit codes (e.g. the "5372" example).
 const OTP_LENGTH = 4;
 
 export function VerifyOtpForm() {
   const router = useRouter();
+  const pathname = usePathname();
   const params = useSearchParams();
+  const dict = useTranslation();
+
+  const segments = pathname.split("/");
+  const currentLocale = segments[1] === "ht" ? "ht" : "en";
+  const authT = dict?.Auth || {};
+
   const email = params.get("email") ?? "";
   const flow = params.get("flow") === "reset" ? "reset" : "verify";
 
@@ -29,13 +36,21 @@ export function VerifyOtpForm() {
   const submit = React.useCallback(
     async (oneTimeCode: string) => {
       if (!email) {
-        toast.error("Missing email address. Please restart the process.", {
-          id: "verify-otp",
-        });
+        toast.error(
+          currentLocale === "ht"
+            ? "Adrès imèl la manke. Tanpri rekòmanse."
+            : "Missing email address. Please restart the process.",
+          { id: "verify-otp" },
+        );
         return;
       }
       if (oneTimeCode.length !== OTP_LENGTH) {
-        toast.error(`Enter the ${OTP_LENGTH}-digit code`, { id: "verify-otp" });
+        toast.error(
+          currentLocale === "ht"
+            ? `Mete kòd ${OTP_LENGTH} chif la`
+            : `Enter the ${OTP_LENGTH}-digit code`,
+          { id: "verify-otp" },
+        );
         return;
       }
 
@@ -47,20 +62,26 @@ export function VerifyOtpForm() {
         });
 
         if (!response?.success) {
-          toast.error(response?.message || "Invalid or expired code", {
-            id: "verify-otp",
-          });
+          toast.error(
+            response?.message ||
+              (currentLocale === "ht"
+                ? "Kòd la pa kòrèk oswa li ekspire"
+                : "Invalid or expired code"),
+            { id: "verify-otp" },
+          );
           setCode("");
           return;
         }
 
-        toast.success(response?.message || "Email verified", {
-          id: "verify-otp",
-        });
+        toast.success(
+          response?.message ||
+            (currentLocale === "ht"
+              ? "Imèl ou verifye avèk siksè"
+              : "Email verified successfully"),
+          { id: "verify-otp" },
+        );
 
         if (flow === "reset") {
-          // The reset-password token comes back on response.data. Handle the
-          // common shapes (string, or an object with a token field).
           const data = response.data as
             | string
             | Record<string, string>
@@ -74,25 +95,33 @@ export function VerifyOtpForm() {
                 data?.accessToken);
 
           if (!token) {
-            toast.error("Could not read reset token. Please try again.", {
-              id: "verify-otp",
-            });
+            toast.error(
+              currentLocale === "ht"
+                ? "Kòd reset la pa jwenn. Tanpri eseye ankò."
+                : "Could not read reset token. Please try again.",
+              { id: "verify-otp" },
+            );
             return;
           }
           sessionStorage.setItem(RESET_TOKEN_KEY, token);
-          router.push("/reset-password");
+          router.push(`/${currentLocale}/reset-password`);
           return;
         }
 
-        router.push("/login");
+        router.push(`/${currentLocale}/login`);
       } catch (err) {
         console.error("verify-email error:", err);
-        toast.error("Network error. Please try again.", { id: "verify-otp" });
+        toast.error(
+          currentLocale === "ht"
+            ? "Erè nan rezo a. Tanpri eseye ankò."
+            : "Network error. Please try again.",
+          { id: "verify-otp" },
+        );
       } finally {
         setIsSubmitting(false);
       }
     },
-    [email, flow, router],
+    [email, flow, router, currentLocale],
   );
 
   return (
@@ -108,30 +137,35 @@ export function VerifyOtpForm() {
       <Button
         type="button"
         size="lg"
-        className="w-full"
+        className="h-11 w-full rounded-xl bg-forest font-bold text-white shadow-md hover:bg-forest/90"
         disabled={isSubmitting || code.length !== OTP_LENGTH}
         onClick={() => submit(code)}
       >
         {isSubmitting ? (
           <>
-            <Loader2 className="h-4 w-4 animate-spin" /> Verifying…
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            {currentLocale === "ht" ? "N ap verifye..." : "Verifying…"}
           </>
         ) : flow === "reset" ? (
-          "Verify & continue"
+          authT.VerifyBtn || (currentLocale === "ht" ? "Verifye & Kontinye" : "Verify & continue")
         ) : (
-          "Verify email"
+          authT.VerifyBtn || (currentLocale === "ht" ? "Verifye imèl" : "Verify email")
         )}
       </Button>
 
-      <p className="text-center text-sm text-mist">
-        Didn&apos;t get the code?{" "}
+      <p className="text-center text-xs text-mist">
+        {currentLocale === "ht"
+          ? "Ou pa resevwa kòd la?"
+          : "Didn't get the code?"}{" "}
         <button
           type="button"
           onClick={() => resend(email)}
           disabled={isCoolingDown || !email}
-          className="font-medium text-violet-bright transition-colors hover:underline disabled:cursor-not-allowed disabled:opacity-60 disabled:no-underline"
+          className="font-bold text-forest hover:underline disabled:cursor-not-allowed disabled:opacity-60 disabled:no-underline"
         >
-          {isCoolingDown ? `Resend in ${resendIn}s` : "Resend code"}
+          {isCoolingDown
+            ? `${authT.ResendIn || (currentLocale === "ht" ? "Voye ankò nan" : "Resend in")} ${resendIn}s`
+            : authT.ResendCode || (currentLocale === "ht" ? "Voye kòd la ankò" : "Resend code")}
         </button>
       </p>
     </div>

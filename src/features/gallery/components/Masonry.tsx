@@ -6,9 +6,11 @@ import React, {
   useRef,
   useState,
 } from "react";
+import Image from "next/image";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Star, MapPin, Eye } from "lucide-react";
+import { MasonrySkeleton } from "./MasonrySkeleton";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -58,19 +60,6 @@ const useMeasure = <T extends HTMLElement>() => {
   return [ref, size] as const;
 };
 
-const preloadImages = async (urls: string[]): Promise<void> => {
-  await Promise.all(
-    urls.map(
-      (src) =>
-        new Promise<void>((resolve) => {
-          const img = new Image();
-          img.src = src;
-          img.onload = img.onerror = () => resolve();
-        }),
-    ),
-  );
-};
-
 export interface Item {
   id: string;
   img: string;
@@ -104,6 +93,84 @@ interface MasonryProps {
   colorShiftOnHover?: boolean;
 }
 
+function MasonryCard({
+  item,
+  index,
+  colorShiftOnHover,
+}: {
+  item: GridItem;
+  index: number;
+  colorShiftOnHover?: boolean;
+}) {
+  const [loaded, setLoaded] = useState(false);
+  const [error, setError] = useState(false);
+
+  return (
+    <div className="relative w-full h-full rounded-2xl overflow-hidden bg-sand-soft/50 shadow-[0px_8px_30px_-10px_rgba(0,0,0,0.18)] transition-all duration-500 group-hover:shadow-[0px_20px_50px_-10px_rgba(0,0,0,0.35)]">
+      {/* Individual Skeleton Shimmer while this specific image is downloading */}
+      {!loaded && !error && (
+        <div className="absolute inset-0 z-0 bg-linear-to-r from-sand-soft/80 via-cream to-sand-soft/80 animate-pulse">
+          <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_1.8s_infinite]" />
+        </div>
+      )}
+
+      {/* Next.js Optimized Image with progressive loading */}
+      <Image
+        src={item.img}
+        alt={item.title || "IFundAyiti Community Photo"}
+        fill
+        sizes="(max-width: 640px) 100vw, (max-width: 1080px) 50vw, 33vw"
+        priority={index < 4}
+        loading={index < 4 ? "eager" : "lazy"}
+        className={`object-cover transition-all duration-700 ${
+          loaded ? "opacity-100 scale-100" : "opacity-0 scale-105"
+        }`}
+        onLoad={() => setLoaded(true)}
+        onError={() => setError(true)}
+      />
+
+      {/* Spotlight Star Badge */}
+      {item.featured && (
+        <div className="absolute top-3.5 right-3.5 z-10 flex items-center gap-1.5 rounded-full border border-amber-300/40 bg-black/50 px-2.5 py-1 text-[11px] font-bold text-amber-300 shadow-[0_0_15px_rgba(251,191,36,0.6)] backdrop-blur-md">
+          <Star className="h-3 w-3 fill-amber-400 text-amber-400 animate-pulse" />
+          <span className="uppercase tracking-wider">Spotlight</span>
+        </div>
+      )}
+
+      {/* Hover Editorial Overlay */}
+      <div className="absolute inset-0 z-10 bg-linear-to-t from-black/85 via-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex flex-col justify-end p-5 text-white pointer-events-none">
+        <div className="flex items-center justify-between gap-2 mb-1.5">
+          {item.category && (
+            <span className="inline-flex items-center rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-200 backdrop-blur-md">
+              {item.category}
+            </span>
+          )}
+          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/25 text-white backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
+            <Eye className="h-3.5 w-3.5" />
+          </span>
+        </div>
+
+        {item.title && (
+          <h4 className="font-display font-bold text-base leading-snug text-white line-clamp-2">
+            {item.title}
+          </h4>
+        )}
+
+        {item.location && (
+          <p className="text-xs text-white/80 mt-1 flex items-center gap-1.5">
+            <MapPin className="h-3.5 w-3.5 text-sand shrink-0" />
+            <span className="truncate">{item.location}</span>
+          </p>
+        )}
+      </div>
+
+      {colorShiftOnHover && (
+        <div className="color-overlay absolute inset-0 z-10 rounded-2xl bg-linear-to-tr from-pink-500/30 to-sky-500/30 opacity-0 pointer-events-none" />
+      )}
+    </div>
+  );
+}
+
 const Masonry: React.FC<MasonryProps> = ({
   items,
   onItemClick,
@@ -128,7 +195,6 @@ const Masonry: React.FC<MasonryProps> = ({
   );
 
   const [containerRef, { width }] = useMeasure<HTMLDivElement>();
-  const [imagesReady, setImagesReady] = useState(false);
 
   const getInitialPosition = (item: GridItem) => {
     const containerRect = containerRef.current?.getBoundingClientRect();
@@ -161,11 +227,6 @@ const Masonry: React.FC<MasonryProps> = ({
     }
   };
 
-  useEffect(() => {
-    if (!items || items.length === 0) return;
-    preloadImages(items.map((i) => i.img)).then(() => setImagesReady(true));
-  }, [items]);
-
   const grid = useMemo<GridItem[]>(() => {
     if (!width || !items || items.length === 0) return [];
     const colHeights = new Array(columns).fill(0);
@@ -187,9 +248,9 @@ const Masonry: React.FC<MasonryProps> = ({
 
   const hasMounted = useRef(false);
 
-  // Mount + resize animation
+  // Mount + resize animation - immediate without waiting for all images to download
   useLayoutEffect(() => {
-    if (!imagesReady || grid.length === 0) return;
+    if (grid.length === 0) return;
 
     grid.forEach((item, index) => {
       const selector = `[data-key="${item.id}"]`;
@@ -205,15 +266,15 @@ const Masonry: React.FC<MasonryProps> = ({
             y: start.y,
             width: item.w,
             height: item.h,
-            ...(blurToFocus && { filter: "blur(10px)" }),
+            ...(blurToFocus && { filter: "blur(8px)" }),
           },
           {
             opacity: 1,
             ...animProps,
             ...(blurToFocus && { filter: "blur(0px)" }),
-            duration: 0.8,
+            duration: 0.6,
             ease: "power3.out",
-            delay: Math.min(index * stagger, 1.2),
+            delay: Math.min(index * stagger, 0.6),
           },
         );
       } else {
@@ -227,12 +288,11 @@ const Masonry: React.FC<MasonryProps> = ({
     });
 
     hasMounted.current = true;
-  }, [grid, imagesReady, stagger, animateFrom, blurToFocus, duration, ease]);
+  }, [grid, stagger, animateFrom, blurToFocus, duration, ease]);
 
   // Height adjustment
   useLayoutEffect(() => {
     if (!containerRef.current || grid.length === 0) return;
-    const lastItem = grid[grid.length - 1];
     const maxBottom = Math.max(...grid.map((i) => i.y + i.h));
     containerRef.current.style.height = maxBottom + "px";
   }, [grid]);
@@ -265,9 +325,17 @@ const Masonry: React.FC<MasonryProps> = ({
     }
   };
 
+  if (!width && items.length > 0) {
+    return (
+      <div ref={containerRef} className="w-full">
+        <MasonrySkeleton count={Math.min(items.length, 8)} />
+      </div>
+    );
+  }
+
   return (
-    <div ref={containerRef} className="relative w-full">
-      {grid?.map((item) => (
+    <div ref={containerRef} className="relative w-full min-h-[300px]">
+      {grid?.map((item, index) => (
         <div
           key={item.id}
           data-key={item.id}
@@ -277,49 +345,11 @@ const Masonry: React.FC<MasonryProps> = ({
           onMouseEnter={(e) => handleMouseEnter(item.id, e.currentTarget)}
           onMouseLeave={(e) => handleMouseLeave(item.id, e.currentTarget)}
         >
-          <div
-            className="relative w-full h-full bg-cover bg-center rounded-2xl overflow-hidden shadow-[0px_8px_30px_-10px_rgba(0,0,0,0.18)] transition-all duration-500 group-hover:shadow-[0px_20px_50px_-10px_rgba(0,0,0,0.35)]"
-            style={{ backgroundImage: `url(${item.img})` }}
-          >
-            {/* Spotlight Star Badge */}
-            {item.featured && (
-              <div className="absolute top-3.5 right-3.5 z-10 flex items-center gap-1.5 rounded-full border border-amber-300/40 bg-black/50 px-2.5 py-1 text-[11px] font-bold text-amber-300 shadow-[0_0_15px_rgba(251,191,36,0.6)] backdrop-blur-md">
-                <Star className="h-3 w-3 fill-amber-400 text-amber-400 animate-pulse" />
-                <span className="uppercase tracking-wider">Spotlight</span>
-              </div>
-            )}
-
-            {/* Hover Editorial Overlay */}
-            <div className="absolute inset-0 bg-linear-to-t from-black/85 via-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex flex-col justify-end p-5 text-white">
-              <div className="flex items-center justify-between gap-2 mb-1.5">
-                {item.category && (
-                  <span className="inline-flex items-center rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-200 backdrop-blur-md">
-                    {item.category}
-                  </span>
-                )}
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/25 text-white backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
-                  <Eye className="h-3.5 w-3.5" />
-                </span>
-              </div>
-
-              {item.title && (
-                <h4 className="font-display font-bold text-base leading-snug text-white line-clamp-2">
-                  {item.title}
-                </h4>
-              )}
-
-              {item.location && (
-                <p className="text-xs text-white/80 mt-1 flex items-center gap-1.5">
-                  <MapPin className="h-3.5 w-3.5 text-sand shrink-0" />
-                  <span className="truncate">{item.location}</span>
-                </p>
-              )}
-            </div>
-
-            {colorShiftOnHover && (
-              <div className="color-overlay absolute inset-0 rounded-2xl bg-linear-to-tr from-pink-500/30 to-sky-500/30 opacity-0 pointer-events-none" />
-            )}
-          </div>
+          <MasonryCard
+            item={item}
+            index={index}
+            colorShiftOnHover={colorShiftOnHover}
+          />
         </div>
       ))}
     </div>

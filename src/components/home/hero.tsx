@@ -38,11 +38,11 @@ export async function HomeHero({ lang }: { lang: string }) {
             alt="Children in Haiti smiling and celebrating community"
             fill
             priority
-            className="object-cover object-[center_35%] lg:object-[center_30%]"
+            className="object-cover object-right md:object-[center_35%] lg:object-[center_30%]"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
           />
           {/* Subtle multi-directional gradients to seamlessly blend image into forest background */}
-          <div className="absolute inset-0 bg-linear-to-r from-forest via-forest/60 md:via-forest/20 to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-forest via-forest/40 md:via-forest/20 to-transparent" />
           <div className="absolute inset-0 bg-linear-to-t from-forest via-transparent to-forest/30" />
           <div className="absolute inset-0 bg-linear-to-b from-forest/40 via-transparent to-forest/80" />
         </div>

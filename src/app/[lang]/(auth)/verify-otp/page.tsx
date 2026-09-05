@@ -4,7 +4,7 @@ import { MailCheck } from "lucide-react";
 
 import { FocusShell } from "@/components/auth/focus-shell";
 import { VerifyOtpForm } from "@/components/auth/verify-otp-form";
-
+import { getDictionary } from "@/lib/dictionaries";
 import { noIndexMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = noIndexMetadata(
@@ -13,6 +13,7 @@ export const metadata: Metadata = noIndexMetadata(
 );
 
 interface PageProps {
+  params: Promise<{ lang: string }>;
   searchParams: Promise<{ email?: string; flow?: string }>;
 }
 
@@ -24,24 +25,58 @@ function maskEmail(email?: string) {
   return `${shown}${"•".repeat(Math.max(name.length - 1, 3))}@${domain}`;
 }
 
-export default async function VerifyOtpPage({ searchParams }: PageProps) {
+export default async function VerifyOtpPage({
+  params,
+  searchParams,
+}: PageProps) {
+  const { lang } = await params;
   const { email, flow } = await searchParams;
+  const dict = await getDictionary(lang);
+  const isHt = lang === "ht";
+  const authT = dict?.Auth || {};
   const isReset = flow === "reset";
 
   return (
     <FocusShell
-      eyebrow={isReset ? "Reset password" : "Verify email"}
-      icon={<MailCheck className="h-7 w-7" />}
-      title="Enter your code"
-      subtitle={
-        <>
-          We sent a one-time code to{" "}
-          <span className="font-medium text-cloud">{maskEmail(email)}</span>.
-          Enter it below to continue.
-        </>
+      lang={lang}
+      eyebrow={
+        isReset
+          ? isHt
+            ? "Chanje modpas"
+            : "Reset password"
+          : isHt
+            ? "Verifye imèl"
+            : "Verify email"
       }
-      backHref={isReset ? "/forgot-password" : "/login"}
-      backLabel={isReset ? "Use a different email" : "Back to sign in"}
+      icon={<MailCheck className="h-6 w-6" />}
+      title={authT.VerifyTitle || (isHt ? "Mete kòd verifikasyon an" : "Enter your code")}
+      subtitle={
+        isHt ? (
+          <>
+            Nou voye yon kòd nan{" "}
+            <span className="font-semibold text-forest-deep">
+              {maskEmail(email)}
+            </span>
+            . Mete l anba a pou w ka kontinye.
+          </>
+        ) : (
+          <>
+            We sent a one-time code to{" "}
+            <span className="font-semibold text-forest-deep">
+              {maskEmail(email)}
+            </span>
+            . Enter it below to continue.
+          </>
+        )
+      }
+      backHref={isReset ? `/${lang}/forgot-password` : `/${lang}/login`}
+      backLabel={
+        isReset
+          ? isHt
+            ? "Itilize yon lòt imèl"
+            : "Use a different email"
+          : authT.BackToSignIn || (isHt ? "Retounen nan paj koneksyon" : "Back to sign in")
+      }
     >
       <Suspense fallback={null}>
         <VerifyOtpForm />

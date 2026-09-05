@@ -1,9 +1,15 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search, X, SlidersHorizontal } from "lucide-react";
 import { GALLERY_CATEGORIES } from "@/features/gallery/constants";
+import {
+  buildGalleryUrl,
+  saveGalleryScroll,
+  usePreserveGalleryScroll,
+} from "../utils";
 
 interface GalleryFilterBarProps {
   lang: string;
@@ -21,43 +27,23 @@ export function GalleryFilterBar({
   dict,
 }: GalleryFilterBarProps) {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
   const [searchTerm, setSearchTerm] = useState(initialSearchTerm);
+
+  useEffect(() => {
+    setSearchTerm(initialSearchTerm);
+  }, [initialSearchTerm]);
+
+  // Keep scroll position preserved when switching categories or filtering
+  usePreserveGalleryScroll(activeCategory);
 
   const t = dict?.GalleryPage;
   const categoriesMap = (t?.Categories || {}) as Record<string, string>;
 
-  const updateFilters = (newCat: string, newSearch: string) => {
-    const params = new URLSearchParams();
-
-    if (newCat && newCat !== "All") {
-      params.set("category", newCat);
-    }
-
-    if (newSearch && newSearch.trim()) {
-      params.set("searchTerm", newSearch.trim());
-    }
-
-    startTransition(() => {
-      router.push(
-        `/${lang}/gallery${params.toString() ? `?${params.toString()}` : ""}`,
-        { scroll: false }
-      );
-    });
-  };
-
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateFilters(activeCategory, searchTerm);
-  };
-
-  const handleClearSearch = () => {
-    setSearchTerm("");
-    updateFilters(activeCategory, "");
-  };
-
-  const handleCategoryClick = (cat: string) => {
-    updateFilters(cat, searchTerm);
+    saveGalleryScroll();
+    const url = buildGalleryUrl(lang, activeCategory, searchTerm);
+    router.replace(url, { scroll: false });
   };
 
   return (
@@ -78,21 +64,26 @@ export function GalleryFilterBar({
               className="w-full rounded-2xl border border-hairline bg-white py-3.5 pl-11 pr-24 text-sm text-forest-deep placeholder:text-mist/70 shadow-xs focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20 transition-all"
             />
             {searchTerm && (
-              <button
-                type="button"
-                onClick={handleClearSearch}
+              <Link
+                href={buildGalleryUrl(lang, activeCategory, "")}
+                scroll={false}
+                prefetch={true}
+                replace={true}
+                onClick={() => {
+                  saveGalleryScroll();
+                  setSearchTerm("");
+                }}
                 className="absolute right-20 p-1 text-mist hover:text-forest-deep transition-colors cursor-pointer"
                 aria-label="Clear search"
               >
                 <X className="h-4 w-4" />
-              </button>
+              </Link>
             )}
             <button
               type="submit"
-              disabled={isPending}
               className="absolute right-2 rounded-xl bg-forest px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-forest-bright transition-colors cursor-pointer"
             >
-              {isPending ? "..." : lang === "ht" ? "Chèche" : "Search"}
+              {lang === "ht" ? "Chèche" : "Search"}
             </button>
           </div>
         </form>
@@ -107,17 +98,21 @@ export function GalleryFilterBar({
         </div>
       </div>
 
-      {/* Category Filter Pills (Horizontal Slider) */}
+      {/* Category Filter Pills (Horizontal Slider) with Instant Link Prefetching */}
       <div className="no-scrollbar flex items-center gap-2 overflow-x-auto lg:flex-wrap pb-2 pt-1">
         {GALLERY_CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat;
           const label = categoriesMap[cat] || cat;
+          const targetUrl = buildGalleryUrl(lang, cat, searchTerm);
 
           return (
-            <button
+            <Link
               key={cat}
-              type="button"
-              onClick={() => handleCategoryClick(cat)}
+              href={targetUrl}
+              scroll={false}
+              prefetch={true}
+              replace={true}
+              onClick={saveGalleryScroll}
               className={`shrink-0 rounded-full px-4 py-2 text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer ${
                 isActive
                   ? "bg-forest text-white shadow-sm ring-2 ring-forest/30 scale-102"
@@ -125,7 +120,7 @@ export function GalleryFilterBar({
               }`}
             >
               {label}
-            </button>
+            </Link>
           );
         })}
       </div>
@@ -139,13 +134,20 @@ export function GalleryFilterBar({
               &ldquo;{initialSearchTerm}&rdquo;
             </span>
           </span>
-          <button
-            type="button"
-            onClick={handleClearSearch}
-            className="text-forest hover:underline font-semibold cursor-pointer"
+          <Link
+            href={buildGalleryUrl(lang, activeCategory, "")}
+            scroll={false}
+            prefetch={true}
+            replace={true}
+            onClick={() => {
+              saveGalleryScroll();
+              setSearchTerm("");
+            }}
+            className="rounded-full bg-sand-soft p-1 text-mist hover:text-forest-deep transition-colors"
+            title="Clear search filter"
           >
-            ({lang === "ht" ? "Efase" : "Clear"})
-          </button>
+            <X className="h-3 w-3" />
+          </Link>
         </div>
       )}
     </div>

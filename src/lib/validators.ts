@@ -34,14 +34,30 @@ export const memberRegisterSchema = z.object({
   fullName: z.string().min(2, "Please enter your full name"),
   email: z.string().min(1, "Email is required").email("Enter a valid email"),
   company: z.string().optional(),
-  interest: z.string().min(1, "Select an area of interest"),
+  interest: z.string().optional(),
   password: z.string().min(8, "Password must be at least 8 characters"),
-  agree: z.literal(true, {
-    errorMap: () => ({ message: "You must accept the terms to continue" }),
-  }),
+  phone: z.string().optional(),
+  agree: z.boolean().optional(),
 });
 
 export type MemberRegisterValues = z.infer<typeof memberRegisterSchema>;
+
+/* ----------------- IFundAyiti Minimal Registration ----------------- */
+export const registerSchema = z
+  .object({
+    fullName: z.string().min(2, "Please enter your full name"),
+    email: z.string().min(1, "Email is required").email("Enter a valid email"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+    phone: z.string().optional(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
+
+export type RegisterValues = z.infer<typeof registerSchema>;
+
 
 /* ----------------- Expert registration (full) ------------------- */
 export const expertRegisterSchema = z.object({

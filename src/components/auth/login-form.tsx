@@ -2,27 +2,44 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Loader2 } from "lucide-react";
+import Cookies from "js-cookie";
+import { toast } from "sonner";
+
 import { loginSchema, type LoginValues } from "@/lib/validators";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { GoogleButton, AuthDivider } from "@/components/auth/google-button";
 import { FieldError } from "@/components/auth/field-error";
-import { useRouter, useSearchParams } from "next/navigation";
 import { useResendOtp } from "@/hooks/useResendOtp";
-import { toast } from "sonner";
 import { nextFetch } from "@/helpers/next-fetch/NextFetch";
-import Cookies from "js-cookie";
+import { useTranslation } from "@/components/providers/translation-provider";
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = React.useState(false);
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
-  // Return the user to where they came from (e.g. the booking page), else home.
-  const redirectTo = searchParams.get("redirect") || "/";
+  const dict = useTranslation();
+
+  const segments = pathname.split("/");
+  const currentLocale = segments[1] === "ht" ? "ht" : "en";
+  const t = dict?.Auth || {};
+
+  // Return the user to where they came from, else home.
+  const rawRedirect = searchParams.get("redirect");
+  const redirectTo = rawRedirect
+    ? rawRedirect.startsWith("http")
+      ? rawRedirect
+      : rawRedirect.startsWith(`/${currentLocale}`)
+        ? rawRedirect
+        : `/${currentLocale}${rawRedirect.startsWith("/") ? rawRedirect : `/${rawRedirect}`}`
+    : `/${currentLocale}`;
+
   const { resend } = useResendOtp();
 
   const {
@@ -34,9 +51,6 @@ export function LoginForm() {
     defaultValues: { email: "", password: "", remember: false },
   });
 
-  // react-hook-form's handleSubmit passes the *validated values* here — not a
-  // DOM event. (The previous version called e.preventDefault() on this object,
-  // which threw and silently killed the submit.)
   const onSubmit = async (values: LoginValues) => {
     const { email, password } = values;
 
@@ -45,7 +59,7 @@ export function LoginForm() {
         method: "POST",
         body: { email, password },
       });
-      // console.log(response);
+
       // Unverified account → send a fresh code and route to verification.
       if (
         !response?.success &&
@@ -54,7 +68,7 @@ export function LoginForm() {
       ) {
         await resend(email);
         router.push(
-          `/verify-otp?email=${encodeURIComponent(email)}&flow=verify`,
+          `/${currentLocale}/verify-otp?email=${encodeURIComponent(email)}&flow=verify`,
         );
         return;
       }
@@ -62,7 +76,10 @@ export function LoginForm() {
       if (response?.success) {
         Cookies.set("accessToken", response?.data?.createToken);
         Cookies.set("role", response?.data?.role);
-        toast.success(response?.message || "Welcome back!");
+        toast.success(
+          response?.message ||
+            (currentLocale === "ht" ? "Byenveni ankò!" : "Welcome back!"),
+        );
         router.replace(redirectTo);
         return;
       }
@@ -72,43 +89,73 @@ export function LoginForm() {
           toast.error(err.message, { id: "login" });
         });
       } else {
-        toast.error(response?.message || "Something went wrong!", {
-          id: "login",
-        });
+        toast.error(
+          response?.message ||
+            (currentLocale === "ht"
+              ? "Imèl oswa modpas la pa kòrèk."
+              : "Something went wrong!"),
+          { id: "login" },
+        );
       }
     } catch (err) {
       console.error("Login error:", err);
-      toast.error("Network error. Please try again.", { id: "login" });
+      toast.error(
+        currentLocale === "ht"
+          ? "Erè nan rezo a. Tanpri eseye ankò."
+          : "Network error. Please try again.",
+        { id: "login" },
+      );
     }
   };
 
   return (
     <div className="flex flex-col gap-6">
-      <GoogleButton label="Continue with Google" />
-      <AuthDivider label="or sign in with email" />
+      <GoogleButton
+        label={
+          currentLocale === "ht"
+            ? "Kontinye avèk Google"
+            : "Continue with Google"
+        }
+      />
+      <AuthDivider
+        label={
+          t.OrContinueWith ||
+          (currentLocale === "ht"
+            ? "oswa kontinye ak imèl"
+            : "or sign in with email")
+        }
+      />
 
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
-        <div className="flex flex-col gap-2">
-          <Label htmlFor="email">Email address</Label>
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+        <div className="flex flex-col gap-1.5 text-left">
+          <Label htmlFor="email" className="text-xs font-bold text-forest-deep">
+            {t.Email || "Email address"}
+          </Label>
           <Input
             id="email"
             type="email"
             autoComplete="email"
-            placeholder="you@company.com"
+            placeholder={t.EmailPlaceholder || "you@example.com"}
             aria-invalid={!!errors.email}
+            className="h-11 rounded-xl border-hairline bg-white/90 px-3.5 text-sm shadow-2xs focus-visible:ring-forest/20"
             {...register("email")}
           />
           <FieldError message={errors.email?.message} />
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1.5 text-left">
           <div className="flex items-center justify-between">
-            <Label htmlFor="password">Password</Label>
-            <Link
-              href="/forgot-password"
-              className="text-xs text-violet-bright hover:underline"
+            <Label
+              htmlFor="password"
+              className="text-xs font-bold text-forest-deep"
             >
-              Forgot password?
+              {t.Password || "Password"}
+            </Label>
+            <Link
+              href={`/${currentLocale}/forgot-password`}
+              className="text-xs font-bold text-forest hover:underline"
+            >
+              {t.ForgotPassword || "Forgot password?"}
             </Link>
           </div>
           <div className="relative">
@@ -117,15 +164,15 @@ export function LoginForm() {
               type={showPassword ? "text" : "password"}
               autoComplete="current-password"
               placeholder="••••••••"
-              className="pr-11"
               aria-invalid={!!errors.password}
+              className="h-11 rounded-xl border-hairline bg-white/90 pr-10 pl-3.5 text-sm shadow-2xs focus-visible:ring-forest/20"
               {...register("password")}
             />
             <button
               type="button"
               onClick={() => setShowPassword((s) => !s)}
               aria-label={showPassword ? "Hide password" : "Show password"}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-mist transition-colors hover:text-cloud"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-mist hover:text-forest-deep"
             >
               {showPassword ? (
                 <EyeOff className="h-4.5 w-4.5" />
@@ -137,38 +184,43 @@ export function LoginForm() {
           <FieldError message={errors.password?.message} />
         </div>
 
-        <label className="flex cursor-pointer select-none items-center gap-2.5 text-sm text-mist">
+        <label className="flex cursor-pointer select-none items-center gap-2.5 text-xs text-mist pt-0.5">
           <input
             type="checkbox"
-            className="h-4 w-4 rounded border-hairline-strong bg-white/3 accent-violet"
+            className="h-4 w-4 rounded border-hairline accent-forest"
             {...register("remember")}
           />
-          Keep me signed in
+          {t.RememberMe || "Keep me signed in"}
         </label>
 
         <Button
           type="submit"
           size="lg"
           disabled={isSubmitting}
-          className="mt-1 w-full"
+          className="mt-2 h-11 w-full rounded-xl bg-forest font-bold text-white shadow-md hover:bg-forest/90"
         >
           {isSubmitting ? (
             <>
-              <Loader2 className="h-4 w-4 animate-spin" /> Signing in…
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              {currentLocale === "ht" ? "N ap konekte..." : "Signing in…"}
             </>
           ) : (
-            "Sign in"
+            t.SignIn || "Sign in"
           )}
         </Button>
       </form>
 
-      <p className="text-center text-sm text-mist">
-        New to Hubology?{" "}
+      <p className="text-center text-xs text-mist">
+        {t.DontHaveAccount ||
+          (currentLocale === "ht"
+            ? "Ou pa gen yon kont?"
+            : "Don't have an account?")}{" "}
         <Link
-          href="/join"
-          className="font-medium text-violet-bright hover:underline"
+          href={`/${currentLocale}/join`}
+          className="font-bold text-forest hover:underline"
         >
-          Join the Hub
+          {t.SignUp ||
+            (currentLocale === "ht" ? "Kreye yon kont" : "Create an account")}
         </Link>
       </p>
     </div>

@@ -155,20 +155,23 @@ export default function ContactPage() {
                   </a>
 
                   {/* Phone */}
-                  <div className="flex items-start gap-4 rounded-2xl border border-hairline bg-sand-soft/40 p-4">
-                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-forest text-white">
+                  <a
+                    href={`tel:${SITE.phone.replace(/[^0-9+]/g, "")}`}
+                    className="group flex items-start gap-4 rounded-2xl border border-hairline bg-sand-soft/40 p-4 transition-all hover:border-forest/40 hover:bg-sand-soft/80 cursor-pointer"
+                  >
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-forest text-white transition-transform group-hover:scale-105">
                       <Phone className="h-5 w-5" />
                     </div>
                     <div>
                       <p className="text-xs font-semibold uppercase tracking-wider text-forest">
                         {t.Direct.PhoneLabel}
                       </p>
-                      <p className="text-sm font-semibold text-forest-deep">
+                      <p className="text-sm font-semibold text-forest-deep group-hover:text-forest">
                         {SITE.phone}
                       </p>
                       <p className="text-xs text-mist mt-0.5">{t.Direct.PhoneDesc}</p>
                     </div>
-                  </div>
+                  </a>
 
                   {/* Location */}
                   <div className="flex items-start gap-4 rounded-2xl border border-hairline bg-sand-soft/40 p-4">
