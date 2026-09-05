@@ -24,6 +24,29 @@ function isNavActive(pathname: string, href: string) {
   return pathname.startsWith(href);
 }
 
+const DASHBOARD_I18N = {
+  en: {
+    eyebrow: "Member dashboard",
+    welcome: "Welcome back",
+    subtitle: "Manage your profile and orders in one place.",
+    nav: {
+      "/dashboard": "Overview",
+      "/dashboard/orders": "Orders",
+      "/dashboard/profile": "Profile",
+    },
+  },
+  ht: {
+    eyebrow: "Tablodbò Manm",
+    welcome: "Byenvini ankò",
+    subtitle: "Jere pwofil ou ak tout kòmand ou yo nan yon sèl kote.",
+    nav: {
+      "/dashboard": "Apèsi",
+      "/dashboard/orders": "Kòmand",
+      "/dashboard/profile": "Profil",
+    },
+  },
+};
+
 export function DashboardShell({
   user,
   children,
@@ -43,43 +66,47 @@ export function DashboardShell({
     ? user.subscription
     : null;
 
-  /**
-   * Production Router Cache can soft-navigate to the layout index (`/dashboard`)
-   * without swapping the page slot when coming from `/dashboard/*`. Force a
-   * refresh so Overview always remounts after build (`next start`).
-   */
+  const segments = (pathname || "").split("/").filter(Boolean);
+  const locale = segments[0] === "ht" ? "ht" : "en";
+  const normalizedPath = pathname.startsWith(`/${locale}`)
+    ? pathname.replace(`/${locale}`, "") || "/dashboard"
+    : pathname;
+  const t = DASHBOARD_I18N[locale];
+
   function handleNavClick(
     e: React.MouseEvent<HTMLAnchorElement>,
-    href: string,
+    targetHref: string,
   ) {
-    if (pathname === href) {
+    if (pathname === targetHref) {
       e.preventDefault();
       return;
     }
 
     const leavingNestedForOverview =
-      href === "/dashboard" && pathname.startsWith("/dashboard/");
+      (targetHref === "/dashboard" || targetHref === `/${locale}/dashboard`) &&
+      normalizedPath.startsWith("/dashboard/");
 
     if (leavingNestedForOverview) {
       e.preventDefault();
-      router.push(href);
+      router.push(targetHref);
       router.refresh();
     }
   }
 
   return (
     <section className="relative min-h-screen pt-28 pb-16">
+      {/* Background ambient gradient matching primary forest brand color */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(129,49,240,0.18),transparent_55%)]"
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(11,61,46,0.18),rgba(230,213,184,0.06)_45%,transparent_70%)]"
       />
 
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="eyebrow">Member dashboard</p>
+            <p className="eyebrow">{t.eyebrow}</p>
             <h1 className="mt-1 font-display text-3xl font-bold text-cloud sm:text-4xl">
-              Welcome back
+              {t.welcome}
               {user.name ? (
                 <>
                   , <span className="text-gradient">{user.name.split(" ")[0]}</span>
@@ -87,15 +114,9 @@ export function DashboardShell({
               ) : null}
             </h1>
             <p className="mt-2 max-w-xl text-sm text-mist">
-              Manage your profile, bookings, digital library, and orders in one
-              place.
+              {t.subtitle}
             </p>
           </div>
-          {activePlan?.name ? (
-            <span className="inline-flex w-fit items-center gap-2 rounded-full border border-violet/30 bg-violet/15 px-3 py-1.5 text-xs font-semibold uppercase tracking-wide text-violet-bright">
-              {activePlan.name} plan
-            </span>
-          ) : null}
         </div>
 
         <div className="grid gap-6 lg:grid-cols-[260px_1fr] lg:gap-8">
@@ -122,7 +143,7 @@ export function DashboardShell({
                     </p>
                     <p className="truncate text-xs text-mist">{user.email}</p>
                     {user.role ? (
-                      <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-violet-bright">
+                      <p className="mt-1 text-[10px] font-semibold uppercase tracking-wide text-forest">
                         {user.role}
                       </p>
                     ) : null}
@@ -133,27 +154,30 @@ export function DashboardShell({
               <nav className="flex flex-col gap-1 p-2">
                 {DASHBOARD_NAV.map((item) => {
                   const Icon = item.icon;
-                  const active = isNavActive(pathname, item.href);
+                  const targetHref = `/${locale}${item.href}`;
+                  const active = isNavActive(normalizedPath, item.href);
+                  const label = (t.nav as Record<string, string>)[item.href] || item.label;
+
                   return (
                     <Link
                       key={item.href}
-                      href={item.href}
+                      href={targetHref}
                       prefetch
-                      onClick={(e) => handleNavClick(e, item.href)}
+                      onClick={(e) => handleNavClick(e, targetHref)}
                       className={cn(
                         "flex items-center gap-3 rounded-2xl px-3.5 py-2.5 text-sm font-medium transition-colors",
                         active
-                          ? "bg-white/6 text-cloud ring-1 ring-hairline-strong"
+                          ? "bg-forest/10 text-forest ring-1 ring-forest/20 font-semibold"
                           : "text-mist hover:bg-white/4 hover:text-cloud",
                       )}
                     >
                       <Icon
                         className={cn(
                           "h-4.5 w-4.5 shrink-0",
-                          active ? "text-violet-bright" : "text-faint",
+                          active ? "text-forest" : "text-faint",
                         )}
                       />
-                      <span>{item.label}</span>
+                      <span>{label}</span>
                     </Link>
                   );
                 })}

@@ -1,19 +1,22 @@
 import Link from "next/link";
 import {
   ArrowRight,
-  BookOpen,
-  CalendarCheck,
-  Crown,
   Package,
   User,
+  ShoppingBag,
+  HeartHandshake,
+  ShieldCheck,
+  CheckCircle2,
 } from "lucide-react";
 
-import type { UserSubscription } from "@/types";
 import { nextFetch } from "@/helpers/next-fetch/NextFetch";
 import getProfile from "@/helpers/next-fetch/getProfile";
 import { Button } from "@/components/ui/button";
 import { DashboardPanel } from "@/features/dashboard/ui";
-import { DashboardMembershipCard } from "@/features/dashboard/membership-card";
+
+interface PageProps {
+  params: Promise<{ lang: string }>;
+}
 
 async function countTotal(url: string) {
   const res = await nextFetch(url, {
@@ -26,117 +29,169 @@ async function countTotal(url: string) {
     : 0;
 }
 
-export default async function DashboardOverviewPage() {
+export default async function DashboardOverviewPage({ params }: PageProps) {
+  const { lang } = await params;
+  const isHt = lang === "ht";
   const user = await getProfile();
-  const [bookings, digital, orders, subscriptionsRes] = await Promise.all([
-    countTotal("/bookings?page=1&limit=1"),
-    countTotal("/digital?page=1&limit=1"),
-    countTotal("/order?page=1&limit=1"),
-    nextFetch<UserSubscription[]>("/subscription", {
-      method: "GET",
-      cache: "no-store",
-    }),
-  ]);
 
-  const subscriptions = subscriptionsRes.success
-    ? (subscriptionsRes.data ?? [])
-    : [];
-  const activeSub =
-    subscriptions.find((s) => {
-      const status = (s.status ?? "")
-        .toLowerCase()
-        .trim()
-        .replace(/[_\s]+/g, "-");
-      return status === "active" || status === "cancel-pending";
-    }) ?? null;
+  const ordersCount = await countTotal("/order?page=1&limit=1");
 
   const cards = [
     {
-      label: "Bookings",
-      value: bookings,
-      href: "/dashboard/bookings",
-      icon: CalendarCheck,
-    },
-    {
-      label: "Digital products",
-      value: digital,
-      href: "/dashboard/digital",
-      icon: BookOpen,
-    },
-    {
-      label: "Orders",
-      value: orders,
-      href: "/dashboard/orders",
+      label: isHt ? "Kòmand Mwen Yo" : "My Orders",
+      description: isHt
+        ? "Swiv livrezon ak tout resi acha ou yo"
+        : "Track shipments and purchase receipts",
+      value: ordersCount,
+      href: `/${lang}/dashboard/orders`,
       icon: Package,
+      highlight: true,
     },
     {
-      label: "Subscriptions",
-      value: subscriptions.length,
-      href: "/dashboard/subscriptions",
-      icon: Crown,
+      label: isHt ? "Boutik la" : "Mission Shop",
+      description: isHt
+        ? "Achte atik pou sipòte kreyatè ayisyen yo"
+        : "Explore apparel supporting local entrepreneurs",
+      value: "Shop",
+      href: `/${lang}/shop`,
+      icon: ShoppingBag,
+    },
+    {
+      label: isHt ? "Pwofil Kont" : "Account Profile",
+      description: isHt
+        ? "Mete enfòmasyon pèsonèl ou yo ajou"
+        : "Update your contact and sign-in details",
+      value: isHt ? "Profil" : "Profile",
+      href: `/${lang}/dashboard/profile`,
+      icon: User,
+    },
+    {
+      label: isHt ? "Sibvansyon" : "Grant Programs",
+      description: isHt
+        ? "Gade enpak ak aplikasyon sibvansyon yo"
+        : "View active cycles and track applications",
+      value: isHt ? "Sibvansyon" : "Grants",
+      href: `/${lang}/grants`,
+      icon: HeartHandshake,
     },
   ];
 
   return (
     <div className="flex flex-col gap-6">
       <DashboardPanel
-        title="Account overview"
-        description="A quick look at your Hubology activity."
+        title={isHt ? "Apèsi sou Kont la" : "Account overview"}
+        description={
+          isHt
+            ? "Yon koudèy sou aktivite w sou IFundAyiti."
+            : "A quick look at your IFundAyiti activity."
+        }
         actions={
-          <Button asChild variant="outline" size="sm">
-            <Link href="/dashboard/profile">
-              <User className="h-4 w-4" /> Edit profile
+          <Button asChild variant="outline" size="sm" className="rounded-xl text-xs">
+            <Link href={`/${lang}/dashboard/profile`}>
+              <User className="mr-1.5 h-3.5 w-3.5" />
+              {isHt ? "Modifye Profil" : "Edit profile"}
             </Link>
           </Button>
         }
       >
         <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          {cards.map(({ label, value, href, icon: Icon }) => (
+          {cards.map(({ label, description, value, href, icon: Icon, highlight }) => (
             <Link
               key={href}
               href={href}
-              className="group rounded-2xl border border-hairline bg-white/3 p-4 transition-colors hover:border-violet/40 hover:bg-violet/8"
+              className="group rounded-2xl border border-hairline/80 bg-panel/75 p-4.5 transition-all duration-200 hover:border-forest/40 hover:bg-panel hover:shadow-xs"
             >
               <div className="flex items-center justify-between">
-                <span className="grid h-9 w-9 place-items-center rounded-xl bg-violet/15 text-violet-bright">
-                  <Icon className="h-4 w-4" />
+                <span className="grid h-9 w-9 place-items-center rounded-xl bg-forest/10 text-forest">
+                  <Icon className="h-4.5 w-4.5" />
                 </span>
-                <ArrowRight className="h-4 w-4 text-faint transition-transform group-hover:translate-x-0.5 group-hover:text-cloud" />
+                <ArrowRight className="h-4 w-4 text-mist transition-transform group-hover:translate-x-0.5 group-hover:text-forest" />
               </div>
-              <p className="mt-4 font-display text-2xl font-bold text-cloud tabular-nums">
+              <p className="mt-3 font-display text-2xl font-bold text-cloud">
                 {value}
               </p>
-              <p className="mt-1 text-sm text-mist">{label}</p>
+              <p className="mt-0.5 text-xs font-semibold text-cloud">{label}</p>
+              <p className="mt-1 text-[11px] text-mist leading-relaxed line-clamp-2">
+                {description}
+              </p>
             </Link>
           ))}
         </div>
       </DashboardPanel>
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <DashboardPanel title="Profile" description="Signed-in account details.">
+        {/* Profile Card */}
+        <DashboardPanel
+          title={isHt ? "Pwofil" : "Profile"}
+          description={
+            isHt
+              ? "Enfòmasyon kont ki konekte a."
+              : "Signed-in account details."
+          }
+        >
           <dl className="space-y-3 text-sm">
             <div className="flex justify-between gap-4 border-b border-hairline pb-3">
-              <dt className="text-mist">Name</dt>
-              <dd className="font-medium text-cloud">{user?.name || "—"}</dd>
+              <dt className="text-mist">{isHt ? "Non" : "Name"}</dt>
+              <dd className="font-semibold text-cloud">{user?.name || "—"}</dd>
             </div>
             <div className="flex justify-between gap-4 border-b border-hairline pb-3">
-              <dt className="text-mist">Email</dt>
-              <dd className="font-medium text-cloud">{user?.email || "—"}</dd>
+              <dt className="text-mist">{isHt ? "Imèl" : "Email"}</dt>
+              <dd className="font-semibold text-cloud">{user?.email || "—"}</dd>
             </div>
             <div className="flex justify-between gap-4 border-b border-hairline pb-3">
-              <dt className="text-mist">Role</dt>
-              <dd className="font-medium text-cloud">{user?.role || "—"}</dd>
+              <dt className="text-mist">{isHt ? "Wòl" : "Role"}</dt>
+              <dd className="font-semibold text-forest uppercase text-xs tracking-wider">
+                {user?.role || "MEMBER"}
+              </dd>
             </div>
             <div className="flex justify-between gap-4">
-              <dt className="text-mist">Company</dt>
-              <dd className="font-medium text-cloud">
-                {user?.company || "—"}
+              <dt className="text-mist">{isHt ? "Nimewo Kontak" : "Contact Number"}</dt>
+              <dd className="font-semibold text-cloud">
+                {user?.phone || user?.vendorProfile?.contactNo || "—"}
               </dd>
             </div>
           </dl>
         </DashboardPanel>
 
-        <DashboardMembershipCard subscription={activeSub} />
+        {/* Mission & Support Card */}
+        <DashboardPanel
+          title={isHt ? "Enpak ak Kòmand" : "Orders & Mission Impact"}
+          description={
+            isHt
+              ? "Tout acha ou fè yo finanse mikwo-sibvansyon an Ayiti."
+              : "Every purchase directly fuels equity-free micro-grants for Haitian builders."
+          }
+        >
+          <div className="space-y-4">
+            <div className="rounded-2xl border border-forest/20 bg-forest/5 p-4">
+              <div className="flex items-center gap-2 text-xs font-bold text-forest uppercase tracking-wider">
+                <ShieldCheck className="h-4 w-4 text-forest" />
+                <span>{isHt ? "Pwoteksyon Peman Stripe" : "Stripe Secured Payments"}</span>
+              </div>
+              <p className="mt-1.5 text-xs text-mist leading-relaxed">
+                {isHt
+                  ? "Tout kòmand ou yo trete an sekirite epi pwoteje ak chifreman nivo labank."
+                  : "All your store orders are processed securely and protected with bank-level encryption."}
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-2.5 pt-1">
+              <Button asChild className="rounded-xl bg-forest hover:bg-forest-bright text-xs font-semibold text-white shadow-xs flex-1">
+                <Link href={`/${lang}/dashboard/orders`}>
+                  <Package className="mr-1.5 h-3.5 w-3.5" />
+                  {isHt ? "Gade Kòmand Mwen Yo" : "View My Orders"}
+                </Link>
+              </Button>
+
+              <Button asChild variant="outline" className="rounded-xl text-xs flex-1">
+                <Link href={`/${lang}/shop`}>
+                  <ShoppingBag className="mr-1.5 h-3.5 w-3.5" />
+                  {isHt ? "Vizite Boutik la" : "Browse Shop"}
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </DashboardPanel>
       </div>
     </div>
   );

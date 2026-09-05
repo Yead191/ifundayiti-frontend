@@ -3,440 +3,947 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Eye, MapPin, TicketPercent } from "lucide-react";
+import {
+  Package,
+  ShoppingBag,
+  CheckCircle2,
+  Clock,
+  Truck,
+  XCircle,
+  Eye,
+  Copy,
+  Check,
+  MapPin,
+  CreditCard,
+  Search,
+  ArrowLeft,
+  Printer,
+  Calendar,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
+import { toast } from "sonner";
 
-import { cn } from "@/lib/utils";
+import { cn, formatPrice } from "@/lib/utils";
 import { getImageUrl } from "@/lib/getImageUrl";
 import { Button } from "@/components/ui/button";
-import { Modal } from "@/components/ui/modal";
+import { Input } from "@/components/ui/input";
 import {
-  DashboardPanel,
-  DashboardTable,
-  EmptyDash,
-  StatusPill,
-  formatDate,
-  formatMoney,
-  statusTone,
-} from "@/features/dashboard/ui";
+  ORDER_STATUS,
+  PAYMENT_STATUS,
+  PRE_ORDER_STATUS,
+  type IOrder,
+  type IOrderItem,
+} from "@/types";
 
-export interface DashboardOrder {
-  _id: string;
-  order_id?: string;
-  status?: string;
-  payment_status?: string;
-  total_items?: number;
-  formatted_address?: string;
-  contact_number?: string;
-  createdAt?: string;
-  payment_intent_id?: string;
-  transaction_id?: string;
-  coupon?: string;
-  discount_percentage?: number;
-  discount_amount?: number;
-  user?: {
-    _id?: string;
-    name?: string;
-    email?: string;
-    image?: string | null;
-  };
-  items?: Array<{
-    title?: string;
-    image?: string | null;
-    quantity?: number;
-    unit_price?: number;
-    total_price?: number;
-  }>;
-  price_breakdown?: {
-    products_price?: number;
-    serviceFee?: number;
-    delivery_charge?: number;
-    discount_amount?: number;
-    tax?: number;
-    total_price?: number;
-    subtotal?: number;
-  };
-  address_breakdown?: {
-    city?: string;
-    postal_code?: string;
-    street_address?: string;
-    country?: string;
-    contact_number?: string;
-    coupon?: string;
-  };
+// Backwards-compatible type alias
+export type DashboardOrder = IOrder;
+
+interface OrdersTableProps {
+  orders: IOrder[];
+  lang?: string;
+  dict?: any;
 }
 
-function orderCoupon(o: DashboardOrder) {
-  return (
-    o.coupon?.trim() ||
-    o.address_breakdown?.coupon?.trim() ||
-    ""
-  );
-}
-
-function orderDiscount(o: DashboardOrder) {
-  return (
-    o.discount_amount ??
-    o.price_breakdown?.discount_amount ??
-    0
-  );
-}
-
-function hasDiscount(o: DashboardOrder) {
-  if (orderCoupon(o)) return true;
-  return orderDiscount(o) > 0;
-}
-
-function discountLabel(o: DashboardOrder) {
-  const parts: string[] = [];
-  if ((o.discount_percentage ?? 0) > 0) {
-    parts.push(`${o.discount_percentage}%`);
+/**
+ * Safely extracts only the first image index for an order item
+ */
+export function getItemFirstImage(item: IOrderItem): string | null {
+  if (item?.image) {
+    if (Array.isArray(item.image)) {
+      return item.image[0] || null;
+    }
+    if (typeof item.image === "string" && item.image.trim()) {
+      return item.image.trim();
+    }
   }
-  const amount = orderDiscount(o);
-  if (amount > 0) parts.push(formatMoney(amount));
-  return parts.length > 0 ? parts.join(" · ") : "Applied";
+
+  if (typeof item?.product === "object" && item.product !== null) {
+    const prod = item.product as any;
+    if (Array.isArray(prod.images) && prod.images.length > 0) {
+      return prod.images[0] || null;
+    }
+    if (typeof prod.images === "string" && prod.images.trim()) {
+      return prod.images.trim();
+    }
+    if (typeof prod.image === "string" && prod.image.trim()) {
+      return prod.image.trim();
+    }
+  }
+
+  return null;
 }
 
-export function OrdersTable({ orders }: { orders: DashboardOrder[] }) {
-  const [selected, setSelected] = React.useState<DashboardOrder | null>(null);
+export function OrdersTable({ orders = [], lang = "en", dict }: OrdersTableProps) {
+  const isHt = lang === "ht";
+  const t = dict?.DashboardOrders || {};
+
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [statusFilter, setStatusFilter] = React.useState<string>("all");
+  const [copiedId, setCopiedId] = React.useState<string | null>(null);
+
+  function handleCopy(text: string, label: string) {
+    if (!navigator?.clipboard) return;
+    navigator.clipboard.writeText(text);
+    setCopiedId(text);
+    toast.success(
+      isHt
+        ? `${label} kopye avèk siksè!`
+        : `${label} copied to clipboard!`,
+    );
+    setTimeout(() => setCopiedId(null), 2000);
+  }
+
+  // Summary Metrics
+  const metrics = React.useMemo(() => {
+    const total = orders.length;
+    const delivered = orders.filter(
+      (o) => (o.status as string) === ORDER_STATUS.DELIVERED,
+    ).length;
+    const inTransit = orders.filter(
+      (o) =>
+        (o.status as string) === ORDER_STATUS.SHIPPED ||
+        (o.status as string) === ORDER_STATUS.PROCESSING ||
+        (o.status as string) === ORDER_STATUS.CONFIRMED,
+    ).length;
+    const totalSpent = orders.reduce((sum, o) => {
+      const price =
+        o.price_breakdown?.total_price ??
+        (o as any).total_amount ??
+        0;
+      return sum + (typeof price === "number" ? price : 0);
+    }, 0);
+
+    return { total, delivered, inTransit, totalSpent };
+  }, [orders]);
+
+  // Client-side filtering
+  const filteredOrders = React.useMemo(() => {
+    return orders.filter((order) => {
+      if (statusFilter !== "all") {
+        if ((order.status ?? "").toLowerCase() !== statusFilter.toLowerCase()) {
+          return false;
+        }
+      }
+
+      if (searchTerm.trim()) {
+        const term = searchTerm.toLowerCase().trim();
+        const matchesId = (order.order_id || order._id || "")
+          .toLowerCase()
+          .includes(term);
+        const matchesAddress = (order.formatted_address || "")
+          .toLowerCase()
+          .includes(term);
+        const matchesPhone = (order.contact_number || "")
+          .toLowerCase()
+          .includes(term);
+        const matchesItems = (order.items || []).some((i) =>
+          (i.name || (i as any).title || "").toLowerCase().includes(term),
+        );
+        if (!matchesId && !matchesAddress && !matchesPhone && !matchesItems) {
+          return false;
+        }
+      }
+
+      return true;
+    });
+  }, [orders, statusFilter, searchTerm]);
 
   return (
-    <>
-      <DashboardPanel
-        title="Order history"
-        description="Office supply orders and shipment details."
-      >
-        {orders.length === 0 ? (
-          <>
-            <EmptyDash
-              title="No orders yet"
-              message="When you check out office supplies, your orders will show up here."
-            />
-            <div className="mt-4 flex justify-center">
-              <Button asChild size="sm">
-                <Link href="/office-supplies">Browse supplies</Link>
-              </Button>
-            </div>
-          </>
-        ) : (
-          <DashboardTable
-            headers={[
-              "Order",
-              "Date",
-              "Items",
-              "Total",
-              "Coupon",
-              "Status",
-              "Payment",
-              "",
-            ]}
-          >
-            {orders.map((o) => {
-              const total =
-                o.price_breakdown?.total_price ?? o.price_breakdown?.subtotal;
-              const subtotal = o.price_breakdown?.subtotal;
-              const discounted = hasDiscount(o);
-              const coupon = orderCoupon(o);
+    <div className="space-y-6">
+      {/* Header & Metrics */}
+      <div className="flex flex-col gap-2">
+        <h1 className="font-display text-2xl font-bold tracking-tight text-cloud sm:text-3xl">
+          {t.Title || (isHt ? "Kòmand Mwen Yo" : "My Orders")}
+        </h1>
+        <p className="text-sm text-mist">
+          {t.Subtitle ||
+            (isHt
+              ? "Swiv livrezon ou yo, gade sa ou te achte, epi jwenn resi detaye kòmand ou yo."
+              : "Track your shipments, review purchases, and view itemized order receipts.")}
+        </p>
+      </div>
 
-              return (
-                <tr key={o._id} className="hover:bg-white/2">
-                  <td className="px-4 py-3 font-medium text-cloud">
-                    {o.order_id || o._id.slice(-6)}
-                  </td>
-                  <td className="px-4 py-3 text-mist">
-                    {formatDate(o.createdAt)}
-                  </td>
-                  <td className="px-4 py-3 text-mist">
-                    {o.total_items ?? o.items?.length ?? 0}
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex flex-col">
-                      <span className="font-medium text-cloud">
-                        {formatMoney(total)}
-                      </span>
-                      {discounted &&
-                      subtotal != null &&
-                      total != null &&
-                      subtotal > total ? (
-                        <span className="text-xs text-faint line-through">
-                          {formatMoney(subtotal)}
-                        </span>
-                      ) : null}
-                    </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    {coupon ? (
-                      <span className="inline-flex items-center gap-1.5 rounded-full border border-violet/25 bg-violet/10 px-2.5 py-0.5 text-xs font-medium text-violet-bright">
-                        <TicketPercent className="h-3 w-3" />
-                        {coupon}
-                      </span>
-                    ) : (
-                      <span className="text-faint">—</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    <StatusPill
-                      value={o.status || "—"}
-                      tone={statusTone(o.status)}
-                    />
-                  </td>
-                  <td className="px-4 py-3">
-                    <StatusPill
-                      value={o.payment_status || "—"}
-                      tone={statusTone(o.payment_status)}
-                    />
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => setSelected(o)}
-                    >
-                      <Eye className="h-4 w-4" /> View
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
-          </DashboardTable>
-        )}
-      </DashboardPanel>
-
-      <Modal
-        open={Boolean(selected)}
-        onClose={() => setSelected(null)}
-        title={selected ? `Order ${selected.order_id || ""}` : "Order"}
-        description="Items, shipping, coupon, and payment breakdown."
-        className="max-w-md"
-      >
-        {selected ? <OrderDetailModal order={selected} /> : null}
-      </Modal>
-    </>
-  );
-}
-
-function OrderDetailModal({ order }: { order: DashboardOrder }) {
-  const breakdown = order.price_breakdown;
-  const paid = breakdown?.total_price ?? breakdown?.subtotal;
-  const discounted = hasDiscount(order);
-  const coupon = orderCoupon(order);
-  const discount = orderDiscount(order);
-
-  return (
-    <div className="space-y-5">
-      {/* Total + status */}
-      <div className="relative overflow-hidden rounded-2xl border border-hairline-strong bg-white/[0.04] p-5">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute -right-8 -top-10 h-32 w-32 rounded-full bg-violet/25 blur-3xl"
-        />
-        <div className="relative flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-medium uppercase tracking-[0.14em] text-faint">
-              Order total
-            </p>
-            <p className="mt-1 font-display text-3xl font-bold tracking-tight text-cloud">
-              {formatMoney(paid)}
-            </p>
-            {discounted && discount > 0 ? (
-              <p className="mt-1 text-sm text-mist">
-                {breakdown?.subtotal != null &&
-                paid != null &&
-                breakdown.subtotal > paid ? (
-                  <>
-                    <span className="line-through text-faint">
-                      {formatMoney(breakdown.subtotal)}
-                    </span>
-                    <span className="mx-1.5 text-faint">·</span>
-                  </>
-                ) : null}
-                Saved {formatMoney(discount)}
-                {(order.discount_percentage ?? 0) > 0
-                  ? ` (${order.discount_percentage}%)`
-                  : ""}
-              </p>
-            ) : null}
+      {/* Metric Cards */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
+        <div className="rounded-2xl border border-hairline/80 bg-panel/80 p-4 shadow-xs backdrop-blur-md">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-wider text-mist">
+              {t.TotalOrders || (isHt ? "Total Kòmand" : "Total Orders")}
+            </span>
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-forest/15 text-forest">
+              <ShoppingBag className="h-4 w-4" />
+            </span>
           </div>
-          <div className="flex flex-col items-end gap-1.5">
-            <StatusPill
-              value={order.status || "—"}
-              tone={statusTone(order.status)}
-            />
-            <StatusPill
-              value={order.payment_status || "—"}
-              tone={statusTone(order.payment_status)}
-            />
+          <p className="mt-2 font-display text-2xl font-bold text-cloud">
+            {metrics.total}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-hairline/80 bg-panel/80 p-4 shadow-xs backdrop-blur-md">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-wider text-mist">
+              {t.InTransit || (isHt ? "Sou Wout" : "In Transit")}
+            </span>
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-forest/15 text-forest">
+              <Truck className="h-4 w-4" />
+            </span>
           </div>
+          <p className="mt-2 font-display text-2xl font-bold text-forest">
+            {metrics.inTransit}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-hairline/80 bg-panel/80 p-4 shadow-xs backdrop-blur-md">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-wider text-mist">
+              {t.Delivered || (isHt ? "Livre" : "Delivered")}
+            </span>
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-emerald-500/15 text-emerald-600">
+              <CheckCircle2 className="h-4 w-4" />
+            </span>
+          </div>
+          <p className="mt-2 font-display text-2xl font-bold text-emerald-600">
+            {metrics.delivered}
+          </p>
+        </div>
+
+        <div className="rounded-2xl border border-hairline/80 bg-panel/80 p-4 shadow-xs backdrop-blur-md">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-wider text-mist">
+              {t.TotalSpent || (isHt ? "Total Depanse" : "Total Spent")}
+            </span>
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-amber-500/15 text-amber-600">
+              <CreditCard className="h-4 w-4" />
+            </span>
+          </div>
+          <p className="mt-2 font-display text-2xl font-bold text-amber-600">
+            {formatPrice(metrics.totalSpent)}
+          </p>
         </div>
       </div>
 
-      {/* Items */}
-      <section>
-        <SectionLabel>Items</SectionLabel>
-        <ul className="mt-2 space-y-2">
-          {(order.items ?? []).map((item, i) => {
-            const image = getImageUrl(item.image);
-            return (
-              <li
-                key={`${item.title}-${i}`}
-                className="flex gap-3 rounded-2xl border border-hairline bg-white/[0.03] p-3"
+      {/* Filter & Search Bar */}
+      <div className="flex flex-col gap-3 rounded-2xl border border-hairline/80 bg-panel/60 p-3 sm:flex-row sm:items-center sm:justify-between sm:p-4 shadow-xs">
+        {/* Search */}
+        <div className="relative flex-1">
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-mist" />
+          <Input
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            placeholder={
+              t.SearchPlaceholder ||
+              (isHt
+                ? "Chèche pa Nimewo Kòmand, non atik, oswa destinasyon..."
+                : "Search by Order ID, item name, or destination...")
+            }
+            className="h-10 rounded-xl border-hairline bg-white pl-9 text-xs text-cloud placeholder:text-mist/70 focus:bg-white"
+          />
+        </div>
+
+        {/* Status Filter Tabs */}
+        <div className="flex flex-wrap items-center gap-1.5 overflow-x-auto">
+          {[
+            { id: "all", label: t.FilterAll || (isHt ? "Tout" : "All") },
+            { id: "confirmed", label: t.FilterConfirmed || (isHt ? "Konfime" : "Confirmed") },
+            { id: "processing", label: t.FilterProcessing || (isHt ? "Preparasyon" : "Processing") },
+            { id: "shipped", label: t.FilterShipped || (isHt ? "Ekspedye" : "Shipped") },
+            { id: "delivered", label: t.FilterDelivered || (isHt ? "Livre" : "Delivered") },
+            { id: "cancelled", label: t.FilterCancelled || (isHt ? "Anile" : "Cancelled") },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setStatusFilter(tab.id)}
+              className={cn(
+                "rounded-xl px-3 py-1.5 text-xs font-semibold transition-all cursor-pointer",
+                statusFilter === tab.id
+                  ? "bg-forest text-white shadow-xs"
+                  : "bg-white/60 text-mist hover:bg-white hover:text-forest border border-hairline/50",
+              )}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Orders List / Empty State */}
+      {filteredOrders.length === 0 ? (
+        <div className="rounded-3xl border border-hairline/80 bg-panel/50 p-10 text-center backdrop-blur-md sm:p-14 shadow-xs">
+          <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-forest/10 text-forest">
+            <Package className="h-8 w-8" />
+          </div>
+          <h3 className="mt-4 font-display text-lg font-bold text-cloud">
+            {t.NoOrdersTitle || (isHt ? "Pa gen kòmand" : "No orders found")}
+          </h3>
+          <p className="mx-auto mt-1 max-w-md text-xs text-mist leading-relaxed">
+            {searchTerm || statusFilter !== "all"
+              ? isHt
+                ? "Pa gen okenn kòmand ki koresponn ak rechèch ou a. Eseye chanje filtè yo."
+                : "No orders match your search or active filter. Try resetting your filters."
+              : t.NoOrdersDesc ||
+                (isHt
+                  ? "Ou poko fè okenn kòmand. Eksplore boutik nou an pou w sipòte kreyatè ayisyen yo."
+                  : "You haven't placed any orders yet. Explore our merchandise to support Haitian creators.")}
+          </p>
+          <div className="mt-5 flex justify-center gap-3">
+            {searchTerm || statusFilter !== "all" ? (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => {
+                  setSearchTerm("");
+                  setStatusFilter("all");
+                }}
+                className="rounded-xl text-xs cursor-pointer"
               >
-                <span className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl border border-hairline bg-ink">
+                {isHt ? "Reyajiste Filtè Yo" : "Reset Filters"}
+              </Button>
+            ) : (
+              <Button asChild size="sm" className="rounded-xl bg-forest text-xs font-bold text-white shadow-xs">
+                <Link href={`/${lang}/shop`}>
+                  <ShoppingBag className="mr-1.5 h-3.5 w-3.5" />
+                  {t.ShopNow || (isHt ? "Vizite Boutik la" : "Browse Shop")}
+                </Link>
+              </Button>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {filteredOrders.map((order) => {
+            const orderId = order.order_id || `#${order._id.slice(-8).toUpperCase()}`;
+            const total =
+              order.price_breakdown?.total_price ??
+              (order as any).total_amount ??
+              0;
+            const items = order.items || [];
+            const hasPreOrder = items.some((i) => i.isPreOrder);
+            const detailUrl = `/${lang}/dashboard/orders/${order._id}`;
+
+            return (
+              <div
+                key={order._id}
+                className="group relative overflow-hidden rounded-3xl border border-hairline/80 bg-panel/75 p-5 transition-all duration-200 hover:border-forest/40 hover:bg-panel hover:shadow-md sm:p-6"
+              >
+                {/* Top bar: Order ID, Date, Badges */}
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-hairline/60 pb-4">
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href={detailUrl}
+                      className="font-mono text-sm font-bold text-cloud hover:text-forest transition-colors"
+                    >
+                      {orderId}
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(order.order_id || order._id, "Order ID")}
+                      className="text-mist hover:text-forest transition-colors cursor-pointer"
+                      title={isHt ? "Klike pou kopye" : "Click to copy"}
+                    >
+                      {copiedId === (order.order_id || order._id) ? (
+                        <Check className="h-3.5 w-3.5 text-emerald-600" />
+                      ) : (
+                        <Copy className="h-3.5 w-3.5" />
+                      )}
+                    </button>
+
+                    {hasPreOrder && (
+                      <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700">
+                        <Sparkles className="h-3 w-3" />
+                        {t.PreOrder || (isHt ? "Pre-Kòmand" : "Pre-Order")}
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center gap-1 text-xs text-mist">
+                      <Calendar className="h-3.5 w-3.5 text-mist/70" />
+                      {formatDate(order.createdAt, isHt)}
+                    </span>
+
+                    <OrderStatusBadge status={order.status} isHt={isHt} />
+                    <PaymentStatusBadge status={order.payment_status} isHt={isHt} />
+                  </div>
+                </div>
+
+                {/* Body: Items Preview & Pricing */}
+                <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                  {/* Item Thumbnails (Uses ONLY first index image) */}
+                  <Link href={detailUrl} className="flex items-center gap-3 min-w-0 group/link">
+                    <div className="flex -space-x-3 overflow-hidden py-1">
+                      {items.slice(0, 4).map((item, idx) => {
+                        const firstImage = getItemFirstImage(item);
+                        const img = firstImage ? getImageUrl(firstImage) : null;
+                        return (
+                          <div
+                            key={idx}
+                            className="relative h-12 w-12 shrink-0 overflow-hidden rounded-xl border-2 border-white bg-sand-soft/40 shadow-2xs"
+                          >
+                            {img ? (
+                              <Image
+                                src={img}
+                                alt={item.name || "Item"}
+                                fill
+                                sizes="48px"
+                                className="object-cover"
+                              />
+                            ) : (
+                              <div className="grid h-full w-full place-items-center bg-forest/10 text-forest">
+                                <Package className="h-5 w-5" />
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-cloud group-hover/link:text-forest transition-colors">
+                        {items[0]?.name || "Mission Item"}
+                        {items.length > 1 && (
+                          <span className="ml-1.5 text-xs font-normal text-mist">
+                            +{items.length - 1} {isHt ? "lòt" : "more"}
+                          </span>
+                        )}
+                      </p>
+                      <p className="text-xs text-mist">
+                        {order.total_items || items.reduce((sum, i) => sum + (i.quantity || 1), 0)}{" "}
+                        {isHt ? "atik total" : "items total"} ·{" "}
+                        <span className="text-mist">{order.address_breakdown?.city || "Haiti"}</span>
+                      </p>
+                    </div>
+                  </Link>
+
+                  {/* Pricing and Action Button */}
+                  <div className="flex items-center justify-between gap-4 border-t border-hairline/40 pt-3 sm:border-0 sm:pt-0">
+                    <div className="text-left sm:text-right">
+                      <p className="text-[11px] font-medium uppercase tracking-wider text-mist">
+                        {t.TotalCol || (isHt ? "Total" : "Total")}
+                      </p>
+                      <p className="font-display text-lg font-bold text-forest">
+                        {formatPrice(total)}
+                      </p>
+                    </div>
+
+                    <Button
+                      asChild
+                      size="sm"
+                      className="rounded-xl bg-forest hover:bg-forest-bright text-xs font-semibold text-white shadow-xs cursor-pointer"
+                    >
+                      <Link href={detailUrl}>
+                        <Eye className="mr-1.5 h-3.5 w-3.5" />
+                        {t.ViewDetails || (isHt ? "Gade Detay" : "View Details")}
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ *
+ * Complete Itemized Order Detail Component (Dedicated Full Page)
+ * ------------------------------------------------------------------ */
+export function OrderDetailView({
+  order,
+  lang = "en",
+  dict,
+}: {
+  order: IOrder;
+  lang?: string;
+  dict?: any;
+  onClose?: () => void;
+  isStandalone?: boolean;
+}) {
+  const isHt = lang === "ht";
+  const t = dict?.DashboardOrders || {};
+  const [copiedField, setCopiedField] = React.useState<string | null>(null);
+
+  function copyText(val: string, field: string) {
+    if (!navigator?.clipboard) return;
+    navigator.clipboard.writeText(val);
+    setCopiedField(field);
+    toast.success(isHt ? "Kopye avèk siksè!" : "Copied to clipboard!");
+    setTimeout(() => setCopiedField(null), 2000);
+  }
+
+  const breakdown = order.price_breakdown;
+  const totalPaid = breakdown?.total_price ?? (order as any).total_amount ?? 0;
+  const delivery = breakdown?.delivery_charge ?? 0;
+  const tax = breakdown?.tax ?? 0;
+  const subtotal = breakdown?.subtotal ?? (totalPaid - delivery - tax);
+
+  return (
+    <div className="space-y-6">
+      {/* 1. Header Banner with Status & Delivery Tracker */}
+      <div className="rounded-3xl border border-hairline/80 bg-white p-5 shadow-xs sm:p-6">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-hairline/60 pb-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="font-mono text-base font-bold text-cloud">
+                {order.order_id || `#${order._id.slice(-8).toUpperCase()}`}
+              </span>
+              <button
+                type="button"
+                onClick={() => copyText(order.order_id || order._id, "order_id")}
+                className="text-mist hover:text-forest transition-colors cursor-pointer"
+                title={isHt ? "Kopye Nimewo Kòmand" : "Copy Order ID"}
+              >
+                {copiedField === "order_id" ? (
+                  <Check className="h-4 w-4 text-emerald-600" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </button>
+            </div>
+            <p className="mt-0.5 text-xs text-mist">
+              {t.PlacedOn || (isHt ? "Fèt le" : "Placed on")}{" "}
+              {formatDate(order.createdAt, isHt)}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <OrderStatusBadge status={order.status} isHt={isHt} />
+            <PaymentStatusBadge status={order.payment_status} isHt={isHt} />
+          </div>
+        </div>
+
+        {/* Delivery Progress Timeline Tracker */}
+        <div className="mt-5">
+          <p className="text-xs font-semibold uppercase tracking-wider text-mist">
+            {t.DeliveryTimeline || (isHt ? "Kalandriye Livrezon" : "Delivery Timeline")}
+          </p>
+          <DeliveryTimelineTracker status={order.status} isHt={isHt} t={t} />
+        </div>
+      </div>
+
+      {/* 2. Itemized Product List */}
+      <div className="space-y-3">
+        <p className="text-xs font-bold uppercase tracking-wider text-forest">
+          {t.ItemsOrdered || (isHt ? "Atik Ou Kòmande" : "Items Ordered")} (
+          {order.items?.length || 0})
+        </p>
+
+        <div className="space-y-2.5">
+          {(order.items || []).map((item: IOrderItem, index: number) => {
+            // Uses only the first image index for each item
+            const firstImage = getItemFirstImage(item);
+            const image = firstImage ? getImageUrl(firstImage) : null;
+
+            return (
+              <div
+                key={index}
+                className="flex items-center gap-3.5 rounded-2xl border border-hairline/80 bg-white p-3 sm:p-4 shadow-2xs hover:border-forest/30 transition-colors"
+              >
+                {/* Image (first index) */}
+                <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-xl border border-hairline bg-sand-soft/30 shadow-2xs">
                   {image ? (
                     <Image
                       src={image}
-                      alt={item.title || "Item"}
+                      alt={item.name}
                       fill
-                      sizes="56px"
+                      sizes="64px"
                       className="object-cover"
                     />
-                  ) : null}
-                </span>
+                  ) : (
+                    <div className="grid h-full w-full place-items-center bg-forest/10 text-forest">
+                      <Package className="h-6 w-6" />
+                    </div>
+                  )}
+                </div>
+
+                {/* Details */}
                 <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-cloud">
-                    {item.title}
-                  </p>
-                  <p className="mt-0.5 text-xs text-mist">
-                    × {item.quantity} · {formatMoney(item.unit_price)} each
+                  <div className="flex flex-wrap items-center gap-1.5">
+                    <p className="text-sm font-semibold text-cloud truncate">
+                      {item.name}
+                    </p>
+
+                    {item.isPreOrder && (
+                      <span className="inline-flex items-center gap-1 rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-700">
+                        <Sparkles className="h-3 w-3" />
+                        {t.PreOrder || (isHt ? "Pre-Kòmand" : "Pre-Order")}
+                        {item.preOrderStatus === PRE_ORDER_STATUS.READY && (
+                          <span className="text-emerald-600 font-bold ml-1">
+                            ({t.PreOrderReady || (isHt ? "Pare" : "Ready")})
+                          </span>
+                        )}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Variant Pills */}
+                  <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-mist">
+                    {item.size && (
+                      <span className="rounded-md border border-hairline/60 bg-sand-soft/50 px-1.5 py-0.5 text-[11px] font-medium text-cloud">
+                        {t.Size || "Size"}: {item.size}
+                      </span>
+                    )}
+                    {item.color && (
+                      <span className="rounded-md border border-hairline/60 bg-sand-soft/50 px-1.5 py-0.5 text-[11px] font-medium text-cloud">
+                        {t.Color || "Color"}: {item.color}
+                      </span>
+                    )}
+                    <span>
+                      {t.Qty || "Qty"}: {item.quantity} × {formatPrice(item.price)}
+                    </span>
+                  </div>
+
+                  {item.isPreOrder && item.expectedAvailableDate && (
+                    <p className="mt-1 text-[11px] text-amber-700 flex items-center gap-1">
+                      <Clock className="h-3 w-3" />
+                      {t.ExpectedDate || (isHt ? "Disponib vè" : "Expected by")}:{" "}
+                      {formatDate(String(item.expectedAvailableDate), isHt)}
+                    </p>
+                  )}
+                </div>
+
+                {/* Line Total */}
+                <div className="text-right shrink-0">
+                  <p className="font-display text-sm font-bold text-forest">
+                    {formatPrice(item.total_price || item.price * item.quantity)}
                   </p>
                 </div>
-                <p className="text-sm font-medium text-cloud">
-                  {formatMoney(item.total_price)}
-                </p>
-              </li>
+              </div>
             );
           })}
-        </ul>
-      </section>
+        </div>
+      </div>
 
-      {/* Shipping */}
-      <section>
-        <SectionLabel>Shipping</SectionLabel>
-        <div className="mt-2 flex items-start gap-3 rounded-2xl border border-hairline bg-white/[0.03] px-3.5 py-3">
-          <span className="mt-0.5 grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-violet/15 text-violet-bright">
-            <MapPin className="h-4 w-4" />
-          </span>
-          <div className="min-w-0">
-            <p className="text-sm leading-relaxed text-cloud">
-              {order.formatted_address || "—"}
-            </p>
-            <p className="mt-1 text-xs text-mist">
-              {order.contact_number ||
-                order.address_breakdown?.contact_number ||
-                "—"}
-            </p>
+      {/* 3. Two-Column Grid: Shipping & Pricing */}
+      <div className="grid gap-4 sm:grid-cols-2">
+        {/* Shipping Destination */}
+        <div className="rounded-2xl border border-hairline/80 bg-white p-4 shadow-2xs">
+          <div className="flex items-center justify-between border-b border-hairline/60 pb-2.5">
+            <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-forest">
+              <MapPin className="h-3.5 w-3.5" />
+              {t.ShippingDestination || (isHt ? "Adrès Livrezon" : "Shipping Destination")}
+            </span>
+            <button
+              type="button"
+              onClick={() => copyText(order.formatted_address, "address")}
+              className="flex items-center gap-1 text-[11px] text-mist hover:text-forest transition-colors cursor-pointer"
+            >
+              {copiedField === "address" ? (
+                <>
+                  <Check className="h-3 w-3 text-emerald-600" />
+                  <span className="text-emerald-600 font-semibold">
+                    {t.AddressCopied || "Copied!"}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <Copy className="h-3 w-3" />
+                  <span>{t.CopyAddress || "Copy"}</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          <p className="mt-3 text-sm text-cloud leading-relaxed">
+            {order.formatted_address || "—"}
+          </p>
+
+          <div className="mt-3 flex items-center gap-2 border-t border-hairline/40 pt-2.5 text-xs text-mist">
+            <span className="font-semibold text-cloud">
+              {t.ContactPhone || "Phone"}:
+            </span>
+            <span>{order.contact_number || "—"}</span>
           </div>
         </div>
-      </section>
 
-      {/* Pricing */}
-      {breakdown ? (
-        <section>
-          <SectionLabel>Pricing</SectionLabel>
-          <div className="mt-2 rounded-2xl border border-hairline bg-white/[0.03] p-4">
-            <PriceLine
-              label="Products"
-              value={formatMoney(breakdown.products_price)}
-            />
-            {breakdown.serviceFee != null && breakdown.serviceFee > 0 ? (
-              <PriceLine
-                label="Service fee"
-                value={formatMoney(breakdown.serviceFee)}
-              />
-            ) : null}
-            {breakdown.delivery_charge != null ? (
-              <PriceLine
-                label="Delivery"
-                value={formatMoney(breakdown.delivery_charge)}
-              />
-            ) : null}
-            {breakdown.tax != null && breakdown.tax > 0 ? (
-              <PriceLine label="Tax" value={formatMoney(breakdown.tax)} />
-            ) : null}
+        {/* Price Breakdown */}
+        <div className="rounded-2xl border border-hairline/80 bg-white p-4 shadow-2xs">
+          <div className="border-b border-hairline/60 pb-2.5">
+            <span className="flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-forest">
+              <CreditCard className="h-3.5 w-3.5" />
+              {t.PaymentBreakdown || (isHt ? "Detay Peman" : "Payment Breakdown")}
+            </span>
+          </div>
 
-            {coupon ? (
-              <div className="mt-3 flex items-center justify-between gap-3">
-                <span className="text-sm text-mist">Coupon</span>
-                <span className="inline-flex items-center gap-1.5 rounded-full border border-violet/30 bg-violet/15 px-2.5 py-1 text-xs font-semibold tracking-wide text-violet-bright">
-                  <TicketPercent className="h-3.5 w-3.5" />
-                  {coupon}
-                </span>
+          <div className="mt-3 space-y-2 text-xs">
+            <div className="flex justify-between text-mist">
+              <span>{t.Subtotal || (isHt ? "Total Pwodui" : "Subtotal")}</span>
+              <span className="font-semibold text-cloud">{formatPrice(subtotal)}</span>
+            </div>
+
+            <div className="flex justify-between text-mist">
+              <span>{t.DeliveryCharge || (isHt ? "Livrezon" : "Delivery")}</span>
+              <span className="font-semibold text-cloud">
+                {delivery === 0 ? (
+                  <span className="text-forest font-bold">
+                    {t.Free || "Free"}
+                  </span>
+                ) : (
+                  formatPrice(delivery)
+                )}
+              </span>
+            </div>
+
+            <div className="flex justify-between text-mist">
+              <span>{t.Tax || (isHt ? "Taks Estimasyon" : "Tax")}</span>
+              <span className="font-semibold text-cloud">{formatPrice(tax)}</span>
+            </div>
+
+            {breakdown?.discount_amount && breakdown.discount_amount > 0 ? (
+              <div className="flex justify-between text-forest font-semibold">
+                <span>Discount</span>
+                <span>−{formatPrice(breakdown.discount_amount)}</span>
               </div>
-            ) : (
-              <PriceLine label="Coupon" value="None applied" muted />
-            )}
-
-            {discounted && discount > 0 ? (
-              <PriceLine
-                label="Discount"
-                value={`−${discountLabel(order)}`}
-                accent
-              />
             ) : null}
 
-            <div className="mt-3 flex items-center justify-between border-t border-hairline pt-3">
-              <span className="text-sm font-medium text-cloud">Total paid</span>
-              <span className="font-display text-lg font-bold text-cloud">
-                {formatMoney(paid)}
+            <div className="border-t border-hairline/60 pt-2 flex items-baseline justify-between">
+              <span className="text-xs font-bold text-cloud uppercase tracking-wider">
+                {t.TotalPaid || (isHt ? "Total Peye" : "Total Paid")}
+              </span>
+              <span className="font-display text-lg font-bold text-forest">
+                {formatPrice(totalPaid)}
               </span>
             </div>
           </div>
-        </section>
-      ) : null}
+        </div>
+      </div>
 
-      <div className="space-y-1.5 border-t border-hairline pt-4 text-xs text-faint">
-        <p>
-          Placed on{" "}
-          <span className="text-mist">{formatDate(order.createdAt)}</span>
-        </p>
-        {(order.payment_intent_id || order.transaction_id) && (
-          <p
-            className="truncate"
-            title={order.payment_intent_id || order.transaction_id}
-          >
-            Payment ID{" "}
-            <span className="font-mono text-mist/90">
-              {order.payment_intent_id || order.transaction_id}
-            </span>
-          </p>
+      {/* 4. Payment Security & Stripe Reference */}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-hairline/80 bg-forest/5 p-3.5 text-xs">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="h-4 w-4 text-forest shrink-0" />
+          <span className="text-mist font-medium">
+            {t.StripeCard || (isHt ? "Kat Kredi / Debi via Stripe" : "Credit / Debit Card via Stripe")}
+          </span>
+        </div>
+
+        {order.payment_intent_id && (
+          <div className="flex items-center gap-1.5 font-mono text-[11px] text-mist">
+            <span>{t.StripeTxn || "Ref"}:</span>
+            <span className="text-cloud font-semibold">{order.payment_intent_id.slice(0, 16)}...</span>
+          </div>
         )}
+      </div>
+
+      {/* 5. Footer Actions */}
+      <div className="flex items-center justify-between pt-2">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => window.print()}
+          className="rounded-xl border-hairline text-xs font-semibold cursor-pointer"
+        >
+          <Printer className="mr-1.5 h-3.5 w-3.5" />
+          {t.PrintReceipt || (isHt ? "Enprime Resi" : "Print Receipt")}
+        </Button>
+
+        <Button asChild size="sm" className="rounded-xl bg-forest hover:bg-forest-bright text-xs font-bold text-white shadow-xs">
+          <Link href={`/${lang}/dashboard/orders`}>
+            <ArrowLeft className="mr-1.5 h-3.5 w-3.5" />
+            {t.BackToOrders || (isHt ? "Retounen nan Kòmand Yo" : "Back to Orders")}
+          </Link>
+        </Button>
       </div>
     </div>
   );
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+/* ------------------------------------------------------------------ *
+ * Delivery Timeline Component
+ * ------------------------------------------------------------------ */
+function DeliveryTimelineTracker({
+  status = ORDER_STATUS.CONFIRMED,
+  isHt = false,
+  t = {},
+}: {
+  status?: string;
+  isHt?: boolean;
+  t?: any;
+}) {
+  const s = (status ?? "").toLowerCase();
+  const isCancelled = s === ORDER_STATUS.CANCELLED;
+
+  const steps = [
+    {
+      id: "placed",
+      label: t.StepPlaced || (isHt ? "Kòmand Fèt" : "Order Placed"),
+      icon: CheckCircle2,
+    },
+    {
+      id: "confirmed",
+      label: t.StepConfirmed || (isHt ? "Peman Konfime" : "Payment Confirmed"),
+      icon: CheckCircle2,
+    },
+    {
+      id: "processing",
+      label: t.StepProcessing || (isHt ? "Preparasyon" : "Processing"),
+      icon: Clock,
+    },
+    {
+      id: "shipped",
+      label: t.StepShipped || (isHt ? "Ekspedye" : "In Transit"),
+      icon: Truck,
+    },
+    {
+      id: "delivered",
+      label: t.StepDelivered || (isHt ? "Livre" : "Delivered"),
+      icon: CheckCircle2,
+    },
+  ];
+
+  function getStepStatus(stepIndex: number): "completed" | "current" | "upcoming" {
+    if (isCancelled) return "upcoming";
+
+    let activeIndex = 1;
+    if (s === ORDER_STATUS.PENDING) activeIndex = 0;
+    else if (s === ORDER_STATUS.CONFIRMED) activeIndex = 1;
+    else if (s === ORDER_STATUS.PROCESSING) activeIndex = 2;
+    else if (s === ORDER_STATUS.SHIPPED) activeIndex = 3;
+    else if (s === ORDER_STATUS.DELIVERED) activeIndex = 4;
+
+    if (stepIndex < activeIndex) return "completed";
+    if (stepIndex === activeIndex) return "current";
+    return "upcoming";
+  }
+
+  if (isCancelled) {
+    return (
+      <div className="mt-3 flex items-center gap-2 rounded-xl border border-rose-500/30 bg-rose-500/10 p-3 text-xs text-rose-600">
+        <XCircle className="h-4 w-4 text-rose-600 shrink-0" />
+        <span>
+          {t.StepCancelled || (isHt ? "Kòmand sa a te anile." : "This order has been cancelled.")}
+        </span>
+      </div>
+    );
+  }
+
   return (
-    <h3 className="text-xs font-semibold uppercase tracking-[0.14em] text-faint">
-      {children}
-    </h3>
+    <div className="mt-4 relative">
+      <div className="grid grid-cols-5 gap-1 sm:gap-2">
+        {steps.map((step, idx) => {
+          const state = getStepStatus(idx);
+          const Icon = step.icon;
+
+          return (
+            <div key={step.id} className="flex flex-col items-center text-center">
+              {/* Milestone Icon */}
+              <div
+                className={cn(
+                  "grid h-8 w-8 place-items-center rounded-full border-2 transition-all duration-300",
+                  state === "completed" &&
+                    "border-forest bg-forest text-white shadow-xs",
+                  state === "current" &&
+                    "border-forest bg-forest/20 text-forest ring-4 ring-forest/20 animate-pulse",
+                  state === "upcoming" &&
+                    "border-hairline bg-sand-soft/40 text-mist/60",
+                )}
+              >
+                <Icon className="h-4 w-4" />
+              </div>
+
+              {/* Label */}
+              <span
+                className={cn(
+                  "mt-2 text-[10px] sm:text-[11px] font-semibold leading-tight",
+                  state === "completed" && "text-forest",
+                  state === "current" && "text-forest font-bold",
+                  state === "upcoming" && "text-mist/70",
+                )}
+              >
+                {step.label}
+              </span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
-function PriceLine({
-  label,
-  value,
-  muted,
-  accent,
-}: {
-  label: string;
-  value: string;
-  muted?: boolean;
-  accent?: boolean;
-}) {
+/* ------------------------------------------------------------------ *
+ * Badges & Formatters
+ * ------------------------------------------------------------------ */
+function OrderStatusBadge({ status = "pending", isHt = false }: { status?: string; isHt?: boolean }) {
+  const s = (status ?? "").toLowerCase();
+
+  const config: Record<string, { label: string; className: string }> = {
+    [ORDER_STATUS.CONFIRMED]: {
+      label: isHt ? "Konfime" : "Confirmed",
+      className: "border-forest/30 bg-forest/10 text-forest",
+    },
+    [ORDER_STATUS.PROCESSING]: {
+      label: isHt ? "Preparasyon" : "Processing",
+      className: "border-amber-500/30 bg-amber-500/10 text-amber-700",
+    },
+    [ORDER_STATUS.SHIPPED]: {
+      label: isHt ? "Ekspedye" : "Shipped",
+      className: "border-indigo-500/30 bg-indigo-500/10 text-indigo-700",
+    },
+    [ORDER_STATUS.DELIVERED]: {
+      label: isHt ? "Livre" : "Delivered",
+      className: "border-emerald-500/30 bg-emerald-500/10 text-emerald-700",
+    },
+    [ORDER_STATUS.CANCELLED]: {
+      label: isHt ? "Anile" : "Cancelled",
+      className: "border-rose-500/30 bg-rose-500/10 text-rose-700",
+    },
+    [ORDER_STATUS.PENDING]: {
+      label: isHt ? "An Atant" : "Pending",
+      className: "border-hairline bg-sand-soft/50 text-mist",
+    },
+  };
+
+  const current = config[s] || {
+    label: status.toUpperCase(),
+    className: "border-hairline bg-sand-soft/50 text-mist",
+  };
+
   return (
-    <div className="mt-2.5 flex items-center justify-between gap-3 first:mt-0">
-      <span className="text-sm text-mist">{label}</span>
-      <span
-        className={cn(
-          "text-sm font-medium",
-          muted && "text-faint",
-          accent && "text-emerald-300",
-          !muted && !accent && "text-cloud",
-        )}
-      >
-        {value}
-      </span>
-    </div>
+    <span
+      className={cn(
+        "inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wider",
+        current.className,
+      )}
+    >
+      {current.label}
+    </span>
   );
+}
+
+function PaymentStatusBadge({ status = "paid", isHt = false }: { status?: string; isHt?: boolean }) {
+  const s = (status ?? "").toLowerCase();
+  const isPaid = s === PAYMENT_STATUS.PAID;
+
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider",
+        isPaid
+          ? "border-forest/30 bg-forest/10 text-forest font-semibold"
+          : "border-amber-400/30 bg-amber-400/10 text-amber-700",
+      )}
+    >
+      {isPaid && <Check className="h-3 w-3 text-forest" />}
+      {isPaid ? (isHt ? "Peye" : "Paid") : isHt ? "An Atant" : "Pending"}
+    </span>
+  );
+}
+
+function formatDate(iso?: string, isHt = false) {
+  if (!iso) return "—";
+  try {
+    const d = new Date(iso);
+    return d.toLocaleDateString(isHt ? "ht-HT" : "en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  } catch {
+    return iso;
+  }
 }

@@ -405,3 +405,94 @@ export interface CartItem {
   expectedAvailableDate?: string;
 }
 
+/* ------------------------------------------------------------------ *
+ * Order System Types — Matching Order API Specification
+ * ------------------------------------------------------------------ */
+export enum ORDER_STATUS {
+  PENDING = "pending",
+  CONFIRMED = "confirmed",
+  PROCESSING = "processing",
+  SHIPPED = "shipped",
+  DELIVERED = "delivered",
+  CANCELLED = "cancelled",
+}
+
+export enum PAYMENT_STATUS {
+  PENDING = "pending",
+  PAID = "paid",
+  FAILED = "failed",
+  REFUNDED = "refunded",
+}
+
+export enum PRE_ORDER_STATUS {
+  PENDING = "pending",
+  CONFIRMED = "confirmed",
+  READY = "ready",
+  COMPLETED = "completed",
+  CANCELLED = "cancelled",
+}
+
+export interface IOrderItem {
+  product:
+    | {
+        _id: string;
+        name: string;
+        images: string[];
+        sold?: number;
+        variants?: any[];
+        category?: string;
+      }
+    | string;
+  name: string;
+  image?: string;
+  size: string;
+  color: string;
+  quantity: number;
+  price: number;
+  total_price: number;
+  isPreOrder: boolean;
+  expectedAvailableDate?: string | Date;
+  preOrderStatus?: PRE_ORDER_STATUS;
+}
+
+export interface IOrderPriceBreakdown {
+  subtotal: number;
+  delivery_charge: number;
+  tax: number;
+  discount_amount: number;
+  total_price: number;
+}
+
+export interface IAddressBreakdown {
+  country: string;
+  city: string;
+  postal_code: string;
+  street_address: string;
+}
+
+export interface IOrder {
+  _id: string;
+  user:
+    | {
+        _id: string;
+        name: string;
+        email: string;
+        image?: string;
+        contact_number?: string;
+      }
+    | string;
+  items: IOrderItem[];
+  price_breakdown: IOrderPriceBreakdown;
+  total_items: number;
+  formatted_address: string;
+  address_breakdown: IAddressBreakdown;
+  contact_number: string;
+  status: ORDER_STATUS;
+  payment_status: PAYMENT_STATUS;
+  order_id: string;
+  payment_intent_id?: string;
+  transaction_id?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+

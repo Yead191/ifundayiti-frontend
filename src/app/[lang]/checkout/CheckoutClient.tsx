@@ -180,16 +180,12 @@ export function CheckoutClient({
     setPriceBreakdown(serverCart?.price_breakdown);
   }, [serverCart]);
 
-  // Form Fields
-  const [fullName, setFullName] = React.useState(user?.name || "");
-  const [email, setEmail] = React.useState(user?.email || "");
+  // Form Fields (Required by Backend Order API)
   const [contactNumber, setContactNumber] = React.useState(user?.phone || "");
   const [streetAddress, setStreetAddress] = React.useState("");
   const [city, setCity] = React.useState("");
   const [postalCode, setPostalCode] = React.useState("");
   const [country, setCountry] = React.useState("Haiti");
-  const [couponCode, setCouponCode] = React.useState("");
-  const [appliedCoupon, setAppliedCoupon] = React.useState<string | null>(null);
 
   const [submitting, setSubmitting] = React.useState(false);
 
@@ -316,22 +312,42 @@ export function CheckoutClient({
       return;
     }
 
-    // Validation
-    if (!streetAddress.trim()) {
+    // Validation matching backend requirements
+    if (!contactNumber.trim() || contactNumber.trim().length < 8) {
       toast.error(
-        isHt ? "Tanpri mete adrès livrezon an." : "Please enter your street address.",
+        isHt
+          ? "Tanpri mete yon nimewo telefòn aktif (omwen 8 chif)."
+          : "Please enter a valid contact phone number (at least 8 digits).",
       );
       return;
     }
-    if (!city.trim()) {
-      toast.error(isHt ? "Tanpri mete vil la." : "Please enter your city / commune.");
-      return;
-    }
-    if (!contactNumber.trim()) {
+    if (!streetAddress.trim() || streetAddress.trim().length < 5) {
       toast.error(
         isHt
-          ? "Tanpri mete yon nimewo telefòn aktif pou livrezon an."
-          : "Please enter a valid contact phone number.",
+          ? "Tanpri mete yon adrès livrezon valab (omwen 5 karaktè)."
+          : "Please enter a valid street address (at least 5 characters).",
+      );
+      return;
+    }
+    if (!city.trim() || city.trim().length < 2) {
+      toast.error(
+        isHt
+          ? "Tanpri mete vil / komin nan (omwen 2 karaktè)."
+          : "Please enter your city / commune (at least 2 characters).",
+      );
+      return;
+    }
+    if (!postalCode.trim() || postalCode.trim().length < 2) {
+      toast.error(
+        isHt
+          ? "Tanpri mete kòd postal la (omwen 2 karaktè)."
+          : "Please enter a valid postal code (at least 2 characters).",
+      );
+      return;
+    }
+    if (!country.trim() || country.trim().length < 2) {
+      toast.error(
+        isHt ? "Tanpri mete peyi a." : "Please enter your country.",
       );
       return;
     }
@@ -340,12 +356,11 @@ export function CheckoutClient({
 
     try {
       const payload: CreateOrderPayload = {
-        street_address: streetAddress.trim(),
-        city: city.trim(),
-        postal_code: postalCode.trim() || undefined,
         country: country.trim() || "Haiti",
+        city: city.trim(),
+        postal_code: postalCode.trim(),
+        street_address: streetAddress.trim(),
         contact_number: contactNumber.trim(),
-        ...(appliedCoupon ? { coupon: appliedCoupon } : {}),
       };
 
       const res = await createOrder(payload);
@@ -526,43 +541,27 @@ export function CheckoutClient({
                 </h2>
               </div>
 
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                <div className="space-y-1.5">
-                  <Label
-                    htmlFor="full_name"
-                    className="text-xs font-semibold text-forest"
-                  >
-                    {t.FullName} *
-                  </Label>
-                  <Input
-                    id="full_name"
-                    required
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    placeholder="e.g. Jean Baptiste"
-                    className="h-11 rounded-xl border-hairline bg-sand-soft/30 focus:bg-white"
-                  />
+              <div className="mt-6 space-y-4">
+                {/* Authenticated Account Info */}
+                <div className="flex items-center justify-between rounded-2xl border border-hairline/80 bg-sand-soft/50 p-4">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-forest text-sm font-bold text-white">
+                      {(user?.name?.[0] || "U").toUpperCase()}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-bold text-forest-deep">
+                        {user?.name || "Verified Customer"}
+                      </p>
+                      <p className="truncate text-xs text-mist">{user?.email}</p>
+                    </div>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-forest/20 bg-forest/10 px-3 py-1 text-[11px] font-semibold text-forest">
+                    <CheckCircle2 className="h-3.5 w-3.5 text-forest" />
+                    <span>{isHt ? "Konekte" : "Verified"}</span>
+                  </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label
-                    htmlFor="email"
-                    className="text-xs font-semibold text-forest"
-                  >
-                    {t.Email} *
-                  </Label>
-                  <Input
-                    id="email"
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="jean@example.com"
-                    className="h-11 rounded-xl border-hairline bg-sand-soft/30 focus:bg-white"
-                  />
-                </div>
-
-                <div className="space-y-1.5 sm:col-span-2">
                   <Label
                     htmlFor="contact_number"
                     className="text-xs font-semibold text-forest"
@@ -635,10 +634,11 @@ export function CheckoutClient({
                       htmlFor="postal_code"
                       className="text-xs font-semibold text-forest"
                     >
-                      {t.PostalCode}
+                      {t.PostalCode} *
                     </Label>
                     <Input
                       id="postal_code"
+                      required
                       value={postalCode}
                       onChange={(e) => setPostalCode(e.target.value)}
                       placeholder="HT-6110"

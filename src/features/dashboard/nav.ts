@@ -21,37 +21,19 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
     label: "Overview",
     href: "/dashboard",
     icon: LayoutDashboard,
-    description: "Your Hubology account at a glance",
+    description: "Your IFundAyiti account at a glance",
+  },
+  {
+    label: "Orders",
+    href: "/dashboard/orders",
+    icon: Package,
+    description: "Order history & shipment tracking",
   },
   {
     label: "Profile",
     href: "/dashboard/profile",
     icon: User,
     description: "Personal details & password",
-  },
-  {
-    label: "Bookings",
-    href: "/dashboard/bookings",
-    icon: CalendarCheck,
-    description: "Purchased service sessions",
-  },
-  {
-    label: "Digital library",
-    href: "/dashboard/digital",
-    icon: BookOpen,
-    description: "Books and downloads you own",
-  },
-  {
-    label: "Orders",
-    href: "/dashboard/orders",
-    icon: Package,
-    description: "Office supply order history",
-  },
-  {
-    label: "Subscriptions",
-    href: "/dashboard/subscriptions",
-    icon: Crown,
-    description: "Membership plans",
   },
 ];
 
