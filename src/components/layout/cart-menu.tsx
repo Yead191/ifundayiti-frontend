@@ -251,9 +251,13 @@ export function CartMenu({ cart }: { cart?: CartData | null }) {
               <div className="flex items-center justify-between text-xs text-mist">
                 <span>Delivery</span>
                 <span className="font-semibold text-forest-deep">
-                  {breakdown?.delivery_charge
-                    ? formatPrice(breakdown.delivery_charge)
-                    : "$8.00"}
+                  {breakdown?.delivery_charge != null
+                    ? breakdown.delivery_charge === 0
+                      ? "Free"
+                      : formatPrice(breakdown.delivery_charge)
+                    : subtotal >= 150
+                    ? "Free"
+                    : "$11.99"}
                 </span>
               </div>
               <div className="flex items-center justify-between border-t border-hairline/80 pt-2 text-sm font-bold text-forest-deep">

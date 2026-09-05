@@ -13,8 +13,7 @@ export function absoluteUrl(path = "/") {
   return `${base}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-const DEFAULT_OG_IMAGE =
-  "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&q=80&w=1200&h=630";
+const DEFAULT_OG_IMAGE = "/logo-ifundayiti.png";
 
 export const SITE_NAME = "IFundAyiti";
 

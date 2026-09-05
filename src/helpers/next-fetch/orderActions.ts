@@ -5,7 +5,7 @@ import { revalidateTags } from "./revalidateTags";
 
 export interface CreateOrderPayload {
   city: string;
-  postal_code: string;
+  postal_code?: string;
   street_address: string;
   country: string;
   contact_number: string;

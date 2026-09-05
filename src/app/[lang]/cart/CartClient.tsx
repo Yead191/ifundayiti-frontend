@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
+  AlertTriangle,
   ArrowLeft,
   ArrowRight,
   CheckCircle2,
@@ -21,7 +22,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-import type { CartData, ICartItem } from "@/types";
+import type { CartData, ICartItem, IPriceBreakdown } from "@/types";
 import { formatPrice } from "@/lib/utils";
 import { getImageUrl } from "@/lib/getImageUrl";
 import { Container } from "@/components/shared/container";
@@ -33,39 +34,173 @@ import {
   clearCart,
 } from "@/helpers/next-fetch/cartActions";
 
-export function CartClient({
-  cart: serverCart,
-  lang,
-}: {
+interface CartClientProps {
   cart: CartData | null;
   lang: string;
-}) {
+  dict?: any;
+}
+
+const CART_FALLBACK_I18N = {
+  en: {
+    Home: "Home",
+    Shop: "Shop",
+    Eyebrow: "Shopping Bag",
+    Title: "Review Your Cart",
+    Subtitle:
+      "Verify your selected apparel and variants before continuing to secure checkout.",
+    EmptyTitle: "Your bag is currently empty",
+    EmptySubtitle:
+      "Explore the IFundAyiti apparel collection. Every piece directly funds equity-free micro-grants for Haitian entrepreneurs and neighborhood builders.",
+    ExploreBtn: "Explore Collection",
+    ReturnHome: "Return to Home",
+    FastDelivery: "Fast islandwide delivery",
+    EasyExchange: "30-day exchange",
+    GrantImpactBadge: "100% grant impact",
+    ItemsInBag: "Items in Bag",
+    ItemInBag: "Item in Bag",
+    ProductDetails: "Product Details",
+    Total: "Total",
+    Each: "each",
+    Size: "Size:",
+    Color: "Color:",
+    PreOrder: "Pre-Order",
+    MaxStockReached: "Max in-stock reached",
+    ContinueShopping: "Continue Shopping",
+    ClearBag: "Clear entire shopping bag",
+    ClearBagBtn: "Clear Bag",
+    FreeShippingCongrat:
+      "🎉 Congratulations! Your order qualifies for Free Standard Delivery.",
+    FreeShippingAddMore:
+      "Add [amount] more of merchandise to unlock Free Standard Delivery!",
+    Unlocked: "Unlocked",
+    ImpactTitle: "100% Transparent Community Impact",
+    ImpactDesc:
+      "Every dollar generated from IFundAyiti apparel directly sustains our equity-free micro-grant program for local Haitian creators, tradespeople, and innovators.",
+    OrderSummary: "Order Summary",
+    Subtotal: "Products Subtotal",
+    Delivery: "Delivery Charge",
+    Free: "Free",
+    Tax: "Estimated Tax (8.875%)",
+    Discount: "Applied Discount",
+    GrandTotal: "Grand Total",
+    IncludingTaxDelivery: "Including tax & delivery",
+    ProceedToCheckout: "Proceed to Checkout",
+    EncryptedStripe: "256-Bit Encrypted & Stripe Secured",
+    ExchangeGuarantee: "30-Day Hassle-Free Exchange",
+    HaveQuestions: "Questions about your order?",
+    ContactSupport: "Contact Support",
+    ClearModalTitle: "Clear Shopping Bag",
+    ClearModalDesc:
+      "Are you sure you want to remove all items from your shopping bag? This cannot be undone.",
+    Cancel: "Cancel",
+    Clearing: "Clearing...",
+    ConfirmClear: "Yes, Clear Bag",
+  },
+  ht: {
+    Home: "Akèy",
+    Shop: "Boutik",
+    Eyebrow: "Panyen Acha",
+    Title: "Revize Panyen Ou",
+    Subtitle:
+      "Verifye rad ak modèl ou chwazi yo anvan ou kontinye nan peman an sekirite.",
+    EmptyTitle: "Panyen ou vid kounye a",
+    EmptySubtitle:
+      "Eksplore koleksyon rad IFundAyiti. Chak pyès finanse sibvansyon san enterè dirèkteman pou antreprenè ayisyen ak kreyatè lokal yo.",
+    ExploreBtn: "Eksplore Koleksyon an",
+    ReturnHome: "Retounen nan Akèy",
+    FastDelivery: "Livrezon rapid sou tout zile a",
+    EasyExchange: "Echanj pandan 30 jou",
+    GrantImpactBadge: "100% enpak sibvansyon",
+    ItemsInBag: "Atik nan Panyen an",
+    ItemInBag: "Atik nan Panyen an",
+    ProductDetails: "Detay Pwodwi",
+    Total: "Total",
+    Each: "pa inite",
+    Size: "Gwosè:",
+    Color: "Koulè:",
+    PreOrder: "Pre-Kòmand",
+    MaxStockReached: "Limit stock disponib atenn",
+    ContinueShopping: "Kontinye Achte",
+    ClearBag: "Vide tout panyen an",
+    ClearBagBtn: "Vide Panyen an",
+    FreeShippingCongrat:
+      "🎉 Felisitasyon! Kòmand ou kalifye pou Livrezon Estanda Gratis.",
+    FreeShippingAddMore:
+      "Ajoute [amount] ankò nan machandiz pou w debloke Livrezon Estanda Gratis!",
+    Unlocked: "Debloke",
+    ImpactTitle: "100% Enpak Kominotè Transparan",
+    ImpactDesc:
+      "Chak dola ki soti nan rad IFundAyiti ale dirèkteman pou soutni pwogram mikwo-sibvansyon san enterè pou kreyatè, atizan ak inovatè ayisyen.",
+    OrderSummary: "Rezime Kòmand",
+    Subtotal: "Sou-total Pwodwi yo",
+    Delivery: "Frè Livrezon",
+    Free: "Gratis",
+    Tax: "Taks Estimasyon (8.875%)",
+    Discount: "Rabè Aplike",
+    GrandTotal: "Total Jeneral",
+    IncludingTaxDelivery: "Avèk taks ak livrezon ladan l",
+    ProceedToCheckout: "Kontinye nan Peman",
+    EncryptedStripe: "Chifreman 256-Bit & Sekirize pa Stripe",
+    ExchangeGuarantee: "Garanti Echanj pandan 30 Jou",
+    HaveQuestions: "Ou gen kesyon sou kòmand ou?",
+    ContactSupport: "Kontakte Sipò",
+    ClearModalTitle: "Vide Panyen Acha a",
+    ClearModalDesc:
+      "Èske ou sèten ou vle retire tout atik nan panyen acha w la? Aksyon sa a pa ka defèt.",
+    Cancel: "Anile",
+    Clearing: "N ap vide...",
+    ConfirmClear: "Wi, Vide Panyen an",
+  },
+};
+
+export function CartClient({ cart: serverCart, lang, dict }: CartClientProps) {
   const router = useRouter();
+  const isHt = lang === "ht";
+  const defaultI18n = isHt ? CART_FALLBACK_I18N.ht : CART_FALLBACK_I18N.en;
+  const t = { ...defaultI18n, ...(dict?.Cart || {}) };
 
   // Optimistic items & breakdown synced with server
   const [items, setItems] = React.useState<ICartItem[]>(serverCart?.cart ?? []);
+  const [priceBreakdown, setPriceBreakdown] = React.useState<
+    IPriceBreakdown | undefined
+  >(serverCart?.price_breakdown);
   const [updatingIds, setUpdatingIds] = React.useState<Set<string>>(new Set());
   const [clearModalOpen, setClearModalOpen] = React.useState(false);
   const [clearing, setClearing] = React.useState(false);
 
   React.useEffect(() => {
     setItems(serverCart?.cart ?? []);
+    setPriceBreakdown(serverCart?.price_breakdown);
   }, [serverCart]);
 
   const isBusy = (id: string) => updatingIds.has(id);
 
-  // Compute live breakdown
-  const subtotal = items.reduce(
-    (sum, item) => sum + (item.total_price || item.unit_price * item.quantity),
-    0,
-  );
-  const deliveryCharge = items.length === 0 ? 0 : subtotal >= 150 ? 0 : 8.0;
-  const tax = Number((subtotal * 0.07).toFixed(2));
-  const discountAmount = serverCart?.price_breakdown?.discount_amount ?? 0;
-  const cartTotal = Math.max(
-    0,
-    subtotal + deliveryCharge + tax - discountAmount,
-  );
+  // Compute live breakdown directly from API response
+  const subtotal =
+    priceBreakdown?.subtotal ??
+    priceBreakdown?.products_price ??
+    items.reduce(
+      (sum, item) =>
+        sum + (item.total_price || item.unit_price * item.quantity),
+      0,
+    );
+  const deliveryCharge =
+    priceBreakdown != null
+      ? priceBreakdown.delivery_charge
+      : items.length === 0
+        ? 0
+        : subtotal >= 150
+          ? 0
+          : 11.99;
+  const tax =
+    priceBreakdown != null
+      ? priceBreakdown.tax
+      : Number((subtotal * 0.08875).toFixed(2));
+  const serviceFee = priceBreakdown?.serviceFee ?? 0;
+  const discountAmount = priceBreakdown?.discount_amount ?? 0;
+  const cartTotal =
+    priceBreakdown?.total_price ??
+    Math.max(0, subtotal + deliveryCharge + tax + serviceFee - discountAmount);
   const cartCount = items.reduce((sum, item) => sum + (item.quantity || 0), 0);
 
   // Free shipping threshold ($150.00)
@@ -95,7 +230,9 @@ export function CartClient({
         !variant.isPreOrder
       ) {
         toast.error(
-          `Maximum available stock reached (${variant.stock} available).`,
+          isHt
+            ? `Limit stock la rive (${variant.stock} disponib).`
+            : `Maximum available stock reached (${variant.stock} available).`,
         );
         return;
       }
@@ -126,14 +263,29 @@ export function CartClient({
       const res = await updateCartQuantity(id, delta);
       if (!res.success) {
         setItems(previous);
-        toast.error(res.message || "Could not update quantity.");
+        toast.error(
+          res.message ||
+            (isHt
+              ? "Pa t kapab chanje kantite a."
+              : "Could not update quantity."),
+        );
         return;
+      }
+      if (res.data?.price_breakdown) {
+        setPriceBreakdown(res.data.price_breakdown);
+      }
+      if (res.data?.cart) {
+        setItems(res.data.cart);
       }
       router.refresh();
     } catch (err) {
       console.error(err);
       setItems(previous);
-      toast.error("Network error while updating quantity.");
+      toast.error(
+        isHt
+          ? "Erè rezo pandan n ap mete kantite a ajou."
+          : "Network error while updating quantity.",
+      );
     } finally {
       setUpdatingIds((prev) => {
         const next = new Set(prev);
@@ -152,15 +304,24 @@ export function CartClient({
       const res = await removeCartItem(id);
       if (!res.success) {
         setItems(previous);
-        toast.error(res.message || "Failed to remove item.");
+        toast.error(
+          res.message ||
+            (isHt ? "Pa t kapab retire atik la." : "Failed to remove item."),
+        );
         return;
       }
-      toast.success("Item removed from bag.");
+      toast.success(
+        isHt ? "Atik la retire nan panyen an." : "Item removed from bag.",
+      );
       router.refresh();
     } catch (err) {
       console.error(err);
       setItems(previous);
-      toast.error("Network error while removing item.");
+      toast.error(
+        isHt
+          ? "Erè rezo pandan n ap retire atik la."
+          : "Network error while removing item.",
+      );
     } finally {
       setUpdatingIds((prev) => {
         const next = new Set(prev);
@@ -179,16 +340,25 @@ export function CartClient({
       const res = await clearCart();
       if (!res.success) {
         setItems(previous);
-        toast.error(res.message || "Failed to clear cart.");
+        toast.error(
+          res.message ||
+            (isHt ? "Pa t kapab vide panyen an." : "Failed to clear cart."),
+        );
         return;
       }
-      toast.success("Shopping bag cleared.");
+      toast.success(
+        isHt ? "Panyen an vide avèk siksè." : "Shopping bag cleared.",
+      );
       setClearModalOpen(false);
       router.refresh();
     } catch (err) {
       console.error(err);
       setItems(previous);
-      toast.error("Network error while clearing cart.");
+      toast.error(
+        isHt
+          ? "Erè rezo pandan n ap vide panyen an."
+          : "Network error while clearing cart.",
+      );
     } finally {
       setClearing(false);
     }
@@ -205,17 +375,17 @@ export function CartClient({
               href={`/${lang}`}
               className="hover:text-forest-deep transition-colors"
             >
-              Home
+              {t.Home}
             </Link>
             <span className="text-faint">/</span>
             <Link
               href={`/${lang}/shop`}
               className="hover:text-forest-deep transition-colors"
             >
-              Shop
+              {t.Shop}
             </Link>
             <span className="text-faint">/</span>
-            <span className="text-forest-deep font-bold">Shopping Bag</span>
+            <span className="text-forest-deep font-bold">{t.Eyebrow}</span>
           </nav>
 
           <div className="mx-auto max-w-xl rounded-3xl border border-hairline/80 bg-white/95 p-8 text-center shadow-sm sm:p-14 backdrop-blur-md">
@@ -224,15 +394,13 @@ export function CartClient({
             </div>
 
             <p className="mt-6 text-xs font-bold uppercase tracking-[0.2em] text-forest">
-              Shopping Bag
+              {t.Eyebrow}
             </p>
             <h1 className="mt-2 font-display text-2xl font-bold tracking-tight text-forest-deep sm:text-3xl">
-              Your bag is currently empty
+              {t.EmptyTitle}
             </h1>
             <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-mist">
-              Explore the IFundAyiti apparel collection. Every piece directly
-              funds equity-free micro-grants for Haitian entrepreneurs and
-              neighborhood builders.
+              {t.EmptySubtitle}
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -242,7 +410,7 @@ export function CartClient({
                 className="w-full sm:w-auto rounded-xl px-8 shadow-sm"
               >
                 <Link href={`/${lang}/shop`}>
-                  Explore Collection
+                  {t.ExploreBtn}
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -252,7 +420,7 @@ export function CartClient({
                 size="lg"
                 className="w-full sm:w-auto rounded-xl px-8"
               >
-                <Link href={`/${lang}`}>Return to Home</Link>
+                <Link href={`/${lang}`}>{t.ReturnHome}</Link>
               </Button>
             </div>
 
@@ -260,15 +428,15 @@ export function CartClient({
             <div className="mt-10 pt-8 border-t border-hairline/80 grid grid-cols-1 sm:grid-cols-3 gap-3 text-left">
               <div className="flex items-center gap-2.5 text-xs text-forest-deep">
                 <Truck className="h-4 w-4 text-forest shrink-0" />
-                <span>Fast islandwide delivery</span>
+                <span>{t.FastDelivery}</span>
               </div>
               <div className="flex items-center gap-2.5 text-xs text-forest-deep">
                 <RotateCcw className="h-4 w-4 text-forest shrink-0" />
-                <span>30-day easy returns</span>
+                <span>{t.EasyExchange}</span>
               </div>
               <div className="flex items-center gap-2.5 text-xs text-forest-deep">
                 <Sparkles className="h-4 w-4 text-forest shrink-0" />
-                <span>100% grant impact</span>
+                <span>{t.GrantImpactBadge}</span>
               </div>
             </div>
           </div>
@@ -287,17 +455,17 @@ export function CartClient({
             href={`/${lang}`}
             className="hover:text-forest-deep transition-colors"
           >
-            Home
+            {t.Home}
           </Link>
           <span className="text-faint">/</span>
           <Link
             href={`/${lang}/shop`}
             className="hover:text-forest-deep transition-colors"
           >
-            Shop
+            {t.Shop}
           </Link>
           <span className="text-faint">/</span>
-          <span className="text-forest-deep font-bold">Shopping Bag</span>
+          <span className="text-forest-deep font-bold">{t.Eyebrow}</span>
         </nav>
 
         {/* Page Header */}
@@ -308,22 +476,31 @@ export function CartClient({
                 <ShoppingBag className="h-4 w-4" />
               </span>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-forest">
-                Shopping Bag
+                {t.Eyebrow}
               </p>
             </div>
             <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-forest-deep sm:text-4xl">
-              Review Your Cart
+              {t.Title}
             </h1>
-            <p className="mt-1 text-sm text-mist">
-              Verify your selected apparel and variants before continuing to
-              secure checkout.
-            </p>
+            <p className="mt-1 text-sm text-mist">{t.Subtitle}</p>
           </div>
 
+          {/* Header Actions: Items count badge + Noticeable Clear Cart button */}
           <div className="flex items-center gap-3">
             <span className="rounded-full border border-forest/20 bg-forest/5 px-4 py-1.5 text-xs font-bold text-forest">
-              {cartCount} {cartCount === 1 ? "Item" : "Items"} in Bag
+              {cartCount} {cartCount === 1 ? t.ItemInBag : t.ItemsInBag}
             </span>
+
+            {/* Prominent Clear Cart Button in Page Header */}
+            <button
+              type="button"
+              onClick={() => setClearModalOpen(true)}
+              className="inline-flex items-center gap-1.5 rounded-full border border-red-200 bg-red-50/80 px-3.5 py-1.5 text-xs font-bold text-red-600 transition-all hover:bg-red-100 hover:border-red-300 hover:text-red-700 shadow-2xs cursor-pointer active:scale-95"
+              title={t.ClearBag}
+            >
+              <Trash2 className="h-3.5 w-3.5 text-red-500" />
+              <span>{t.ClearBagBtn}</span>
+            </button>
           </div>
         </div>
 
@@ -331,28 +508,35 @@ export function CartClient({
         <div className="mb-8 rounded-2xl border border-hairline/80 bg-white/90 p-4 shadow-2xs">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs">
             <div className="flex items-center gap-2 text-forest-deep font-medium">
-              <Truck className="h-4 w-4 text-forest" />
+              <Truck className="h-4 w-4 text-forest shrink-0" />
               {amountNeededForFreeShipping === 0 ? (
                 <span className="font-bold text-forest">
-                  🎉 Congratulations! Your order qualifies for Free Standard
-                  Delivery.
+                  {t.FreeShippingCongrat}
                 </span>
               ) : (
                 <span>
-                  Add{" "}
-                  <strong className="text-forest">
-                    {formatPrice(amountNeededForFreeShipping)}
-                  </strong>{" "}
-                  more of merchandise to unlock{" "}
-                  <strong className="text-forest">
-                    Free Standard Delivery
-                  </strong>
-                  !
+                  {t.FreeShippingAddMore?.includes("[amount]") ? (
+                    <>
+                      {t.FreeShippingAddMore.split("[amount]")[0]}
+                      <strong className="text-forest font-bold">
+                        {formatPrice(amountNeededForFreeShipping)}
+                      </strong>
+                      {t.FreeShippingAddMore.split("[amount]")[1]}
+                    </>
+                  ) : (
+                    <>
+                      Add{" "}
+                      <strong className="text-forest font-bold">
+                        {formatPrice(amountNeededForFreeShipping)}
+                      </strong>{" "}
+                      more to unlock Free Delivery!
+                    </>
+                  )}
                 </span>
               )}
             </div>
             <span className="text-mist font-semibold shrink-0">
-              {shippingFreeProgress}% Unlocked
+              {shippingFreeProgress}% {t.Unlocked}
             </span>
           </div>
           <div className="mt-2.5 h-1.5 w-full overflow-hidden rounded-full bg-sand-soft">
@@ -368,14 +552,16 @@ export function CartClient({
           {/* LEFT COLUMN: Items List */}
           <div className="space-y-6 lg:col-span-7 xl:col-span-8">
             <div className="overflow-hidden rounded-3xl border border-hairline/80 bg-white/95 shadow-xs">
-              {/* Table Header */}
+              {/* Table Header Bar with Noticeable Clear Cart option */}
               <div className="flex items-center justify-between border-b border-hairline/80 px-6 py-4 bg-sand-soft/30">
                 <span className="text-xs font-bold uppercase tracking-wider text-forest">
-                  Product Details
+                  {t.ProductDetails}
                 </span>
-                <span className="text-xs font-bold uppercase tracking-wider text-forest">
-                  Total
-                </span>
+                <div className="flex items-center gap-4">
+                  <span className="text-xs font-bold uppercase tracking-wider text-forest">
+                    {t.Total}
+                  </span>
+                </div>
               </div>
 
               {/* Items List */}
@@ -432,7 +618,7 @@ export function CartClient({
                                   {title}
                                 </Link>
                                 <p className="mt-0.5 text-xs text-mist font-medium">
-                                  {formatPrice(item.unit_price)} each
+                                  {formatPrice(item.unit_price)} {t.Each}
                                 </p>
                               </div>
 
@@ -441,9 +627,9 @@ export function CartClient({
                                 type="button"
                                 disabled={busy}
                                 onClick={() => handleRemove(item._id)}
-                                className="text-mist transition-colors hover:text-red-600 p-1.5 rounded-lg hover:bg-red-50 disabled:opacity-40"
+                                className="text-mist transition-colors hover:text-red-600 p-1.5 rounded-lg hover:bg-red-50 disabled:opacity-40 cursor-pointer"
                                 aria-label={`Remove ${title}`}
-                                title="Remove item"
+                                title={isHt ? "Retire atik la" : "Remove item"}
                               >
                                 <Trash2 className="h-4 w-4" />
                               </button>
@@ -454,7 +640,7 @@ export function CartClient({
                               {item.size && (
                                 <span className="inline-flex items-center gap-1 rounded-md border border-hairline bg-sand-soft px-2.5 py-1 text-xs font-semibold text-forest-deep">
                                   <span className="text-[10px] uppercase text-mist font-bold">
-                                    Size:
+                                    {t.Size}
                                   </span>{" "}
                                   {item.size}
                                 </span>
@@ -462,14 +648,14 @@ export function CartClient({
                               {item.color && (
                                 <span className="inline-flex items-center gap-1 rounded-md border border-hairline bg-sand-soft px-2.5 py-1 text-xs font-semibold text-forest-deep">
                                   <span className="text-[10px] uppercase text-mist font-bold">
-                                    Color:
+                                    {t.Color}
                                   </span>{" "}
                                   {item.color}
                                 </span>
                               )}
                               {variant?.isPreOrder && (
                                 <span className="rounded-md bg-amber-500/10 border border-amber-500/20 px-2 py-0.5 text-[10px] font-bold uppercase text-amber-700">
-                                  Pre-Order
+                                  {t.PreOrder}
                                 </span>
                               )}
                             </div>
@@ -484,7 +670,7 @@ export function CartClient({
                                   type="button"
                                   disabled={busy}
                                   onClick={() => handleQty(item._id, -1)}
-                                  className="grid h-8 w-8 place-items-center text-forest transition-colors hover:bg-sand-soft rounded-l-xl disabled:opacity-40"
+                                  className="grid h-8 w-8 place-items-center text-forest transition-colors hover:bg-sand-soft rounded-l-xl disabled:opacity-40 cursor-pointer"
                                   aria-label="Decrease quantity"
                                 >
                                   {busy ? (
@@ -502,11 +688,11 @@ export function CartClient({
                                   type="button"
                                   disabled={busy || isStockMaxed}
                                   onClick={() => handleQty(item._id, 1)}
-                                  className="grid h-8 w-8 place-items-center text-forest transition-colors hover:bg-sand-soft rounded-r-xl disabled:opacity-40"
+                                  className="grid h-8 w-8 place-items-center text-forest transition-colors hover:bg-sand-soft rounded-r-xl disabled:opacity-40 cursor-pointer"
                                   aria-label="Increase quantity"
                                   title={
                                     isStockMaxed
-                                      ? "Stock limit reached"
+                                      ? t.MaxStockReached
                                       : "Increase quantity"
                                   }
                                 >
@@ -520,7 +706,7 @@ export function CartClient({
 
                               {isStockMaxed && (
                                 <span className="text-[11px] font-medium text-amber-700">
-                                  Max in-stock reached
+                                  {t.MaxStockReached}
                                 </span>
                               )}
                             </div>
@@ -537,22 +723,24 @@ export function CartClient({
                 })}
               </ul>
 
-              {/* Bottom Actions */}
+              {/* Bottom Actions Bar: Noticeable & Prominent Clear Cart */}
               <div className="flex flex-col sm:flex-row items-center justify-between border-t border-hairline/80 px-6 py-4 bg-sand-soft/30 gap-3">
                 <Link
                   href={`/${lang}/shop`}
                   className="inline-flex items-center gap-1.5 text-xs font-bold text-forest hover:text-forest-deep transition-colors"
                 >
                   <ArrowLeft className="h-3.5 w-3.5" />
-                  Continue Shopping
+                  {t.ContinueShopping}
                 </Link>
 
+                {/* Highly noticeable Clear Bag button */}
                 <button
                   type="button"
                   onClick={() => setClearModalOpen(true)}
-                  className="text-xs font-semibold text-mist hover:text-red-600 transition-colors"
+                  className="inline-flex items-center gap-2 rounded-xl border border-red-200/80 bg-red-50/60 px-4 py-2 text-xs font-bold text-red-600 transition-all hover:bg-red-100 hover:border-red-300 hover:text-red-700 shadow-2xs cursor-pointer active:scale-95"
                 >
-                  Clear entire shopping bag
+                  <Trash2 className="h-3.5 w-3.5 text-red-500" />
+                  <span>{t.ClearBag}</span>
                 </button>
               </div>
             </div>
@@ -564,12 +752,10 @@ export function CartClient({
               </div>
               <div>
                 <h3 className="text-sm font-bold text-forest-deep">
-                  100% Transparent Community Impact
+                  {t.ImpactTitle}
                 </h3>
                 <p className="mt-1 text-xs text-mist leading-relaxed">
-                  Every dollar generated from IFundAyiti apparel directly
-                  sustains our equity-free micro-grant program for local Haitian
-                  creators, tradespeople, and innovators.
+                  {t.ImpactDesc}
                 </p>
               </div>
             </div>
@@ -580,13 +766,13 @@ export function CartClient({
             <div className="sticky top-28 space-y-6">
               <div className="rounded-3xl border border-hairline-strong/70 bg-white/95 p-6 shadow-md backdrop-blur-md sm:p-8">
                 <h2 className="font-display text-xl font-bold tracking-tight text-forest-deep border-b border-hairline/80 pb-4">
-                  Order Summary
+                  {t.OrderSummary}
                 </h2>
 
                 {/* Price Breakdown */}
                 <div className="mt-6 space-y-3.5 text-xs">
                   <div className="flex justify-between text-mist">
-                    <span>Products Subtotal</span>
+                    <span>{t.Subtotal}</span>
                     <span className="font-semibold text-forest-deep">
                       {formatPrice(subtotal)}
                     </span>
@@ -594,11 +780,11 @@ export function CartClient({
 
                   <div className="flex justify-between text-mist">
                     <span className="flex items-center gap-1.5">
-                      Delivery Charge
+                      {t.Delivery}
                     </span>
                     <span className="font-semibold text-forest-deep">
                       {deliveryCharge === 0 ? (
-                        <span className="text-forest font-bold">Free</span>
+                        <span className="text-forest font-bold">{t.Free}</span>
                       ) : (
                         formatPrice(deliveryCharge)
                       )}
@@ -606,7 +792,7 @@ export function CartClient({
                   </div>
 
                   <div className="flex justify-between text-mist">
-                    <span>Estimated Tax (7%)</span>
+                    <span>{t.Tax}</span>
                     <span className="font-semibold text-forest-deep">
                       {formatPrice(tax)}
                     </span>
@@ -614,7 +800,7 @@ export function CartClient({
 
                   {discountAmount > 0 && (
                     <div className="flex justify-between text-forest font-semibold">
-                      <span>Applied Discount</span>
+                      <span>{t.Discount}</span>
                       <span>−{formatPrice(discountAmount)}</span>
                     </div>
                   )}
@@ -623,10 +809,10 @@ export function CartClient({
                   <div className="border-t border-hairline/80 pt-4 flex items-baseline justify-between">
                     <div>
                       <span className="text-sm font-bold text-forest-deep">
-                        Grand Total
+                        {t.GrandTotal}
                       </span>
                       <p className="text-[11px] text-mist">
-                        Including tax & delivery
+                        {t.IncludingTaxDelivery}
                       </p>
                     </div>
                     <span className="font-display text-2xl font-bold text-forest">
@@ -646,7 +832,7 @@ export function CartClient({
                     className="flex items-center justify-center gap-2"
                   >
                     <Lock className="h-4 w-4" />
-                    Proceed to Checkout
+                    {t.ProceedToCheckout}
                     <ArrowRight className="h-4 w-4 ml-1" />
                   </Link>
                 </Button>
@@ -655,23 +841,23 @@ export function CartClient({
                 <div className="mt-6 rounded-2xl border border-hairline/80 bg-sand-soft/50 p-4 space-y-2.5">
                   <div className="flex items-center gap-2 text-xs font-semibold text-forest-deep">
                     <ShieldCheck className="h-4 w-4 text-forest shrink-0" />
-                    <span>256-Bit Encrypted & Stripe Secured</span>
+                    <span>{t.EncryptedStripe}</span>
                   </div>
                   <div className="flex items-center gap-2 text-xs font-semibold text-forest-deep">
                     <CheckCircle2 className="h-4 w-4 text-forest shrink-0" />
-                    <span>Hassle-Free Return Guarantee</span>
+                    <span>{t.ExchangeGuarantee}</span>
                   </div>
                 </div>
               </div>
 
               {/* Assistance card */}
               <div className="rounded-2xl border border-hairline/80 bg-white/70 p-4 text-xs text-mist flex items-center justify-between">
-                <span>Questions about your order?</span>
+                <span>{t.HaveQuestions}</span>
                 <Link
                   href={`/${lang}/contact`}
                   className="font-bold text-forest hover:underline"
                 >
-                  Contact Support →
+                  {t.ContactSupport} →
                 </Link>
               </div>
             </div>
@@ -683,33 +869,47 @@ export function CartClient({
       <Modal
         open={clearModalOpen}
         onClose={() => setClearModalOpen(false)}
-        title="Clear Shopping Bag"
-        description="Are you sure you want to remove all items from your shopping bag? This cannot be undone."
+        className="max-w-md rounded-3xl p-6 sm:p-7 shadow-2xl"
       >
-        <div className="mt-4 flex items-center justify-end gap-3">
+        <div className="text-center">
+          <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-red-50 text-red-600 border border-red-200 shadow-xs">
+            <AlertTriangle className="h-7 w-7" />
+          </div>
+
+          <h3 className="mt-4 font-display text-xl font-bold tracking-tight text-forest-deep sm:text-2xl">
+            {t.ClearModalTitle}
+          </h3>
+          <p className="mt-2 text-xs leading-relaxed text-mist">
+            {t.ClearModalDesc}
+          </p>
+        </div>
+
+        <div className="mt-6 flex flex-col sm:flex-row items-center justify-end gap-2.5">
           <Button
             type="button"
             variant="outline"
             onClick={() => setClearModalOpen(false)}
             disabled={clearing}
-            className="rounded-xl"
+            className="w-full sm:w-auto rounded-xl px-5 h-11 text-xs font-semibold"
           >
-            Cancel
+            {t.Cancel}
           </Button>
           <Button
             type="button"
-            variant="ghost"
             onClick={handleConfirmClear}
             disabled={clearing}
-            className="rounded-xl"
+            className="w-full sm:w-auto rounded-xl bg-red-600 px-6 h-11 text-white hover:bg-red-700 font-bold shadow-sm text-xs cursor-pointer"
           >
             {clearing ? (
-              <span className="flex items-center gap-2">
+              <span className="flex items-center justify-center gap-2">
                 <Loader2 className="h-4 w-4 animate-spin" />
-                Clearing...
+                {t.Clearing}
               </span>
             ) : (
-              "Clear Bag"
+              <span className="flex items-center justify-center gap-1.5">
+                <Trash2 className="h-3.5 w-3.5" />
+                {t.ConfirmClear}
+              </span>
             )}
           </Button>
         </div>

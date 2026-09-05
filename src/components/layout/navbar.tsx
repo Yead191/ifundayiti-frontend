@@ -44,7 +44,7 @@ function isActive(pathname: string, href: string) {
   return cleanPathname.startsWith(path);
 }
 
-export function Navbar({ user, cart }: { user?: any; cart?: CartData }) {
+export function Navbar({ user, cart }: { user?: any; cart?: any }) {
   const pathname = usePathname();
   const router = useRouter();
   const [scrolled, setScrolled] = React.useState(false);

@@ -47,6 +47,7 @@ export default function CheckoutExperience({
   const router = useRouter();
   const lines = cart?.cart ?? [];
   const breakdown = cart?.price_breakdown;
+  console.log(breakdown, cart);
 
   const [city, setCity] = React.useState("");
   const [postalCode, setPostalCode] = React.useState("");
@@ -304,7 +305,7 @@ export default function CheckoutExperience({
                             {image ? (
                               <Image
                                 src={image}
-                                alt={line?.product?.title}
+                                alt={line?.product?.title || ""}
                                 fill
                                 sizes="64px"
                                 className="object-cover"
@@ -329,9 +330,7 @@ export default function CheckoutExperience({
                                 <button
                                   type="button"
                                   disabled={busy || submitting}
-                                  onClick={() =>
-                                    handleQuantity(line?._id, -1)
-                                  }
+                                  onClick={() => handleQuantity(line?._id, -1)}
                                   className="px-2 py-1 text-mist transition-colors hover:text-cloud disabled:opacity-40"
                                   aria-label="Decrease quantity"
                                 >
