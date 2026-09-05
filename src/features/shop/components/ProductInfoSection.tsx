@@ -16,7 +16,10 @@ import {
   Truck,
 } from "lucide-react";
 
-import type { ApparelProduct, ProductVariant } from "@/helpers/next-fetch/shopActions";
+import type {
+  ApparelProduct,
+  ProductVariant,
+} from "@/helpers/next-fetch/shopActions";
 import { getColorHex } from "../constants";
 import { formatPrice } from "@/lib/utils";
 
@@ -128,7 +131,8 @@ export function ProductInfoSection({
             <div className="mt-3 flex flex-wrap gap-3">
               {distinctColors.map((c) => {
                 const hex = getColorHex(c);
-                const isSelected = selectedColor.toLowerCase() === c.toLowerCase();
+                const isSelected =
+                  selectedColor.toLowerCase() === c.toLowerCase();
                 return (
                   <button
                     key={c}
@@ -148,7 +152,9 @@ export function ProductInfoSection({
                     {isSelected && (
                       <Check
                         className={`h-4 w-4 absolute ${
-                          hex === "#ffffff" || hex.includes("#e") || hex.includes("#f")
+                          hex === "#ffffff" ||
+                          hex.includes("#e") ||
+                          hex.includes("#f")
                             ? "text-forest-deep"
                             : "text-white"
                         }`}
@@ -183,7 +189,8 @@ export function ProductInfoSection({
 
             <div className="mt-3 grid grid-cols-4 sm:grid-cols-6 gap-2">
               {sizesForColor.map((v) => {
-                const isSelected = selectedSize.toLowerCase() === v.size.toLowerCase();
+                const isSelected =
+                  selectedSize.toLowerCase() === v.size.toLowerCase();
                 const out = v.stock === 0 && !v.isPreOrder;
                 const isLow = v.stock > 0 && v.stock <= 3;
                 return (
@@ -196,8 +203,8 @@ export function ProductInfoSection({
                       isSelected
                         ? "bg-forest text-white shadow-md ring-2 ring-forest/20"
                         : out
-                        ? "bg-sand-soft/40 text-faint line-through cursor-not-allowed border border-hairline/40"
-                        : "bg-white text-forest-deep hover:bg-sand-soft border border-hairline shadow-2xs"
+                          ? "bg-sand-soft/40 text-faint line-through cursor-not-allowed border border-hairline/40"
+                          : "bg-white text-forest-deep hover:bg-sand-soft border border-hairline shadow-2xs"
                     }`}
                   >
                     <span>{v.size}</span>
@@ -227,8 +234,10 @@ export function ProductInfoSection({
                   {t?.PreOrderNotice?.replace(
                     "[date]",
                     activeVariant?.expectedAvailableDate
-                      ? new Date(activeVariant.expectedAvailableDate).toLocaleDateString()
-                      : "Soon"
+                      ? new Date(
+                          activeVariant.expectedAvailableDate,
+                        ).toLocaleDateString()
+                      : "Soon",
                   ) || "Pre-Order Available"}
                 </p>
                 {currentStock > 0 && (
@@ -243,7 +252,10 @@ export function ProductInfoSection({
               <div className="flex items-center gap-2.5 rounded-2xl bg-amber-500/10 border border-amber-500/20 p-3.5 text-xs font-bold text-amber-800">
                 <AlertTriangle className="h-4 w-4 shrink-0 text-amber-700" />
                 <span>
-                  {t?.LowStockNotice?.replace("[count]", String(currentStock)) ||
+                  {t?.LowStockNotice?.replace(
+                    "[count]",
+                    String(currentStock),
+                  ) ||
                     `Only ${currentStock} units remaining in stock — order soon!`}
                 </span>
               </div>
@@ -251,15 +263,19 @@ export function ProductInfoSection({
               <div className="flex items-center gap-2.5 rounded-2xl bg-forest/10 border border-forest/20 p-3.5 text-xs font-bold text-forest">
                 <Check className="h-4 w-4 shrink-0" />
                 <span>
-                  {t?.StockAvailable?.replace("[count]", String(currentStock)) ||
-                    `${currentStock} units in stock`}{" "}
+                  {t?.StockAvailable?.replace(
+                    "[count]",
+                    String(currentStock),
+                  ) || `${currentStock} units in stock`}{" "}
                   — {t?.InStockNotice || "Ships in 24–48 hours"}
                 </span>
               </div>
             )
           ) : (
             <div className="flex items-center gap-2.5 rounded-2xl bg-sand-soft border border-hairline p-3.5 text-xs font-bold text-mist">
-              <span>{t?.SoldOutNotice || "Out of stock in this size & color"}</span>
+              <span>
+                {t?.SoldOutNotice || "Out of stock in this size & color"}
+              </span>
             </div>
           )}
         </div>
@@ -310,7 +326,7 @@ export function ProductInfoSection({
           <button
             type="button"
             onClick={() => onAddToCart(true)}
-            disabled={!inStock && !isPreOrder}
+            disabled={!inStock && isPreOrder}
             className="w-full flex items-center justify-center rounded-2xl border-2 border-forest-deep/20 bg-white py-3 px-6 text-sm font-bold text-forest-deep shadow-xs transition-colors hover:bg-sand-soft hover:border-forest disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <span>{t?.BuyNowBtn || "Instant Checkout"}</span>
@@ -321,18 +337,19 @@ export function ProductInfoSection({
         <div className="mt-8 space-y-2.5 rounded-3xl border border-hairline/80 bg-white/80 p-4 backdrop-blur-xs">
           <div className="flex items-center gap-3 text-xs font-semibold text-forest-deep">
             <Truck className="h-4 w-4 shrink-0 text-forest" />
-            <span>{t?.FreeShipping || "Free shipping on orders over $150"}</span>
+            <span>
+              {t?.FreeShipping || "Free shipping on orders over $150"}
+            </span>
           </div>
           <div className="flex items-center gap-3 text-xs font-semibold text-forest-deep">
             <RotateCcw className="h-4 w-4 shrink-0 text-forest" />
-            <span>
-              {t?.ReturnsGuarantee || "30-day exchange"}
-            </span>
+            <span>{t?.ReturnsGuarantee || "30-day exchange"}</span>
           </div>
           <div className="flex items-center gap-3 text-xs font-semibold text-forest-deep">
             <ShieldCheck className="h-4 w-4 shrink-0 text-forest" />
             <span>
-              {t?.EthicalCrafted || "Ethically crafted with 100% organic cotton"}
+              {t?.EthicalCrafted ||
+                "Ethically crafted with 100% organic cotton"}
             </span>
           </div>
         </div>

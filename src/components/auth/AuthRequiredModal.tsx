@@ -68,8 +68,7 @@ const MODAL_I18N = {
       "Tanpri konekte pou mete atik nan sak acha w la epi pwoteje detay kòmand ou.",
     subtitleBuy:
       "Tanpri konekte pou konplete acha w la epi pwoteje detay kòmand ou.",
-    subtitleGeneric:
-      "Tanpri konekte pou kontinye epi pwoteje detay kòmand ou.",
+    subtitleGeneric: "Tanpri konekte pou kontinye epi pwoteje detay kòmand ou.",
     whyTitle: "Poukisa yon kont nesesè:",
     benefits: [
       {
@@ -108,9 +107,8 @@ export function AuthRequiredModal({
 }: AuthRequiredModalProps) {
   const pathname = usePathname();
   const segments = pathname?.split("/") ?? [];
-  const activeLang: "en" | "ht" = (propLang || (segments[1] === "ht" ? "ht" : "en")) as
-    | "en"
-    | "ht";
+  const activeLang: "en" | "ht" = (propLang ||
+    (segments[1] === "ht" ? "ht" : "en")) as "en" | "ht";
   const redirectUrl = encodeURIComponent(pathname || `/${activeLang}/shop`);
 
   const t = dict?.AuthRequiredModal ?? MODAL_I18N[activeLang] ?? MODAL_I18N.en;
@@ -125,8 +123,8 @@ export function AuthRequiredModal({
   const subtitle = isBuy
     ? t.subtitleBuy
     : isAdd
-    ? t.subtitleAdd
-    : t.subtitleGeneric;
+      ? t.subtitleAdd
+      : t.subtitleGeneric;
 
   const benefits = (MODAL_I18N[activeLang] ?? MODAL_I18N.en).benefits;
 
@@ -148,9 +146,7 @@ export function AuthRequiredModal({
         <h3 className="mt-1 font-display text-xl sm:text-2xl font-bold tracking-tight text-forest-deep">
           {t.title}
         </h3>
-        <p className="mt-1.5 text-xs leading-relaxed text-mist">
-          {subtitle}
-        </p>
+        <p className="mt-1.5 text-xs leading-relaxed text-mist">{subtitle}</p>
       </div>
 
       {/* Benefits / Why Login is Necessary */}
@@ -199,7 +195,7 @@ export function AuthRequiredModal({
           size="sm"
           className="h-10 w-full rounded-xl text-xs font-semibold"
         >
-          <Link href={`/${activeLang}/auth/register?redirect=${redirectUrl}`}>
+          <Link href={`/${activeLang}/auth/join?redirect=${redirectUrl}`}>
             {t.registerBtn}
           </Link>
         </Button>

@@ -249,7 +249,7 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
                   <div className="flex items-center gap-3 border-b border-hairline p-2.5">
                     {user?.image ? (
                       <img
-                        src={user.image}
+                        src={getImageUrl(user.image) || ""}
                         alt={user?.name || "User"}
                         className="h-10 w-10 shrink-0 rounded-xl border border-hairline object-cover"
                       />
