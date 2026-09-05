@@ -30,8 +30,7 @@ async function countTotal(url: string) {
     cache: "no-store",
   });
   return res.success
-    ? (res.pagination?.total ??
-        (Array.isArray(res.data) ? res.data.length : 0))
+    ? (res.pagination?.total ?? (Array.isArray(res.data) ? res.data.length : 0))
     : 0;
 }
 
@@ -85,7 +84,9 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
     {
       label: isHt ? "Total Donasyon" : "Total Donated",
       value: formatPrice(totalDonated),
-      sublabel: isHt ? "2 kontribisyon nan fon an" : "2 contributions to Program Fund",
+      sublabel: isHt
+        ? "2 kontribisyon nan fon an"
+        : "2 contributions to Program Fund",
       href: `/${lang}/donate`,
       icon: Heart,
       badge: isHt ? "Enpak" : "Impact",
@@ -93,7 +94,9 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
     {
       label: isHt ? "Sibvansyon Sipòte" : "Grants Supported",
       value: "2",
-      sublabel: isHt ? "Antreprenè lokal ki jwenn èd" : "Grassroots Haitian builders backed",
+      sublabel: isHt
+        ? "Antreprenè lokal ki jwenn èd"
+        : "Grassroots Haitian builders backed",
       href: `/${lang}/winners`,
       icon: Sparkles,
       badge: isHt ? "Kominote" : "Community",
@@ -101,7 +104,9 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
     {
       label: isHt ? "Boutik Ofisyèl" : "Mission Store",
       value: isHt ? "Vizite" : "Shop",
-      sublabel: isHt ? "100% pwofi finanse pwojè" : "100% proceeds fund micro-grants",
+      sublabel: isHt
+        ? "100% pwofi finanse pwojè"
+        : "100% proceeds fund micro-grants",
       href: `/${lang}/shop`,
       icon: ShoppingBag,
       badge: isHt ? "Merch" : "Merch",
@@ -112,33 +117,37 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
     <div className="space-y-6">
       {/* 1. Stat Cards Row */}
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {statCards.map(({ label, value, sublabel, href, icon: Icon, badge }) => (
-          <Link
-            key={href}
-            href={href}
-            className="group relative overflow-hidden rounded-2xl border border-hairline/80 bg-panel/80 p-4.5 shadow-xs backdrop-blur-md transition-all duration-200 hover:border-forest/40 hover:bg-panel hover:shadow-md"
-          >
-            <div className="flex items-center justify-between">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-forest/10 text-forest">
-                <Icon className="h-4.5 w-4.5" />
-              </span>
-              <span className="rounded-full border border-forest/20 bg-forest/5 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-forest">
-                {badge}
-              </span>
-            </div>
+        {statCards.map(
+          ({ label, value, sublabel, href, icon: Icon, badge }) => (
+            <Link
+              key={href}
+              href={href}
+              className="group relative overflow-hidden rounded-2xl border border-hairline/80 bg-panel/80 p-4.5 shadow-xs backdrop-blur-md transition-all duration-200 hover:border-forest/40 hover:bg-panel hover:shadow-md"
+            >
+              <div className="flex items-center justify-between">
+                <span className="grid h-9 w-9 place-items-center rounded-xl bg-forest/10 text-forest">
+                  <Icon className="h-4.5 w-4.5" />
+                </span>
+                <span className="rounded-full border border-forest/20 bg-forest/5 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-forest">
+                  {badge}
+                </span>
+              </div>
 
-            <p className="mt-3 font-display text-2xl font-bold text-cloud">
-              {value}
-            </p>
-            <p className="mt-0.5 text-xs font-semibold text-cloud">{label}</p>
-            <p className="mt-1 text-[11px] text-mist leading-relaxed">{sublabel}</p>
+              <p className="mt-3 font-display text-2xl font-bold text-cloud">
+                {value}
+              </p>
+              <p className="mt-0.5 text-xs font-semibold text-cloud">{label}</p>
+              <p className="mt-1 text-[11px] text-mist leading-relaxed">
+                {sublabel}
+              </p>
 
-            <div className="mt-3 flex items-center gap-1 text-[11px] font-semibold text-forest group-hover:underline">
-              <span>{isHt ? "Gade plis" : "View details"}</span>
-              <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
-            </div>
-          </Link>
-        ))}
+              <div className="mt-3 flex items-center gap-1 text-[11px] font-semibold text-forest group-hover:underline">
+                <span>{isHt ? "Gade plis" : "View details"}</span>
+                <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
+              </div>
+            </Link>
+          ),
+        )}
       </div>
 
       {/* 2. Main 2-Column Split: Profile & Donations */}
@@ -153,7 +162,12 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
                 : "Personal details and account security."
             }
             actions={
-              <Button asChild variant="outline" size="sm" className="rounded-xl text-xs">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="rounded-xl text-xs"
+              >
                 <Link href={`/${lang}/dashboard/profile`}>
                   <User className="mr-1.5 h-3.5 w-3.5" />
                   {isHt ? "Modifye" : "Edit profile"}
@@ -163,34 +177,50 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
           >
             <dl className="space-y-3.5 text-sm">
               <div className="flex justify-between gap-4 border-b border-hairline/60 pb-3">
-                <dt className="text-xs text-mist font-medium">{isHt ? "Non Konplè" : "Full Name"}</dt>
-                <dd className="font-semibold text-cloud text-xs">{user?.name || "Member"}</dd>
+                <dt className="text-xs text-mist font-medium">
+                  {isHt ? "Non Konplè" : "Full Name"}
+                </dt>
+                <dd className="font-semibold text-cloud text-xs">
+                  {user?.name || "Member"}
+                </dd>
               </div>
 
               <div className="flex justify-between gap-4 border-b border-hairline/60 pb-3">
-                <dt className="text-xs text-mist font-medium">{isHt ? "Adrès Imèl" : "Email Address"}</dt>
-                <dd className="font-semibold text-cloud text-xs truncate max-w-[180px]">{user?.email || "—"}</dd>
+                <dt className="text-xs text-mist font-medium">
+                  {isHt ? "Adrès Imèl" : "Email Address"}
+                </dt>
+                <dd className="font-semibold text-cloud text-xs truncate max-w-45">
+                  {user?.email || "—"}
+                </dd>
               </div>
 
               <div className="flex justify-between gap-4 border-b border-hairline/60 pb-3">
-                <dt className="text-xs text-mist font-medium">{isHt ? "Wòl nan Sistèm" : "Account Role"}</dt>
+                <dt className="text-xs text-mist font-medium">
+                  {isHt ? "Wòl nan Sistèm" : "Account Role"}
+                </dt>
                 <dd className="font-bold text-forest text-[11px] uppercase tracking-wider bg-forest/10 px-2 py-0.5 rounded-full border border-forest/20">
                   {user?.role || "MEMBER"}
                 </dd>
               </div>
 
               <div className="flex justify-between gap-4 border-b border-hairline/60 pb-3">
-                <dt className="text-xs text-mist font-medium">{isHt ? "Telefòn" : "Phone"}</dt>
+                <dt className="text-xs text-mist font-medium">
+                  {isHt ? "Telefòn" : "Phone"}
+                </dt>
                 <dd className="font-semibold text-cloud text-xs">
                   {user?.phone || user?.vendorProfile?.contactNo || "—"}
                 </dd>
               </div>
 
               <div className="flex justify-between gap-4">
-                <dt className="text-xs text-mist font-medium">{isHt ? "Sekirite" : "Security"}</dt>
+                <dt className="text-xs text-mist font-medium">
+                  {isHt ? "Sekirite" : "Security"}
+                </dt>
                 <dd className="flex items-center gap-1 text-emerald-600 font-semibold text-xs">
                   <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
-                  <span>{isHt ? "256-Bit SSL Pwoteje" : "256-Bit Protected"}</span>
+                  <span>
+                    {isHt ? "256-Bit SSL Pwoteje" : "256-Bit Protected"}
+                  </span>
                 </dd>
               </div>
             </dl>
@@ -204,7 +234,11 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
                   ? "Ou gen aksè ak tout resi acha ak swivi livrezon an tan reyèl nan seksyon Kòmand la."
                   : "Track package status, courier dispatch, and download receipts in your Orders tab."}
               </p>
-              <Button asChild size="sm" className="mt-3 w-full rounded-xl bg-forest hover:bg-forest-bright text-xs font-bold text-white shadow-xs">
+              <Button
+                asChild
+                size="sm"
+                className="mt-3 w-full rounded-xl bg-forest hover:bg-forest-bright text-xs font-bold text-white shadow-xs"
+              >
                 <Link href={`/${lang}/dashboard/orders`}>
                   <Package className="mr-1.5 h-3.5 w-3.5" />
                   {isHt ? "Gade Tout Kòmand Yo" : "View All Orders"}
@@ -217,14 +251,22 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
         {/* Donations & Grant Impact Card (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
           <DashboardPanel
-            title={isHt ? "Donasyon ak Enpak Kominotè" : "Donations & Community Impact"}
+            title={
+              isHt
+                ? "Donasyon ak Enpak Kominotè"
+                : "Donations & Community Impact"
+            }
             description={
               isHt
                 ? "Kontribisyon ou nan Fon Pwogram IFundAyiti pou kreyatè lokal yo."
                 : "Your contributions to the IFundAyiti Program Fund empowering local builders."
             }
             actions={
-              <Button asChild size="sm" className="rounded-xl bg-forest hover:bg-forest-bright text-xs font-bold text-white shadow-xs">
+              <Button
+                asChild
+                size="sm"
+                className="rounded-xl bg-forest hover:bg-forest-bright text-xs font-bold text-white shadow-xs"
+              >
                 <Link href={`/${lang}/donate`}>
                   <Heart className="mr-1.5 h-3.5 w-3.5 text-rose-300" />
                   {isHt ? "Fè Yon Don" : "Donate Now"}
@@ -275,9 +317,13 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
             <div className="mt-5 rounded-2xl border border-hairline/80 bg-sand-soft/50 p-4">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-bold text-forest uppercase tracking-wider">
-                  {isHt ? "Pwochen Sibvansyon $1,000" : "Next $1,000 Micro-Grant Cycle"}
+                  {isHt
+                    ? "Pwochen Sibvansyon $1,000"
+                    : "Next $1,000 Micro-Grant Cycle"}
                 </span>
-                <span className="font-bold text-forest-deep">$750 / $1,000 (75%)</span>
+                <span className="font-bold text-forest-deep">
+                  $750 / $1,000 (75%)
+                </span>
               </div>
 
               <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-sand-soft border border-hairline/80">

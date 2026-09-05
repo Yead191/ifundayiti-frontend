@@ -34,6 +34,7 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { getImageUrl } from "@/lib/getImageUrl";
 
 function isActive(pathname: string, href: string) {
   const cleanPathname = "/" + pathname.split("/").slice(2).join("/");
@@ -231,7 +232,7 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
                   >
                     {user?.image ? (
                       <img
-                        src={user.image}
+                        src={getImageUrl(user.image) || ""}
                         alt={user?.name || "User"}
                         className="h-full w-full object-cover"
                       />
