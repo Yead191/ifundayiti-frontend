@@ -106,7 +106,7 @@ export function ProductLightboxModal({
 
       {/* Bottom Thumbnail Navigation Strip */}
       {images.length > 1 && (
-        <div className="flex items-center gap-2 overflow-x-auto max-w-full pb-2 z-20">
+        <div className="no-scrollbar flex items-center gap-2 overflow-x-auto lg:overflow-x-hidden flex-nowrap max-w-full pb-2 z-20">
           {images.map((img, idx) => {
             const resolved = getImageUrl(img) || img;
             return (
