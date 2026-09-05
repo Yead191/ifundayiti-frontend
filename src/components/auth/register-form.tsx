@@ -81,7 +81,7 @@ export function RegisterForm({ lang = "en", dict }: RegisterFormProps) {
               : "Account created — verify your email to continue."),
         );
         router.push(
-          `/${lang}/verify-otp?email=${encodeURIComponent(values.email)}&flow=verify`,
+          `/${lang}/auth/verify-otp?email=${encodeURIComponent(values.email)}&flow=verify`,
         );
         return;
       }
@@ -113,18 +113,22 @@ export function RegisterForm({ lang = "en", dict }: RegisterFormProps) {
   return (
     <div className="flex flex-col gap-6">
       <GoogleButton
-        label={
-          lang === "ht" ? "Kontinye avèk Google" : "Continue with Google"
-        }
+        label={lang === "ht" ? "Kontinye avèk Google" : "Continue with Google"}
       />
       <AuthDivider
-        label={t.OrContinueWith || (lang === "ht" ? "oswa kontinye ak imèl" : "or continue with email")}
+        label={
+          t.OrContinueWith ||
+          (lang === "ht" ? "oswa kontinye ak imèl" : "or continue with email")
+        }
       />
 
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         {/* Full Name */}
         <div className="flex flex-col gap-1.5 text-left">
-          <Label htmlFor="fullName" className="text-xs font-bold text-forest-deep">
+          <Label
+            htmlFor="fullName"
+            className="text-xs font-bold text-forest-deep"
+          >
             {t.FullName || "Full Name"} *
           </Label>
           <Input
@@ -175,7 +179,10 @@ export function RegisterForm({ lang = "en", dict }: RegisterFormProps) {
 
         {/* Password */}
         <div className="flex flex-col gap-1.5 text-left">
-          <Label htmlFor="password" className="text-xs font-bold text-forest-deep">
+          <Label
+            htmlFor="password"
+            className="text-xs font-bold text-forest-deep"
+          >
             {t.Password || "Password"} *
           </Label>
           <div className="relative">
@@ -206,8 +213,13 @@ export function RegisterForm({ lang = "en", dict }: RegisterFormProps) {
 
         {/* Confirm Password */}
         <div className="flex flex-col gap-1.5 text-left">
-          <Label htmlFor="confirmPassword" className="text-xs font-bold text-forest-deep">
-            {t.ConfirmPassword || (lang === "ht" ? "Konfime modpas la" : "Confirm password")} *
+          <Label
+            htmlFor="confirmPassword"
+            className="text-xs font-bold text-forest-deep"
+          >
+            {t.ConfirmPassword ||
+              (lang === "ht" ? "Konfime modpas la" : "Confirm password")}{" "}
+            *
           </Label>
           <div className="relative">
             <Input
@@ -223,7 +235,9 @@ export function RegisterForm({ lang = "en", dict }: RegisterFormProps) {
               type="button"
               onClick={() => setShowConfirmPassword((prev) => !prev)}
               className="absolute right-3 top-1/2 -translate-y-1/2 text-mist hover:text-forest-deep"
-              aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+              aria-label={
+                showConfirmPassword ? "Hide password" : "Show password"
+              }
             >
               {showConfirmPassword ? (
                 <EyeOff className="h-4 w-4" />
@@ -261,9 +275,11 @@ export function RegisterForm({ lang = "en", dict }: RegisterFormProps) {
 
       <div className="text-center text-xs text-mist">
         {t.AlreadyHaveAccount ||
-          (lang === "ht" ? "Ou gen yon kont deja?" : "Already have an account?")}{" "}
+          (lang === "ht"
+            ? "Ou gen yon kont deja?"
+            : "Already have an account?")}{" "}
         <Link
-          href={`/${lang}/login`}
+          href={`/${lang}/auth/login`}
           className="font-bold text-forest hover:underline"
         >
           {t.SignIn || (lang === "ht" ? "Konekte" : "Sign in")}

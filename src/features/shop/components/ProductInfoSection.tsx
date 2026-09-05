@@ -321,12 +321,12 @@ export function ProductInfoSection({
         <div className="mt-8 space-y-2.5 rounded-3xl border border-hairline/80 bg-white/80 p-4 backdrop-blur-xs">
           <div className="flex items-center gap-3 text-xs font-semibold text-forest-deep">
             <Truck className="h-4 w-4 shrink-0 text-forest" />
-            <span>{t?.FreeShipping || "Free shipping on orders over $75"}</span>
+            <span>{t?.FreeShipping || "Free shipping on orders over $150"}</span>
           </div>
           <div className="flex items-center gap-3 text-xs font-semibold text-forest-deep">
             <RotateCcw className="h-4 w-4 shrink-0 text-forest" />
             <span>
-              {t?.ReturnsGuarantee || "Easy 30-day hassle-free returns & exchanges"}
+              {t?.ReturnsGuarantee || "30-day exchange"}
             </span>
           </div>
           <div className="flex items-center gap-3 text-xs font-semibold text-forest-deep">

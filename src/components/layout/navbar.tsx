@@ -21,6 +21,7 @@ import { Logo } from "@/components/layout/logo";
 import { CartMenu } from "@/components/layout/cart-menu";
 import { LanguageSelector } from "@/components/layout/language-selector";
 import { useTranslation } from "@/components/providers/translation-provider";
+import type { CartData } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,7 +44,7 @@ function isActive(pathname: string, href: string) {
   return cleanPathname.startsWith(path);
 }
 
-export function Navbar({ user }: { user?: any }) {
+export function Navbar({ user, cart }: { user?: any; cart?: CartData }) {
   const pathname = usePathname();
   const router = useRouter();
   const [scrolled, setScrolled] = React.useState(false);
@@ -217,7 +218,7 @@ export function Navbar({ user }: { user?: any }) {
             <LanguageSelector />
 
             {/* Cart Menu */}
-            <CartMenu />
+            <CartMenu cart={cart} />
 
             {/* User Account Button with User Icon / Avatar */}
             {isLoggedIn ? (
@@ -311,7 +312,7 @@ export function Navbar({ user }: { user?: any }) {
               </DropdownMenu>
             ) : (
               <Link
-                href={localize("/login")}
+                href={localize("/auth/login")}
                 aria-label="Sign in"
                 title={authT.SignIn || "Sign in"}
                 className="grid h-9.5 w-9.5 shrink-0 place-items-center rounded-xl border border-hairline/60 bg-sand-soft/80 text-forest transition-colors hover:bg-sand hover:text-forest-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/30"

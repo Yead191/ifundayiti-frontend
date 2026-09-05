@@ -49,7 +49,10 @@ export default async function VerifyOtpPage({
             : "Verify email"
       }
       icon={<MailCheck className="h-6 w-6" />}
-      title={authT.VerifyTitle || (isHt ? "Mete kòd verifikasyon an" : "Enter your code")}
+      title={
+        authT.VerifyTitle ||
+        (isHt ? "Mete kòd verifikasyon an" : "Enter your code")
+      }
       subtitle={
         isHt ? (
           <>
@@ -69,13 +72,16 @@ export default async function VerifyOtpPage({
           </>
         )
       }
-      backHref={isReset ? `/${lang}/forgot-password` : `/${lang}/login`}
+      backHref={
+        isReset ? `/${lang}/auth/forgot-password` : `/${lang}/auth/login`
+      }
       backLabel={
         isReset
           ? isHt
             ? "Itilize yon lòt imèl"
             : "Use a different email"
-          : authT.BackToSignIn || (isHt ? "Retounen nan paj koneksyon" : "Back to sign in")
+          : authT.BackToSignIn ||
+            (isHt ? "Retounen nan paj koneksyon" : "Back to sign in")
       }
     >
       <Suspense fallback={null}>

@@ -42,7 +42,7 @@ export function ForgotPasswordForm() {
     const ok = await resend(values.email);
     if (ok) {
       router.push(
-        `/${currentLocale}/verify-otp?email=${encodeURIComponent(values.email)}&flow=reset`,
+        `/${currentLocale}/auth/verify-otp?email=${encodeURIComponent(values.email)}&flow=reset`,
       );
     }
   }
@@ -77,7 +77,8 @@ export function ForgotPasswordForm() {
             {currentLocale === "ht" ? "N ap voye kòd la..." : "Sending code…"}
           </>
         ) : (
-          authT.SendResetCode || (currentLocale === "ht" ? "Voye kòd verifikasyon" : "Send reset code")
+          authT.SendResetCode ||
+          (currentLocale === "ht" ? "Voye kòd verifikasyon" : "Send reset code")
         )}
       </Button>
     </form>

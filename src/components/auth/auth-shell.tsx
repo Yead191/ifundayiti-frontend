@@ -39,7 +39,7 @@ export function AuthShell({
 
       <div className="relative mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-stretch">
         {/* Brand panel (Desktop) */}
-        <aside className="relative hidden flex-col justify-between overflow-hidden rounded-[28px] border border-forest/15 bg-gradient-to-br from-[#05281d] via-[#0b3d2e] to-[#041c15] p-10 text-white shadow-2xl lg:flex">
+        <aside className="relative hidden flex-col justify-between overflow-hidden rounded-[28px] border border-forest/15 bg-linear-to-br from-[#05281d] via-[#0b3d2e] to-[#041c15] p-10 text-white shadow-2xl lg:flex">
           {/* Subtle gold/emerald gradient blurs */}
           <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-sand/15 blur-2xl" />
           <div className="pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-forest-bright/20 blur-2xl" />
@@ -47,7 +47,10 @@ export function AuthShell({
           {/* Top badge & Logo */}
           <div className="relative z-10">
             <div className="flex items-center justify-between">
-              <Link href={homeHref} className="inline-block transition-opacity hover:opacity-90">
+              <Link
+                href={homeHref}
+                className="inline-block transition-opacity hover:opacity-90"
+              >
                 <Logo />
               </Link>
               <div className="inline-flex items-center gap-1.5 rounded-full border border-sand/30 bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide text-sand backdrop-blur-md">
@@ -73,7 +76,9 @@ export function AuthShell({
                 <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full bg-sand/20 text-sand border border-sand/30">
                   <Check className="h-3.5 w-3.5" />
                 </span>
-                <span className="text-sm font-medium leading-relaxed">{point}</span>
+                <span className="text-sm font-medium leading-relaxed">
+                  {point}
+                </span>
               </li>
             ))}
           </ul>
@@ -85,7 +90,9 @@ export function AuthShell({
               <span>Dedicated to Transparency</span>
             </div>
             <p className="mt-2 text-xs leading-relaxed text-white/75">
-              “Every grant, donation, and community initiative on IFundAyiti is tracked openly to ensure real-world impact for Haitian entrepreneurs.”
+              “Every grant, donation, and community initiative on IFundAyiti is
+              tracked openly to ensure real-world impact for Haitian
+              entrepreneurs.”
             </p>
           </div>
         </aside>

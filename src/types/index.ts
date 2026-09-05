@@ -303,37 +303,69 @@ export interface TangibleProduct {
 }
 
 /* ------------------------------------------------------------------ *
- * Cart (API)
+ * Cart (API) — FRONTEND INTEGRATION SPECIFICATION: SHOPPING CART MODULE
  * ------------------------------------------------------------------ */
-export interface CartProductRef {
+export interface ICartProductVariant {
+  size: string;
+  color: string;
+  stock: number;
+  isPreOrder: boolean;
+}
+
+export interface ICartProduct {
   _id: string;
-  title: string;
+  name: string;
+  images: string[];
+  price: number;
+  compareAtPrice?: number;
+  status: "active" | "inactive" | "archived";
+  category?: string | { _id: string; name: string };
+  variants?: ICartProductVariant[];
+  // Fallbacks for legacy/alternative responses
+  title?: string;
   image?: string | null;
 }
 
-export interface ApiCartLine {
+export interface ICartItem {
   _id: string;
-  product: CartProductRef;
+  user?: string;
+  product: ICartProduct;
+  size: string;
+  color: string;
   quantity: number;
   unit_price: number;
   total_price: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
-export interface CartPriceBreakdown {
-  products_price: number;
-  serviceFee: number;
-  delivery_charge: number;
-  discount_amount: number;
-  total_price: number;
-  tax: number;
-  subtotal: number;
+export interface IPriceBreakdown {
+  products_price: number;   // Raw sum of unit_price * quantity
+  subtotal: number;         // Same as products_price
+  serviceFee?: number;      // $0.00
+  delivery_charge: number;  // $8.00 (or $0 if cart is empty)
+  tax: number;              // 7% of products_price
+  discount_amount: number;  // Applied discount (if coupon/promo active)
+  total_price: number;      // Grand total: subtotal + delivery + tax - discount
 }
 
 /** Shape of `data` from GET /cart. */
 export interface CartData {
-  cart: ApiCartLine[];
-  price_breakdown: CartPriceBreakdown;
+  cart: ICartItem[];
+  price_breakdown: IPriceBreakdown;
 }
+
+export interface AddToCartPayload {
+  product: string;
+  size: string;
+  color: string;
+  quantity: number;
+}
+
+// Legacy aliases for backwards compatibility
+export type CartProductRef = ICartProduct;
+export type ApiCartLine = ICartItem;
+export type CartPriceBreakdown = IPriceBreakdown;
 
 /* ------------------------------------------------------------------ *
  * Contact inquiry — POST /inquiry

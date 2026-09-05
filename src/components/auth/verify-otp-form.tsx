@@ -104,11 +104,11 @@ export function VerifyOtpForm() {
             return;
           }
           sessionStorage.setItem(RESET_TOKEN_KEY, token);
-          router.push(`/${currentLocale}/reset-password`);
+          router.push(`/${currentLocale}/auth/reset-password`);
           return;
         }
 
-        router.push(`/${currentLocale}/login`);
+        router.push(`/${currentLocale}/auth/login`);
       } catch (err) {
         console.error("verify-email error:", err);
         toast.error(
@@ -147,9 +147,11 @@ export function VerifyOtpForm() {
             {currentLocale === "ht" ? "N ap verifye..." : "Verifying…"}
           </>
         ) : flow === "reset" ? (
-          authT.VerifyBtn || (currentLocale === "ht" ? "Verifye & Kontinye" : "Verify & continue")
+          authT.VerifyBtn ||
+          (currentLocale === "ht" ? "Verifye & Kontinye" : "Verify & continue")
         ) : (
-          authT.VerifyBtn || (currentLocale === "ht" ? "Verifye imèl" : "Verify email")
+          authT.VerifyBtn ||
+          (currentLocale === "ht" ? "Verifye imèl" : "Verify email")
         )}
       </Button>
 
@@ -165,7 +167,8 @@ export function VerifyOtpForm() {
         >
           {isCoolingDown
             ? `${authT.ResendIn || (currentLocale === "ht" ? "Voye ankò nan" : "Resend in")} ${resendIn}s`
-            : authT.ResendCode || (currentLocale === "ht" ? "Voye kòd la ankò" : "Resend code")}
+            : authT.ResendCode ||
+              (currentLocale === "ht" ? "Voye kòd la ankò" : "Resend code")}
         </button>
       </p>
     </div>

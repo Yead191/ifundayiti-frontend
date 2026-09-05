@@ -26,15 +26,21 @@ export default async function ForgotPasswordPage({ params }: PageProps) {
       lang={lang}
       eyebrow={isHt ? "Chanje modpas" : "Reset password"}
       icon={<KeyRound className="h-6 w-6" />}
-      title={authT.ForgotPassword || (isHt ? "Ou bliye modpas ou?" : "Forgot your password?")}
+      title={
+        authT.ForgotPassword ||
+        (isHt ? "Ou bliye modpas ou?" : "Forgot your password?")
+      }
       subtitle={
         authT.ForgotSubtitle ||
         (isHt
           ? "Mete adrès imèl ou pou nou voye yon kòd verifikasyon pou w ka chanje modpas ou."
           : "Enter the email tied to your account and we'll send you a one-time code to reset it.")
       }
-      backHref={`/${lang}/login`}
-      backLabel={authT.BackToSignIn || (isHt ? "Retounen nan paj koneksyon" : "Back to sign in")}
+      backHref={`/${lang}/auth/login`}
+      backLabel={
+        authT.BackToSignIn ||
+        (isHt ? "Retounen nan paj koneksyon" : "Back to sign in")
+      }
     >
       <ForgotPasswordForm />
     </FocusShell>

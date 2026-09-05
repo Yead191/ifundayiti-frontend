@@ -3,6 +3,7 @@
 import * as React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Eye, Flame, ShoppingBag, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
@@ -11,7 +12,9 @@ import { getColorHex } from "../constants";
 import { formatPrice } from "@/lib/utils";
 import { getImageUrl } from "@/lib/getImageUrl";
 import { QuickViewModal } from "./QuickViewModal";
-import { useCart } from "@/components/cart/cart-context";
+import { addToCart } from "@/helpers/next-fetch/cartActions";
+import getProfile from "@/helpers/next-fetch/getProfile";
+import { AuthRequiredModal } from "@/components/auth/AuthRequiredModal";
 
 interface ProductCardProps {
   product: ApparelProduct;
@@ -20,8 +23,9 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, lang = "en", dict }: ProductCardProps) {
-  const { addItem } = useCart();
+  const router = useRouter();
   const [quickViewOpen, setQuickViewOpen] = React.useState(false);
+  const [authModalOpen, setAuthModalOpen] = React.useState(false);
   const [isHovered, setIsHovered] = React.useState(false);
 
   const cardT = dict?.ShopPage?.Card;
@@ -88,7 +92,7 @@ export function ProductCard({ product, lang = "en", dict }: ProductCardProps) {
       ? product.category.name
       : product.category || "Product";
 
-  const handleQuickAdd = (e: React.MouseEvent) => {
+  const handleQuickAdd = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
@@ -97,22 +101,30 @@ export function ProductCard({ product, lang = "en", dict }: ProductCardProps) {
       return;
     }
 
+    const user = await getProfile();
+    if (!user) {
+      setAuthModalOpen(true);
+      return;
+    }
+
     const firstVariant = variants[0];
-    addItem({
-      id: `${product._id}-${firstVariant?.color || "standard"}-${firstVariant?.size || "standard"}`,
-      productId: product._id,
-      title: `${product.name}${firstVariant ? ` · ${firstVariant.color} / ${firstVariant.size}` : ""}`,
-      price: product.price,
-      compareAtPrice: product.compareAtPrice,
-      quantity: 1,
-      image: frontImage,
-      slug: product._id,
-      color: firstVariant?.color,
-      size: firstVariant?.size,
-      isPreOrder: firstVariant?.isPreOrder,
-      expectedAvailableDate: firstVariant?.expectedAvailableDate || undefined,
-    });
-    toast.success(detailT?.AddedSuccess || "Added to your shopping bag");
+    try {
+      const res = await addToCart({
+        product: product._id,
+        size: firstVariant?.size || "Standard",
+        color: firstVariant?.color || "Standard",
+        quantity: 1,
+      });
+      if (res.success) {
+        toast.success(detailT?.AddedSuccess || "Added to your shopping bag");
+        router.refresh();
+      } else {
+        toast.error(res.message || "Could not add product to cart");
+      }
+    } catch (err) {
+      console.error("Add to cart error:", err);
+      toast.error("Network error while adding to cart");
+    }
   };
 
   return (
@@ -258,6 +270,14 @@ export function ProductCard({ product, lang = "en", dict }: ProductCardProps) {
         product={product}
         isOpen={quickViewOpen}
         onClose={() => setQuickViewOpen(false)}
+        lang={lang}
+        dict={dict}
+      />
+
+      <AuthRequiredModal
+        open={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        actionTitle="add items to your shopping bag"
         lang={lang}
         dict={dict}
       />

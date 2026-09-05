@@ -1,11 +1,10 @@
 "use client";
 
 import { Toaster } from "sonner";
-import { CartProvider } from "@/components/cart/cart-context";
 
 export function SiteProviders({ children }: { children: React.ReactNode }) {
   return (
-    <CartProvider>
+    <>
       {children}
       <Toaster
         theme="light"
@@ -30,6 +29,6 @@ export function SiteProviders({ children }: { children: React.ReactNode }) {
           },
         }}
       />
-    </CartProvider>
+    </>
   );
 }

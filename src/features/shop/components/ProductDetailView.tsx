@@ -11,7 +11,9 @@ import { ProductInfoSection } from "./ProductInfoSection";
 import { ProductStoryTabs } from "./ProductStoryTabs";
 import { ProductCard } from "./ProductCard";
 import { SizeChartModal } from "./SizeChartModal";
-import { useCart } from "@/components/cart/cart-context";
+import { addToCart } from "@/helpers/next-fetch/cartActions";
+import getProfile from "@/helpers/next-fetch/getProfile";
+import { AuthRequiredModal } from "@/components/auth/AuthRequiredModal";
 import { Container } from "@/components/shared/container";
 import { getImageUrl } from "@/lib/getImageUrl";
 
@@ -29,11 +31,12 @@ export function ProductDetailView({
   dict,
 }: ProductDetailViewProps) {
   const router = useRouter();
-  const { addItem } = useCart();
   const t = dict?.ShopPage?.Detail;
   const cardT = dict?.ShopPage?.Card;
 
   const [sizeModalOpen, setSizeModalOpen] = React.useState(false);
+  const [authModalOpen, setAuthModalOpen] = React.useState(false);
+  const [actionTitle, setActionTitle] = React.useState("add items to your shopping bag");
 
   // Variants & Color/Size Selection
   const variants = product.variants || [];
@@ -109,33 +112,39 @@ export function ProductDetailView({
       : product.category || "Product";
 
   // Cart Add Handler
-  const handleAddToCart = (redirectAfter = false) => {
+  const handleAddToCart = async (redirectAfter = false) => {
     if (!inStock && !isPreOrder) {
       toast.error(t?.SoldOutNotice || "Out of stock in this size & color");
       return;
     }
 
-    const firstImage = getImageUrl(images[0]) || images[0];
-    const lineId = `${product._id}-${selectedColor}-${selectedSize}`;
-    addItem({
-      id: lineId,
-      productId: product._id,
-      title: `${product.name} · ${selectedColor} / ${selectedSize}`,
-      price: product.price,
-      compareAtPrice: product.compareAtPrice,
-      quantity,
-      image: firstImage,
-      slug: product._id,
-      color: selectedColor,
-      size: selectedSize,
-      isPreOrder,
-      expectedAvailableDate: activeVariant?.expectedAvailableDate || undefined,
-    });
+    const user = await getProfile();
+    if (!user) {
+      setActionTitle(redirectAfter ? "proceed to checkout" : "add items to your shopping bag");
+      setAuthModalOpen(true);
+      return;
+    }
 
-    toast.success(t?.AddedSuccess || "Added to your shopping bag");
+    try {
+      const res = await addToCart({
+        product: product._id,
+        size: selectedSize,
+        color: selectedColor,
+        quantity,
+      });
 
-    if (redirectAfter) {
-      router.push(`/${lang}/checkout`);
+      if (res.success) {
+        toast.success(t?.AddedSuccess || "Added to your shopping bag");
+        router.refresh();
+        if (redirectAfter) {
+          router.push(`/${lang}/checkout`);
+        }
+      } else {
+        toast.error(res.message || "Failed to add product to cart");
+      }
+    } catch (err) {
+      console.error("Add to cart error:", err);
+      toast.error("Network error while adding to cart");
     }
   };
 
@@ -253,6 +262,15 @@ export function ProductDetailView({
       <SizeChartModal
         isOpen={sizeModalOpen}
         onClose={() => setSizeModalOpen(false)}
+        dict={dict}
+      />
+
+      {/* Login Required Modal */}
+      <AuthRequiredModal
+        open={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        actionTitle={actionTitle}
+        lang={lang}
         dict={dict}
       />
     </>

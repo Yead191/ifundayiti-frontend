@@ -16,11 +16,14 @@ import {
   ZoomIn,
   ZoomOut,
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
 import { cn, formatPrice } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/components/cart/cart-context";
+import { addToCart } from "@/helpers/next-fetch/cartActions";
+import getProfile from "@/helpers/next-fetch/getProfile";
+import { AuthRequiredModal } from "@/components/auth/AuthRequiredModal";
 import { ProductCard } from "@/components/shop/shop-experience";
 import {
   getCategoryLabel,
@@ -30,7 +33,7 @@ import {
 import { getImageUrl } from "@/lib/getImageUrl";
 
 export function ProductDetail({ product }: { product: ShopProduct }) {
-  const { addItem } = useCart();
+  const router = useRouter();
   const [color, setColor] = React.useState(product.colors[0] ?? "");
   const [size, setSize] = React.useState(product.sizes[0] ?? "");
   const [qty, setQty] = React.useState(1);
@@ -55,17 +58,62 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
     setActive((i) => (i + 1) % images.length);
   }, [images.length]);
 
-  function handleAddToCart() {
+  const [authModalOpen, setAuthModalOpen] = React.useState(false);
+  const [actionTitle, setActionTitle] = React.useState("add items to your shopping bag");
+
+  async function handleAddToCart() {
     if (!inStock) return;
-    addItem({
-      id: `${product.id}-${color}-${size}`,
-      title: `${product.name} · ${color} / ${size}`,
-      price,
-      quantity: qty,
-      image: images[0],
-      slug: product.slug,
-    });
-    toast.success("Added to cart");
+    const user = await getProfile();
+    if (!user) {
+      setActionTitle("add items to your shopping bag");
+      setAuthModalOpen(true);
+      return;
+    }
+
+    try {
+      const res = await addToCart({
+        product: product.id,
+        size: size || "Standard",
+        color: color || "Standard",
+        quantity: qty,
+      });
+      if (res.success) {
+        toast.success("Added to cart");
+        router.refresh();
+      } else {
+        toast.error(res.message || "Failed to add to cart");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Network error while adding to cart");
+    }
+  }
+
+  async function handleBuyNow() {
+    if (!inStock) return;
+    const user = await getProfile();
+    if (!user) {
+      setActionTitle("purchase this item");
+      setAuthModalOpen(true);
+      return;
+    }
+
+    try {
+      const res = await addToCart({
+        product: product.id,
+        size: size || "Standard",
+        color: color || "Standard",
+        quantity: qty,
+      });
+      if (res.success) {
+        router.push("/checkout");
+      } else {
+        toast.error(res.message || "Failed to proceed to checkout");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error("Network error while processing buy now");
+    }
   }
 
   React.useEffect(() => {
@@ -309,19 +357,20 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
                 Add to cart
               </Button>
               <Button
-                asChild
+                onClick={handleBuyNow}
+                disabled={!inStock}
                 variant="outline"
                 size="lg"
                 className="flex-1 rounded-xl"
               >
-                <Link href="/checkout">Buy now</Link>
+                Buy now
               </Button>
             </div>
 
             <ul className="mt-8 space-y-3 border-t border-hairline pt-8">
               {[
                 { icon: Truck, text: "Ships in 5–10 business days" },
-                { icon: RotateCcw, text: "30-day returns on unused items" },
+                { icon: RotateCcw, text: "30-day exchange on unused items" },
                 {
                   icon: ShieldCheck,
                   text: "Secure checkout · supports the Program Fund",
@@ -408,6 +457,12 @@ export function ProductDetail({ product }: { product: ShopProduct }) {
           onNext={goNext}
         />
       )}
+
+      <AuthRequiredModal
+        open={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        actionTitle={actionTitle}
+      />
     </div>
   );
 }

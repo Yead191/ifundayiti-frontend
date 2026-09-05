@@ -152,7 +152,7 @@ export function LoginForm() {
               {t.Password || "Password"}
             </Label>
             <Link
-              href={`/${currentLocale}/forgot-password`}
+              href={`/${currentLocale}/auth/forgot-password`}
               className="text-xs font-bold text-forest hover:underline"
             >
               {t.ForgotPassword || "Forgot password?"}
@@ -216,7 +216,7 @@ export function LoginForm() {
             ? "Ou pa gen yon kont?"
             : "Don't have an account?")}{" "}
         <Link
-          href={`/${currentLocale}/join`}
+          href={`/${currentLocale}/auth/join`}
           className="font-bold text-forest hover:underline"
         >
           {t.SignUp ||

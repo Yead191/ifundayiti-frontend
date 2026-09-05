@@ -21,7 +21,7 @@ export async function generateMetadata({
     description: isHt
       ? "Konekte sou kont IFundAyiti ou pou w jwenn aksè nan aplikasyon sibvansyon w ak pwofil ou."
       : "Sign in to your IFundAyiti account to manage your grant applications, projects, and community profile.",
-    path: `/${lang}/login`,
+    path: `/${lang}/auth/login`,
     keywords: ["IFundAyiti login", "sign in", "konekte", "Haitian grants"],
     noIndex: true,
   });
@@ -43,7 +43,9 @@ export default async function LoginPage({ params }: PageProps) {
           ? "Konekte pou w jwenn aksè nan aplikasyon sibvansyon w, kòmand ou yo, ak pwofil kominote a."
           : "Sign in to access your grant applications, orders, and community profile.")
       }
-      panelEyebrow={isHt ? "IFundAyiti Òganizasyon San Pwofi" : "IFundAyiti Nonprofit"}
+      panelEyebrow={
+        isHt ? "IFundAyiti Òganizasyon San Pwofi" : "IFundAyiti Nonprofit"
+      }
       panelTitle={
         isHt
           ? "Transparans, sipò kominotè, ak sibvansyon dirab."

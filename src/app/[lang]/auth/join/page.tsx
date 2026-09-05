@@ -21,7 +21,7 @@ export async function generateMetadata({
     description: isHt
       ? "Kreye yon kont sou IFundAyiti pou w ka postile pou mikwo-sibvansyon, sipòte pwojè yo, epi patisipe nan kominote a."
       : "Join IFundAyiti to apply for micro-grants, support grassroots projects, and connect with Haitian pioneers.",
-    path: `/${lang}/join`,
+    path: `/${lang}/auth/join`,
     keywords: [
       "IFundAyiti register",
       "create account",
@@ -41,14 +41,18 @@ export default async function JoinPage({ params }: PageProps) {
   return (
     <AuthShell
       lang={lang}
-      title={authT.JoinTitle || (isHt ? "Antre nan IFundAyiti" : "Join IFundAyiti")}
+      title={
+        authT.JoinTitle || (isHt ? "Antre nan IFundAyiti" : "Join IFundAyiti")
+      }
       subtitle={
         authT.JoinSubtitle ||
         (isHt
           ? "Kreye kont ou pou postile pou mikwo-sibvansyon, sipòte pwojè yo, epi patisipe nan kominote a."
           : "Create your account to apply for micro-grants, support projects, and engage with the community.")
       }
-      panelEyebrow={isHt ? "IFundAyiti Òganizasyon San Pwofi" : "IFundAyiti Nonprofit"}
+      panelEyebrow={
+        isHt ? "IFundAyiti Òganizasyon San Pwofi" : "IFundAyiti Nonprofit"
+      }
       panelTitle={
         isHt
           ? "Sibvansyon ki fè lide ayisyen yo vin reyalite dirab."

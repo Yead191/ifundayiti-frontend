@@ -2,15 +2,21 @@
 
 import * as React from "react";
 import Image from "next/image";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Check, Clock, Minus, Plus, ShoppingBag, X } from "lucide-react";
 import { toast } from "sonner";
 
-import type { ApparelProduct, ProductVariant } from "@/helpers/next-fetch/shopActions";
+import type {
+  ApparelProduct,
+  ProductVariant,
+} from "@/helpers/next-fetch/shopActions";
 import { getColorHex } from "../constants";
 import { formatPrice } from "@/lib/utils";
 import { getImageUrl } from "@/lib/getImageUrl";
-import { useCart } from "@/components/cart/cart-context";
+import { addToCart } from "@/helpers/next-fetch/cartActions";
+import getProfile from "@/helpers/next-fetch/getProfile";
+import { AuthRequiredModal } from "@/components/auth/AuthRequiredModal";
+import Link from "next/link";
 
 interface QuickViewModalProps {
   product: ApparelProduct | null;
@@ -27,7 +33,8 @@ export function QuickViewModal({
   lang = "en",
   dict,
 }: QuickViewModalProps) {
-  const { addItem } = useCart();
+  const router = useRouter();
+  const [authModalOpen, setAuthModalOpen] = React.useState(false);
   const t = dict?.ShopPage?.Detail;
   const cardT = dict?.ShopPage?.Card;
 
@@ -50,7 +57,9 @@ export function QuickViewModal({
   const sizesForColor = React.useMemo(() => {
     if (!product?.variants) return [];
     const filtered = selectedColor
-      ? product.variants.filter((v) => v.color.toLowerCase() === selectedColor.toLowerCase())
+      ? product.variants.filter(
+          (v) => v.color.toLowerCase() === selectedColor.toLowerCase(),
+        )
       : product.variants;
     return filtered;
   }, [product, selectedColor]);
@@ -63,7 +72,7 @@ export function QuickViewModal({
       const firstColor = product.variants[0]?.color || "";
       setSelectedColor(firstColor);
       const sizesForFirst = product.variants.filter(
-        (v) => v.color.toLowerCase() === firstColor.toLowerCase()
+        (v) => v.color.toLowerCase() === firstColor.toLowerCase(),
       );
       setSelectedSize(sizesForFirst[0]?.size || "");
     }
@@ -74,7 +83,7 @@ export function QuickViewModal({
     setSelectedColor(c);
     if (!product?.variants) return;
     const available = product.variants.filter(
-      (v) => v.color.toLowerCase() === c.toLowerCase()
+      (v) => v.color.toLowerCase() === c.toLowerCase(),
     );
     if (available.length > 0) {
       const match = available.find((v) => v.size === selectedSize);
@@ -90,7 +99,7 @@ export function QuickViewModal({
     return product.variants.find(
       (v) =>
         v.color.toLowerCase() === selectedColor.toLowerCase() &&
-        v.size.toLowerCase() === selectedSize.toLowerCase()
+        v.size.toLowerCase() === selectedSize.toLowerCase(),
     );
   }, [product, selectedColor, selectedSize]);
 
@@ -98,39 +107,54 @@ export function QuickViewModal({
   const inStock = (activeVariant?.stock ?? 0) > 0;
   const maxQty = isPreOrder ? 10 : Math.max(1, activeVariant?.stock ?? 1);
 
-  const images = product?.images && product.images.length > 0 ? product.images : ["/images/placeholder.webp"];
+  const images =
+    product?.images && product.images.length > 0
+      ? product.images
+      : ["/images/placeholder.webp"];
   const activeImage = getImageUrl(images[activeImageIdx]) || images[0];
 
-  const hasDiscount = !!product?.compareAtPrice && product.compareAtPrice > product.price;
+  const hasDiscount =
+    !!product?.compareAtPrice && product.compareAtPrice > product.price;
   const discountPercent = hasDiscount
-    ? Math.round(((product!.compareAtPrice! - product!.price) / product!.compareAtPrice!) * 100)
+    ? Math.round(
+        ((product!.compareAtPrice! - product!.price) /
+          product!.compareAtPrice!) *
+          100,
+      )
     : 0;
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     if (!product) return;
     if (!inStock && !isPreOrder) {
       toast.error(t?.SoldOutNotice || "Out of stock in this size & color");
       return;
     }
 
-    const lineId = `${product._id}-${selectedColor}-${selectedSize}`;
-    addItem({
-      id: lineId,
-      productId: product._id,
-      title: `${product.name} · ${selectedColor} / ${selectedSize}`,
-      price: product.price,
-      compareAtPrice: product.compareAtPrice,
-      quantity,
-      image: activeImage,
-      slug: product._id,
-      color: selectedColor,
-      size: selectedSize,
-      isPreOrder,
-      expectedAvailableDate: activeVariant?.expectedAvailableDate || undefined,
-    });
+    const user = await getProfile();
+    if (!user) {
+      setAuthModalOpen(true);
+      return;
+    }
 
-    toast.success(t?.AddedSuccess || "Added to your shopping bag");
-    onClose();
+    try {
+      const res = await addToCart({
+        product: product._id,
+        size: selectedSize,
+        color: selectedColor,
+        quantity,
+      });
+
+      if (res.success) {
+        toast.success(t?.AddedSuccess || "Added to your shopping bag");
+        router.refresh();
+        onClose();
+      } else {
+        toast.error(res.message || "Failed to add product to cart");
+      }
+    } catch (err) {
+      console.error("Add to cart error:", err);
+      toast.error("Network error while adding to cart");
+    }
   };
 
   React.useEffect(() => {
@@ -226,7 +250,9 @@ export function QuickViewModal({
               {/* Category, Gender & Sold */}
               <div className="flex items-center gap-2 flex-wrap">
                 <span className="text-[10px] font-bold uppercase tracking-widest text-forest">
-                  {typeof product.category === "object" ? product.category.name : product.category}
+                  {typeof product.category === "object"
+                    ? product.category.name
+                    : product.category}
                 </span>
                 <span className="text-[10px] text-faint">·</span>
                 <span className="rounded-full bg-sand-soft px-2 py-0.5 text-[10px] font-semibold uppercase text-forest-deep border border-hairline/60">
@@ -261,12 +287,15 @@ export function QuickViewModal({
                 <div className="mt-5">
                   <div className="flex items-center justify-between text-xs font-semibold text-forest-deep">
                     <span>{t?.Color || "Color:"}</span>
-                    <span className="font-normal text-mist capitalize">{selectedColor}</span>
+                    <span className="font-normal text-mist capitalize">
+                      {selectedColor}
+                    </span>
                   </div>
                   <div className="mt-2.5 flex flex-wrap gap-2.5">
                     {colors.map((c) => {
                       const hex = getColorHex(c);
-                      const isSelected = selectedColor.toLowerCase() === c.toLowerCase();
+                      const isSelected =
+                        selectedColor.toLowerCase() === c.toLowerCase();
                       return (
                         <button
                           key={c}
@@ -286,7 +315,9 @@ export function QuickViewModal({
                           {isSelected && (
                             <Check
                               className={`h-3.5 w-3.5 absolute ${
-                                hex === "#ffffff" || hex.includes("#e") || hex.includes("#f")
+                                hex === "#ffffff" ||
+                                hex.includes("#e") ||
+                                hex.includes("#f")
                                   ? "text-forest-deep"
                                   : "text-white"
                               }`}
@@ -304,11 +335,14 @@ export function QuickViewModal({
                 <div className="mt-5">
                   <div className="flex items-center justify-between text-xs font-semibold text-forest-deep">
                     <span>{t?.Size || "Size:"}</span>
-                    <span className="font-normal text-mist uppercase">{selectedSize}</span>
+                    <span className="font-normal text-mist uppercase">
+                      {selectedSize}
+                    </span>
                   </div>
                   <div className="mt-2.5 flex flex-wrap gap-2">
                     {sizesForColor.map((v) => {
-                      const isSelected = selectedSize.toLowerCase() === v.size.toLowerCase();
+                      const isSelected =
+                        selectedSize.toLowerCase() === v.size.toLowerCase();
                       const out = v.stock === 0 && !v.isPreOrder;
                       return (
                         <button
@@ -320,13 +354,15 @@ export function QuickViewModal({
                             isSelected
                               ? "bg-forest text-white shadow-xs"
                               : out
-                              ? "bg-sand-soft/50 text-faint line-through cursor-not-allowed border border-hairline/40"
-                              : "bg-sand-soft/80 text-forest-deep hover:bg-sand border border-hairline"
+                                ? "bg-sand-soft/50 text-faint line-through cursor-not-allowed border border-hairline/40"
+                                : "bg-sand-soft/80 text-forest-deep hover:bg-sand border border-hairline"
                           }`}
                         >
                           {v.size}
                           {v.isPreOrder && (
-                            <span className="ml-1 text-[9px] text-terracotta">●</span>
+                            <span className="ml-1 text-[9px] text-terracotta">
+                              ●
+                            </span>
                           )}
                         </button>
                       );
@@ -344,21 +380,28 @@ export function QuickViewModal({
                       {t?.PreOrderNotice?.replace(
                         "[date]",
                         activeVariant?.expectedAvailableDate
-                          ? new Date(activeVariant.expectedAvailableDate).toLocaleDateString()
-                          : "Soon"
+                          ? new Date(
+                              activeVariant.expectedAvailableDate,
+                            ).toLocaleDateString()
+                          : "Soon",
                       ) || "Pre-Order Available"}
                     </span>
                   </div>
                 ) : inStock ? (
                   (activeVariant?.stock ?? 0) <= 3 ? (
                     <p className="text-xs font-bold text-amber-700 bg-amber-500/10 border border-amber-500/20 px-3 py-2 rounded-xl">
-                      {t?.LowStockNotice?.replace("[count]", String(activeVariant?.stock ?? 0)) ||
-                        `Only ${activeVariant?.stock} left in stock!`}
+                      {t?.LowStockNotice?.replace(
+                        "[count]",
+                        String(activeVariant?.stock ?? 0),
+                      ) || `Only ${activeVariant?.stock} left in stock!`}
                     </p>
                   ) : (
                     <p className="text-xs font-bold text-forest bg-forest/10 border border-forest/20 px-3 py-2 rounded-xl">
-                      {t?.StockAvailable?.replace("[count]", String(activeVariant?.stock ?? 0)) ||
-                        `${activeVariant?.stock} units in stock`} — {t?.InStockNotice || "Ships in 24–48 hours"}
+                      {t?.StockAvailable?.replace(
+                        "[count]",
+                        String(activeVariant?.stock ?? 0),
+                      ) || `${activeVariant?.stock} units in stock`}{" "}
+                      — {t?.InStockNotice || "Ships in 24–48 hours"}
                     </p>
                   )
                 ) : (
@@ -425,6 +468,14 @@ export function QuickViewModal({
           </div>
         </div>
       </div>
+
+      <AuthRequiredModal
+        open={authModalOpen}
+        onClose={() => setAuthModalOpen(false)}
+        actionTitle="add items to your shopping bag"
+        lang={lang}
+        dict={dict}
+      />
     </div>
   );
 }

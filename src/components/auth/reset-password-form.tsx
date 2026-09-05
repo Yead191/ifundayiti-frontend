@@ -40,7 +40,7 @@ export function ResetPasswordForm() {
           : "Your reset session has expired. Please start again.",
         { id: "reset-password" },
       );
-      router.replace(`/${currentLocale}/forgot-password`);
+      router.replace(`/${currentLocale}/auth/forgot-password`);
       return;
     }
     setToken(stored);
@@ -85,7 +85,7 @@ export function ResetPasswordForm() {
               ? "Modpas ou chanje — tanpri konekte."
               : "Password reset — please sign in."),
         );
-        router.push(`/${currentLocale}/login`);
+        router.push(`/${currentLocale}/auth/login`);
         return;
       }
 
