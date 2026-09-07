@@ -27,29 +27,25 @@ export async function generateMetadata({
   });
 }
 
-export default async function FinalistsPage({ params, searchParams }: PageProps) {
+export default async function FinalistsPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { lang } = await params;
   const sp = await searchParams;
-  
-  // 1. Fetch all periods
-  const periodsRes = await nextFetch("/period", { cache: "no-store" });
+
+  // 1. Concurrently fetch all periods and all finalists
+  const [periodsRes, finalistsRes] = await Promise.all([
+    nextFetch("/period", { cache: "no-store" }),
+    nextFetch("/application?status=finalist", { cache: "no-store" }),
+  ]);
+
   const periods = periodsRes.success ? periodsRes.data || [] : [];
-  
-  // Filter for valid periods (e.g. WinnerSelection, Closed, etc.) or just use all.
-  // The user requested to automatically select the latest application period.
-  // We'll use the first period returned by the API as the default latest.
-  const latestPeriod = periods.length > 0 ? periods[0] : null;
+  const finalists = finalistsRes.success ? finalistsRes.data || [] : [];
 
-  // Determine current period based on search param or fallback to latest
-  const currentPeriodId = 
-    typeof sp.period === "string" ? sp.period : (latestPeriod?._id || "");
-
-  // 2. Fetch finalists for the selected period
-  let finalists: any[] = [];
-  if (currentPeriodId) {
-    const finalistsRes = await nextFetch(`/application?applicationPeriod=${currentPeriodId}&status=finalist`, { cache: "no-store" });
-    finalists = finalistsRes.success ? finalistsRes.data || [] : [];
-  }
+  // Determine initial period based on search param or default to "all" to show all finalists at once
+  const initialPeriodId =
+    typeof sp.period === "string" ? sp.period : "all";
 
   const dict = await getDictionary(lang);
   const t = dict.FinalistsPage;
@@ -64,7 +60,7 @@ export default async function FinalistsPage({ params, searchParams }: PageProps)
 
       <section className="py-20 relative bg-sand-soft/30 min-h-[60vh]">
         <Container>
-          {periods.length === 0 ? (
+          {periods.length === 0 && finalists.length === 0 ? (
             <EmptyState
               title={t.EmptyState.Title}
               body={t.EmptyState.Body}
@@ -72,10 +68,10 @@ export default async function FinalistsPage({ params, searchParams }: PageProps)
               actionHref={`/${lang}/grants`}
             />
           ) : (
-            <FinalistsClient 
-              periods={periods} 
-              finalists={finalists} 
-              currentPeriodId={currentPeriodId} 
+            <FinalistsClient
+              periods={periods}
+              finalists={finalists}
+              initialPeriodId={initialPeriodId}
               lang={lang}
             />
           )}

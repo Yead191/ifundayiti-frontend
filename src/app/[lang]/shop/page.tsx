@@ -159,7 +159,7 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
                 </div>
                 <div className="flex items-center gap-2.5 rounded-2xl border border-hairline/80 bg-white/85 p-3.5 text-xs font-semibold text-forest-deep shadow-2xs backdrop-blur-xs col-span-2 sm:col-span-1">
                   <Truck className="h-4 w-4 shrink-0 text-forest" />
-                  <span>{t?.Hero?.Badge3 || "Worldwide Shipping"}</span>
+                  <span>{t?.Hero?.Badge3 || "All 50 U.S. States"}</span>
                 </div>
               </div>
             </div>

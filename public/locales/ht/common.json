@@ -538,11 +538,28 @@
       "ActionLabel": "Gade tout sibvansyon yo"
     },
     "Client": {
+      "Heading": "Tout Finalis yo",
+      "Subheading": "Dekouvri kandida remakab nan tout sik sibvansyon yo.",
       "SelectCycle": "Chwazi sik sibvansyon an",
       "SelectCycleSubtitle": "Gade finalis ki soti nan peryòd aplikasyon aktyèl ak anvan yo.",
       "SelectTriggerPlaceholder": "Chwazi yon peryòd",
+      "AllCycles": "Tout Sik Sibvansyon yo",
+      "SortBy": "Triye pa",
+      "SortNewest": "Ki pi resan an premye",
+      "SortOldest": "Ki pi ansyen an premye",
+      "SortNameAsc": "Non (A - Z)",
+      "SortNameDesc": "Non (Z - A)",
+      "SortProjectAsc": "Pwojè (A - Z)",
+      "SortAmountDesc": "Montan ki pi wo",
+      "SearchPlaceholder": "Chèche pa non, pwojè, oswa kote...",
+      "Showing": "Afiche",
+      "FinalistsCount": "finalis",
+      "Of": "sou",
+      "ResetFilters": "Reyajiste filtè yo",
+      "NoMatchTitle": "Pa gen finalis ki koresponn",
+      "NoMatchBody": "Eseye modifye rechèch ou an oswa chwazi lòt filtè pou jwenn sa w ap chèche a.",
       "EmptyTitle": "Pa gen finalis ki anonse ankò",
-      "EmptyBody": "Finalis pou sik sibvansyon sa a poko anonse. Tanpri tounen pita.",
+      "EmptyBody": "Finalis yo poko anonse. Tanpri tounen pita.",
       "ViewDetails": "Gade detay"
     },
     "Modal": {
@@ -634,7 +651,7 @@
   },
   "DonatePage": {
     "Hero": {
-      "Eyebrow": "🌱 Bay inovasyon ayisyen fòs",
+      "Eyebrow": "Bay inovasyon ayisyen fòs",
       "Title": "Chak dola plante yon grenn. Chak sibvansyon transfòme yon lavi.",
       "Subtitle": "100% don piblik yo finanse dirèkteman ti sibvansyon jiska $1,000 san dèt ni patisipasyon nan pwopriyetè pou antreprenè ayisyen vizyonè, kreyatè lokal ak moun k ap bati kominote yo."
     },
@@ -763,7 +780,7 @@
   },
   "ApplyPage": {
     "Hero": {
-      "Eyebrow": "🎯 Equity-Gratis Micro-Sibvansyon Aplikasyon",
+      "Eyebrow": "Equity-Gratis Micro-Sibvansyon Aplikasyon",
       "Title": "Fè vizyon ou tounen reyalite.",
       "Subtitle": "Mande jiska $1,000 finansman san patisipasyon nan pwopriyetè pou biznis ou oswa inisyativ kominotè ou. Swiv aplikasyon gide nou an anba a."
     },

@@ -538,11 +538,28 @@
       "ActionLabel": "View all grants"
     },
     "Client": {
+      "Heading": "All Finalists",
+      "Subheading": "Browse and discover outstanding applicants across all grant cycles.",
       "SelectCycle": "Select Grant Cycle",
       "SelectCycleSubtitle": "Browse finalists from our current and previous application periods.",
       "SelectTriggerPlaceholder": "Select a period",
+      "AllCycles": "All Grant Cycles",
+      "SortBy": "Sort by",
+      "SortNewest": "Newest First",
+      "SortOldest": "Oldest First",
+      "SortNameAsc": "Name (A - Z)",
+      "SortNameDesc": "Name (Z - A)",
+      "SortProjectAsc": "Project (A - Z)",
+      "SortAmountDesc": "Highest Amount",
+      "SearchPlaceholder": "Search by name, project, or location...",
+      "Showing": "Showing",
+      "FinalistsCount": "finalists",
+      "Of": "of",
+      "ResetFilters": "Reset Filters",
+      "NoMatchTitle": "No matching finalists found",
+      "NoMatchBody": "Try adjusting your search terms or filter selections to find what you are looking for.",
       "EmptyTitle": "No finalists announced yet",
-      "EmptyBody": "Finalists for this grant cycle have not been announced yet. Please check back later.",
+      "EmptyBody": "Finalists have not been announced yet. Please check back later.",
       "ViewDetails": "View Details"
     },
     "Modal": {
@@ -763,7 +780,7 @@
   },
   "ApplyPage": {
     "Hero": {
-      "Eyebrow": "🎯 Equity-Free Micro-Grant Application",
+      "Eyebrow": "Equity-Free Micro-Grant Application",
       "Title": "Turn your vision into reality.",
       "Subtitle": "Request up to $1,000 equity-free funding for your business or community initiative. Follow our guided application below."
     },
