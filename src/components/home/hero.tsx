@@ -71,7 +71,7 @@ export async function HomeHero({ lang }: { lang: string }) {
                   <ShieldCheck className="h-4 w-4 text-sand shrink-0" />
                   <span>
                     {t.NonprofitNotice ||
-                      "IFundAyiti is a nonprofit organization. 501(c)(3) pending"}
+                      "IFundAyiti is a nonprofit organization. 501(c)(3) pending period"}
                   </span>
                 </div>
 

@@ -26,7 +26,7 @@
     "GrantProgram": "Grant program",
     "Title1": "Capital for ideas",
     "Title2": "rooted in Ayiti.",
-    "Subtitle": "Equity-free micro-grants of up to $1,000 for Haitian builders — food, light, water, craft, and livelihoods that stay in the neighborhood.",
+    "Subtitle": "IFundAyiti provides microgrants, business education, mentorship, and resources to help small business owners and entrepreneurs build sustainable businesses.",
     "ApplyBtn": "Apply for a Grant",
     "ViewGrantsBtn": "View Grant Details",
     "ExploreBtn": "Explore the work",
@@ -34,7 +34,7 @@
     "MaximumGrant": "Maximum grant",
     "Window": "Window",
     "CycleNotice": "One winner per cycle. Donations fuel the Program Fund — not a single applicant.",
-    "NonprofitNotice": "IFundAyiti is a nonprofit organization. 501(c)(3) pending"
+    "NonprofitNotice": "IFundAyiti is a nonprofit organization. 501(c)(3) pending period"
   },
   "FloatingDonate": {
     "QuickDonate": "Quick donate",
@@ -124,7 +124,7 @@
     "Email": "Email:",
     "Phone": "Phone:",
     "Headquarters": "Headquarters:",
-    "NonprofitNotice": "IFundAyiti is a nonprofit organization. 501(c)(3) pending"
+    "NonprofitNotice": "IFundAyiti is a nonprofit organization. 501(c)(3) pending period"
   },
   "DonationForm": {
     "SelectAmount": "Select Donation Amount (USD)",
@@ -175,11 +175,12 @@
       "BasedInAyitiQuote": "Programs should feel close to the streets they serve — not distant in a dashboard."
     },
     "Story": {
-      "Eyebrow": "Our story",
+      "Eyebrow": "Our mission",
       "Title": "A grant workflow that grew into something public.",
       "Subtitle": "IFundAyiti started inside Hubology as a way to review local ideas with care. It became its own site so applicants, donors, and communities could share one clear record.",
-      "Paragraph1": "That evolution was intentional. Private spreadsheets and closed inboxes make hope feel fragile. A public platform lets families track an application, lets donors see how gifts are used, and lets winners be celebrated without exposing every personal detail online.",
-      "Paragraph2": "We are still early — much of this site runs on demo content while official program details are finalized. The commitment is already real: run grants with transparency, respect, and a Haiti-first point of view.",
+      "Paragraph1": "At IFundAyiti, our mission is to empower small business owners and entrepreneurs by providing access to microgrants, business education, mentorship, and resources that help turn ideas into sustainable businesses and create lasting economic opportunities.",
+      "Paragraph2": "We are committed to supporting entrepreneurs who may face barriers to traditional funding and business resources. Through financial assistance and practical education, we help individuals strengthen their businesses, build financial independence, create jobs, and contribute to thriving communities.",
+      "Paragraph3": "As a nonprofit organization, IFundAyiti is dedicated to fostering entrepreneurship, economic empowerment, and community development while celebrating the creativity, resilience, and entrepreneurial spirit of Haiti and its people. IfunDayiti - Empowering Entrepreneurs. Investing in Communities. Building a Stronger Future.",
       "Callout": "Small teams. Clear rules. Real names behind the work."
     },
     "Principles": {
@@ -633,7 +634,7 @@
   },
   "DonatePage": {
     "Hero": {
-      "Eyebrow": "🌱 Empower Haitian Innovation",
+      "Eyebrow": "Empower Haitian Innovation",
       "Title": "Every dollar plants a seed. Every grant transforms a life.",
       "Subtitle": "100% of public donations directly fund non-dilutive, equity-free micro-grants of up to $1,000 for visionary Haitian entrepreneurs, local creators, and community builders."
     },
@@ -971,7 +972,7 @@
       "Val1Title": "Uncompromising Integrity",
       "Val1Desc": "Every dollar donated is tracked with open public records. Governance rests on clear standards, not secret handshakes.",
       "Val2Title": "Rooted in the Soil",
-      "Val2Desc": "Our staff and volunteers live in Port-au-Prince, Cap-Haïtien, Jacmel, and Les Cayes. We understand local realities.",
+      "Val2Desc": "Though our staff and most volunteers are based in the U.S., our hearts and roots remain deeply tied to Port-au-Prince, Cap-Haitien, Jacmel, and Les Cayes. We carry a profound understanding of local realities and remain dedicated to supporting our communities from afar.",
       "Val3Title": "Dignity Over Pity",
       "Val3Desc": "We fund Haitian micro-entrepreneurs as capable builders, providing equity-free capital to catalyze self-reliance.",
       "Val4Title": "One Ayiti, Global Unity",
@@ -1372,10 +1373,10 @@
       "Eyebrow": "Purpose-Driven Merchandise",
       "Title": "Wear the Mission.",
       "TitleHighlight": "Ethical Haitian Apparel.",
-      "Subtitle": "100% organic cotton garments and embroidered streetwear. Every purchase directly powers community development, clean solar energy, and equity-free micro-grants in Haiti.",
+      "Subtitle": "Every purchase directly powers community development, clean solar energy, and equity-free micro-grants in Haiti.",
       "Badge1": "100% Non-Profit Impact",
       "Badge2": "Ethically Handcrafted",
-      "Badge3": "Worldwide Shipping"
+      "Badge3": "All 50 U.S. States"
     },
     "Filters": {
       "SearchPlaceholder": "Search by title, tag, fabric...",

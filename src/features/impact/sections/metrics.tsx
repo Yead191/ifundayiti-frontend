@@ -10,25 +10,25 @@ export async function ImpactMetrics({ lang }: { lang: string }) {
 
   const items = [
     {
-      value: "148",
+      value: "0",
       label: t.Stat1Label,
       detail: t.Stat1Detail,
       note: t.DemoNotice,
     },
     {
-      value: "12",
+      value: "0",
       label: t.Stat2Label,
       detail: t.Stat2Detail,
       note: t.DemoNotice,
     },
     {
-      value: "36",
+      value: "0",
       label: t.Stat3Label,
       detail: t.Stat3Detail,
       note: t.DemoNotice,
     },
     {
-      value: "$11.4k",
+      value: "$0",
       label: t.Stat4Label,
       detail: t.Stat4Detail,
       note: t.DemoNotice,

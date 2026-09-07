@@ -20,7 +20,6 @@ export async function AboutHero({ lang }: { lang: string }) {
   const navLinks = [
     { href: "#story", label: t.OurStory },
     { href: "#principles", label: t.Principles },
-    { href: "#team", label: t.Team },
   ];
 
   const locationCard = {
@@ -46,7 +45,7 @@ export async function AboutHero({ lang }: { lang: string }) {
                 <span className="mt-1 block text-forest">{t.TitleAccent}</span>
               </h1>
               <p className="mt-4 sm:mt-6 max-w-lg text-sm sm:text-base lg:text-lg leading-relaxed text-mist">
-                {t.Tagline} {t.SubtitleSuffix}
+                {t.Tagline}
               </p>
             </Reveal>
 
@@ -73,20 +72,13 @@ export async function AboutHero({ lang }: { lang: string }) {
               delay={160}
               className="mt-6 sm:mt-8 lg:mt-10 flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm font-semibold"
             >
-              <Link
-                href={primaryNav.href}
-                className="inline-flex items-center gap-1.5 rounded-full bg-forest/10 px-3.5 py-1.5 text-forest transition-all hover:bg-forest hover:text-white"
-              >
-                <span>{primaryNav.label}</span>
-                <ArrowDown className="h-3.5 w-3.5" />
-              </Link>
-              {secondaryNav.map((link) => (
+              {navLinks.map((link) => (
                 <Link
-                  key={link.href}
                   href={link.href}
-                  className="inline-flex items-center rounded-full border border-hairline bg-white/80 px-3.5 py-1.5 text-mist transition-all hover:border-forest/40 hover:bg-white hover:text-forest-deep"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-forest/10 px-3.5 py-1.5 text-forest transition-all hover:bg-forest hover:text-white"
                 >
-                  {link.label}
+                  <span>{link.label}</span>
+                  <ArrowDown className="h-3.5 w-3.5" />
                 </Link>
               ))}
             </Reveal>

@@ -9,7 +9,7 @@ import { getDictionary } from "@/lib/dictionaries";
 export async function AboutStory({ lang }: { lang: string }) {
   const dict = await getDictionary(lang);
   const t = dict.AboutPage.Story;
-  const paragraphs = [t.Paragraph1, t.Paragraph2];
+  const paragraphs = [t.Paragraph1, t.Paragraph2, t.Paragraph3];
 
   return (
     <section id={ABOUT_STORY.id} className="scroll-mt-24 py-24 md:py-32">

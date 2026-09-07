@@ -144,7 +144,7 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
 
               <p className="mt-5 text-base leading-relaxed text-mist sm:text-lg max-w-2xl">
                 {t?.Hero?.Subtitle ||
-                  "100% organic cotton garments and embroidered streetwear. Every purchase directly powers community development, clean solar energy, and equity-free micro-grants in Haiti."}
+                  "Every purchase directly powers community development, clean solar energy, and equity-free micro-grants in Haiti."}
               </p>
 
               {/* Trust & Impact Badges */}

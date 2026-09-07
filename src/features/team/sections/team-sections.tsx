@@ -222,7 +222,9 @@ export function TeamSections({
               <div className="max-w-2xl">
                 <div className="inline-flex items-center gap-2 rounded-full border border-emerald-300 bg-emerald-50/80 px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-emerald-900 shadow-2xs">
                   <Shield className="h-3.5 w-3.5 text-emerald-700" />
-                  <span>{t.EyebrowDirectors || "Governance & Stewardship"}</span>
+                  <span>
+                    {t.EyebrowDirectors || "Governance & Stewardship"}
+                  </span>
                 </div>
                 <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-forest-deep sm:text-4xl md:text-5xl">
                   {t.CatDirLabel || "Board of Directors"}
@@ -273,7 +275,9 @@ export function TeamSections({
               <div className="max-w-2xl">
                 <div className="inline-flex items-center gap-2 rounded-full border border-amber-300 bg-amber-50/80 px-3.5 py-1 text-[11px] font-bold uppercase tracking-wider text-amber-900 shadow-2xs">
                   <Zap className="h-3.5 w-3.5 text-amber-600" />
-                  <span>{t.EyebrowMembers || "Operations & Infrastructure"}</span>
+                  <span>
+                    {t.EyebrowMembers || "Operations & Infrastructure"}
+                  </span>
                 </div>
                 <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-forest-deep sm:text-4xl md:text-5xl">
                   {t.CatMemLabel || "Core Members"}
@@ -356,7 +360,7 @@ export function TeamSections({
             </div>
 
             {/* Volunteers Grid + Fast-Track Join Card */}
-            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 ">
               {filteredVolunteers.map((member, index) => (
                 <VolunteerCard
                   key={member._id || member.id}
@@ -366,35 +370,6 @@ export function TeamSections({
                   t={t}
                 />
               ))}
-
-              {/* Always-on Join Volunteer Invitation Card */}
-              <div className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border-2 border-dashed border-forest/30 bg-linear-to-br from-forest via-forest-deep to-forest-deep p-6 text-white shadow-md transition-all duration-300 hover:-translate-y-1.5 hover:border-forest hover:shadow-2xl">
-                <div className="relative z-10">
-                  <div className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10 text-sand shadow-inner backdrop-blur-md">
-                    <Sparkles className="h-6 w-6 text-sand" />
-                  </div>
-                  <h3 className="mt-5 font-display text-xl font-bold tracking-tight text-white">
-                    {t.JoinVolunteerTitle || "Become a Volunteer"}
-                  </h3>
-                  <p className="mt-2 text-xs leading-relaxed text-white/80">
-                    {t.JoinVolunteerDesc ||
-                      "Help verify grant applicants, translate project proposals, and connect local entrepreneurs with capital."}
-                  </p>
-                </div>
-
-                <div className="relative z-10 mt-6 pt-4 border-t border-white/15">
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="w-full rounded-xl bg-white text-forest hover:bg-sand-soft hover:text-forest-deep border-none text-xs font-bold shadow-md transition-all"
-                  >
-                    <Link href={`/${currentLang}/team/volunteer`}>
-                      {t.JoinVolunteerBtn || "Apply Now"}
-                      <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
-                    </Link>
-                  </Button>
-                </div>
-              </div>
             </div>
           </Container>
         </section>
@@ -432,7 +407,7 @@ function DirectorCard({
       >
         <div>
           {/* Portrait Image Container */}
-          <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-sand-soft shadow-inner">
+          <div className="relative aspect-4/4 w-full overflow-hidden rounded-2xl bg-sand-soft shadow-inner">
             <Image
               src={image}
               alt={member.name}
@@ -444,11 +419,11 @@ function DirectorCard({
             <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/20 to-transparent" />
 
             {/* Top Badges */}
-            <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300 bg-white/95 px-3 py-1 text-[11px] font-bold text-emerald-900 shadow-sm backdrop-blur-md">
+            <div className="absolute top-3 left-3 right-3 flex items-center justify-end">
+              {/* <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300 bg-white/95 px-3 py-1 text-[11px] font-bold text-emerald-900 shadow-sm backdrop-blur-md">
                 <Shield className="h-3 w-3 text-emerald-700" />
                 {t.BadgeDirector || "Board Director"}
-              </span>
+              </span> */}
 
               {member.location && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md">
@@ -530,7 +505,7 @@ function CoreMemberCard({
       >
         <div>
           {/* Portrait Image Container */}
-          <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-sand-soft shadow-inner">
+          <div className="relative aspect-4/4 w-full overflow-hidden rounded-2xl bg-sand-soft shadow-inner">
             <Image
               src={image}
               alt={member.name}
@@ -542,12 +517,7 @@ function CoreMemberCard({
             <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/20 to-transparent" />
 
             {/* Top Badges */}
-            <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-amber-300 bg-white/95 px-3 py-1 text-[11px] font-bold text-amber-900 shadow-sm backdrop-blur-md">
-                <UserCheck className="h-3 w-3 text-amber-600" />
-                {t.BadgeMember || "Core Team"}
-              </span>
-
+            <div className="absolute top-3 left-3 right-3 flex items-center justify-end">
               {member.location && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md">
                   <MapPin className="h-3 w-3 text-sand" />
@@ -628,7 +598,7 @@ function VolunteerCard({
       >
         <div>
           {/* Square/Portrait Image Container */}
-          <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-sand-soft shadow-inner">
+          <div className="relative aspect-4/4 w-full overflow-hidden rounded-2xl bg-sand-soft shadow-inner">
             <Image
               src={image}
               alt={member.name}
@@ -640,12 +610,7 @@ function VolunteerCard({
             <div className="absolute inset-0 bg-linear-to-t from-black/75 via-black/20 to-transparent" />
 
             {/* Top Badges */}
-            <div className="absolute top-3 left-3 right-3 flex items-center justify-between">
-              <span className="inline-flex items-center gap-1 rounded-full border border-teal-300 bg-white/95 px-2.5 py-0.5 text-[10px] font-bold text-teal-900 shadow-sm backdrop-blur-md">
-                <Heart className="h-3 w-3 text-teal-600" />
-                {t.BadgeVolunteer || "Volunteer"}
-              </span>
-
+            <div className="absolute top-3 left-3 right-3 flex items-center justify-end">
               {member.location && (
                 <span className="inline-flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-[10px] font-medium text-white backdrop-blur-md">
                   <MapPin className="h-2.5 w-2.5 text-sand" />

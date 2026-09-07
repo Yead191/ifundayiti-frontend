@@ -55,10 +55,10 @@ export async function ImpactHero({ lang }: { lang: string }) {
   ];
 
   const proofStrip = [
-    { value: "12", label: t.StatWinners },
-    { value: "36", label: t.StatProjects },
-    { value: "$11.4k", label: t.StatFund },
-    { value: "1", label: t.StatCycle },
+    { value: "0", label: t.StatWinners },
+    { value: "0", label: t.StatProjects },
+    { value: "$0", label: t.StatFund },
+    { value: "0", label: t.StatCycle },
   ];
 
   return (
