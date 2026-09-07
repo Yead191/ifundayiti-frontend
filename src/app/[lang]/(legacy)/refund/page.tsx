@@ -7,9 +7,9 @@ import { buildMetadata } from "@/lib/seo";
 export const metadata: Metadata = buildMetadata({
   title: "Refund Policy",
   description:
-    "Understand Hubology refund and return guidelines for services, digital products, memberships, and office supplies.",
+    "Understand IFundAyiti refund guidelines for donations, grants, and shop purchases.",
   path: "/refund",
-  keywords: ["Hubology refund policy", "return policy", "cancellation refunds"],
+  keywords: ["IFundAyiti refund policy", "donation refunds", "return policy"],
 });
 
 export default async function RefundPolicyPage() {

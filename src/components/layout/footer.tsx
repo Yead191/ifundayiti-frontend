@@ -35,6 +35,12 @@ export function Footer() {
   const legalLinks = [
     { label: f.PrivacyPolicy, href: "/privacy-policy" },
     { label: f.Terms, href: "/terms" },
+    {
+      label:
+        f.RefundPolicy ||
+        (currentLocale === "ht" ? "Règ sou Ranbousman" : "Refund Policy"),
+      href: "/refund",
+    },
     { label: f.FAQ, href: "/faq" },
   ];
 

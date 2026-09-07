@@ -3,9 +3,7 @@
 import { Toaster } from "sonner";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 
-const GOOGLE_CLIENT_ID =
-  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ||
-  "911317811111-uhs3mivpijfvscdncmvbm75hvchlen9e.apps.googleusercontent.com";
+const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
 
 export function SiteProviders({
   children,
@@ -33,8 +31,7 @@ export function SiteProviders({
             description: "!text-mist !text-[13px]",
             actionButton:
               "!bg-forest !text-white !rounded-full !text-xs !font-semibold",
-            cancelButton:
-              "!bg-sand-soft !text-forest !rounded-full !text-xs",
+            cancelButton: "!bg-sand-soft !text-forest !rounded-full !text-xs",
             closeButton:
               "!bg-cream !border-hairline !text-mist hover:!text-forest",
             success: "[&_[data-icon]]:!text-forest",

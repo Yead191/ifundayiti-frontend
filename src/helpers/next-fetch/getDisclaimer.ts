@@ -2,11 +2,7 @@
 
 import { nextFetch } from "./NextFetch";
 
-export type DisclaimerType =
-  | "refund"
-  | "vendor-terms"
-  | "user-terms"
-  | "privacy";
+export type DisclaimerType = "refund" | "user-terms" | "privacy";
 
 /** GET /disclaimer?type=… — returns HTML string for legal pages. */
 export async function getDisclaimer(type: DisclaimerType): Promise<string> {

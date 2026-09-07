@@ -1,26 +1,17 @@
 import type { Metadata } from "next";
 import { LegalLayout } from "@/components/layout/legal-layout";
 import { buildMetadata } from "@/lib/seo";
+import { getDisclaimer } from "@/helpers/next-fetch/getDisclaimer";
 
 export const metadata: Metadata = buildMetadata({
   title: "Terms & Conditions",
   description:
-    "Terms for using the IFundAyiti website, grant applications, donations, and shop.",
+    "Terms and conditions for using the IFundAyiti website, grant applications, donations, and shop.",
   path: "/terms",
+  keywords: ["IFundAyiti terms", "terms and conditions", "user terms"],
 });
 
-export default function TermsPage() {
-  return (
-    <LegalLayout title="Terms & Conditions">
-      <p>
-        Placeholder terms for the public IFundAyiti website. Replace with the
-        official terms before launch.
-      </p>
-      <p>
-        Submitting an application does not guarantee funding. One winner is
-        selected per application period. Donations support the Program Fund and
-        are not assigned to individual applicants.
-      </p>
-    </LegalLayout>
-  );
+export default async function TermsPage() {
+  const html = await getDisclaimer("user-terms");
+  return <LegalLayout title="Terms & Conditions" html={html} />;
 }
