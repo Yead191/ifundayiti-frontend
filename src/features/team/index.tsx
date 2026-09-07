@@ -16,15 +16,29 @@ export default async function TeamPageContent({
   const searchQuery = typeof params?.q === "string" ? params.q : "";
 
   // Concurrent fetch for stats, dictionary, and members per category
-  const [statsRes, directorsRes, membersRes, volunteersRes, allMembersRes, dict] =
-    await Promise.all([
-      getTeamStats(),
-      getTeamMembers({ category: "directors", searchTerm: searchQuery, limit: 100 }),
-      getTeamMembers({ category: "members", searchTerm: searchQuery, limit: 100 }),
-      getTeamMembers({ category: "volunteers", searchTerm: searchQuery, limit: 100 }),
-      getTeamMembers({ searchTerm: searchQuery, limit: 100 }),
-      getDictionary(lang),
-    ]);
+  const [
+    statsRes,
+    directorsRes,
+    membersRes,
+    volunteersRes,
+    allMembersRes,
+    dict,
+  ] = await Promise.all([
+    getTeamStats(),
+    getTeamMembers({
+      category: "directors",
+      searchTerm: searchQuery,
+      limit: 20,
+    }),
+    getTeamMembers({ category: "members", searchTerm: searchQuery, limit: 20 }),
+    getTeamMembers({
+      category: "volunteers",
+      searchTerm: searchQuery,
+      limit: 20,
+    }),
+    getTeamMembers({ searchTerm: searchQuery, limit: 20 }),
+    getDictionary(lang),
+  ]);
 
   const isDirector = (m: any) =>
     m.category === "director" || m.category === "directors";
@@ -34,20 +48,39 @@ export default async function TeamPageContent({
     m.category === "volunteer" || m.category === "volunteers";
 
   // Resolve directors strictly from API
-  let directors = directorsRes.success && Array.isArray(directorsRes.data) ? directorsRes.data : [];
-  if (directors.length === 0 && allMembersRes.success && Array.isArray(allMembersRes.data)) {
+  let directors =
+    directorsRes.success && Array.isArray(directorsRes.data)
+      ? directorsRes.data
+      : [];
+  if (
+    directors.length === 0 &&
+    allMembersRes.success &&
+    Array.isArray(allMembersRes.data)
+  ) {
     directors = allMembersRes.data.filter(isDirector);
   }
 
   // Resolve core members strictly from API
-  let coreMembers = membersRes.success && Array.isArray(membersRes.data) ? membersRes.data : [];
-  if (coreMembers.length === 0 && allMembersRes.success && Array.isArray(allMembersRes.data)) {
+  let coreMembers =
+    membersRes.success && Array.isArray(membersRes.data) ? membersRes.data : [];
+  if (
+    coreMembers.length === 0 &&
+    allMembersRes.success &&
+    Array.isArray(allMembersRes.data)
+  ) {
     coreMembers = allMembersRes.data.filter(isCoreMember);
   }
 
   // Resolve volunteers strictly from API
-  let volunteers = volunteersRes.success && Array.isArray(volunteersRes.data) ? volunteersRes.data : [];
-  if (volunteers.length === 0 && allMembersRes.success && Array.isArray(allMembersRes.data)) {
+  let volunteers =
+    volunteersRes.success && Array.isArray(volunteersRes.data)
+      ? volunteersRes.data
+      : [];
+  if (
+    volunteers.length === 0 &&
+    allMembersRes.success &&
+    Array.isArray(allMembersRes.data)
+  ) {
     volunteers = allMembersRes.data.filter(isVolunteer);
   }
 

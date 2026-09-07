@@ -45,7 +45,7 @@ export async function getTeamMembers(params: {
   if (params.limit) {
     queryParams.append("limit", params.limit.toString());
   }
-
+  queryParams.append("sort", "1");
   const result = await nextFetch(`/team?${queryParams.toString()}`, {
     method: "GET",
     next: { revalidate: 60 },
@@ -71,7 +71,7 @@ export async function getTeamMemberById(id: string) {
     const listRes = await getTeamMembers({ limit: 100 });
     if (listRes.success && Array.isArray(listRes.data)) {
       const match = listRes.data.find(
-        (m: any) => m._id === id || m.id === id || String(m._id) === String(id)
+        (m: any) => m._id === id || m.id === id || String(m._id) === String(id),
       );
       if (match) {
         return { success: true, data: match };
@@ -90,4 +90,3 @@ export async function applyAsVolunteer(formData: FormData) {
   });
   return result;
 }
-
