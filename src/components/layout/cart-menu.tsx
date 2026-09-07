@@ -28,7 +28,13 @@ export function CartMenu({ cart }: { cart?: CartData | null }) {
   const segments = pathname.split("/");
   const lang = segments[1] === "ht" ? "ht" : "en";
 
+  const [open, setOpen] = React.useState(false);
   const [updatingId, setUpdatingId] = React.useState<string | null>(null);
+
+  // Automatically close dropdown whenever route changes
+  React.useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   const items = cart?.cart ?? [];
   const breakdown = cart?.price_breakdown;
@@ -75,13 +81,30 @@ export function CartMenu({ cart }: { cart?: CartData | null }) {
     }
   }
 
+  const isHt = lang === "ht";
+  const tBag = isHt ? "Panyen Acha" : "Shopping Bag";
+  const tEmpty = isHt ? "Vid" : "Empty";
+  const tItem = isHt ? "atik" : "item";
+  const tItems = isHt ? "atik" : "items";
+  const tEmptyTitle = isHt ? "Panyen ou vid" : "Your shopping bag is empty";
+  const tEmptyDesc = isHt
+    ? "Dekouvri koleksyon rad ak atik nou yo pou sipòte kreyatè ayisyen yo."
+    : "Browse our ethical apparel and mission merchandise to support local Haitian innovators.";
+  const tExplore = isHt ? "Eksplore Koleksyon an" : "Explore Collection";
+  const tSubtotal = isHt ? "Sou-total" : "Subtotal";
+  const tDelivery = isHt ? "Livrezon" : "Delivery";
+  const tFree = isHt ? "Gratis" : "Free";
+  const tTotal = isHt ? "Total" : "Total";
+  const tViewBag = isHt ? "Wè Panyen an" : "View Bag";
+  const tCheckout = isHt ? "Peye Kounye a" : "Checkout";
+
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={setOpen}>
       <DropdownMenuTrigger asChild>
         <button
           type="button"
           aria-label="Cart"
-          className="relative grid h-9.5 w-9.5 place-items-center rounded-xl border border-hairline/80 bg-sand-soft/80 text-forest transition-all hover:bg-sand hover:text-forest-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/30"
+          className="relative grid h-9.5 w-9.5 place-items-center rounded-xl border border-hairline/80 bg-sand-soft/80 text-forest transition-all hover:bg-sand hover:text-forest-deep focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/30 cursor-pointer"
         >
           <ShoppingBag className="h-4.5 w-4.5" />
           {cartCount > 0 ? (
@@ -100,12 +123,12 @@ export function CartMenu({ cart }: { cart?: CartData | null }) {
         <DropdownMenuLabel className="flex items-center justify-between border-b border-hairline px-4 py-3 text-sm">
           <div className="flex items-center gap-2">
             <ShoppingBag className="h-4 w-4 text-forest" />
-            <span className="font-bold text-forest-deep">Shopping Bag</span>
+            <span className="font-bold text-forest-deep">{tBag}</span>
           </div>
           <span className="rounded-full bg-sand-soft px-2.5 py-0.5 text-xs font-semibold text-forest">
             {cartCount === 0
-              ? "Empty"
-              : `${cartCount} ${cartCount === 1 ? "item" : "items"}`}
+              ? tEmpty
+              : `${cartCount} ${cartCount === 1 ? tItem : tItems}`}
           </span>
         </DropdownMenuLabel>
 
@@ -116,14 +139,16 @@ export function CartMenu({ cart }: { cart?: CartData | null }) {
             </div>
             <div>
               <p className="text-sm font-semibold text-forest-deep">
-                Your shopping bag is empty
+                {tEmptyTitle}
               </p>
               <p className="mt-1 text-xs text-mist leading-relaxed max-w-xs">
-                Browse our ethical apparel and mission merchandise to support local Haitian innovators.
+                {tEmptyDesc}
               </p>
             </div>
             <Button asChild size="sm" className="mt-2 rounded-xl px-5 text-xs font-semibold">
-              <Link href={`/${lang}/shop`}>Explore Collection</Link>
+              <Link href={`/${lang}/shop`} onClick={() => setOpen(false)}>
+                {tExplore}
+              </Link>
             </Button>
           </div>
         ) : (
@@ -160,6 +185,7 @@ export function CartMenu({ cart }: { cart?: CartData | null }) {
                     <div className="min-w-0 flex-1">
                       <Link
                         href={`/${lang}/shop/${item.product?._id || ""}`}
+                        onClick={() => setOpen(false)}
                         className="truncate block text-xs font-semibold text-forest-deep hover:text-forest transition-colors"
                       >
                         {title}
@@ -243,25 +269,25 @@ export function CartMenu({ cart }: { cart?: CartData | null }) {
             {/* Price breakdown summary */}
             <div className="border-t border-hairline bg-sand-soft/40 p-4 space-y-2">
               <div className="flex items-center justify-between text-xs text-mist">
-                <span>Subtotal</span>
+                <span>{tSubtotal}</span>
                 <span className="font-semibold text-forest-deep">
                   {formatPrice(subtotal)}
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs text-mist">
-                <span>Delivery</span>
+                <span>{tDelivery}</span>
                 <span className="font-semibold text-forest-deep">
                   {breakdown?.delivery_charge != null
                     ? breakdown.delivery_charge === 0
-                      ? "Free"
+                      ? tFree
                       : formatPrice(breakdown.delivery_charge)
                     : subtotal >= 150
-                    ? "Free"
+                    ? tFree
                     : "$11.99"}
                 </span>
               </div>
               <div className="flex items-center justify-between border-t border-hairline/80 pt-2 text-sm font-bold text-forest-deep">
-                <span>Total</span>
+                <span>{tTotal}</span>
                 <span className="text-forest text-base font-display">
                   {formatPrice(cartTotal)}
                 </span>
@@ -274,16 +300,20 @@ export function CartMenu({ cart }: { cart?: CartData | null }) {
                 asChild
                 variant="outline"
                 size="sm"
-                className="rounded-xl text-xs font-semibold"
+                className="rounded-xl text-xs font-semibold cursor-pointer"
               >
-                <Link href={`/${lang}/cart`}>View Bag</Link>
+                <Link href={`/${lang}/cart`} onClick={() => setOpen(false)}>
+                  {tViewBag}
+                </Link>
               </Button>
               <Button
                 asChild
                 size="sm"
-                className="rounded-xl text-xs font-semibold shadow-xs"
+                className="rounded-xl text-xs font-semibold shadow-xs cursor-pointer"
               >
-                <Link href={`/${lang}/checkout`}>Checkout</Link>
+                <Link href={`/${lang}/checkout`} onClick={() => setOpen(false)}>
+                  {tCheckout}
+                </Link>
               </Button>
             </div>
           </div>

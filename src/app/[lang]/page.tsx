@@ -67,8 +67,8 @@ export default async function HomePage({
       <HowItWorks />
       <ImpactStats />
       <FeaturedProjects lang={lang} />
-      <LeadershipSection lang={lang} />
-      <VolunteersSection lang={lang} />
+      {/* <LeadershipSection lang={lang} />
+      <VolunteersSection lang={lang} /> */}
       <SuccessStory lang={lang} />
       <DonationCta />
     </>
