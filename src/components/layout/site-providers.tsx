@@ -1,10 +1,23 @@
 "use client";
 
 import { Toaster } from "sonner";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
-export function SiteProviders({ children }: { children: React.ReactNode }) {
+const GOOGLE_CLIENT_ID =
+  process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ||
+  "911317811111-uhs3mivpijfvscdncmvbm75hvchlen9e.apps.googleusercontent.com";
+
+export function SiteProviders({
+  children,
+  lang = "en",
+}: {
+  children: React.ReactNode;
+  lang?: string;
+}) {
+  const googleLocale = lang === "ht" ? "fr" : lang;
+
   return (
-    <>
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID} locale={googleLocale}>
       {children}
       <Toaster
         theme="light"
@@ -29,6 +42,6 @@ export function SiteProviders({ children }: { children: React.ReactNode }) {
           },
         }}
       />
-    </>
+    </GoogleOAuthProvider>
   );
 }

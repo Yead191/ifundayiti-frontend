@@ -114,6 +114,7 @@ export function RegisterForm({ lang = "en", dict }: RegisterFormProps) {
     <div className="flex flex-col gap-6">
       <GoogleButton
         label={lang === "ht" ? "Kontinye avèk Google" : "Continue with Google"}
+        text="signup_with"
       />
       <AuthDivider
         label={

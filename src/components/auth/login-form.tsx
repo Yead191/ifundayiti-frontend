@@ -116,6 +116,7 @@ export function LoginForm() {
             ? "Kontinye avèk Google"
             : "Continue with Google"
         }
+        redirectTo={redirectTo}
       />
       <AuthDivider
         label={

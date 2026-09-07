@@ -1,44 +1,185 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import * as React from "react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
+import {
+  GoogleLogin,
+  CredentialResponse,
+  useGoogleOAuth,
+} from "@react-oauth/google";
+import { Loader2 } from "lucide-react";
+import Cookies from "js-cookie";
+import { toast } from "sonner";
 
-/** Inline Google "G" mark so we don't depend on an external asset. */
-function GoogleIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden>
-      <path
-        fill="#4285F4"
-        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.76h3.56c2.08-1.92 3.28-4.74 3.28-8.09Z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.56-2.76c-.98.66-2.23 1.06-3.72 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23Z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.84 14.1a6.6 6.6 0 0 1 0-4.22V7.05H2.18a11 11 0 0 0 0 9.89l3.66-2.84Z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.05L5.84 9.9C6.71 7.31 9.14 5.38 12 5.38Z"
-      />
-    </svg>
-  );
+import { loginWithGoogle } from "@/helpers/next-fetch/authActions";
+
+export interface GoogleButtonProps {
+  label?: string;
+  redirectTo?: string;
+  text?: "continue_with" | "signin_with" | "signup_with" | "signin";
+  shape?: "rectangular" | "pill";
+  theme?: "outline" | "filled_blue" | "filled_black";
+  onSuccessCallback?: (data: any) => void;
 }
 
-export function GoogleButton({ label }: { label: string }) {
+export function GoogleButton({
+  label,
+  redirectTo,
+  text = "continue_with",
+  shape = "rectangular",
+  theme = "outline",
+  onSuccessCallback,
+}: GoogleButtonProps) {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [isProcessing, setIsProcessing] = React.useState(false);
+
+  const { clientId, scriptLoadedSuccessfully } = useGoogleOAuth();
+
+  const segments = pathname ? pathname.split("/") : [];
+  const currentLocale = segments[1] === "ht" ? "ht" : "en";
+  const isHt = currentLocale === "ht";
+
+  // Compute destination
+  const rawRedirect = searchParams?.get("redirect");
+  const defaultRedirect = rawRedirect
+    ? rawRedirect.startsWith("http")
+      ? rawRedirect
+      : rawRedirect.startsWith(`/${currentLocale}`)
+        ? rawRedirect
+        : `/${currentLocale}${rawRedirect.startsWith("/") ? rawRedirect : `/${rawRedirect}`}`
+    : `/${currentLocale}`;
+
+  const targetRedirect = redirectTo || defaultRedirect;
+
+  const handleGoogleSuccess = async (
+    credentialResponse: CredentialResponse,
+  ) => {
+    if (!credentialResponse.credential) {
+      toast.error(
+        isHt
+          ? "Google pa bay enfòmasyon idantifikasyon ki nesesè yo."
+          : "Failed to obtain Google credentials.",
+        { id: "google-login" },
+      );
+      return;
+    }
+
+    setIsProcessing(true);
+    try {
+      const response = await loginWithGoogle(credentialResponse.credential);
+
+      if (response?.success && response?.data?.createToken) {
+        const token = response.data.createToken;
+        Cookies.set("accessToken", token, { expires: 30 });
+
+        // Extract role from response data or decode from JWT
+        let role = response.data?.role;
+        if (!role) {
+          try {
+            const base64Url = token.split(".")[1];
+            if (base64Url) {
+              const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+              const jsonPayload = decodeURIComponent(
+                atob(base64)
+                  .split("")
+                  .map(
+                    (c) =>
+                      "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2),
+                  )
+                  .join(""),
+              );
+              const payload = JSON.parse(jsonPayload);
+              role = payload?.role;
+            }
+          } catch {
+            // Ignore decode fallback error
+          }
+        }
+
+        if (role) {
+          Cookies.set("role", role, { expires: 30 });
+        }
+
+        toast.success(
+          response.message ||
+            (isHt
+              ? "Koneksyon an reyisi avèk Google! Byenveni."
+              : "Signed in with Google successfully!"),
+          { id: "google-login" },
+        );
+
+        if (onSuccessCallback) {
+          onSuccessCallback(response.data);
+        }
+
+        router.replace(targetRedirect);
+        router.refresh();
+        return;
+      }
+
+      if (response?.error && Array.isArray(response.error)) {
+        response.error.forEach((err: { message: string }) => {
+          toast.error(err.message, { id: "google-login" });
+        });
+      } else {
+        toast.error(
+          response?.message ||
+            (isHt
+              ? "Koneksyon Google la echwe. Tanpri eseye ankò."
+              : "Google sign-in failed. Please try again."),
+          { id: "google-login" },
+        );
+      }
+    } catch (err) {
+      console.error("Google authentication error:", err);
+      toast.error(
+        isHt
+          ? "Erè nan rezo a pandan koneksyon Google la. Tanpri eseye ankò."
+          : "Network error during Google sign-in. Please try again.",
+        { id: "google-login" },
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  const handleGoogleError = () => {
+    toast.error(
+      isHt
+        ? "Koneksyon Google la pa t reyisi oswa li te anile."
+        : "Google login was cancelled or failed.",
+      { id: "google-login" },
+    );
+  };
+
   return (
-    <Button
-      type="button"
-      variant="outline"
-      className="h-11 w-full gap-2.5 rounded-xl border-hairline bg-white/95 text-sm font-semibold text-forest-deep shadow-2xs transition-colors hover:bg-sand-soft/50 hover:text-forest"
-      onClick={() => {
-        // Wire to social auth provider if configured
-      }}
-    >
-      <GoogleIcon />
-      {label}
-    </Button>
+    <div className="relative flex w-full flex-col items-center justify-center gap-2">
+      {isProcessing && (
+        <div className="absolute inset-0 z-20 flex items-center justify-center gap-2 rounded-xl bg-white/90 backdrop-blur-xs">
+          <Loader2 className="h-5 w-5 animate-spin text-forest" />
+          <span className="text-xs font-semibold text-forest-deep">
+            {isHt
+              ? "Otorizasyon ap verifye..."
+              : "Authenticating with Google..."}
+          </span>
+        </div>
+      )}
+
+      <div className="flex w-full justify-center overflow-hidden rounded-xl [&>div]:w-full! [&>div]:flex! [&>div]:justify-center! [&_iframe]:max-w-full!">
+        <GoogleLogin
+          onSuccess={handleGoogleSuccess}
+          onError={handleGoogleError}
+          theme={theme}
+          shape={shape}
+          size="large"
+          text={text}
+          width="380"
+          logo_alignment="left"
+        />
+      </div>
+    </div>
   );
 }
 

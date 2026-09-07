@@ -89,7 +89,7 @@ export default async function LangRootLayout({
     >
       <body className="min-h-screen bg-cream text-cloud antialiased scroll-smooth">
         <TranslationProvider messages={dict}>
-          <SiteProviders>
+          <SiteProviders lang={currentLang}>
             <NavServer />
             <main className="relative">{children}</main>
             <Footer />
