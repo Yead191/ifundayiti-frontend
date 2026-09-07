@@ -178,7 +178,7 @@ export function TeamDetailContent({
                 )}
                 <div>
                   <dt className="text-mist font-medium">
-                    {d.Category || "Category"}
+                    {d.Team || "Team"}
                   </dt>
                   <dd className="font-semibold text-forest-deep capitalize mt-0.5">
                     {member.category === "director"

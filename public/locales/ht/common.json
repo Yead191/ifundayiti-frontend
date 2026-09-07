@@ -555,7 +555,7 @@
     "Hero": {
       "Eyebrow": "Rasanble. Konekte. Ranfòse.",
       "Title": "Kote rèv ayisyen yo rankontre kapital pou yo grandi.",
-      "Subtitle": "Chak sware prezantasyon, atelye kominotè, ak kanpay ranmase lajan pote nou yon etap pi pre yon Ayiti k ap devlope ekonomikman. Kit ou patisipe an pèsòn nan Pòtoprens oswa sou Zoom depi nenpòt kote sou planèt la — 100% kontribisyon nan evènman yo ranfòse Fon Pwogram santral nou an.",
+      "Subtitle": "Chak sware prezantasyon, atelye kominotè, ak kanpay ranmase lajan pote nou yon etap pi pre yon Ayiti k ap devlope ekonomikman. Kit ou patisipe avèk nou an pèsòn nan Eta New York, nan Pòtoprens, oswa nòmalman atravè Zoom depi nenpòt kote nan mond lan. — 100% kontribisyon nan evènman yo ranfòse Fon Pwogram santral nou an.",
       "CalendarBtn": "Dekouvri Evènman yo",
       "DonateBtn": "Fè yon don nan Fon Pwogram nan"
     },
@@ -1021,7 +1021,8 @@
       "Location": "Kote li ye",
       "VerifiedMember": "Manm IFundAyiti Verifye",
       "Designation": "Deziyasyon",
-      "Category": "Kategori",
+      "Team": "Ekip",
+      "Category": "Ekip",
       "Contact": "Kontak Dirèk & Rezo Sosyal",
       "Email": "Imèl",
       "LinkedIn": "Pwofil LinkedIn",

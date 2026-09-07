@@ -555,7 +555,7 @@
     "Hero": {
       "Eyebrow": "Gather. Connect. Empower.",
       "Title": "Where Haitian dreams meet the capital to rise.",
-      "Subtitle": "Every pitch night, community workshop, and fundraising drive brings us one step closer to a self-sustaining, economically empowered Haiti. Whether you join us in person in Port-au-Prince or virtually via Zoom from anywhere across the globe — 100% of event contributions strengthen our central Program Fund.",
+      "Subtitle": "Every pitch night, community workshop, and fundraising drive brings us one step closer to a self-sustaining, economically empowered Haiti. Whether you join us in person in New York State, Port-au-Prince or virtually via Zoom from anywhere across the globe — 100% of event contributions strengthen our central Program Fund.",
       "CalendarBtn": "Explore Calendar Events",
       "DonateBtn": "Donate to Central Program Fund"
     },
@@ -1021,7 +1021,8 @@
       "Location": "Location",
       "VerifiedMember": "Verified IFundAyiti Member",
       "Designation": "Designation",
-      "Category": "Category",
+      "Team": "Team",
+      "Category": "Team",
       "Contact": "Direct Contact & Social",
       "Email": "Email",
       "LinkedIn": "LinkedIn Profile",
