@@ -1,12 +1,6 @@
 "use server";
 
 import { nextFetch } from "./NextFetch";
-import {
-  GALLERY_CATEGORIES,
-  type GalleryCategory,
-} from "@/features/gallery/constants";
-
-export type { GalleryCategory };
 
 export interface GalleryItem {
   _id: string;
