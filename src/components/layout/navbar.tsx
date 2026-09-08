@@ -467,12 +467,12 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
               ) : (
                 <div className="grid grid-cols-2 gap-2 pb-2">
                   <Button asChild variant="outline" className="rounded-xl">
-                    <Link href={localize("/login")}>
+                    <Link href={localize("/auth/login")}>
                       {authT.SignIn || "Sign in"}
                     </Link>
                   </Button>
                   <Button asChild variant="outline" className="rounded-xl">
-                    <Link href={localize("/join")}>
+                    <Link href={localize("/auth/join")}>
                       {authT.SignUp || "Register"}
                     </Link>
                   </Button>

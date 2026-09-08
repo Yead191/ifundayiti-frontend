@@ -348,8 +348,7 @@ export function ProductInfoSection({
           <div className="flex items-center gap-3 text-xs font-semibold text-forest-deep">
             <ShieldCheck className="h-4 w-4 shrink-0 text-forest" />
             <span>
-              {t?.EthicalCrafted ||
-                "Ethically crafted with 100% organic cotton"}
+              {t?.EthicalCrafted || "Ethically made with quality materials"}
             </span>
           </div>
         </div>

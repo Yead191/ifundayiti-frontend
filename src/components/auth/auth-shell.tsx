@@ -98,7 +98,7 @@ export function AuthShell({
         </aside>
 
         {/* Form column */}
-        <div className="relative flex flex-col justify-center rounded-[28px] border border-hairline/80 bg-white/95 p-7 shadow-[0_20px_50px_-20px_rgba(11,61,46,0.14)] backdrop-blur-xl sm:p-10">
+        <div className="relative flex flex-col justify-center rounded-[28px] border border-hairline/80 bg-white/95 p-6 shadow-[0_20px_50px_-20px_rgba(11,61,46,0.14)] backdrop-blur-xl sm:p-10">
           <div className="mx-auto w-full max-w-md">
             {/* Mobile Logo */}
             <div className="mb-6 flex justify-center lg:hidden">

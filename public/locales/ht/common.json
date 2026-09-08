@@ -26,7 +26,7 @@
     "GrantProgram": "Pwogram sibvansyon",
     "Title1": "Kapital pou lide",
     "Title2": "ki anrasinen nan Ayiti.",
-    "Subtitle": "IFundAyiti bay ti sibvansyon, fòmasyon nan domèn biznis, konsèy ak akonpayman, ansanm ak resous pou ede pwopriyetè ti biznis ak antreprenè devlope biznis ki solid epi dirab.",
+    "Subtitle": "IFundAyiti bay ti sibvansyon, konsèy ak akonpayman, ansanm ak resous pou ede pwopriyetè ti biznis ak antreprenè devlope biznis ki solid epi dirab.",
     "ApplyBtn": "Aplike pou yon Sibvansyon",
     "ViewGrantsBtn": "Gade detay sibvansyon an",
     "ExploreBtn": "Eksplore travay la",
@@ -34,7 +34,7 @@
     "MaximumGrant": "Sibvansyon maksimòm",
     "Window": "Peryòd",
     "CycleNotice": "Yon gayan pou chak sik. Don yo alimante Fon Pwogram nan — yo pa ale pou yon sèl aplikan.",
-    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif. Nou nan pwosesis pou jwenn estati 501(c)(3)."
+    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif. Estati 501(c)(3) an annatant."
   },
   "FloatingDonate": {
     "QuickDonate": "Fè yon don rapid",
@@ -124,7 +124,7 @@
     "Email": "Imèl:",
     "Phone": "Telefòn:",
     "Headquarters": "Biwo prensipal:",
-    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif. Nou nan pwosesis pou jwenn estati 501(c)(3)."
+    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif. Estati 501(c)(3) an annatant."
   },
   "DonationForm": {
     "SelectAmount": "Chwazi kantite don (USD)",
@@ -168,7 +168,7 @@
       "FocusVal": "Sibvansyon ki mete Ayiti an premye",
       "Model": "Modèl",
       "ModelVal": "Piblik depi nan konsepsyon",
-      "OurStory": "Istwa nou",
+      "OurStory": "Misyon Nou",
       "Principles": "Prensip",
       "Team": "Ekip",
       "BasedInAyiti": "Baze ann Ayiti",
@@ -177,10 +177,10 @@
     "Story": {
       "Eyebrow": "Misyon Nou",
       "Title": "Yon pwosesis sibvansyon ki grandi pou vin yon bagay piblik.",
-      "Subtitle": "IFundAyiti te kòmanse anndan Hubology kòm yon fason pou revize lide lokal yo avèk swen. Li vin yon sit apa pou aplikan, donatè ak kominote yo ka pataje yon dosye klè ansanm.",
-      "Paragraph1": "Nan IFundAyiti, misyon nou se bay pwopriyetè ti biznis ak antreprenè yo plis mwayen pou yo reyisi, lè nou ba yo aksè ak ti sibvansyon, fòmasyon nan domèn biznis, konsèy ak akonpayman, ansanm ak resous ki ede yo transfòme lide yo an biznis ki dirab epi kreye opòtinite ekonomik ki dire lontan.",
-      "Paragraph2": "Nou angaje nou pou sipòte antreprenè ki ka rankontre baryè lè y ap chèche finansman tradisyonèl oswa resous pou biznis yo. Atravè asistans finansye ak fòmasyon pratik, nou ede moun yo ranfòse biznis yo, vin pi endepandan sou plan finansye, kreye travay, epi kontribye nan devlopman kominote ki pwospè.",
-      "Paragraph3": "Kòm yon òganizasyon san bi likratif, IFundAyiti konsakre tèt li nan ankouraje antreprenarya, otonòm ekonomik ak devlopman kominotè, pandan n ap mete an valè kreyativite, rezilyans ak lespri antreprenarya Ayiti ak pèp li a. IFundAyiti — Bay Antreprenè yo Plis Mwayen. Envesti nan Kominote yo. Bati yon Avni ki pi Solid.",
+      "Subtitle": "Nan IFundAyiti, misyon nou se bay pwopriyetè ti biznis ak antreprenè yo plis mwayen pou yo reyisi, lè nou ba yo aksè ak ti sibvansyon, konsèy ak akonpayman, ansanm ak resous ki ede yo transfòme lide yo an biznis dirab epi kreye opòtinite ekonomik ki dire lontan.",
+      "Paragraph1": "Nou angaje nou pou sipòte antreprenè ki ka rankontre baryè lè y ap chèche finansman tradisyonèl oswa resous pou biznis yo. Atravè asistans finansye ak fòmasyon pratik, nou ede moun yo ranfòse biznis yo, vin pi endepandan sou plan finansye, kreye travay, epi kontribye nan devlopman kominote ki pwospè.",
+      "Paragraph2": "Kòm yon òganizasyon san bi likratif, IFundAyiti konsakre tèt li nan ankouraje antreprenarya, otonòm ekonomik ak devlopman kominotè, pandan n ap mete an valè kreyativite, rezilyans ak lespri antreprenarya Ayiti ak pèp li a.",
+      "Paragraph3": "IFundAyiti — Bay Antreprenè yo Plis Mwayen. Envesti nan Kominote yo. Bati yon Avni ki pi Solid.",
       "Callout": "Ti ekip. Règ klè. Vrè non dèyè travay la."
     },
     "Principles": {
@@ -974,7 +974,7 @@
       "TitleMembers": "Manm",
       "TitleAnd": ", & powered pa ",
       "TitleVolunteers": "Volontè",
-      "Subtitle": "Rankontre ekip devwe a, lidè yo ak volontè kominotè k ap bati opòtinite ti sibvansyon transparan atravè Ayiti.",
+      "Subtitle": "Rankontre ekip devwe nou an, lidè nou yo ak volontè kominotè yo k ap travay pou kreye opòtinite transparan pou jwenn ti sibvansyon.",
       "ExploreBtn": "Eksplore ekip la",
       "JoinBtn": "Vin volontè",
       "StatDirectors": "Direktè Konsèy",
@@ -1454,7 +1454,7 @@
       "AddedSuccess": "Ajoute nan panyen ou",
       "FreeShipping": "Livrezon gratis pou kòmand ki depase $150",
       "ReturnsGuarantee": "Echanj nan 30 jou",
-      "EthicalCrafted": "Ethically crafted ak 100% organic cotton",
+      "EthicalCrafted": "Fèt avèk etik ak materyèl kalite",
       "Tabs": {
         "Description": "Twal ak espesifikasyon",
         "Impact": "Enpak sosyal la",

@@ -154,6 +154,39 @@ export function GoogleButton({
     );
   };
 
+  const containerRef = React.useRef<HTMLDivElement>(null);
+  const [buttonWidth, setButtonWidth] = React.useState<number | undefined>(
+    undefined,
+  );
+
+  React.useEffect(() => {
+    if (!containerRef.current) return;
+
+    const measureWidth = () => {
+      if (containerRef.current) {
+        const clientWidth = containerRef.current.getBoundingClientRect().width;
+        if (clientWidth > 0) {
+          // Google GSI button width must be between 200px and 400px
+          const clamped = Math.min(Math.max(Math.floor(clientWidth), 200), 400);
+          setButtonWidth(clamped);
+        }
+      }
+    };
+
+    measureWidth();
+
+    const resizeObserver = new ResizeObserver(() => {
+      measureWidth();
+    });
+    resizeObserver.observe(containerRef.current);
+
+    window.addEventListener("resize", measureWidth);
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", measureWidth);
+    };
+  }, []);
+
   return (
     <div className="relative flex w-full flex-col items-center justify-center gap-2">
       {isProcessing && (
@@ -167,17 +200,29 @@ export function GoogleButton({
         </div>
       )}
 
-      <div className="flex w-full justify-center overflow-hidden rounded-xl [&>div]:w-full! [&>div]:flex! [&>div]:justify-center! [&_iframe]:max-w-full!">
-        <GoogleLogin
-          onSuccess={handleGoogleSuccess}
-          onError={handleGoogleError}
-          theme={theme}
-          shape={shape}
-          size="large"
-          text={text}
-          width="380"
-          logo_alignment="left"
-        />
+      <div
+        ref={containerRef}
+        className="w-full flex justify-center items-center overflow-hidden rounded-xl min-h-11"
+      >
+        <div className="w-full flex justify-center max-w-full">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+            theme={theme}
+            shape={shape}
+            size="large"
+            text={text}
+            width={buttonWidth ? `${buttonWidth}` : undefined}
+            logo_alignment="left"
+            containerProps={{
+              className: "w-full flex justify-center",
+              style: {
+                width: buttonWidth ? `${buttonWidth}px` : "100%",
+                maxWidth: "100%",
+              },
+            }}
+          />
+        </div>
       </div>
     </div>
   );

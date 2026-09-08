@@ -26,7 +26,7 @@
     "GrantProgram": "Grant program",
     "Title1": "Capital for ideas",
     "Title2": "rooted in Ayiti.",
-    "Subtitle": "IFundAyiti provides microgrants, business education, mentorship, and resources to help small business owners and entrepreneurs build sustainable businesses.",
+    "Subtitle": "IFundAyiti provides microgrants, mentorship, and resources to help small business owners and entrepreneurs build sustainable businesses.",
     "ApplyBtn": "Apply for a Grant",
     "ViewGrantsBtn": "View Grant Details",
     "ExploreBtn": "Explore the work",
@@ -34,7 +34,7 @@
     "MaximumGrant": "Maximum grant",
     "Window": "Window",
     "CycleNotice": "One winner per cycle. Donations fuel the Program Fund — not a single applicant.",
-    "NonprofitNotice": "IFundAyiti is a nonprofit organization. 501(c)(3) pending period"
+    "NonprofitNotice": "IFundAyiti is a nonprofit organization. 501(c)(3) pending."
   },
   "FloatingDonate": {
     "QuickDonate": "Quick donate",
@@ -124,7 +124,7 @@
     "Email": "Email:",
     "Phone": "Phone:",
     "Headquarters": "Headquarters:",
-    "NonprofitNotice": "IFundAyiti is a nonprofit organization. 501(c)(3) pending period"
+    "NonprofitNotice": "IFundAyiti is a nonprofit organization. 501(c)(3) pending."
   },
   "DonationForm": {
     "SelectAmount": "Select Donation Amount (USD)",
@@ -177,10 +177,10 @@
     "Story": {
       "Eyebrow": "Our mission",
       "Title": "A grant workflow that grew into something public.",
-      "Subtitle": "IFundAyiti started inside Hubology as a way to review local ideas with care. It became its own site so applicants, donors, and communities could share one clear record.",
-      "Paragraph1": "At IFundAyiti, our mission is to empower small business owners and entrepreneurs by providing access to microgrants, business education, mentorship, and resources that help turn ideas into sustainable businesses and create lasting economic opportunities.",
-      "Paragraph2": "We are committed to supporting entrepreneurs who may face barriers to traditional funding and business resources. Through financial assistance and practical education, we help individuals strengthen their businesses, build financial independence, create jobs, and contribute to thriving communities.",
-      "Paragraph3": "As a nonprofit organization, IFundAyiti is dedicated to fostering entrepreneurship, economic empowerment, and community development while celebrating the creativity, resilience, and entrepreneurial spirit of Haiti and its people. IfunDayiti - Empowering Entrepreneurs. Investing in Communities. Building a Stronger Future.",
+      "Subtitle": "At IFundAyiti, our mission is to empower small business owners and entrepreneurs by providing access to microgrants, mentorship, and resources that help turn ideas into sustainable businesses and create lasting economic opportunities.",
+      "Paragraph1": "We are committed to supporting entrepreneurs who may face barriers to traditional funding and business resources. Through financial assistance and practical education, we help individuals strengthen their businesses, build financial independence, create jobs, and contribute to thriving communities.",
+      "Paragraph2": "As a nonprofit organization, IFundAyiti is dedicated to fostering entrepreneurship, economic empowerment, and community development while celebrating the creativity, resilience, and entrepreneurial spirit of Haiti and its people.",
+      "Paragraph3": "IfunDayiti - Empowering Entrepreneurs. Investing in Communities. Building a Stronger Future.",
       "Callout": "Small teams. Clear rules. Real names behind the work."
     },
     "Principles": {
@@ -974,7 +974,7 @@
       "TitleMembers": "Members",
       "TitleAnd": ", & powered by ",
       "TitleVolunteers": "Volunteers",
-      "Subtitle": "Meet the dedicated team, leaders, and community volunteers building transparent micro-grant opportunities across Haiti.",
+      "Subtitle": "Meet the dedicated team, leaders, and community volunteers building transparent micro-grant opportunities.",
       "ExploreBtn": "Explore Team",
       "JoinBtn": "Become a Volunteer",
       "StatDirectors": "Board Directors",
@@ -1454,7 +1454,7 @@
       "AddedSuccess": "Added to your shopping bag",
       "FreeShipping": "Free shipping on orders over $150",
       "ReturnsGuarantee": "30-day exchange",
-      "EthicalCrafted": "Ethically crafted with 100% organic cotton",
+      "EthicalCrafted": "Ethically made with quality materials",
       "Tabs": {
         "Description": "Fabric & Specifications",
         "Impact": "The Social Impact",
