@@ -17,6 +17,9 @@ import { DonationCta } from "@/components/home/donation-cta";
 import { absoluteUrl, buildMetadata, getSiteUrl, SITE_NAME } from "@/lib/seo";
 import { SITE } from "@/data/site";
 import { getImpactStats } from "@/helpers/next-fetch/impactActions";
+import { getPartnerLogos } from "@/helpers/next-fetch/partnerActions";
+import { getDictionary } from "@/lib/dictionaries";
+import { PartnerLogoCarousel } from "@/features/partners/components/partner-logo-carousel";
 
 export const metadata: Metadata = buildMetadata({
   title: "IFundAyiti — Grants that grow Haitian ideas",
@@ -38,8 +41,16 @@ export default async function HomePage({
   const { lang } = await params;
   const site = getSiteUrl();
 
-  const impactStatsRes = await getImpactStats();
+  const [impactStatsRes, partnerLogosRes, dict] = await Promise.all([
+    getImpactStats(),
+    getPartnerLogos(),
+    getDictionary(lang),
+  ]);
   const impactStats = impactStatsRes.success ? impactStatsRes.data : undefined;
+  const partnerLogos =
+    partnerLogosRes.success && Array.isArray(partnerLogosRes.data)
+      ? partnerLogosRes.data
+      : [];
 
   return (
     <>
@@ -74,6 +85,7 @@ export default async function HomePage({
       {/* <LeadershipSection lang={lang} />
       <VolunteersSection lang={lang} /> */}
       <SuccessStory lang={lang} />
+      <PartnerLogoCarousel logos={partnerLogos} lang={lang} dict={dict} />
       <DonationCta />
     </>
   );

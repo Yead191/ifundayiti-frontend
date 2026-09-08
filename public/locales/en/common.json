@@ -4,6 +4,7 @@
     "About": "About",
     "AboutUs": "About Us",
     "OurTeam": "Our Team",
+    "OurPartners": "Our Partners",
     "Grants": "Grants",
     "Impact": "Impact",
     "OurImpact": "Our Impact",
@@ -169,7 +170,7 @@
       "FocusVal": "Haiti-first grants",
       "Model": "Model",
       "ModelVal": "Public by design",
-      "OurStory": "Our story",
+      "OurStory": "Our mission",
       "Principles": "Principles",
       "Team": "Team",
       "BasedInAyiti": "Based in Ayiti",
@@ -1713,5 +1714,68 @@
     "PasswordsDoNotMatch": "New passwords do not match.",
     "PasswordUpdated": "Password updated successfully.",
     "PasswordUpdateError": "Could not change password."
+  },
+  "PartnersPage": {
+    "Metadata": {
+      "Title": "Our Partners — IFundAyiti",
+      "Description": "Discover the dedicated organizations, institutions, and advocates partnering with IFundAyiti to empower grassroots Haitian entrepreneurs and innovators."
+    },
+    "Hero": {
+      "Eyebrow": "Collaborative Impact",
+      "Title": "Meet Our Trusted Partners",
+      "Subtitle": "Working hand-in-hand with leading businesses, organizations, and community pioneers to fuel grassroots progress, expand resources, and back Haitian entrepreneurs.",
+      "ApplyButton": "Become a Partner",
+      "Stats": {
+        "Partners": "Active Partners",
+        "Reach": "Community Reach",
+        "Initiatives": "Joint Initiatives"
+      }
+    },
+    "Carousel": {
+      "Eyebrow": "Partners",
+      "Title": "Meet Our Trusted Partners",
+      "Subtitle": "Discover the organizations and professionals supporting IFundAyiti grantees with valuable resources, mentorship, and opportunities."
+    },
+    "Filter": {
+      "SearchPlaceholder": "Search partners by name or focus...",
+      "AllOffers": "All Areas",
+      "ResultsCount": "{count} partner{plural} found"
+    },
+    "Empty": {
+      "Title": "No partners found",
+      "Description": "We couldn't find any partners matching your search. Try different keywords or check back soon."
+    },
+    "Detail": {
+      "BackToPartners": "Back to all partners",
+      "Website": "Visit Official Website",
+      "Contact": "Get in Touch",
+      "Offers": "Partnership Scope & Services",
+      "Overview": "Organization Profile",
+      "OtherPartners": "More Trusted Partners"
+    },
+    "Modal": {
+      "Title": "Apply to Become a Partner",
+      "Subtitle": "Collaborate with IFundAyiti to support emerging Haitian entrepreneurs, expand community impact, and provide valuable opportunities.",
+      "OrgName": "Organization / Partner Name",
+      "OrgNamePlaceholder": "e.g. Ayiti Innovators Alliance",
+      "Logo": "Organization Logo",
+      "LogoHint": "Square logo in PNG, JPG, or WebP format (max 5MB)",
+      "Email": "Contact Email",
+      "EmailPlaceholder": "partner@organization.org",
+      "Phone": "Contact Phone (Optional)",
+      "PhonePlaceholder": "+1 555-019-2834",
+      "Website": "Official Website (Optional)",
+      "WebsitePlaceholder": "https://organization.org",
+      "Description": "About Your Organization & Mission",
+      "DescriptionPlaceholder": "Describe your mission, services, and how you aim to support Haitian entrepreneurs...",
+      "OffersLabel": "Partnership Areas / Opportunities Provided",
+      "OffersPlaceholder": "Add an offer and press Enter (e.g. Co-marketing, Mentorship, Event Sponsorship)",
+      "Submit": "Submit Application",
+      "Submitting": "Submitting Application...",
+      "SuccessTitle": "Application Received!",
+      "SuccessMessage": "Thank you for applying to partner with IFundAyiti. Our team will review your details and be in touch soon.",
+      "AuthRequiredTitle": "Sign In Required",
+      "AuthRequiredMessage": "Please sign in or create an account to submit a partnership application."
+    }
   }
 }

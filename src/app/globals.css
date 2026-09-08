@@ -462,3 +462,26 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ============================================================
+   Partner Marquee Track & Animation
+   ============================================================ */
+@keyframes partner-marquee-scroll {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.partner-marquee-track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: partner-marquee-scroll var(--partner-marquee-duration, 30s) linear infinite;
+}
+
+.partner-marquee-track[data-paused="true"] {
+  animation-play-state: paused;
+}

@@ -97,6 +97,7 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
       subItems: [
         { label: t.AboutUs || "About Us", href: "/about" },
         { label: t.OurTeam || "Our Team", href: "/team" },
+        { label: t.OurPartners || "Our Partners", href: "/partners" },
       ],
     },
     {

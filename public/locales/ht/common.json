@@ -4,6 +4,7 @@
     "About": "Sou Nou",
     "AboutUs": "Sou Nou",
     "OurTeam": "Ekip Nou",
+    "OurPartners": "Partnè Nou yo",
     "Grants": "Sibvansyon",
     "Impact": "Enpak",
     "OurImpact": "Enpak Nou",
@@ -1711,7 +1712,70 @@
     "UpdatingPassword": "Ap mete ajou…",
     "PasswordMinLength": "Nouvo modpas la dwe gen omwen 8 karaktè.",
     "PasswordsDoNotMatch": "Nouvo modpas yo pa menm.",
-    "PasswordUpdated": "Modpas mete ajou avèk siksè.",
-    "PasswordUpdateError": "Nou pa t kapab chanje modpas la."
+    "PasswordUpdated": "Modpas la chanje avèk siksè.",
+    "PasswordUpdateError": "Pa t kapab chanje modpas la."
+  },
+  "PartnersPage": {
+    "Metadata": {
+      "Title": "Partnè Nou yo — IFundAyiti",
+      "Description": "Dekouvri òganizasyon, enstitisyon, ak patnè k ap travay avèk IFundAyiti pou sipòte antreprenè ayisyen yo."
+    },
+    "Hero": {
+      "Eyebrow": "Enpak Kolaboratif",
+      "Title": "Rankontre Partnè Konfyans Nou Yo",
+      "Subtitle": "Nou travay men nan men ak biznis, òganizasyon, ak pyonye kominotè pou soutni pwogrè nan kominote yo epi apiye antreprenè ayisyen.",
+      "ApplyButton": "Vin yon Partnè",
+      "Stats": {
+        "Partners": "Partnè Aktif",
+        "Reach": "Enpak Kominotè",
+        "Initiatives": "Inisyativ Konjwen"
+      }
+    },
+    "Carousel": {
+      "Eyebrow": "Partnè",
+      "Title": "Rankontre Partnè Konfyans Nou Yo",
+      "Subtitle": "Dekouvri òganizasyon ak pwofesyonèl k ap pote resous, konsèy, ak opòtinite pou moun ki resevwa sibvansyon IFundAyiti yo."
+    },
+    "Filter": {
+      "SearchPlaceholder": "Chèche partnè pa non oswa domèn...",
+      "AllOffers": "Tout Domèn",
+      "ResultsCount": "{count} partnè jwenn"
+    },
+    "Empty": {
+      "Title": "Pa gen partnè yo jwenn",
+      "Description": "Nou pa t jwenn okenn partnè ki koresponn ak rechèch ou a. Eseye lòt mo kle oswa retounen talè."
+    },
+    "Detail": {
+      "BackToPartners": "Retounen nan tout partnè yo",
+      "Website": "Vizite Sit Entènèt Ofisyèl",
+      "Contact": "Pran Kontak",
+      "Offers": "Domèn Kolaborasyon & Sèvis",
+      "Overview": "Pwofil Òganizasyon an",
+      "OtherPartners": "Plis Partnè Konfyans"
+    },
+    "Modal": {
+      "Title": "Aplike Pou Vin Yon Partnè",
+      "Subtitle": "Kolabore ak IFundAyiti pou sipòte antreprenè ayisyen k ap parèt yo, elaji enpak kominote a, epi bay opòtinite.",
+      "OrgName": "Non Òganizasyon / Partnè a",
+      "OrgNamePlaceholder": "egzanp: Ayiti Innovators Alliance",
+      "Logo": "Logo Òganizasyon an",
+      "LogoHint": "Fòma PNG, JPG, oswa WebP (maksimòm 5MB)",
+      "Email": "Imèl Kontak",
+      "EmailPlaceholder": "partner@organization.org",
+      "Phone": "Nimewo Telefòn (Opsyonèl)",
+      "PhonePlaceholder": "+1 555-019-2834",
+      "Website": "Sit Entènèt Ofisyèl (Opsyonèl)",
+      "WebsitePlaceholder": "https://organization.org",
+      "Description": "Konsènan Òganizasyon Ou & Misyon",
+      "DescriptionPlaceholder": "Dekri misyon ou, sèvis ou yo, ak fason ou vle sipòte antreprenè ayisyen yo...",
+      "OffersLabel": "Domèn Kolaborasyon / Opòtinite Yo Ofri",
+      "OffersPlaceholder": "Ajoute yon òf epi peze Antre (egz. Mentora, Kò-maketing, Patwonaj Evènman)",
+      "Submit": "Soumèt Aplikasyon",
+      "Submitting": "Aplikasyon an ap soumèt...",
+      "SuccessTitle": "Nou Resevwa Aplikasyon Ou!",
+      "SuccessMessage": "Mèsi paske ou aplike pou vin yon partnè IFundAyiti. Ekip nou an pral egzamine enfòmasyon ou yo epi kontakte ou byento.",
+      "AuthRequiredTitle": "Koneksyon Obligatwa",
+      "AuthRequiredMessage": "Tanpri konekte oswa kreye yon kont pou w ka soumèt yon aplikasyon pou patenarya."
+    }
   }
 }

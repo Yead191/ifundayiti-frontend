@@ -496,3 +496,55 @@ export interface IOrder {
   updatedAt: string;
 }
 
+/* ------------------------------------------------------------------ *
+ * Partners — IFUNDAYITI PARTNER DIRECTORY & INTEGRATION
+ * ------------------------------------------------------------------ */
+export interface PartnerLogo {
+  _id: string;
+  name: string;
+  image: string;
+}
+
+export interface PartnerUserSummary {
+  _id: string;
+  name: string;
+  email: string;
+  image?: string;
+  phone?: string;
+}
+
+export interface Partner {
+  _id: string;
+  user?: PartnerUserSummary | string | null;
+  name: string;
+  image: string;
+  description?: string;
+  offers: string[];
+  website?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  status: "APPROVED" | "PENDING" | "REJECTED";
+  featured: boolean;
+  rejectionReason?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface PartnerListParams {
+  page?: number;
+  limit?: number;
+  searchTerm?: string;
+  featured?: boolean;
+  sort?: string;
+}
+
+export interface PartnerApplicationPayload {
+  name: string;
+  description?: string;
+  offers?: string[];
+  website?: string;
+  contactEmail?: string;
+  contactPhone?: string;
+  image: File;
+}
+
