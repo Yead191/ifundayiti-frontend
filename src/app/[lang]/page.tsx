@@ -16,6 +16,7 @@ import { SuccessStory } from "@/components/home/success-story";
 import { DonationCta } from "@/components/home/donation-cta";
 import { absoluteUrl, buildMetadata, getSiteUrl, SITE_NAME } from "@/lib/seo";
 import { SITE } from "@/data/site";
+import { getImpactStats } from "@/helpers/next-fetch/impactActions";
 
 export const metadata: Metadata = buildMetadata({
   title: "IFundAyiti — Grants that grow Haitian ideas",
@@ -36,6 +37,9 @@ export default async function HomePage({
 }) {
   const { lang } = await params;
   const site = getSiteUrl();
+
+  const impactStatsRes = await getImpactStats();
+  const impactStats = impactStatsRes.success ? impactStatsRes.data : undefined;
 
   return (
     <>
@@ -65,7 +69,7 @@ export default async function HomePage({
       <CurrentGrant lang={lang} />
       <WhatWeDo />
       <HowItWorks />
-      <ImpactStats />
+      <ImpactStats initialStats={impactStats} />
       <FeaturedProjects lang={lang} />
       {/* <LeadershipSection lang={lang} />
       <VolunteersSection lang={lang} /> */}

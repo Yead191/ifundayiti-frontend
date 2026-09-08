@@ -5,10 +5,23 @@ import { ArrowDownRight, MapPin, Sparkles } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { getDictionary } from "@/lib/dictionaries";
+import { getImpactStats } from "@/helpers/next-fetch/impactActions";
+import { formatPrice } from "@/lib/utils";
 
 export async function ImpactHero({ lang }: { lang: string }) {
   const dict = await getDictionary(lang);
   const t = dict.ImpactPage.Hero;
+
+  const statsRes = await getImpactStats();
+  const stats = statsRes.success && statsRes.data
+    ? statsRes.data
+    : {
+        applicationReceived: 0,
+        grantsAwardedCount: 0,
+        totalFundsAwarded: 0,
+        projectSupported: 0,
+        grantCycleCount: 0,
+      };
 
   const chapters = [
     {
@@ -55,10 +68,16 @@ export async function ImpactHero({ lang }: { lang: string }) {
   ];
 
   const proofStrip = [
-    { value: "0", label: t.StatWinners },
-    { value: "0", label: t.StatProjects },
-    { value: "$0", label: t.StatFund },
-    { value: "0", label: t.StatCycle },
+    {
+      value: String(stats.applicationReceived),
+      label:
+        t.StatApplications ||
+        (lang === "ht" ? "Aplikasyon resevwa" : "Applications received"),
+    },
+    { value: String(stats.grantsAwardedCount), label: t.StatWinners },
+    { value: String(stats.projectSupported), label: t.StatProjects },
+    { value: formatPrice(stats.totalFundsAwarded), label: t.StatFund },
+    { value: String(stats.grantCycleCount), label: t.StatCycle },
   ];
 
   return (
@@ -163,20 +182,20 @@ export async function ImpactHero({ lang }: { lang: string }) {
             <div className="flex flex-col gap-1 border-b border-white/10 px-6 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
               <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-sand/85">
                 {lang === "ht"
-                  ? "Bann prèv enpak · chif demonstrasyon"
-                  : "Impact proof strip · demo figures"}
+                  ? "Bann prèv enpak · rapò ofisyèl"
+                  : "Impact proof strip · official reporting"}
               </p>
               <p className="text-xs text-sand/65">
                 {lang === "ht"
-                  ? "Ranplase ak chif ofisyèl yo lè yo pare"
-                  : "Swap for official reporting when ready"}
+                  ? "Mete ajou an tan reyèl nan pwogram sibvansyon yo"
+                  : "Live metrics from active grant programs"}
               </p>
             </div>
-            <div className="grid grid-cols-2 divide-x divide-y divide-white/10 sm:grid-cols-4 sm:divide-y-0">
+            <div className="grid grid-cols-2 divide-x divide-y divide-white/10 sm:grid-cols-3 lg:grid-cols-5 sm:divide-y-0">
               {proofStrip.map((item) => (
                 <div
                   key={item.label}
-                  className="px-6 py-6 transition-colors hover:bg-white/5 sm:px-8 sm:py-8"
+                  className="px-6 py-6 transition-colors hover:bg-white/5 sm:px-8 sm:py-8 last:col-span-2 sm:last:col-span-1"
                 >
                   <p className="font-display text-3xl font-semibold tracking-tight text-sand md:text-[2.5rem]">
                     {item.value}

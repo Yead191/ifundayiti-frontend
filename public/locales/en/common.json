@@ -80,11 +80,12 @@
   "ImpactStats": {
     "Eyebrow": "Impact",
     "Title": "A growing record of community support",
-    "Notice": "Figures below are replaceable demo values.",
+    "Notice": "Real-time metrics from active grant programs and community contributions.",
     "Stat1": "Applications received",
     "Stat2": "Grants awarded",
     "Stat3": "Projects supported",
-    "Stat4": "Funds awarded"
+    "Stat4": "Funds awarded",
+    "Stat5": "Grant cycles"
   },
   "FeaturedProjects": {
     "Eyebrow": "Selected work",
@@ -366,6 +367,7 @@
       "Livelihoods": "Livelihoods",
       "Builders": "Builders",
       "Community": "Community",
+      "StatApplications": "Applications received",
       "StatWinners": "Grants awarded",
       "StatProjects": "Projects in view",
       "StatFund": "Put to work",

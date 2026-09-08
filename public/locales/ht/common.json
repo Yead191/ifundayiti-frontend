@@ -80,11 +80,12 @@
   "ImpactStats": {
     "Eyebrow": "Enpak",
     "Title": "Yon dosye sipò kominotè k ap grandi",
-    "Notice": "Chif ki anba yo se valè demonstrasyon ki ka ranplase.",
+    "Notice": "Chif an tan reyèl ki soti nan pwogram sibvansyon ak kontribisyon kominotè yo.",
     "Stat1": "Aplikasyon resevwa",
     "Stat2": "Sibvansyon akòde",
     "Stat3": "Pwojè sipòte",
-    "Stat4": "Fon akòde"
+    "Stat4": "Fon akòde",
+    "Stat5": "Sik sibvansyon"
   },
   "FeaturedProjects": {
     "Eyebrow": "Travay chwazi",
@@ -366,10 +367,11 @@
       "Livelihoods": "Mwayen pou viv",
       "Builders": "Kreyatè",
       "Community": "Kominote",
+      "StatApplications": "Aplikasyon resevwa",
       "StatWinners": "Sibvansyon akòde",
-      "StatProjects": "Pwojès nan view",
-      "StatFund": "Put pou work",
-      "StatCycle": "Gayan / cycle"
+      "StatProjects": "Pwojè sipòte",
+      "StatFund": "Fon akòde",
+      "StatCycle": "Sik sibvansyon"
     },
     "Stats": {
       "Eyebrow": "Dapre chif yo",
