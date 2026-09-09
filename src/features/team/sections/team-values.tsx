@@ -15,7 +15,11 @@ export function TeamValues({ dict }: { dict: any }) {
   const values = [
     { icon: "ShieldCheck", title: dict.Val1Title, description: dict.Val1Desc },
     { icon: "MapPin", title: dict.Val2Title, description: dict.Val2Desc },
-    { icon: "HeartHandshake", title: dict.Val3Title, description: dict.Val3Desc },
+    {
+      icon: "HeartHandshake",
+      title: dict.Val3Title,
+      description: dict.Val3Desc,
+    },
     { icon: "Globe", title: dict.Val4Title, description: dict.Val4Desc },
   ];
 
@@ -31,7 +35,8 @@ export function TeamValues({ dict }: { dict: any }) {
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {values.map((item, index) => {
-            const IconComponent = ICON_MAP[item.icon as keyof typeof ICON_MAP] || ShieldCheck;
+            const IconComponent =
+              ICON_MAP[item.icon as keyof typeof ICON_MAP] || ShieldCheck;
             return (
               <Reveal key={index} delay={index * 80}>
                 <div className="group relative h-full overflow-hidden rounded-2xl border border-hairline bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-forest/30 hover:shadow-lg">

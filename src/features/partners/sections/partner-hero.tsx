@@ -1,29 +1,18 @@
 "use client";
 
 import * as React from "react";
-import {
-  Handshake,
-  Users,
-  Sparkles,
-  Building2,
-  PlusCircle,
-} from "lucide-react";
+import { Handshake, PlusCircle } from "lucide-react";
 
 import { Reveal } from "@/components/ui/reveal";
 import { Button } from "@/components/ui/button";
 import { BecomePartnerModal } from "@/features/partners/components/become-partner-modal";
 
 interface PartnerHeroProps {
-  totalPartners?: number;
   lang?: string;
   dict?: any;
 }
 
-export function PartnerHero({
-  totalPartners = 0,
-  lang = "en",
-  dict,
-}: PartnerHeroProps) {
+export function PartnerHero({ lang = "en", dict }: PartnerHeroProps) {
   const [modalOpen, setModalOpen] = React.useState(false);
 
   const tHero = dict?.PartnersPage?.Hero || {};
@@ -73,38 +62,6 @@ export function PartnerHero({
                 <PlusCircle className="mr-2 h-4 w-4" />
                 {tHero.ApplyButton || "Become a Partner"}
               </Button>
-            </div>
-          </Reveal>
-
-          {/* Quick Metrics Bar */}
-          <Reveal delay={240}>
-            <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-6">
-              <div className="flex flex-col items-center rounded-2xl border border-hairline bg-white/80 px-6 py-4 shadow-2xs backdrop-blur-sm sm:px-8 sm:py-5">
-                <span className="font-display text-2xl font-extrabold text-forest-deep sm:text-3xl">
-                  {totalPartners > 0 ? `${totalPartners}+` : "12+"}
-                </span>
-                <span className="mt-1 text-xs font-semibold text-mist">
-                  {tStats.Partners || "Active Partners"}
-                </span>
-              </div>
-
-              <div className="flex flex-col items-center rounded-2xl border border-hairline bg-white/80 px-6 py-4 shadow-2xs backdrop-blur-sm sm:px-8 sm:py-5">
-                <span className="font-display text-2xl font-extrabold text-forest sm:text-3xl">
-                  10+
-                </span>
-                <span className="mt-1 text-xs font-semibold text-mist">
-                  Departments Reached
-                </span>
-              </div>
-
-              <div className="col-span-2 flex flex-col items-center rounded-2xl border border-hairline bg-white/80 px-6 py-4 shadow-2xs backdrop-blur-sm sm:col-span-1 sm:px-8 sm:py-5">
-                <span className="font-display text-2xl font-extrabold text-forest-deep sm:text-3xl">
-                  100%
-                </span>
-                <span className="mt-1 text-xs font-semibold text-mist">
-                  {tStats.Initiatives || "Grassroots Backed"}
-                </span>
-              </div>
             </div>
           </Reveal>
         </div>

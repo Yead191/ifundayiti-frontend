@@ -5,7 +5,6 @@ import { getDictionary } from "@/lib/dictionaries";
 import { getPartners } from "@/helpers/next-fetch/partnerActions";
 import { PartnerHero } from "@/features/partners/sections/partner-hero";
 import { PartnerGrid } from "@/features/partners/components/partner-grid";
-import { parsePartnerOffers } from "@/features/partners/query";
 import { Handshake } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -49,47 +48,27 @@ export default async function PartnersPage({
     typeof resolvedSearchParams?.page === "string"
       ? parseInt(resolvedSearchParams.page, 10)
       : 1;
-  const searchTerm =
-    typeof resolvedSearchParams?.q === "string" ? resolvedSearchParams.q : "";
-  const offerFilter =
-    typeof resolvedSearchParams?.offer === "string"
-      ? resolvedSearchParams.offer
-      : "all";
 
   const [partnersRes, dict] = await Promise.all([
     getPartners({
       page: isNaN(page) ? 1 : page,
-      limit: 12,
-      searchTerm,
+      limit: 20,
+      sort: "1",
     }),
     getDictionary(lang),
   ]);
 
-  let partners =
+  const partners =
     partnersRes.success && Array.isArray(partnersRes.data)
       ? partnersRes.data
       : [];
-
-  // If offer category filter is selected, filter in memory
-  if (offerFilter && offerFilter !== "all") {
-    partners = partners.filter((p) => {
-      const parsed = parsePartnerOffers(p.offers);
-      return parsed.some(
-        (o) => o.toLowerCase() === offerFilter.toLowerCase()
-      );
-    });
-  }
 
   const pagination = partnersRes.pagination;
 
   return (
     <div className="min-h-screen bg-cream">
       {/* Hero Section */}
-      <PartnerHero
-        totalPartners={pagination?.total ?? partners.length}
-        lang={lang}
-        dict={dict}
-      />
+      <PartnerHero lang={lang} dict={dict} />
 
       {/* Main Partners Explorer */}
       <div className="mx-auto max-w-6xl px-6 pb-24">
@@ -112,7 +91,9 @@ export default async function PartnersPage({
                 Ready to amplify Haitian innovation with us?
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-white/80">
-                Partner with IFundAyiti to co-fund grants, sponsor impactful events, or provide direct mentorship to community founders across Haiti.
+                Partner with IFundAyiti to co-fund grants, sponsor impactful
+                events, or provide direct mentorship to community founders
+                across Haiti.
               </p>
             </div>
             <div className="shrink-0">

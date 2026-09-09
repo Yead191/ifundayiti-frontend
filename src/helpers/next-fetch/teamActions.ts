@@ -6,6 +6,7 @@ export interface TeamStats {
   totalDirectors: number;
   totalMembers: number;
   totalVolunteers: number;
+  totalStaff?: number;
   totalVolunteersPending?: number;
 }
 
@@ -33,6 +34,7 @@ export async function getTeamMembers(params: {
     if (params.category === "directors") dbCategory = "director";
     if (params.category === "members") dbCategory = "member";
     if (params.category === "volunteers") dbCategory = "volunteer";
+    if (params.category === "staff") dbCategory = "staff";
 
     queryParams.append("category", dbCategory);
   }

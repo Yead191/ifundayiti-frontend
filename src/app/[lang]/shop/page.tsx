@@ -288,7 +288,7 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
               ) : (
                 /* 2-Column on Mobile & Tablet, 3-Column on Desktop! */
                 <div className="mt-8 grid grid-cols-2 gap-3.5 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
-                  {products.map((product) => (
+                  {products?.map((product) => (
                     <ProductCard
                       key={product._id}
                       product={product}

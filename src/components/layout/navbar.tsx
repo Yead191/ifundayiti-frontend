@@ -115,8 +115,8 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
       subItems: [
         { label: t.OurImpact || "Our Impact", href: "/impact" },
         { label: t.Projects || "Projects", href: "/projects" },
-        { label: t.Winners || "Winners", href: "/winners" },
         { label: t.Finalists || "Finalists", href: "/finalists" },
+        { label: t.Winners || "Winners", href: "/winners" },
         {
           label: t.SuccessStories || "Success Stories",
           href: "/impact#success-stories",

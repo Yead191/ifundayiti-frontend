@@ -10,14 +10,10 @@ export function FloatingDonationCard() {
   const dict = useTranslation();
   const t = dict.FloatingDonate;
 
-  const trustPoints = [
-    t.Trust1,
-    t.Trust2,
-    t.Trust3,
-  ];
+  const trustPoints = [t.Trust1, t.Trust2, t.Trust3];
 
   return (
-    <Container className="relative z-20 -mt-33 md:-mt-37">
+    <Container className="relative z-20 -mt-20 md:-mt-37">
       <div className="overflow-hidden rounded-[1.75rem] border border-white/70 bg-white shadow-[0_32px_90px_-36px_rgba(11,61,46,0.55)] ring-1 ring-forest/8">
         <div className="grid lg:grid-cols-12">
           <aside className="relative overflow-hidden bg-sand-soft px-7 py-9 md:px-9 md:py-10 lg:col-span-4">

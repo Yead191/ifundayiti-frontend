@@ -15,6 +15,7 @@ export function TeamHero({
 }: {
   stats: {
     totalDirectors: number;
+    totalStaff?: number;
     totalMembers: number;
     totalVolunteers: number;
   };
@@ -27,8 +28,8 @@ export function TeamHero({
       suffix: "",
     },
     {
-      label: dict.StatMembers,
-      value: statsData.totalMembers.toString(),
+      label: dict.StatStaff || "Staff",
+      value: (statsData.totalStaff ?? 0).toString(),
       suffix: "",
     },
     {
@@ -36,7 +37,11 @@ export function TeamHero({
       value: statsData.totalVolunteers.toString(),
       suffix: "+",
     },
-    { label: dict.StatDepartments, value: "10", suffix: "/10" },
+    {
+      label: dict.StatMembers,
+      value: statsData.totalMembers.toString(),
+      suffix: "",
+    },
   ];
   return (
     <section className="relative overflow-hidden bg-linear-to-b from-sand-soft/80 via-cream to-cream pb-16 pt-28 md:pb-24 md:pt-36">

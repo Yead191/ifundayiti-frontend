@@ -71,7 +71,7 @@ export function ProductCard({ product, lang = "en", dict }: ProductCardProps) {
   if (totalStock === 0 && hasPreOrder) {
     stockBadge = {
       text: cardT?.PreOrderBadge || "Pre-Order",
-      bg: "bg-amber-600/10 text-amber-700 border-amber-600/20",
+      bg: "bg-forest text-white border-forest shadow-xs",
     };
   } else if (totalStock === 0 && !hasPreOrder) {
     stockBadge = {

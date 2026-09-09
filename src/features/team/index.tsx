@@ -19,8 +19,9 @@ export default async function TeamPageContent({
   const [
     statsRes,
     directorsRes,
-    membersRes,
+    staffRes,
     volunteersRes,
+    membersRes,
     allMembersRes,
     dict,
   ] = await Promise.all([
@@ -30,22 +31,32 @@ export default async function TeamPageContent({
       searchTerm: searchQuery,
       limit: 20,
     }),
-    getTeamMembers({ category: "members", searchTerm: searchQuery, limit: 20 }),
+    getTeamMembers({
+      category: "staff",
+      searchTerm: searchQuery,
+      limit: 20,
+    }),
     getTeamMembers({
       category: "volunteers",
       searchTerm: searchQuery,
       limit: 20,
     }),
-    getTeamMembers({ searchTerm: searchQuery, limit: 20 }),
+    getTeamMembers({
+      category: "members",
+      searchTerm: searchQuery,
+      limit: 20,
+    }),
+    getTeamMembers({ searchTerm: searchQuery, limit: 50 }),
     getDictionary(lang),
   ]);
 
   const isDirector = (m: any) =>
     m.category === "director" || m.category === "directors";
-  const isCoreMember = (m: any) =>
-    m.category === "member" || m.category === "members";
+  const isStaff = (m: any) => m.category === "staff";
   const isVolunteer = (m: any) =>
     m.category === "volunteer" || m.category === "volunteers";
+  const isCoreMember = (m: any) =>
+    m.category === "member" || m.category === "members";
 
   // Resolve directors strictly from API
   let directors =
@@ -60,15 +71,15 @@ export default async function TeamPageContent({
     directors = allMembersRes.data.filter(isDirector);
   }
 
-  // Resolve core members strictly from API
-  let coreMembers =
-    membersRes.success && Array.isArray(membersRes.data) ? membersRes.data : [];
+  // Resolve staff strictly from API
+  let staff =
+    staffRes.success && Array.isArray(staffRes.data) ? staffRes.data : [];
   if (
-    coreMembers.length === 0 &&
+    staff.length === 0 &&
     allMembersRes.success &&
     Array.isArray(allMembersRes.data)
   ) {
-    coreMembers = allMembersRes.data.filter(isCoreMember);
+    staff = allMembersRes.data.filter(isStaff);
   }
 
   // Resolve volunteers strictly from API
@@ -84,19 +95,34 @@ export default async function TeamPageContent({
     volunteers = allMembersRes.data.filter(isVolunteer);
   }
 
+  // Resolve core members strictly from API
+  let coreMembers =
+    membersRes.success && Array.isArray(membersRes.data) ? membersRes.data : [];
+  if (
+    coreMembers.length === 0 &&
+    allMembersRes.success &&
+    Array.isArray(allMembersRes.data)
+  ) {
+    coreMembers = allMembersRes.data.filter(isCoreMember);
+  }
+
   const statsData = {
     totalDirectors:
       statsRes.success && statsRes.data?.totalDirectors !== undefined
         ? statsRes.data.totalDirectors
         : directors.length,
-    totalMembers:
-      statsRes.success && statsRes.data?.totalMembers !== undefined
-        ? statsRes.data.totalMembers
-        : coreMembers.length,
+    totalStaff:
+      statsRes.success && statsRes.data?.totalStaff !== undefined
+        ? statsRes.data.totalStaff
+        : staff.length,
     totalVolunteers:
       statsRes.success && statsRes.data?.totalVolunteers !== undefined
         ? statsRes.data.totalVolunteers
         : volunteers.length,
+    totalMembers:
+      statsRes.success && statsRes.data?.totalMembers !== undefined
+        ? statsRes.data.totalMembers
+        : coreMembers.length,
   };
 
   // If search query is present, apply filter on members
@@ -112,8 +138,9 @@ export default async function TeamPageContent({
         m.focusAreas.some((f: string) => f.toLowerCase().includes(q)));
 
     directors = directors.filter(filterFn);
-    coreMembers = coreMembers.filter(filterFn);
+    staff = staff.filter(filterFn);
     volunteers = volunteers.filter(filterFn);
+    coreMembers = coreMembers.filter(filterFn);
   }
 
   return (
@@ -122,8 +149,9 @@ export default async function TeamPageContent({
       <TeamValues dict={dict.TeamPage.Values} />
       <TeamSections
         directors={directors}
-        coreMembers={coreMembers}
+        staff={staff}
         volunteers={volunteers}
+        coreMembers={coreMembers}
         stats={statsData}
         initialSearchQuery={searchQuery}
         lang={lang}
