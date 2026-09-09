@@ -26,6 +26,10 @@ const nextConfig: NextConfig = {
     return [
       { source: "/:lang/calendar", destination: "/:lang/events" },
       { source: "/calendar", destination: "/events" },
+      { source: "/:lang/login", destination: "/:lang/auth/login" },
+      { source: "/login", destination: "/en/auth/login" },
+      { source: "/:lang/join", destination: "/:lang/auth/join" },
+      { source: "/join", destination: "/en/auth/join" },
     ];
   },
   async redirects() {
