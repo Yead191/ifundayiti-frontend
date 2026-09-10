@@ -1845,5 +1845,44 @@
       "Body": "Pa gen okenn foto pibliye ki koresponn ak rechèch ou an oswa kategori filtre a.",
       "ResetBtn": "Wè tout foto yo"
     }
+  },
+  "FaqPage": {
+    "Hero": {
+      "Eyebrow": "Èd & Resous",
+      "Title": "Kesyon Yo Poze Souvan",
+      "TitlePrefix": "Kesyon Ou Yo, ",
+      "TitleHighlight": "Reponn Ak Klète.",
+      "Subtitle": "Jwenn repons imedyat sou sibvansyon kominotè yo, sik aplikasyon, donasyon, kòmand nan boutik la, ak pwogram IFundAyiti."
+    },
+    "Search": {
+      "Placeholder": "Chèche kesyon, sijè, oswa repons...",
+      "ResultsCount": "{count} kesyon yo jwenn",
+      "ResultsCountSingle": "1 kesyon yo jwenn",
+      "Clear": "Efase Rechèch"
+    },
+    "Categories": {
+      "All": "Tout Kesyon Yo"
+    },
+    "Accordion": {
+      "QuestionsCount": "kesyon",
+      "QuestionCountSingle": "kesyon"
+    },
+    "Empty": {
+      "Title": "Nou pa jwenn okenn kesyon",
+      "Body": "Nou pa jwenn okenn kesyon ki koresponn ak \"{searchTerm}\". Eseye chèche lòt mo kle oswa gade tout kategori yo.",
+      "ClearBtn": "Wè Tout Kesyon Yo"
+    },
+    "NoFaqs": {
+      "Title": "Pa gen FAQ ki disponib",
+      "Body": "Ekip nou an ap mete lis kesyon ak repons yo ajou kounye a. Tanpri retounen talè oswa kontakte nou dirèkteman."
+    },
+    "Cta": {
+      "Eyebrow": "Ou Bezwen Plis Èd?",
+      "Title": "Ou Gen Lòt Kesyon Toujou?",
+      "Subtitle": "Ou pa jwenn repons w ap chèche a? Ekip sipò kominotè nou an ak responsab sou teren yo la pou ede w.",
+      "ContactBtn": "Kontakte Sipò",
+      "TrackBtn": "Suiv Aplikasyon Ou",
+      "EmailUs": "Ekri nou nan"
+    }
   }
 }

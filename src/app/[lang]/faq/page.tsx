@@ -1,37 +1,53 @@
 import type { Metadata } from "next";
-import { PageHero } from "@/components/shared/page-hero";
-import { Container } from "@/components/shared/container";
-import { FAQBlock } from "@/components/faq/faq-block";
-import { FAQ_GROUPS } from "@/data/faq";
+import { getFaqs } from "@/helpers/next-fetch/faqActions";
+import { getDictionary } from "@/lib/dictionaries";
 import { buildMetadata } from "@/lib/seo";
+import { FAQ_GROUPS } from "@/data/faq";
+import type { IFAQ } from "@/types";
+import { FaqShowcase } from "@/features/faq/components/FaqShowcase";
 
-export const metadata: Metadata = buildMetadata({
-  title: "FAQ",
-  description:
-    "Answers about IFundAyiti grants, applications, donations, and the shop.",
-  path: "/faq",
-});
+interface FaqPageProps {
+  params: Promise<{ lang: string }>;
+}
 
-export default function FaqPage() {
+export async function generateMetadata({
+  params,
+}: FaqPageProps): Promise<Metadata> {
+  const { lang } = await params;
+  const dict = await getDictionary(lang);
+  const t = dict?.FaqPage;
+
+  return buildMetadata({
+    title: t?.Hero?.Title || "Frequently Asked Questions",
+    description:
+      t?.Hero?.Subtitle ||
+      "Answers about IFundAyiti grants, applications, donations, and the community shop.",
+    path: `/${lang}/faq`,
+  });
+}
+
+export default async function FaqPage({ params }: FaqPageProps) {
+  const { lang } = await params;
+
+  const [dict, faqsRes] = await Promise.all([
+    getDictionary(lang),
+    getFaqs({ limit: 100 }),
+  ]);
+
+  // Use API categories if available; fallback to default FAQ_GROUPS if API data is not yet seeded
+  const apiCategories = faqsRes?.data || [];
+  const categories: IFAQ[] =
+    apiCategories.length > 0
+      ? apiCategories
+      : FAQ_GROUPS.map((group, index) => ({
+          _id: group.id,
+          title: group.title,
+          items: group.items,
+          isActive: true,
+          order: index,
+        }));
+
   return (
-    <>
-      <PageHero
-        eyebrow="FAQ"
-        title="Questions, answered clearly."
-        subtitle="Browse by topic. If you need something else, the contact page is open."
-      />
-      <section className="py-16">
-        <Container className="max-w-3xl space-y-12">
-          {FAQ_GROUPS.map((group) => (
-            <div key={group.id} id={group.id}>
-              <h2 className="mb-4 font-display text-2xl text-forest-deep">
-                {group.title}
-              </h2>
-              <FAQBlock items={group.items} />
-            </div>
-          ))}
-        </Container>
-      </section>
-    </>
+    <FaqShowcase categories={categories} lang={lang} dict={dict} />
   );
 }

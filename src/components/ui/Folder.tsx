@@ -184,7 +184,7 @@ export const Folder: React.FC<FolderProps> = ({
       {/* Details Container */}
       <div className="mt-2 flex flex-1 flex-col items-center justify-between">
         {/* Folder Name */}
-        <h3 className="font-display text-lg font-bold text-forest-deep transition-colors group-hover:text-forest line-clamp-1 w-full">
+        <h3 className="font-display text-sm md:text-lg font-bold text-forest-deep transition-colors group-hover:text-forest line-clamp-1 w-full">
           {name}
         </h3>
 

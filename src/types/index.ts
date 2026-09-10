@@ -547,4 +547,41 @@ export interface PartnerApplicationPayload {
   contactPhone?: string;
   image: File;
 }
+/* ------------------------------------------------------------------
+ * FAQ — IFUNDAYITI CATEGORIZED FAQ SYSTEM
+ * ------------------------------------------------------------------ */
+export interface IFAQItem {
+  question: string;
+  answer: string;
+}
 
+export interface IFAQ {
+  _id: string;
+  title: string;
+  items: IFAQItem[];
+  isActive: boolean;
+  order: number;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface FAQListParams {
+  searchTerm?: string;
+  isActive?: boolean;
+  page?: number;
+  limit?: number;
+  sort?: string;
+}
+
+export interface FAQResponse {
+  statusCode: number;
+  success: boolean;
+  message: string;
+  data: IFAQ[];
+  pagination?: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPage: number;
+  };
+}

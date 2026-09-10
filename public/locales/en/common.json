@@ -1804,5 +1804,44 @@
       "AuthRequiredTitle": "Sign In Required",
       "AuthRequiredMessage": "Please sign in or create an account to submit a partnership application."
     }
+  },
+  "FaqPage": {
+    "Hero": {
+      "Eyebrow": "Help & Resources",
+      "Title": "Frequently Asked Questions",
+      "TitlePrefix": "Questions, ",
+      "TitleHighlight": "Answered Clearly.",
+      "Subtitle": "Find immediate answers about community grants, application cycles, donations, store orders, and IFundAyiti programs."
+    },
+    "Search": {
+      "Placeholder": "Search questions, topics, or answers...",
+      "ResultsCount": "{count} questions found",
+      "ResultsCountSingle": "1 question found",
+      "Clear": "Clear Search"
+    },
+    "Categories": {
+      "All": "All Questions"
+    },
+    "Accordion": {
+      "QuestionsCount": "questions",
+      "QuestionCountSingle": "question"
+    },
+    "Empty": {
+      "Title": "No questions found",
+      "Body": "We couldn't find any questions matching \"{searchTerm}\". Try searching for different keywords or browse all categories.",
+      "ClearBtn": "View All Questions"
+    },
+    "NoFaqs": {
+      "Title": "No FAQ Available",
+      "Body": "Our team is currently updating the FAQ repository. Please check back soon or reach out directly."
+    },
+    "Cta": {
+      "Eyebrow": "Need More Help?",
+      "Title": "Still Have Questions?",
+      "Subtitle": "Can't find the answer you're looking for? Our community support team and field officers are here to help.",
+      "ContactBtn": "Contact Support",
+      "TrackBtn": "Track Application",
+      "EmailUs": "Email us at"
+    }
   }
 }
