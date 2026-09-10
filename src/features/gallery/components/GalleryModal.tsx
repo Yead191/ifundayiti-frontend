@@ -20,6 +20,7 @@ import {
   Tag as TagIcon,
 } from "lucide-react";
 import type { Item } from "./Masonry";
+import Image from "next/image";
 
 interface GalleryModalProps {
   item: Item | null;
@@ -311,10 +312,12 @@ export function GalleryModal({
           }}
           onDoubleClick={handleToggleZoom}
         >
-          <img
+          <Image
             src={item.img}
             alt={item.title || "Community photo"}
             draggable={false}
+            width={1000}
+            height={1000}
             className="max-h-[92vh] max-w-[96vw] w-auto h-auto object-contain select-none drop-shadow-2xl"
           />
         </div>
