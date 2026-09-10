@@ -1,11 +1,16 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
-import Image from "next/image";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import {
   X,
   ChevronLeft,
   ChevronRight,
+  ZoomIn,
+  ZoomOut,
+  RotateCcw,
+  Maximize2,
+  Minimize2,
+  Info,
   MapPin,
   Calendar,
   Star,
@@ -34,39 +39,105 @@ export function GalleryModal({
   dict,
 }: GalleryModalProps) {
   const [copied, setCopied] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [showDetails, setShowDetails] = useState(true);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
   const t = dict?.GalleryPage?.Modal;
 
   const currentIndex = items.findIndex((i) => i.id === item?.id);
 
+  // Reset zoom & pan when image changes
+  const resetZoom = useCallback(() => {
+    setZoom(1);
+    setPosition({ x: 0, y: 0 });
+  }, []);
+
   const handlePrev = useCallback(() => {
+    resetZoom();
     if (currentIndex > 0) {
       onSelect(items[currentIndex - 1]);
     } else {
       onSelect(items[items.length - 1]);
     }
-  }, [currentIndex, items, onSelect]);
+  }, [currentIndex, items, onSelect, resetZoom]);
 
   const handleNext = useCallback(() => {
+    resetZoom();
     if (currentIndex < items.length - 1) {
       onSelect(items[currentIndex + 1]);
     } else {
       onSelect(items[0]);
     }
-  }, [currentIndex, items, onSelect]);
+  }, [currentIndex, items, onSelect, resetZoom]);
 
-  // Keyboard navigation (Escape, ArrowLeft, ArrowRight)
+  const handleZoomIn = () => {
+    setZoom((prev) => Math.min(prev + 0.5, 3.5));
+  };
+
+  const handleZoomOut = () => {
+    setZoom((prev) => {
+      const next = Math.max(prev - 0.5, 1);
+      if (next === 1) setPosition({ x: 0, y: 0 });
+      return next;
+    });
+  };
+
+  const handleToggleZoom = () => {
+    if (zoom > 1) {
+      resetZoom();
+    } else {
+      setZoom(2);
+    }
+  };
+
+  const handleToggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      containerRef.current?.requestFullscreen?.();
+      setIsFullscreen(true);
+    } else {
+      document.exitFullscreen?.();
+      setIsFullscreen(false);
+    }
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
+  // Keyboard navigation
   useEffect(() => {
     if (!item) return;
 
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        if (zoom > 1) {
+          resetZoom();
+        } else {
+          onClose();
+        }
+      }
       if (e.key === "ArrowLeft") handlePrev();
       if (e.key === "ArrowRight") handleNext();
+      if (e.key === "+" || e.key === "=") handleZoomIn();
+      if (e.key === "-") handleZoomOut();
+      if (e.key === "0") resetZoom();
+      if (e.key === "i" || e.key === "I") setShowDetails((prev) => !prev);
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [item, onClose, handlePrev, handleNext]);
+  }, [item, onClose, handlePrev, handleNext, zoom, resetZoom]);
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
@@ -80,6 +151,11 @@ export function GalleryModal({
     };
   }, [item]);
 
+  // Reset zoom on unmount or item change
+  useEffect(() => {
+    resetZoom();
+  }, [item?.id, resetZoom]);
+
   if (!item) return null;
 
   const handleShare = () => {
@@ -88,6 +164,25 @@ export function GalleryModal({
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     }
+  };
+
+  // Mouse pan handlers when zoomed
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (zoom <= 1) return;
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!isDragging || zoom <= 1) return;
+    setPosition({
+      x: e.clientX - dragStart.x,
+      y: e.clientY - dragStart.y,
+    });
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
   };
 
   const raw = item.rawItem || {};
@@ -104,170 +199,252 @@ export function GalleryModal({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 md:p-8 bg-black/85 backdrop-blur-xl transition-opacity animate-in fade-in duration-200"
-      onClick={onClose}
+      ref={containerRef}
+      className="fixed inset-0 z-50 flex h-screen w-screen flex-col bg-black select-none animate-in fade-in duration-200"
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
       role="dialog"
       aria-modal="true"
     >
-      {/* Floating Close Button Top Right */}
-      <button
-        type="button"
-        onClick={onClose}
-        aria-label={t?.Close || "Close preview"}
-        className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-white/10 text-white/90 shadow-lg backdrop-blur-md transition-transform duration-200 hover:scale-110 hover:bg-white/25 hover:text-white"
-      >
-        <X className="h-5 w-5" />
-      </button>
+      {/* Top Controls Bar (Facebook Style) */}
+      <div className="absolute top-0 inset-x-0 z-40 flex items-center justify-between p-4 sm:p-5 bg-linear-to-b from-black/80 via-black/40 to-transparent pointer-events-auto">
+        {/* Left Side: Close Button & Counter */}
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label={t?.Close || "Close preview"}
+            className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer backdrop-blur-md"
+          >
+            <X className="h-5 w-5" />
+          </button>
 
-      {/* Modal Dialog Card */}
-      <div
-        className="relative flex flex-col lg:flex-row w-full max-w-6xl max-h-[90vh] overflow-hidden rounded-4xl bg-white shadow-2xl border border-white/20"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Left Side: High-Resolution Photo Viewer */}
-        <div className="relative flex-1 flex items-center justify-center bg-neutral-950 p-4 sm:p-8 min-h-90 lg:min-h-145 overflow-hidden group">
-          <div className="relative w-full h-full max-h-[70vh] flex items-center justify-center">
-            <img
-              src={item.img}
-              alt={item.title || "Community photo"}
-              className="max-h-[65vh] w-auto max-w-full rounded-2xl object-contain shadow-2xl transition-all duration-300 select-none"
-            />
-          </div>
-
-          {/* Navigation Arrow: Prev */}
           {items.length > 1 && (
-            <button
-              type="button"
-              onClick={handlePrev}
-              aria-label="Previous image"
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black/50 text-white shadow-md backdrop-blur-md transition-all duration-200 hover:scale-110 hover:bg-black/80"
-            >
-              <ChevronLeft className="h-6 w-6" />
-            </button>
+            <span className="text-xs sm:text-sm font-semibold text-white/80 tracking-wide">
+              {currentIndex + 1} / {items.length}
+            </span>
           )}
-
-          {/* Navigation Arrow: Next */}
-          {items.length > 1 && (
-            <button
-              type="button"
-              onClick={handleNext}
-              aria-label="Next image"
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-20 flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-black/50 text-white shadow-md backdrop-blur-md transition-all duration-200 hover:scale-110 hover:bg-black/80"
-            >
-              <ChevronRight className="h-6 w-6" />
-            </button>
-          )}
-
-          {/* Bottom Left Toolbar: Open Original Photo & Photo Counter */}
-          <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 z-20 flex items-center gap-2">
-            <a
-              href={item.img}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center gap-1.5 rounded-xl border border-white/20 bg-black/60 px-3.5 py-1.5 text-xs font-semibold text-white/95 backdrop-blur-md transition-colors hover:bg-black/90 cursor-pointer"
-            >
-              <ExternalLink className="h-3.5 w-3.5" />
-              <span>{t?.ViewOriginal || "Full Resolution"}</span>
-            </a>
-
-            {items.length > 1 && (
-              <span className="rounded-xl border border-white/10 bg-black/40 px-3 py-1.5 text-xs font-medium text-white/80 backdrop-blur-md">
-                {currentIndex + 1} / {items.length}
-              </span>
-            )}
-          </div>
         </div>
 
-        {/* Right Side: Metadata, Story & Community Context Panel */}
-        <div className="w-full lg:w-105 flex flex-col justify-between p-6 sm:p-8 bg-white border-t lg:border-t-0 lg:border-l border-hairline overflow-y-auto">
-          <div className="space-y-5">
-            {/* Top Badges Row */}
-            <div className="flex flex-wrap items-center gap-2">
-              {item.category && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-forest/10 border border-forest/20 px-3 py-1 text-xs font-bold text-forest">
-                  <TagIcon className="h-3 w-3" />
-                  <span>{item.category}</span>
-                </span>
-              )}
+        {/* Right Side: Zoom, Fullscreen, Info Toggle & Share */}
+        <div className="flex items-center gap-2">
+          {/* Zoom In */}
+          <button
+            type="button"
+            onClick={handleZoomIn}
+            disabled={zoom >= 3.5}
+            title="Zoom In (+)"
+            className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer backdrop-blur-md disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <ZoomIn className="h-4 w-4 sm:h-5 sm:w-5" />
+          </button>
 
-              {item.featured && (
-                <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/60 bg-amber-500/15 px-3 py-1 text-xs font-bold text-amber-800">
-                  <Star className="h-3.5 w-3.5 fill-amber-500 text-amber-500" />
-                  <span>{t?.Spotlight || "Spotlight"}</span>
-                </span>
-              )}
-            </div>
+          {/* Zoom Out */}
+          <button
+            type="button"
+            onClick={handleZoomOut}
+            disabled={zoom <= 1}
+            title="Zoom Out (-)"
+            className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer backdrop-blur-md disabled:opacity-40 disabled:cursor-not-allowed"
+          >
+            <ZoomOut className="h-4 w-4 sm:h-5 sm:w-5" />
+          </button>
 
-            {/* Photo Title */}
-            <h3 className="font-display text-2xl font-bold leading-snug text-forest-deep">
-              {item.title || "Community Field Capture"}
-            </h3>
+          {/* Reset Zoom indicator (shows when zoomed) */}
+          {zoom > 1 && (
+            <button
+              type="button"
+              onClick={resetZoom}
+              title="Reset Zoom (0)"
+              className="flex h-10 px-3 items-center gap-1.5 rounded-full bg-forest/80 text-white hover:bg-forest transition-all cursor-pointer backdrop-blur-md text-xs font-bold"
+            >
+              <RotateCcw className="h-3.5 w-3.5" />
+              <span>{Math.round(zoom * 100)}%</span>
+            </button>
+          )}
 
-            {/* Metadata Rows: Location & Date */}
-            <div className="space-y-2 text-xs text-mist border-y border-hairline/60 py-3">
-              {item.location && (
-                <div className="flex items-center gap-2 text-mist">
-                  <MapPin className="h-4 w-4 text-forest shrink-0" />
-                  <span className="font-semibold text-forest-deep">
-                    {item.location}
-                  </span>
+          {/* Toggle Details Panel */}
+          <button
+            type="button"
+            onClick={() => setShowDetails((prev) => !prev)}
+            title={showDetails ? "Hide Details" : "Show Details"}
+            className={`flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full transition-all cursor-pointer backdrop-blur-md ${
+              showDetails
+                ? "bg-forest text-white shadow-sm"
+                : "bg-white/10 text-white hover:bg-white/20"
+            }`}
+          >
+            <Info className="h-4 w-4 sm:h-5 sm:w-5" />
+          </button>
+
+          {/* Fullscreen Toggle */}
+          <button
+            type="button"
+            onClick={handleToggleFullscreen}
+            title="Toggle Fullscreen"
+            className="hidden sm:flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer backdrop-blur-md"
+          >
+            {isFullscreen ? (
+              <Minimize2 className="h-4 w-4 sm:h-5 sm:w-5" />
+            ) : (
+              <Maximize2 className="h-4 w-4 sm:h-5 sm:w-5" />
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Main Fullscreen Viewer Canvas */}
+      <div
+        className="relative flex-1 w-full h-full flex items-center justify-center overflow-hidden cursor-default"
+        onMouseDown={handleMouseDown}
+      >
+        <div
+          className="relative flex items-center justify-center w-full h-full"
+          style={{
+            transform: `scale(${zoom}) translate(${position.x / zoom}px, ${
+              position.y / zoom
+            }px)`,
+            transition: isDragging
+              ? "none"
+              : "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
+            cursor: zoom > 1 ? (isDragging ? "grabbing" : "grab") : "zoom-in",
+          }}
+          onDoubleClick={handleToggleZoom}
+        >
+          <img
+            src={item.img}
+            alt={item.title || "Community photo"}
+            draggable={false}
+            className="max-h-[92vh] max-w-[96vw] w-auto h-auto object-contain select-none drop-shadow-2xl"
+          />
+        </div>
+
+        {/* Navigation Arrow: Prev */}
+        {items.length > 1 && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handlePrev();
+            }}
+            aria-label="Previous photo"
+            className="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-40 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-black/50 text-white hover:bg-white/25 hover:scale-110 border border-white/10 backdrop-blur-md transition-all cursor-pointer shadow-lg"
+          >
+            <ChevronLeft className="h-6 w-6 sm:h-7 sm:w-7" />
+          </button>
+        )}
+
+        {/* Navigation Arrow: Next */}
+        {items.length > 1 && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleNext();
+            }}
+            aria-label="Next photo"
+            className="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-40 flex h-11 w-11 sm:h-14 sm:w-14 items-center justify-center rounded-full bg-black/50 text-white hover:bg-white/25 hover:scale-110 border border-white/10 backdrop-blur-md transition-all cursor-pointer shadow-lg"
+          >
+            <ChevronRight className="h-6 w-6 sm:h-7 sm:w-7" />
+          </button>
+        )}
+      </div>
+
+      {/* Floating Bottom Details Overlay (Facebook Style) */}
+      <div
+        className={`absolute bottom-0 inset-x-0 z-30 transition-all duration-300 pointer-events-auto ${
+          showDetails
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-6 pointer-events-none"
+        }`}
+      >
+        <div className="bg-linear-to-t from-black/95 via-black/75 to-transparent pt-16 pb-6 px-6 sm:px-12">
+          <div className="mx-auto max-w-6xl">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+              {/* Left Column: Title, Metadata, Description */}
+              <div className="space-y-2 max-w-3xl">
+                {/* Badges Row */}
+                <div className="flex flex-wrap items-center gap-2">
+                  {item.category && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-white/15 border border-white/20 px-3 py-0.5 text-xs font-semibold text-white/95 backdrop-blur-md">
+                      <TagIcon className="h-3 w-3 text-sand" />
+                      <span>{item.category}</span>
+                    </span>
+                  )}
+
+                  {item.featured && (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/20 border border-amber-400/40 px-3 py-0.5 text-xs font-semibold text-amber-300">
+                      <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
+                      <span>{t?.Spotlight || "Spotlight"}</span>
+                    </span>
+                  )}
+
+                  {item.location && (
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-white/80">
+                      <MapPin className="h-3.5 w-3.5 text-emerald-400" />
+                      <span>{item.location}</span>
+                    </span>
+                  )}
+
+                  {formattedDate && (
+                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-white/60">
+                      <Calendar className="h-3.5 w-3.5 text-white/60" />
+                      <span>{formattedDate}</span>
+                    </span>
+                  )}
                 </div>
-              )}
 
-              {formattedDate && (
-                <div className="flex items-center gap-2 text-mist">
-                  <Calendar className="h-4 w-4 text-forest shrink-0" />
-                  <span>
-                    {t?.CapturedOn || "Captured on"} {formattedDate}
-                  </span>
-                </div>
-              )}
-            </div>
+                {/* Photo Title */}
+                <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight drop-shadow-md">
+                  {item.title || "Community Field Capture"}
+                </h2>
 
-            {/* Field Note / Story Context Box */}
-            <div className="rounded-2xl border border-hairline bg-sand-soft/50 p-5 text-xs sm:text-sm">
-              <div className="mb-2 text-[11px] font-bold uppercase tracking-wider text-forest">
-                {t?.StoryNote || "Context & Field Note"}
+                {/* Description / Field Note */}
+                {raw.description && (
+                  <p className="text-xs sm:text-sm text-white/80 line-clamp-2 sm:line-clamp-3 leading-relaxed max-w-2xl drop-shadow-sm">
+                    {raw.description}
+                  </p>
+                )}
               </div>
-              <p className="leading-relaxed text-forest-deep/90 whitespace-pre-line">
-                {raw.description ||
-                  "A verified field photograph documenting local micro-grant milestones, community members, and grassroots progress supported by IFundAyiti."}
-              </p>
+
+              {/* Right Column: Actions (Original Resolution & Share) */}
+              <div className="flex items-center gap-2.5 shrink-0 self-start sm:self-end">
+                <a
+                  href={item.img}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center gap-1.5 rounded-full bg-white/15 border border-white/20 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-white/25 transition-colors backdrop-blur-md"
+                >
+                  <ExternalLink className="h-3.5 w-3.5" />
+                  <span>{t?.ViewOriginal || "Full Resolution"}</span>
+                </a>
+
+                <button
+                  type="button"
+                  onClick={handleShare}
+                  className="flex items-center gap-1.5 rounded-full bg-white/15 border border-white/20 px-3.5 py-1.5 text-xs font-semibold text-white hover:bg-white/25 transition-colors backdrop-blur-md cursor-pointer"
+                >
+                  {copied ? (
+                    <>
+                      <Check className="h-3.5 w-3.5 text-emerald-400" />
+                      <span className="text-emerald-400">
+                        {t?.Copied || "Link Copied!"}
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <Share2 className="h-3.5 w-3.5" />
+                      <span>{t?.Share || "Share"}</span>
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
-          </div>
-
-          {/* Bottom Action Footer */}
-          <div className="mt-8 pt-5 border-t border-hairline flex items-center justify-between gap-3">
-            <button
-              type="button"
-              onClick={handleShare}
-              className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-hairline bg-white py-2.5 px-4 text-xs font-bold text-forest-deep shadow-2xs hover:bg-sand-soft hover:border-forest/30 transition-all cursor-pointer"
-            >
-              {copied ? (
-                <>
-                  <Check className="h-4 w-4 text-forest" />
-                  <span className="text-forest">
-                    {t?.Copied || "Link Copied!"}
-                  </span>
-                </>
-              ) : (
-                <>
-                  <Share2 className="h-4 w-4 text-mist" />
-                  <span>{t?.Share || "Share"}</span>
-                </>
-              )}
-            </button>
-
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-xl bg-forest px-5 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-forest-bright transition-colors cursor-pointer"
-            >
-              {t?.Close || "Close"}
-            </button>
           </div>
         </div>
       </div>
     </div>
   );
 }
+
+export default GalleryModal;
