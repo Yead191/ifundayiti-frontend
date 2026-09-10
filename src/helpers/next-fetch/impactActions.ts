@@ -17,7 +17,7 @@ export interface ImpactStatsData {
 export async function getImpactStats() {
   try {
     const res = await nextFetch<ImpactStatsData>("/dashboard/impact-stats", {
-      cache: "default",
+      cache: "reload",
       next: { revalidate: 60 * 60 },
     });
     return res;

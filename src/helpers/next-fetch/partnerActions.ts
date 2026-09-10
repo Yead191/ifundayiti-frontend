@@ -30,7 +30,8 @@ export async function getPartners(params: PartnerListParams = {}) {
 
   const result = await nextFetch<Partner[]>(endpoint, {
     method: "GET",
-    next: { revalidate: 60 },
+    cache: "force-cache",
+    next: { revalidate: 60 * 60 * 12 },
     tags: ["partners"],
   });
 
@@ -43,7 +44,8 @@ export async function getPartners(params: PartnerListParams = {}) {
 export async function getPartnerLogos() {
   const result = await nextFetch<PartnerLogo[]>("/partner/logos", {
     method: "GET",
-    next: { revalidate: 120 },
+    cache: "force-cache",
+    next: { revalidate: 60 * 60 * 12 },
     tags: ["partner-logos"],
   });
 
@@ -56,7 +58,8 @@ export async function getPartnerLogos() {
 export async function getPartnerById(id: string) {
   const result = await nextFetch<Partner>(`/partner/${id}`, {
     method: "GET",
-    next: { revalidate: 60 },
+    cache: "force-cache",
+    next: { revalidate: 60 * 60 * 12 },
     tags: ["partners", `partner-${id}`],
   });
 

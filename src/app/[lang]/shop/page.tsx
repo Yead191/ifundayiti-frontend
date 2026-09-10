@@ -24,6 +24,11 @@ import {
 import { ProductCard } from "@/features/shop/components/ProductCard";
 import { ShopSidebar } from "@/features/shop/components/ShopSidebar";
 import { ShopTopToolbar } from "@/features/shop/components/ShopTopToolbar";
+import {
+  ProductGridSkeleton,
+  ShopSidebarSkeleton,
+  ShopTopToolbarSkeleton,
+} from "@/features/shop/components/ShopSkeleton";
 import { getImageUrl } from "@/lib/getImageUrl";
 import { formatPrice } from "@/lib/utils";
 
@@ -247,7 +252,7 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
         <Container>
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
             {/* LEFT SIDEBAR: Category selection, gender, in-stock */}
-            <Suspense fallback={null}>
+            <Suspense fallback={<ShopSidebarSkeleton />}>
               <ShopSidebar
                 categories={categories}
                 totalResults={pagination.total}
@@ -259,7 +264,7 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
             {/* RIGHT CONTENT AREA: Top Toolbar + Product Grid */}
             <div className="lg:col-span-9">
               {/* Top search & sort toolbar */}
-              <Suspense fallback={null}>
+              <Suspense fallback={<ShopTopToolbarSkeleton />}>
                 <ShopTopToolbar
                   totalResults={pagination.total}
                   lang={lang}
@@ -267,37 +272,39 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
                 />
               </Suspense>
 
-              {/* Product Grid or Empty State */}
-              {products.length === 0 ? (
-                <div className="mt-12 rounded-3xl border border-dashed border-hairline bg-sand-soft/30 px-8 py-20 text-center">
-                  <p className="font-display text-2xl text-forest-deep font-semibold">
-                    {t?.Empty?.Title || "No products found"}
-                  </p>
-                  <p className="mx-auto mt-2 max-w-md text-sm text-mist leading-relaxed">
-                    {t?.Empty?.Body ||
-                      "Try changing your search term, adjusting filters, or switching categories to explore the collection."}
-                  </p>
-                  <Link
-                    href={`/${lang}/shop`}
-                    className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-forest px-5 py-2.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-forest/90"
-                  >
-                    <RotateCcw className="h-3.5 w-3.5" />
-                    <span>{t?.Empty?.ResetBtn || "Explore All Products"}</span>
-                  </Link>
-                </div>
-              ) : (
-                /* 2-Column on Mobile & Tablet, 3-Column on Desktop! */
-                <div className="mt-8 grid grid-cols-2 gap-3.5 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
-                  {products?.map((product) => (
-                    <ProductCard
-                      key={product._id}
-                      product={product}
-                      lang={lang}
-                      dict={dict}
-                    />
-                  ))}
-                </div>
-              )}
+              {/* Product Grid or Empty State with Skeleton Fallback */}
+              <Suspense fallback={<ProductGridSkeleton count={6} />}>
+                {products.length === 0 ? (
+                  <div className="mt-12 rounded-3xl border border-dashed border-hairline bg-sand-soft/30 px-8 py-20 text-center">
+                    <p className="font-display text-2xl text-forest-deep font-semibold">
+                      {t?.Empty?.Title || "No products found"}
+                    </p>
+                    <p className="mx-auto mt-2 max-w-md text-sm text-mist leading-relaxed">
+                      {t?.Empty?.Body ||
+                        "Try changing your search term, adjusting filters, or switching categories to explore the collection."}
+                    </p>
+                    <Link
+                      href={`/${lang}/shop`}
+                      className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-forest px-5 py-2.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-forest/90"
+                    >
+                      <RotateCcw className="h-3.5 w-3.5" />
+                      <span>{t?.Empty?.ResetBtn || "Explore All Products"}</span>
+                    </Link>
+                  </div>
+                ) : (
+                  /* 2-Column on Mobile & Tablet, 3-Column on Desktop! */
+                  <div className="mt-8 grid grid-cols-2 gap-3.5 sm:gap-5 md:grid-cols-2 lg:grid-cols-3">
+                    {products?.map((product) => (
+                      <ProductCard
+                        key={product._id}
+                        product={product}
+                        lang={lang}
+                        dict={dict}
+                      />
+                    ))}
+                  </div>
+                )}
+              </Suspense>
 
               {/* PAGINATION CONTROLS */}
               {pagination.totalPage > 1 && (

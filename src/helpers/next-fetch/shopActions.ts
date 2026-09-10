@@ -88,12 +88,15 @@ export interface VariantAvailabilityResponse {
  */
 export async function getProductCategories(): Promise<ProductCategoriesResponse> {
   try {
-    const res = await nextFetch<ProductCategory[]>("/product-category?limit=100", {
-      next: {
-        revalidate: 60,
-        tags: ["product-category"],
+    const res = await nextFetch<ProductCategory[]>(
+      "/product-category?limit=100",
+      {
+        next: {
+          revalidate: 60,
+          tags: ["product-category"],
+        },
       },
-    });
+    );
 
     if (res.success && Array.isArray(res.data)) {
       return {
@@ -134,7 +137,8 @@ export async function getProducts({
   const params = new URLSearchParams();
   if (page) params.set("page", String(page));
   if (limit) params.set("limit", String(limit));
-  if (searchTerm && searchTerm.trim()) params.set("searchTerm", searchTerm.trim());
+  if (searchTerm && searchTerm.trim())
+    params.set("searchTerm", searchTerm.trim());
   if (category && category !== "all") params.set("category", category);
   if (gender && gender !== "all") params.set("gender", gender);
   if (typeof featured === "boolean") params.set("featured", String(featured));
@@ -143,12 +147,16 @@ export async function getProducts({
   if (sort) params.set("sort", sort);
 
   try {
-    const res = await nextFetch<ApparelProduct[]>(`/product?${params.toString()}`, {
-      next: {
-        revalidate: 30,
-        tags: ["product"],
+    const res = await nextFetch<ApparelProduct[]>(
+      `/product?${params.toString()}`,
+      {
+        cache: "force-cache",
+        next: {
+          revalidate: 60 * 30,
+          tags: ["product"],
+        },
       },
-    });
+    );
 
     if (res.success && Array.isArray(res.data)) {
       return {
@@ -216,7 +224,7 @@ export async function checkVariantAvailability(
   productId: string,
   size: string,
   color: string,
-  quantity = 1
+  quantity = 1,
 ): Promise<VariantAvailabilityResponse> {
   const params = new URLSearchParams({
     size,

@@ -1,8 +1,5 @@
-import Loader from '@/components/layout/loader'
-import React from 'react'
+import { ShopPageSkeleton } from "@/features/shop/components/ShopSkeleton";
 
-export default function loading() {
-    return (
-        <Loader />
-    )
+export default function ShopLoading() {
+  return <ShopPageSkeleton />;
 }

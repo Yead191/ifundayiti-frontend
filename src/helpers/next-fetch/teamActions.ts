@@ -60,7 +60,8 @@ export async function getTeamMembers(params: {
 export async function getTeamMemberById(id: string) {
   const result = await nextFetch(`/team/${id}`, {
     method: "GET",
-    next: { revalidate: 60 },
+    cache: "force-cache",
+    next: { revalidate: 60 * 30 },
     tags: ["team", id],
   });
 
