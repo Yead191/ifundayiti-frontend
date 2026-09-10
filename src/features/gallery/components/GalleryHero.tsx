@@ -49,7 +49,7 @@ export function GalleryHero({
                   <span>{t?.BackToFolders || "All Albums"}</span>
                 </Link>
                 <span className="text-mist/40">/</span>
-                <span className="text-xs font-bold text-forest-deep truncate max-w-[200px] sm:max-w-xs">
+                <span className="text-xs font-bold text-forest-deep truncate max-w-50 sm:max-w-xs">
                   {currentFolder?.name}
                 </span>
               </div>
