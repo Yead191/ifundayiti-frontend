@@ -1784,5 +1784,66 @@
       "AuthRequiredTitle": "Koneksyon Obligatwa",
       "AuthRequiredMessage": "Tanpri konekte oswa kreye yon kont pou w ka soumèt yon aplikasyon pou patenarya."
     }
+  },
+  "GalleryPage": {
+    "Hero": {
+      "Eyebrow": "Achiv Sou Tè A · Enpak Kominotè",
+      "Title": "Momantòm Enpak Nan Kominote A",
+      "TitlePrefix": "Momantòm ",
+      "TitleHighlight": "Enpak Nan Kominote A",
+      "Subtitle": "Eksplore foto otantik pwojè kominotè, seremoni bous, atelye travay, ak lidè lokal k ap kreye yon avni dirab nan tout peyi Dayiti."
+    },
+    "BackToFolders": "Tout Albòm Yo",
+    "AlbumLabel": "Albòm Foto",
+    "AlbumSubtitle": "Foto verifye sou teren k ap dokimante pwogrè ak travay kominotè nan albòm pwojè sa a.",
+    "PhotoSingle": "Foto",
+    "PhotoPlural": "Foto yo",
+    "AlbumSingle": "Albòm",
+    "AlbumPlural": "Albòm yo",
+    "OpenAlbum": "Louvri Albòm",
+    "SearchFoldersPlaceholder": "Chèche albòm foto pa non...",
+    "NoFoldersTitle": "Pa gen albòm foto ki disponib kounye a",
+    "NoFoldersBody": "Ekip nou an ap organize achiv foto yo kounye a. Retounen talè pou wè dènye mizajou yo.",
+    "NoSearchFoldersTitle": "Nou pa jwenn okenn albòm ki koresponn",
+    "NoSearchFoldersBody": "Eseye chanje mo kle rechèch ou a pou jwenn yon albòm.",
+    "ClearSearch": "Efase Rechèch",
+    "VerifiedBadge": "100% Verifye Sou Teren",
+    "DepartmentsBadge": "10 Depatman",
+    "VerifiedNotice": "100% Verifye Sou Teren",
+    "Filtered": "filtre",
+    "SearchPlaceholder": "Chèche pa tit, kote, kategori...",
+    "ResultsCount": "foto yo jwenn",
+    "All": "Tout",
+    "Categories": {
+      "All": "Tout Foto Yo",
+      "Community Outreach": "Sansibilizasyon Kominotè",
+      "Grant Programs": "Pwogram Sibvansyon",
+      "Education": "Edikasyon",
+      "Food & Agriculture": "Agrikilti & Alimantasyon",
+      "Healthcare": "Sante",
+      "Community Development": "Devlopman Kominotè",
+      "Entrepreneurship": "Antreprenarya",
+      "Environment": "Anviwònman",
+      "Events": "Evènman",
+      "Volunteering": "Volontarya",
+      "Success Stories": "Istwa Siksè",
+      "Other": "Lòt"
+    },
+    "Modal": {
+      "CapturedOn": "Pran nan dat",
+      "Location": "Kote",
+      "Category": "Kategori",
+      "StoryNote": "Kontèks & Nòt Teren",
+      "Spotlight": "Enpòtan",
+      "ViewOriginal": "Gwo Rezolisyon",
+      "Share": "Pataje",
+      "Copied": "Lyen Kopye!",
+      "Close": "Fèmen aperçu"
+    },
+    "Empty": {
+      "Title": "Pa gen foto yo jwenn",
+      "Body": "Pa gen okenn foto pibliye ki koresponn ak rechèch ou an oswa kategori filtre a.",
+      "ResetBtn": "Wè tout foto yo"
+    }
   }
 }

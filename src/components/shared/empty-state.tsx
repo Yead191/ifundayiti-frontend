@@ -6,11 +6,13 @@ export function EmptyState({
   body,
   actionLabel,
   actionHref,
+  actionOnClick,
 }: {
   title: string;
   body: string;
   actionLabel?: string;
   actionHref?: string;
+  actionOnClick?: () => void;
 }) {
   return (
     <div className="rounded-2xl border border-dashed border-hairline-strong bg-white px-6 py-14 text-center">
@@ -18,10 +20,16 @@ export function EmptyState({
       <p className="mx-auto mt-3 max-w-md text-sm leading-relaxed text-mist">
         {body}
       </p>
-      {actionHref && actionLabel && (
-        <Button asChild className="mt-6">
-          <Link href={actionHref}>{actionLabel}</Link>
-        </Button>
+      {actionLabel && (
+        actionHref ? (
+          <Button asChild className="mt-6">
+            <Link href={actionHref}>{actionLabel}</Link>
+          </Button>
+        ) : actionOnClick ? (
+          <Button onClick={actionOnClick} className="mt-6 cursor-pointer">
+            {actionLabel}
+          </Button>
+        ) : null
       )}
     </div>
   );

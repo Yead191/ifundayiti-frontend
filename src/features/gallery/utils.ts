@@ -46,8 +46,13 @@ export function buildGalleryUrl(
   lang: string,
   category?: string,
   searchTerm?: string,
+  folder?: string,
 ): string {
   const params = new URLSearchParams();
+
+  if (folder && folder.trim()) {
+    params.set("folder", folder.trim());
+  }
 
   if (category && category !== "All") {
     params.set("category", category);
@@ -60,3 +65,4 @@ export function buildGalleryUrl(
   const qs = params.toString();
   return `/${lang}/gallery${qs ? `?${qs}` : ""}`;
 }
+

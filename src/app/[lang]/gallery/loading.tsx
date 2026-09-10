@@ -5,12 +5,16 @@ export default function GalleryLoading() {
   return (
     <>
       {/* Hero Skeleton */}
-      <div className="bg-forest pt-32 pb-20 text-white">
+      <div className="relative overflow-hidden bg-linear-to-b from-sand-soft/80 via-cream to-cream pb-16 pt-28 md:pb-20 md:pt-36 border-b border-hairline/60">
         <Container>
-          <div className="max-w-2xl space-y-4">
-            <div className="h-6 w-36 rounded-full bg-white/10 animate-pulse" />
-            <div className="h-12 w-3/4 rounded-2xl bg-white/15 animate-pulse" />
-            <div className="h-5 w-full rounded-xl bg-white/10 animate-pulse" />
+          <div className="mx-auto max-w-4xl text-center space-y-4 flex flex-col items-center">
+            <div className="h-6 w-36 rounded-full bg-forest/10 animate-pulse" />
+            <div className="h-12 w-3/4 max-w-md rounded-2xl bg-forest/15 animate-pulse" />
+            <div className="h-5 w-full max-w-lg rounded-xl bg-forest/10 animate-pulse" />
+            <div className="flex gap-3 pt-4">
+              <div className="h-9 w-28 rounded-2xl bg-forest/10 animate-pulse" />
+              <div className="h-9 w-28 rounded-2xl bg-forest/10 animate-pulse" />
+            </div>
           </div>
         </Container>
       </div>

@@ -16,6 +16,7 @@ interface GalleryFilterBarProps {
   activeCategory: string;
   initialSearchTerm?: string;
   totalResults: number;
+  folder?: string;
   dict?: any;
 }
 
@@ -24,6 +25,7 @@ export function GalleryFilterBar({
   activeCategory,
   initialSearchTerm = "",
   totalResults,
+  folder,
   dict,
 }: GalleryFilterBarProps) {
   const router = useRouter();
@@ -42,7 +44,7 @@ export function GalleryFilterBar({
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     saveGalleryScroll();
-    const url = buildGalleryUrl(lang, activeCategory, searchTerm);
+    const url = buildGalleryUrl(lang, activeCategory, searchTerm, folder);
     router.replace(url, { scroll: false });
   };
 
@@ -65,7 +67,7 @@ export function GalleryFilterBar({
             />
             {searchTerm && (
               <Link
-                href={buildGalleryUrl(lang, activeCategory, "")}
+                href={buildGalleryUrl(lang, activeCategory, "", folder)}
                 scroll={false}
                 prefetch={true}
                 replace={true}
@@ -103,7 +105,7 @@ export function GalleryFilterBar({
         {GALLERY_CATEGORIES.map((cat) => {
           const isActive = activeCategory === cat;
           const label = categoriesMap[cat] || cat;
-          const targetUrl = buildGalleryUrl(lang, cat, searchTerm);
+          const targetUrl = buildGalleryUrl(lang, cat, searchTerm, folder);
 
           return (
             <Link
@@ -135,7 +137,7 @@ export function GalleryFilterBar({
             </span>
           </span>
           <Link
-            href={buildGalleryUrl(lang, activeCategory, "")}
+            href={buildGalleryUrl(lang, activeCategory, "", folder)}
             scroll={false}
             prefetch={true}
             replace={true}
