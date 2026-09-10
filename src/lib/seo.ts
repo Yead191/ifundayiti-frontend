@@ -13,7 +13,7 @@ export function absoluteUrl(path = "/") {
   return `${base}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
-const DEFAULT_OG_IMAGE = "/logo-ifundayiti.png";
+const DEFAULT_OG_IMAGE = "/logo-seo.jpg";
 
 export const SITE_NAME = "IFundAyiti";
 

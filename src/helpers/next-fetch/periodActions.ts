@@ -31,7 +31,7 @@ export interface ApiGrantPeriod {
 export async function getCurrentApplicationPeriod(): Promise<ApiGrantPeriod | null> {
   // 1. Try to fetch Open period
   let res = await nextFetch<ApiGrantPeriod[]>("/period?status=Open&limit=1", {
-    cache: "force-cache",
+    cache: "default",
     next: { revalidate: 60 * 5 },
   });
   if (res.success && res.data && res.data.length > 0) {
@@ -62,6 +62,9 @@ export async function getAllApplicationPeriods() {
   const result = await nextFetch<ApiGrantPeriod[]>("/period", {
     method: "GET",
     cache: "force-cache",
+    next: {
+      revalidate: 60 * 30,
+    },
   });
   return result;
 }

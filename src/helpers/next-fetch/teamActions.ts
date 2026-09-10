@@ -14,7 +14,8 @@ export interface TeamStats {
 export async function getTeamStats() {
   const result = await nextFetch<TeamStats>("/team/stats", {
     method: "GET",
-    next: { revalidate: 120 },
+    cache: "force-cache",
+    next: { revalidate: 60 * 60 * 12 },
     tags: ["team-stats"],
   });
   return result;

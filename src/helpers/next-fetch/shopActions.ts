@@ -91,8 +91,9 @@ export async function getProductCategories(): Promise<ProductCategoriesResponse>
     const res = await nextFetch<ProductCategory[]>(
       "/product-category?limit=100",
       {
+        cache: "force-cache",
         next: {
-          revalidate: 60,
+          revalidate: 60 * 30,
           tags: ["product-category"],
         },
       },
