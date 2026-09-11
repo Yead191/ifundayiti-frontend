@@ -17,11 +17,11 @@ const getProfile = async (): Promise<any | null> => {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
+      // cache: "force-cache",
       next: {
         tags: ["user-profile"],
         revalidate: 60 * 60,
       },
-      cache: "force-cache",
     });
 
     if (!res.ok) {

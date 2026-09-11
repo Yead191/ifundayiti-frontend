@@ -44,9 +44,7 @@ export function FocusShell({
 
       <div className="relative w-full max-w-md">
         <div className="mb-8 flex justify-center">
-          <Link href={homeHref} className="transition-opacity hover:opacity-90">
-            <Logo />
-          </Link>
+          <Logo href={homeHref} className="transition-opacity hover:opacity-90" />
         </div>
 
         <div className="relative rounded-[28px] border border-hairline/80 bg-white/95 p-7 shadow-[0_20px_50px_-15px_rgba(11,61,46,0.12)] backdrop-blur-xl sm:p-10">

@@ -146,12 +146,9 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
           )}
         >
           {/* Logo */}
-          <Link
-            href={localize("/")}
-            className="pointer-events-auto shrink-0 transition-opacity hover:opacity-95 pr-1 sm:pr-2"
-          >
-            <Logo />
-          </Link>
+          <div className="pointer-events-auto shrink-0 transition-opacity hover:opacity-95 pr-1 sm:pr-2">
+            <Logo href={localize("/")} />
+          </div>
 
           {/* Desktop Navigation Links */}
           <ul className="hidden items-center gap-0.5 lg:flex xl:gap-1.5">

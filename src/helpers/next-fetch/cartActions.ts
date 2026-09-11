@@ -8,7 +8,7 @@ import type { CartData, AddToCartPayload } from "@/types";
 export async function getCart() {
   const result = await nextFetch<CartData>("/cart", {
     method: "GET",
-    cache: "no-store",
+    cache: "force-cache",
     tags: ["cart"],
   });
   return result;

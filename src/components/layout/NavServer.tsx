@@ -9,7 +9,7 @@ export default async function NavServer() {
   if (user) {
     const res = await nextFetch<CartData>("/cart", {
       method: "GET",
-      cache: "no-store",
+      cache: "force-cache",
       tags: ["cart"],
     });
     if (res.success && res.data) cart = res.data;

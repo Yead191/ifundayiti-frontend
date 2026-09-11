@@ -47,12 +47,7 @@ export function AuthShell({
           {/* Top badge & Logo */}
           <div className="relative z-10">
             <div className="flex items-center justify-between">
-              <Link
-                href={homeHref}
-                className="inline-block transition-opacity hover:opacity-90"
-              >
-                <Logo />
-              </Link>
+              <Logo href={homeHref} className="inline-block transition-opacity hover:opacity-90" />
               <div className="inline-flex items-center gap-1.5 rounded-full border border-sand/30 bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide text-sand backdrop-blur-md">
                 <Sparkles className="h-3.5 w-3.5 text-sand" />
                 <span>501(c)(3) Pending</span>
@@ -102,9 +97,7 @@ export function AuthShell({
           <div className="mx-auto w-full max-w-md">
             {/* Mobile Logo */}
             <div className="mb-6 flex justify-center lg:hidden">
-              <Link href={homeHref}>
-                <Logo />
-              </Link>
+              <Logo href={homeHref} />
             </div>
 
             <div className="flex flex-col gap-2 text-center lg:text-left">
