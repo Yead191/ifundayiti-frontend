@@ -33,16 +33,18 @@ export function FoldersDirectory({
 
   return (
     <div className="w-full">
-      <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4 items-stretch">
         {folders.map((folder, index) => (
-          <Reveal key={folder._id || folder.id} delay={index * 40}>
+          <Reveal key={folder._id || folder.id} delay={index * 40} className="h-full">
             <Folder
               id={folder._id || folder.id}
               name={folder.name}
+              image={folder.image}
               galleryCount={folder.galleryCount ?? 0}
               createdAt={folder.createdAt}
               href={`/${lang}/gallery?folder=${folder._id || folder.id}`}
               color="#0B3D2E"
+              className="h-full"
               lang={lang}
               dict={dict}
             />

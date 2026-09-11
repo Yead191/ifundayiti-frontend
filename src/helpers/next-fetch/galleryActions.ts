@@ -6,6 +6,7 @@ export interface GalleryFolder {
   _id: string;
   id?: string;
   name: string;
+  image?: string;
   galleryCount?: number;
   createdAt: string;
   updatedAt?: string;

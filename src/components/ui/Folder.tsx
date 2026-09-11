@@ -2,11 +2,19 @@
 
 import React from "react";
 import Link from "next/link";
-import { Images } from "lucide-react";
+import {
+  Images,
+  Folder as FolderIcon,
+  ArrowRight,
+  Calendar,
+} from "lucide-react";
+import { getImageUrl } from "@/lib/getImageUrl";
+import Image from "next/image";
 
 export interface FolderProps {
   id?: string;
   name?: string;
+  image?: string; // Optional cover photo
   galleryCount?: number;
   createdAt?: string;
   href?: string;
@@ -42,18 +50,27 @@ const darkenColor = (hex: string, percent: number): string => {
 
 /**
  * Visual 3D Folder Icon with subtle hover peek animation
- * (No flying papers on click - click navigates smoothly)
+ * (If cover image is supplied, the top peeking sheet showcases the real photograph print)
  */
 export const FolderVisual: React.FC<{
   color?: string;
   size?: number;
   className?: string;
   items?: React.ReactNode[];
-}> = ({ color = "#0B3D2E", size = 1.05, className = "", items = [] }) => {
+  image?: string;
+}> = ({
+  color = "#0B3D2E",
+  size = 1.05,
+  className = "",
+  items = [],
+  image,
+}) => {
   const folderBackColor = darkenColor(color, 0.15);
   const paper1 = "#FAF6F0";
   const paper2 = "#F5EFE6";
   const paper3 = "#FFFFFF";
+
+  const resolvedImg = image ? getImageUrl(image) : null;
 
   const papers = [items[0] || null, items[1] || null, items[2] || null];
 
@@ -74,7 +91,7 @@ export const FolderVisual: React.FC<{
             style={{ backgroundColor: folderBackColor }}
           />
 
-          {/* Paper Sheets peeking out (Smooth lift on card hover) */}
+          {/* Paper Sheets / Photo Print peeking out */}
           {papers.map((customItem, i) => {
             let widthClasses = "w-[76%] h-[74%]";
             if (i === 1) widthClasses = "w-[82%] h-[68%]";
@@ -85,18 +102,29 @@ export const FolderVisual: React.FC<{
             return (
               <div
                 key={i}
-                className={`absolute z-20 bottom-[10%] left-1/2 -translate-x-1/2 rounded-[6px] border border-black/5 shadow-xs transition-all duration-300 ease-out group-hover:-translate-y-2.5 ${widthClasses}`}
+                className={`absolute z-20 bottom-[10%] left-1/2 -translate-x-1/2 rounded-[6px] border border-black/5 shadow-xs transition-all duration-300 ease-out group-hover:-translate-y-2.5 overflow-hidden ${widthClasses}`}
                 style={{
                   backgroundColor: bgColor,
                   transformOrigin: "bottom center",
                 }}
               >
-                {customItem || (
-                  <div className="h-full w-full p-1.5 flex flex-col justify-between opacity-50">
-                    <div className="h-1 w-2/3 rounded-full bg-mist/30" />
-                    <div className="h-1 w-full rounded-full bg-mist/20" />
-                    <div className="h-1 w-4/5 rounded-full bg-mist/20" />
+                {/* If first paper and cover image exists: render authentic photograph print */}
+                {i === 0 && resolvedImg ? (
+                  <div className="h-full w-full relative bg-neutral-900">
+                    <img
+                      src={resolvedImg}
+                      alt=""
+                      className="h-full w-full object-cover"
+                    />
                   </div>
+                ) : (
+                  customItem || (
+                    <div className="h-full w-full p-1.5 flex flex-col justify-between opacity-50">
+                      <div className="h-1 w-2/3 rounded-full bg-mist/30" />
+                      <div className="h-1 w-full rounded-full bg-mist/20" />
+                      <div className="h-1 w-4/5 rounded-full bg-mist/20" />
+                    </div>
+                  )
                 )}
               </div>
             );
@@ -125,14 +153,15 @@ export const FolderVisual: React.FC<{
 
 /**
  * Main Folder Component:
- * - If `name` or `href` is supplied, renders as a full, interactive Folder Card with folder visual,
- *   folder name, photo count badge, and creation date.
- * - Clicking navigates directly to the folder page without opening 3 loose papers.
- * - Uses primary color `#0B3D2E` by default.
+ * - If `image` is provided: Renders a luxury photo album card with cover viewport,
+ *   floating badges, smooth hover zoom, and folder metadata.
+ * - If `image` is not provided: Gracefully falls back to the 3D `FolderVisual`.
+ * - Clicking navigates smoothly without full-page reloads or jumping.
  */
 export const Folder: React.FC<FolderProps> = ({
   id,
   name,
+  image,
   galleryCount = 0,
   createdAt,
   href,
@@ -152,9 +181,12 @@ export const Folder: React.FC<FolderProps> = ({
         size={size}
         className={className}
         items={items}
+        image={image}
       />
     );
   }
+
+  const resolvedImg = image ? getImageUrl(image) : null;
 
   const formattedDate = createdAt
     ? new Date(createdAt).toLocaleDateString(
@@ -174,24 +206,74 @@ export const Folder: React.FC<FolderProps> = ({
   const CardContent = (
     <div
       onClick={onClick}
-      className={`group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-hairline/80 bg-white/95 p-6 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-forest/40 hover:shadow-xl cursor-pointer text-center ${className}`}
+      className={`group relative flex h-full w-full flex-col justify-between overflow-hidden rounded-3xl border border-hairline/80 bg-white/95 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-forest/40 hover:shadow-xl cursor-pointer ${className}`}
     >
-      {/* Visual Folder Icon Centered */}
-      <div className="flex w-full items-center justify-center py-4">
-        <FolderVisual color={color} size={size} items={items} />
-      </div>
+      {/* Visual Section: Exact identical aspect-[16/11] header height for all cards */}
+      {resolvedImg ? (
+        <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden bg-forest/5">
+          {/* Ambient blurred glow in background */}
+          <div
+            className="absolute inset-0 bg-cover bg-center blur-lg opacity-25 scale-110 transition-opacity duration-300 group-hover:opacity-40"
+            style={{ backgroundImage: `url(${resolvedImg})` }}
+          />
+
+          {/* Sharp High-Resolution Cover Image */}
+          <Image
+            src={resolvedImg}
+            alt={name || "Album cover"}
+            fill
+            className="relative z-10 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-106"
+            loading="lazy"
+          />
+
+          {/* Subtle Dark Gradient Overlay for Contrast */}
+          <div className="absolute inset-0 z-20 bg-linear-to-t from-black/65 via-transparent to-black/15 pointer-events-none" />
+
+          {/* Bottom-Right: Photo Count Pill */}
+          <div className="absolute bottom-2.5 right-2.5 z-30 inline-flex items-center gap-1.5 rounded-full bg-black/65 px-2.5 py-1 text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-white/20">
+            <Images className="h-3 w-3" />
+            <span>{countText}</span>
+          </div>
+        </div>
+      ) : (
+        /* Fallback to 3D FolderVisual with same aspect-[16/11] container */
+        <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden bg-sand-soft/40 border-b border-hairline/50 flex items-center justify-center">
+          <FolderVisual color={color} size={size} items={items} />
+
+          {/* Bottom-Right: Photo Count Pill */}
+          <div className="absolute bottom-2.5 right-2.5 z-10 inline-flex items-center gap-1.5 rounded-full bg-forest/90 px-2.5 py-1 text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-forest/20">
+            <Images className="h-3 w-3" />
+            <span>{countText}</span>
+          </div>
+        </div>
+      )}
 
       {/* Details Container */}
-      <div className="mt-2 flex flex-1 flex-col items-center justify-between">
-        {/* Folder Name */}
-        <h3 className="font-display text-sm md:text-lg font-bold text-forest-deep transition-colors group-hover:text-forest line-clamp-1 w-full">
-          {name}
-        </h3>
+      <div className="flex flex-1 flex-col justify-between p-4 sm:p-5">
+        <div>
+          {/* Folder Name */}
+          <h3 className="font-display text-sm sm:text-base md:text-lg font-bold text-forest-deep transition-colors group-hover:text-forest line-clamp-1 w-full text-left">
+            {name}
+          </h3>
+        </div>
 
-        {/* Photo Count Badge */}
-        <div className="mt-2.5 inline-flex items-center gap-1.5 rounded-full bg-sand-soft/80 border border-hairline/80 px-3 py-1 text-xs font-bold text-forest group-hover:bg-forest group-hover:text-white transition-colors shadow-2xs">
-          <Images className="h-3.5 w-3.5" />
-          <span>{countText}</span>
+        {/* Footer: Date and CTA */}
+        <div className="mt-3.5 flex items-center justify-between border-t border-hairline/60 pt-2.5 text-[11px] sm:text-xs text-mist">
+          <span className="inline-flex items-center gap-1 text-faint">
+            {formattedDate && (
+              <>
+                <Calendar className="h-3.5 w-3.5" />
+                <span>{formattedDate}</span>
+              </>
+            )}
+          </span>
+
+          <span className="inline-flex items-center gap-1 font-bold text-forest group-hover:text-forest-deep transition-all group-hover:translate-x-0.5">
+            <span className="hidden sm:flex">
+              {dict?.GalleryPage?.OpenAlbum || "Open"}
+            </span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </span>
         </div>
       </div>
     </div>
@@ -199,7 +281,7 @@ export const Folder: React.FC<FolderProps> = ({
 
   if (href) {
     return (
-      <Link href={href} scroll={false} className="block h-full">
+      <Link href={href} scroll={false} className="block h-full w-full">
         {CardContent}
       </Link>
     );
