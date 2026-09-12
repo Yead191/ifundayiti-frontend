@@ -39,10 +39,15 @@ export function FoldersDirectory({
             <Folder
               id={folder._id || folder.id}
               name={folder.name}
+              description={folder.description}
               image={folder.image}
+              category={folder.category}
+              location={folder.location}
+              date={folder.date}
+              featured={folder.featured}
               galleryCount={folder.galleryCount ?? 0}
               createdAt={folder.createdAt}
-              href={`/${lang}/gallery?folder=${folder._id || folder.id}`}
+              href={`/${lang}/gallery/${folder._id || folder.id}`}
               color="#0B3D2E"
               className="h-full"
               lang={lang}

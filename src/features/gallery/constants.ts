@@ -1,16 +1,16 @@
 export const GALLERY_CATEGORIES = [
   "All",
   "Community Outreach",
-  "Grant Programs",
-  "Education",
-  "Food & Agriculture",
   "Healthcare",
+  "Education",
+  "Events",
+  "Grant Programs",
+  "Success Stories",
+  "Food & Agriculture",
   "Community Development",
   "Entrepreneurship",
   "Environment",
-  "Events",
   "Volunteering",
-  "Success Stories",
   "Other",
 ] as const;
 

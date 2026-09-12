@@ -1843,5 +1843,65 @@
       "TrackBtn": "Track Application",
       "EmailUs": "Email us at"
     }
+  },
+  "GalleryPage": {
+    "Hero": {
+      "Eyebrow": "Field Archives · Community Impact",
+      "TitlePrefix": "Our Impact in ",
+      "TitleHighlight": "Pictures",
+      "Subtitle": "Browse photo stories and community initiatives across Haiti."
+    },
+    "BackToFolders": "Back to All Albums",
+    "AlbumLabel": "Photo Album",
+    "AlbumSubtitle": "Verified field photographs of community initiatives across Haiti.",
+    "OpenAlbum": "Open Album",
+    "ExploreAlbum": "Explore Album",
+    "Featured": "Featured",
+    "Spotlight": "Featured Album",
+    "PhotoSingle": "Photo",
+    "PhotoPlural": "Photos",
+    "AlbumSingle": "album found",
+    "AlbumPlural": "albums found",
+    "SearchAlbumsPlaceholder": "Search albums by title, location, category...",
+    "SearchPlaceholder": "Search photos by caption or title...",
+    "ResultsCount": "photos found",
+    "NoFoldersTitle": "No photo albums available yet",
+    "NoFoldersBody": "Our team is currently organizing photo archives. Check back soon!",
+    "EmptyAlbums": {
+      "Title": "No photo albums found",
+      "FilteredBody": "There are no photo albums matching your current search or category filter.",
+      "EmptyBody": "There are currently no published photo albums available."
+    },
+    "EmptyAlbumPhotosTitle": "No photos in this album yet",
+    "EmptyAlbumPhotosBody": "Our field team is uploading photographs for this album. Please check back soon!",
+    "AlbumNotFoundTitle": "Photo Album Not Found",
+    "AlbumNotFoundBody": "The album you are looking for does not exist or has been removed.",
+    "Empty": {
+      "Title": "No photos found",
+      "Body": "There are no photos matching your current search in this album.",
+      "ResetBtn": "Reset filters"
+    },
+    "Modal": {
+      "Close": "Close preview",
+      "ViewOriginal": "Full Resolution",
+      "Share": "Share",
+      "Copied": "Link Copied!",
+      "Spotlight": "Spotlight"
+    },
+    "Categories": {
+      "All": "All",
+      "Community Outreach": "Community Outreach",
+      "Healthcare": "Healthcare",
+      "Education": "Education",
+      "Events": "Events",
+      "Grant Programs": "Grant Programs",
+      "Success Stories": "Success Stories",
+      "Food & Agriculture": "Food & Agriculture",
+      "Community Development": "Community Development",
+      "Entrepreneurship": "Entrepreneurship",
+      "Environment": "Environment",
+      "Volunteering": "Volunteering",
+      "Other": "Other"
+    }
   }
 }

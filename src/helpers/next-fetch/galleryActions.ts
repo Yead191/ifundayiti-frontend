@@ -2,11 +2,23 @@
 
 import { nextFetch } from "./NextFetch";
 
+export enum FOLDER_STATUS {
+  DRAFT = "Draft",
+  PUBLISHED = "Published",
+  ARCHIVED = "Archived",
+}
+
 export interface GalleryFolder {
   _id: string;
   id?: string;
   name: string;
+  description?: string;
   image?: string;
+  category?: string;
+  location?: string;
+  date?: string;
+  status?: FOLDER_STATUS | string;
+  featured?: boolean;
   galleryCount?: number;
   createdAt: string;
   updatedAt?: string;
@@ -27,20 +39,26 @@ export interface FoldersResponse {
 export interface GalleryItem {
   _id: string;
   id?: string;
-  title: string;
-  description?: string;
-  image: string;
   folder?:
+    | string
     | {
         _id: string;
         name: string;
-      }
-    | string;
+        image?: string;
+        category?: string;
+        location?: string;
+        date?: string;
+        status?: FOLDER_STATUS | string;
+        featured?: boolean;
+      };
+  image: string;
+  caption?: string;
+  title?: string;
   category?: string;
   location?: string;
-  date?: string | Date;
-  status: "Draft" | "Published" | "Archived" | string;
-  featured: boolean;
+  date?: string;
+  featured?: boolean;
+  description?: string;
   createdAt?: string;
   updatedAt?: string;
 }
@@ -64,11 +82,15 @@ export async function getFolders({
   page = 1,
   limit = 50,
   searchTerm = "",
-  sort = "-createdAt",
+  category = "",
+  featured,
+  sort = "-featured -createdAt",
 }: {
   page?: number;
   limit?: number;
   searchTerm?: string;
+  category?: string;
+  featured?: boolean;
   sort?: string;
 } = {}): Promise<FoldersResponse> {
   const params = new URLSearchParams();
@@ -76,6 +98,8 @@ export async function getFolders({
   if (limit) params.set("limit", String(limit));
   if (searchTerm && searchTerm.trim())
     params.set("searchTerm", searchTerm.trim());
+  if (category && category !== "All") params.set("category", category);
+  if (typeof featured === "boolean") params.set("featured", String(featured));
   if (sort) params.set("sort", sort);
 
   try {

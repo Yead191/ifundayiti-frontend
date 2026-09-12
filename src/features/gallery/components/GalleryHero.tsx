@@ -76,9 +76,9 @@ export function GalleryHero({
                 </>
               ) : (
                 <>
-                  <span>{t?.Hero?.TitlePrefix || "Moments of "}</span>
+                  <span>{t?.Hero?.TitlePrefix || "Our Impact in "}</span>
                   <span className="text-gradient">
-                    {t?.Hero?.TitleHighlight || "Grassroots Impact"}
+                    {t?.Hero?.TitleHighlight || "Pictures"}
                   </span>
                 </>
               )}
@@ -92,7 +92,7 @@ export function GalleryHero({
                 ? t?.AlbumSubtitle ||
                   "Verified photographs documenting local progress, community work, and beneficiaries in this project album."
                 : t?.Hero?.Subtitle ||
-                  "Explore authentic field photographs of community projects, grant ceremonies, workshops, and local builders creating sustainable futures across Haiti."}
+                  "Browse photo stories and community initiatives across Haiti."}
             </p>
           </Reveal>
         </div>

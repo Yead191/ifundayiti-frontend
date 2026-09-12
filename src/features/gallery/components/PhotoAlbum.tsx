@@ -3,11 +3,12 @@
 import React, { useState } from "react";
 import Masonry, { type Item } from "./Masonry";
 import { GalleryModal } from "./GalleryModal";
-import type { GalleryItem } from "@/helpers/next-fetch/galleryActions";
+import type { GalleryItem, GalleryFolder } from "@/helpers/next-fetch/galleryActions";
 import { getImageUrl } from "@/lib/getImageUrl";
 
 interface PhotoAlbumProps {
   galleryItems?: GalleryItem[];
+  folderInfo?: GalleryFolder | null;
   lang?: string;
   dict?: any;
 }
@@ -18,6 +19,7 @@ const HEIGHT_PATTERNS = [
 
 export default function PhotoAlbum({
   galleryItems = [],
+  folderInfo,
   lang = "en",
   dict,
 }: PhotoAlbumProps) {
@@ -27,16 +29,27 @@ export default function PhotoAlbum({
     const height = HEIGHT_PATTERNS[index % HEIGHT_PATTERNS.length];
     const resolvedImg = getImageUrl(item.image) || item.image;
 
+    const folderObj = typeof item.folder === "object" ? item.folder : null;
+    const category = folderObj?.category || folderInfo?.category || item.category;
+    const location = folderObj?.location || folderInfo?.location || item.location;
+    const date = folderObj?.date || folderInfo?.date || item.date || item.createdAt;
+    const featured = Boolean(folderObj?.featured ?? folderInfo?.featured ?? item.featured);
+    const title = item.caption || item.title || folderInfo?.name || `Photo ${index + 1}`;
+
     return {
       id: item._id || item.id || `photo-${index}`,
       img: resolvedImg,
       height,
-      title: item.title,
-      category: item.category,
-      location: item.location,
-      date: item.date,
-      featured: item.featured,
-      rawItem: item,
+      title,
+      category,
+      location,
+      date,
+      featured,
+      rawItem: {
+        ...item,
+        caption: item.caption,
+        folder: folderObj || folderInfo,
+      },
     };
   });
 

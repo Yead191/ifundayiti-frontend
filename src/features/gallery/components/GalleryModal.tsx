@@ -43,11 +43,26 @@ export function GalleryModal({
   const [zoom, setZoom] = useState(1);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [showDetails, setShowDetails] = useState(true);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const viewerRef = useRef<HTMLDivElement>(null);
+  const dragStartRef = useRef({ clientX: 0, clientY: 0, posX: 0, posY: 0 });
+  const hasDraggedRef = useRef(false);
+
+  const pinchRef = useRef<{
+    initialDistance: number;
+    startZoom: number;
+    touchStart: { x: number; y: number };
+    startPos: { x: number; y: number };
+  }>({
+    initialDistance: 0,
+    startZoom: 1,
+    touchStart: { x: 0, y: 0 },
+    startPos: { x: 0, y: 0 },
+  });
+
   const t = dict?.GalleryPage?.Modal;
 
   const currentIndex = items.findIndex((i) => i.id === item?.id);
@@ -77,7 +92,7 @@ export function GalleryModal({
   }, [currentIndex, items, onSelect, resetZoom]);
 
   const handleZoomIn = () => {
-    setZoom((prev) => Math.min(prev + 0.5, 3.5));
+    setZoom((prev) => Math.min(prev + 0.5, 4));
   };
 
   const handleZoomOut = () => {
@@ -92,7 +107,7 @@ export function GalleryModal({
     if (zoom > 1) {
       resetZoom();
     } else {
-      setZoom(2);
+      setZoom(2.2);
     }
   };
 
@@ -157,6 +172,113 @@ export function GalleryModal({
     resetZoom();
   }, [item?.id, resetZoom]);
 
+  // Mouse wheel zoom
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    if (!viewer) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const zoomStep = 0.3;
+      const direction = e.deltaY < 0 ? 1 : -1;
+      setZoom((prev) => {
+        const next = Math.min(
+          Math.max(Number((prev + direction * zoomStep).toFixed(2)), 1),
+          4
+        );
+        if (next === 1) {
+          setPosition({ x: 0, y: 0 });
+        }
+        return next;
+      });
+    };
+
+    viewer.addEventListener("wheel", handleWheel, { passive: false });
+    return () => {
+      viewer.removeEventListener("wheel", handleWheel);
+    };
+  }, []);
+
+  // Mobile pinch-to-zoom and 1-finger drag
+  useEffect(() => {
+    const viewer = viewerRef.current;
+    if (!viewer) return;
+
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        pinchRef.current.initialDistance = dist;
+        pinchRef.current.startZoom = zoom;
+        hasDraggedRef.current = true;
+      } else if (e.touches.length === 1) {
+        pinchRef.current.touchStart = {
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY,
+        };
+        pinchRef.current.startPos = { ...position };
+        hasDraggedRef.current = false;
+      }
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        e.preventDefault();
+        const dist = Math.hypot(
+          e.touches[0].clientX - e.touches[1].clientX,
+          e.touches[0].clientY - e.touches[1].clientY
+        );
+        if (pinchRef.current.initialDistance > 0) {
+          const factor = dist / pinchRef.current.initialDistance;
+          const newZoom = Math.min(
+            Math.max(Number((pinchRef.current.startZoom * factor).toFixed(2)), 1),
+            4
+          );
+          setZoom(newZoom);
+          if (newZoom === 1) {
+            setPosition({ x: 0, y: 0 });
+          }
+        }
+        hasDraggedRef.current = true;
+      } else if (e.touches.length === 1 && zoom > 1) {
+        e.preventDefault();
+        const dx = e.touches[0].clientX - pinchRef.current.touchStart.x;
+        const dy = e.touches[0].clientY - pinchRef.current.touchStart.y;
+        if (Math.hypot(dx, dy) > 5) {
+          hasDraggedRef.current = true;
+        }
+        setPosition({
+          x: pinchRef.current.startPos.x + dx,
+          y: pinchRef.current.startPos.y + dy,
+        });
+      }
+    };
+
+    const handleTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length === 0) {
+        setZoom((prev) => {
+          if (prev < 1.08) {
+            setPosition({ x: 0, y: 0 });
+            return 1;
+          }
+          return prev;
+        });
+      }
+    };
+
+    viewer.addEventListener("touchstart", handleTouchStart, { passive: true });
+    viewer.addEventListener("touchmove", handleTouchMove, { passive: false });
+    viewer.addEventListener("touchend", handleTouchEnd, { passive: true });
+
+    return () => {
+      viewer.removeEventListener("touchstart", handleTouchStart);
+      viewer.removeEventListener("touchmove", handleTouchMove);
+      viewer.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [zoom, position]);
+
   if (!item) return null;
 
   const handleShare = () => {
@@ -169,21 +291,48 @@ export function GalleryModal({
 
   // Mouse pan handlers when zoomed
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (zoom <= 1) return;
-    setIsDragging(true);
-    setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+    if (e.button !== 0) return;
+    dragStartRef.current = {
+      clientX: e.clientX,
+      clientY: e.clientY,
+      posX: position.x,
+      posY: position.y,
+    };
+    hasDraggedRef.current = false;
+    if (zoom > 1) {
+      setIsDragging(true);
+    }
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging || zoom <= 1) return;
-    setPosition({
-      x: e.clientX - dragStart.x,
-      y: e.clientY - dragStart.y,
-    });
+    const dx = e.clientX - dragStartRef.current.clientX;
+    const dy = e.clientY - dragStartRef.current.clientY;
+    if (Math.hypot(dx, dy) > 6) {
+      hasDraggedRef.current = true;
+    }
+    if (isDragging && zoom > 1) {
+      setPosition({
+        x: dragStartRef.current.posX + dx,
+        y: dragStartRef.current.posY + dy,
+      });
+    }
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
+  };
+
+  // Clicking directly on the image zooms in / zooms out
+  const handleImageClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (hasDraggedRef.current) return;
+    handleToggleZoom();
+  };
+
+  // Clicking outside the image area closes the full screen image
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (hasDraggedRef.current) return;
+    onClose();
   };
 
   const raw = item.rawItem || {};
@@ -204,11 +353,15 @@ export function GalleryModal({
       className="fixed inset-0 z-50 flex h-screen w-screen flex-col bg-black select-none animate-in fade-in duration-200"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
       role="dialog"
       aria-modal="true"
     >
       {/* Top Controls Bar (Facebook Style) */}
-      <div className="absolute top-0 inset-x-0 z-40 flex items-center justify-between p-4 sm:p-5 bg-linear-to-b from-black/80 via-black/40 to-transparent pointer-events-auto">
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="absolute top-0 inset-x-0 z-40 flex items-center justify-between p-4 sm:p-5 bg-linear-to-b from-black/80 via-black/40 to-transparent pointer-events-auto"
+      >
         {/* Left Side: Close Button & Counter */}
         <div className="flex items-center gap-3">
           <button
@@ -222,7 +375,7 @@ export function GalleryModal({
 
           {items.length > 1 && (
             <span className="text-xs sm:text-sm font-semibold text-white/80 tracking-wide">
-              {currentIndex + 1} / {items.length}
+              {currentIndex + 1} {lang === "ht" ? "sou" : "of"} {items.length}
             </span>
           )}
         </div>
@@ -233,7 +386,7 @@ export function GalleryModal({
           <button
             type="button"
             onClick={handleZoomIn}
-            disabled={zoom >= 3.5}
+            disabled={zoom >= 4}
             title="Zoom In (+)"
             className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-full bg-white/10 text-white hover:bg-white/20 transition-all cursor-pointer backdrop-blur-md disabled:opacity-40 disabled:cursor-not-allowed"
           >
@@ -294,13 +447,17 @@ export function GalleryModal({
         </div>
       </div>
 
-      {/* Main Fullscreen Viewer Canvas */}
+      {/* Main Fullscreen Viewer Canvas (Clicking backdrop closes the viewer) */}
       <div
-        className="relative flex-1 w-full h-full flex items-center justify-center overflow-hidden cursor-default"
+        ref={viewerRef}
+        onClick={handleBackdropClick}
         onMouseDown={handleMouseDown}
+        className="relative flex-1 w-full h-full flex items-center justify-center overflow-hidden cursor-default"
       >
+        {/* Image Container: Clicking image toggles zoom in / zoom out */}
         <div
-          className="relative flex items-center justify-center w-full h-full"
+          onClick={handleImageClick}
+          className="relative flex items-center justify-center select-none"
           style={{
             transform: `scale(${zoom}) translate(${position.x / zoom}px, ${
               position.y / zoom
@@ -309,8 +466,8 @@ export function GalleryModal({
               ? "none"
               : "transform 0.2s cubic-bezier(0.16, 1, 0.3, 1)",
             cursor: zoom > 1 ? (isDragging ? "grabbing" : "grab") : "zoom-in",
+            touchAction: "none",
           }}
-          onDoubleClick={handleToggleZoom}
         >
           <Image
             src={item.img}
@@ -318,7 +475,7 @@ export function GalleryModal({
             draggable={false}
             width={1000}
             height={1000}
-            className="max-h-[92vh] max-w-[96vw] w-auto h-auto object-contain select-none drop-shadow-2xl"
+            className="max-h-[92vh] max-w-[96vw] w-auto h-auto object-contain select-none drop-shadow-2xl pointer-events-none"
           />
         </div>
 
@@ -355,6 +512,7 @@ export function GalleryModal({
 
       {/* Floating Bottom Details Overlay (Facebook Style) */}
       <div
+        onClick={(e) => e.stopPropagation()}
         className={`absolute bottom-0 inset-x-0 z-30 transition-all duration-300 pointer-events-auto ${
           showDetails
             ? "opacity-100 translate-y-0"
@@ -368,13 +526,6 @@ export function GalleryModal({
               <div className="space-y-2 max-w-3xl">
                 {/* Badges Row */}
                 <div className="flex flex-wrap items-center gap-2">
-                  {item.category && (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-white/15 border border-white/20 px-3 py-0.5 text-xs font-semibold text-white/95 backdrop-blur-md">
-                      <TagIcon className="h-3 w-3 text-sand" />
-                      <span>{item.category}</span>
-                    </span>
-                  )}
-
                   {item.featured && (
                     <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/20 border border-amber-400/40 px-3 py-0.5 text-xs font-semibold text-amber-300">
                       <Star className="h-3 w-3 fill-amber-400 text-amber-400" />
@@ -397,15 +548,15 @@ export function GalleryModal({
                   )}
                 </div>
 
-                {/* Photo Title */}
-                <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight drop-shadow-md">
-                  {item.title || "Community Field Capture"}
+                {/* Photo Caption or Title */}
+                <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight drop-shadow-md leading-snug">
+                  {raw.caption || item.title || "Field Photograph"}
                 </h2>
 
-                {/* Description / Field Note */}
-                {raw.description && (
-                  <p className="text-xs sm:text-sm text-white/80 line-clamp-2 sm:line-clamp-3 leading-relaxed max-w-2xl drop-shadow-sm">
-                    {raw.description}
+                {/* Album Name or Description / Field Note */}
+                {raw.caption && item.title && item.title !== raw.caption && (
+                  <p className="text-xs sm:text-sm text-white/70 line-clamp-2 leading-relaxed max-w-2xl drop-shadow-sm">
+                    {item.title}
                   </p>
                 )}
               </div>

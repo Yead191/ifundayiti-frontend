@@ -17,6 +17,7 @@ interface GalleryFilterBarProps {
   initialSearchTerm?: string;
   totalResults: number;
   folder?: string;
+  itemType?: "albums" | "photos";
   dict?: any;
 }
 
@@ -26,6 +27,7 @@ export function GalleryFilterBar({
   initialSearchTerm = "",
   totalResults,
   folder,
+  itemType = "albums",
   dict,
 }: GalleryFilterBarProps) {
   const router = useRouter();
@@ -40,6 +42,20 @@ export function GalleryFilterBar({
 
   const t = dict?.GalleryPage;
   const categoriesMap = (t?.Categories || {}) as Record<string, string>;
+
+  const defaultPlaceholder =
+    itemType === "albums"
+      ? t?.SearchAlbumsPlaceholder || "Search albums by title, location, category..."
+      : t?.SearchPlaceholder || "Search photos by caption or title...";
+
+  const countLabel =
+    itemType === "albums"
+      ? totalResults === 1
+        ? t?.AlbumSingle || "album found"
+        : t?.AlbumPlural || "albums found"
+      : totalResults === 1
+      ? t?.PhotoSingle || "photo found"
+      : t?.ResultsCount || "photos found";
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -60,9 +76,7 @@ export function GalleryFilterBar({
               type="text"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder={
-                t?.SearchPlaceholder || "Search by title, location, category..."
-              }
+              placeholder={defaultPlaceholder}
               className="w-full rounded-2xl border border-hairline bg-white py-3.5 pl-11 pr-24 text-sm text-forest-deep placeholder:text-mist/70 shadow-xs focus:border-forest focus:outline-none focus:ring-2 focus:ring-forest/20 transition-all"
             />
             {searchTerm && (
@@ -95,7 +109,7 @@ export function GalleryFilterBar({
           <SlidersHorizontal className="h-3.5 w-3.5 text-forest" />
           <span>
             <strong className="text-forest-deep font-bold">{totalResults}</strong>{" "}
-            {t?.ResultsCount || "photos found"}
+            {countLabel}
           </span>
         </div>
       </div>

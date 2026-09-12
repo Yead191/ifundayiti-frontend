@@ -140,21 +140,15 @@ function MasonryCard({
       {/* Hover Editorial Overlay */}
       <div className="absolute inset-0 z-10 bg-linear-to-t from-black/85 via-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex flex-col justify-end p-5 text-white pointer-events-none">
         <div className="flex items-center justify-between gap-2 mb-1.5">
-          {item.category && (
-            <span className="inline-flex items-center rounded-full bg-white/20 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-amber-200 backdrop-blur-md">
-              {item.category}
-            </span>
+          {item.title && (
+            <h4 className="font-display font-bold text-base leading-snug text-white line-clamp-2">
+              {item.title}
+            </h4>
           )}
           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/25 text-white backdrop-blur-md transition-transform duration-300 group-hover:scale-110">
             <Eye className="h-3.5 w-3.5" />
           </span>
         </div>
-
-        {item.title && (
-          <h4 className="font-display font-bold text-base leading-snug text-white line-clamp-2">
-            {item.title}
-          </h4>
-        )}
 
         {item.location && (
           <p className="text-xs text-white/80 mt-1 flex items-center gap-1.5">

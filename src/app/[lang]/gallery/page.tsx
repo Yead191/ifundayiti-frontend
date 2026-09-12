@@ -1,20 +1,17 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
 
 import { Container } from "@/components/shared/container";
 import { EmptyState } from "@/components/shared/empty-state";
-import {
-  getGalleries,
-  getFolders,
-  getFolderById,
-} from "@/helpers/next-fetch/galleryActions";
+import { getFolders } from "@/helpers/next-fetch/galleryActions";
 import { getDictionary } from "@/lib/dictionaries";
 import { buildMetadata } from "@/lib/seo";
 
 import { GalleryHero } from "@/features/gallery/components/GalleryHero";
 import { FoldersDirectory } from "@/features/gallery/components/FoldersDirectory";
-import PhotoAlbum from "@/features/gallery/components/PhotoAlbum";
 import { GalleryFilterBar } from "@/features/gallery/components/GalleryFilterBar";
+import { FeaturedSpotlight } from "@/features/gallery/components/FeaturedSpotlight";
 
 interface GalleryPageProps {
   params: Promise<{ lang: string }>;
@@ -28,35 +25,16 @@ interface GalleryPageProps {
 
 export async function generateMetadata({
   params,
-  searchParams,
 }: GalleryPageProps): Promise<Metadata> {
   const { lang } = await params;
-  const { folder } = await searchParams;
   const dict = await getDictionary(lang);
   const t = dict?.GalleryPage;
 
-  if (folder) {
-    try {
-      const folderRes = await getFolderById(folder);
-      if (folderRes.success && folderRes.data) {
-        return buildMetadata({
-          title: `${folderRes.data.name} | ${t?.AlbumLabel || "Field Album"}`,
-          description:
-            t?.AlbumSubtitle ||
-            `Verified field photographs from ${folderRes.data.name} in Haiti.`,
-          path: `/${lang}/gallery?folder=${folder}`,
-        });
-      }
-    } catch {
-      // fallback
-    }
-  }
-
   return buildMetadata({
-    title: t?.Hero?.Title || "Community Gallery",
+    title: t?.Hero?.TitlePrefix ? `${t.Hero.TitlePrefix}${t.Hero.TitleHighlight || "Pictures"}` : "Our Impact in Pictures | Photo Albums",
     description:
       t?.Hero?.Subtitle ||
-      "Witness authentic field photographs of community projects and grassroots builders across Haiti.",
+      "Browse photo stories and community initiatives across Haiti.",
     path: `/${lang}/gallery`,
   });
 }
@@ -73,86 +51,31 @@ export default async function GalleryPage({
     page = "1",
   } = await searchParams;
 
+  // Backwards compatibility: If legacy ?folder=id query is used, redirect to dedicated page
+  if (folder) {
+    redirect(`/${lang}/gallery/${folder}`);
+  }
+
   const dict = await getDictionary(lang);
   const t = dict?.GalleryPage;
 
-  // Case 1: Inside a specific Folder / Album
-  if (folder) {
-    const [folderRes, galleriesRes] = await Promise.all([
-      getFolderById(folder),
-      getGalleries({
-        folder,
-        category: category === "All" ? "" : category,
-        searchTerm,
-        page: Number(page) || 1,
-        limit: 60,
-      }),
-    ]);
+  // Fetch albums from backend
+  const foldersRes = await getFolders({
+    category: category === "All" ? "" : category,
+    searchTerm,
+    page: Number(page) || 1,
+    limit: 100,
+    sort: "-featured -createdAt",
+  });
 
-    const currentFolder = folderRes.data || {
-      _id: folder,
-      name: t?.AlbumLabel || "Photo Album",
-      galleryCount: galleriesRes.pagination?.total ?? galleriesRes.data?.length,
-    };
-
-    const photos = galleriesRes?.data || [];
-    const total = galleriesRes?.pagination?.total ?? photos.length;
-
-    return (
-      <>
-        <GalleryHero
-          currentFolder={currentFolder}
-          lang={lang}
-          dict={dict}
-        />
-
-        <section className="py-12 md:py-16 bg-sand-soft/20 min-h-[60vh]">
-          <Container>
-            {/* Interactive Search & Category Filter Bar */}
-            <Suspense fallback={null}>
-              <GalleryFilterBar
-                lang={lang}
-                activeCategory={category}
-                initialSearchTerm={searchTerm}
-                totalResults={total}
-                folder={folder}
-                dict={dict}
-              />
-            </Suspense>
-
-            {/* Photos Showcase or Empty State */}
-            {photos.length === 0 ? (
-              <EmptyState
-                title={t?.Empty?.Title || "No photos found"}
-                body={
-                  searchTerm || category !== "All"
-                    ? t?.Empty?.Body ||
-                      "There are no photos matching your current search or filter in this album."
-                    : "There are currently no published photos inside this album."
-                }
-                actionLabel={
-                  searchTerm || category !== "All"
-                    ? t?.Empty?.ResetBtn || "Reset filters"
-                    : t?.BackToFolders || "Back to all albums"
-                }
-                actionHref={
-                  searchTerm || category !== "All"
-                    ? `/${lang}/gallery?folder=${folder}`
-                    : `/${lang}/gallery`
-                }
-              />
-            ) : (
-              <PhotoAlbum galleryItems={photos} lang={lang} dict={dict} />
-            )}
-          </Container>
-        </section>
-      </>
-    );
-  }
-
-  // Case 2: Root Folders Directory View (Default Folder-First Experience)
-  const foldersRes = await getFolders({ limit: 100, sort: "-createdAt" });
   const folders = foldersRes?.data || [];
+  const featuredFolders = folders.filter((f) => f.featured);
+
+  // Show spotlight when not filtered by specific search or category
+  const showSpotlight =
+    featuredFolders.length > 0 &&
+    !searchTerm &&
+    (!category || category === "All");
 
   return (
     <>
@@ -160,7 +83,52 @@ export default async function GalleryPage({
 
       <section className="py-12 md:py-16 bg-sand-soft/20 min-h-[60vh]">
         <Container>
-          <FoldersDirectory folders={folders} lang={lang} dict={dict} />
+          {/* Featured Album Spotlight Carousel */}
+          {showSpotlight && (
+            <FeaturedSpotlight
+              folders={featuredFolders}
+              lang={lang}
+              dict={dict}
+            />
+          )}
+
+          {/* Interactive Search & Category Filter Bar */}
+          <Suspense fallback={null}>
+            <GalleryFilterBar
+              lang={lang}
+              activeCategory={category}
+              initialSearchTerm={searchTerm}
+              totalResults={folders.length}
+              itemType="albums"
+              dict={dict}
+            />
+          </Suspense>
+
+          {/* Albums Grid Showcase or Empty State */}
+          {folders.length === 0 ? (
+            <EmptyState
+              title={t?.EmptyAlbums?.Title || "No photo albums found"}
+              body={
+                searchTerm || (category && category !== "All")
+                  ? t?.EmptyAlbums?.FilteredBody ||
+                    "There are no photo albums matching your current search or category filter."
+                  : t?.EmptyAlbums?.EmptyBody ||
+                    "There are currently no published photo albums available."
+              }
+              actionLabel={
+                searchTerm || (category && category !== "All")
+                  ? t?.Empty?.ResetBtn || "Reset filters"
+                  : undefined
+              }
+              actionHref={
+                searchTerm || (category && category !== "All")
+                  ? `/${lang}/gallery`
+                  : undefined
+              }
+            />
+          ) : (
+            <FoldersDirectory folders={folders} lang={lang} dict={dict} />
+          )}
         </Container>
       </section>
     </>

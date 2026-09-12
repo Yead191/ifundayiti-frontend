@@ -7,6 +7,9 @@ import {
   Folder as FolderIcon,
   ArrowRight,
   Calendar,
+  MapPin,
+  Star,
+  Tag,
 } from "lucide-react";
 import { getImageUrl } from "@/lib/getImageUrl";
 import Image from "next/image";
@@ -14,7 +17,12 @@ import Image from "next/image";
 export interface FolderProps {
   id?: string;
   name?: string;
+  description?: string;
   image?: string; // Optional cover photo
+  category?: string;
+  location?: string;
+  date?: string;
+  featured?: boolean;
   galleryCount?: number;
   createdAt?: string;
   href?: string;
@@ -79,7 +87,7 @@ export const FolderVisual: React.FC<{
       style={{ transform: `scale(${size})` }}
       className={`relative inline-block select-none ${className}`}
     >
-      <div className="relative w-[116px] h-[86px] transition-transform duration-300 ease-out group-hover:-translate-y-1">
+      <div className="relative w-29 h-21.5 transition-transform duration-300 ease-out group-hover:-translate-y-1">
         {/* Back Folder Wall */}
         <div
           className="relative w-full h-full rounded-tr-[12px] rounded-br-[12px] rounded-bl-[12px] shadow-sm"
@@ -87,7 +95,7 @@ export const FolderVisual: React.FC<{
         >
           {/* Top Folder Tab */}
           <span
-            className="absolute bottom-[98%] left-0 w-[42px] h-[12px] rounded-tl-[6px] rounded-tr-[6px]"
+            className="absolute bottom-[98%] left-0 w-10.5 h-3 rounded-tl-[6px] rounded-tr-[6px]"
             style={{ backgroundColor: folderBackColor }}
           />
 
@@ -132,7 +140,7 @@ export const FolderVisual: React.FC<{
 
           {/* Front Folder Cover (Angled Front Flap) */}
           <div
-            className="absolute z-30 inset-x-0 bottom-0 h-[82%] rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] rounded-tl-[4px] shadow-inner transition-all duration-300 ease-out origin-bottom group-hover:[transform:skew(-6deg)_scaleY(0.92)]"
+            className="absolute z-30 inset-x-0 bottom-0 h-[82%] rounded-bl-[10px] rounded-br-[10px] rounded-tr-[10px] rounded-tl-lg shadow-inner transition-all duration-300 ease-out origin-bottom group-hover:transform-[skew(-6deg)_scaleY(0.92)]"
             style={{
               backgroundColor: color,
               backgroundImage:
@@ -140,7 +148,7 @@ export const FolderVisual: React.FC<{
             }}
           >
             {/* Subtle Folder Lip Accent */}
-            <div className="absolute top-0 inset-x-0 h-[2px] bg-white/25 rounded-t" />
+            <div className="absolute top-0 inset-x-0 h-0.5 bg-white/25 rounded-t" />
             <div className="absolute bottom-2 right-2.5 opacity-30">
               <Images className="h-3.5 w-3.5 text-sand" />
             </div>
@@ -161,7 +169,12 @@ export const FolderVisual: React.FC<{
 export const Folder: React.FC<FolderProps> = ({
   id,
   name,
+  description,
   image,
+  category,
+  location,
+  date,
+  featured = false,
   galleryCount = 0,
   createdAt,
   href,
@@ -188,11 +201,14 @@ export const Folder: React.FC<FolderProps> = ({
 
   const resolvedImg = image ? getImageUrl(image) : null;
 
-  const formattedDate = createdAt
-    ? new Date(createdAt).toLocaleDateString(
+  // Format date preferring event date, then createdAt
+  const displayDate = date || createdAt;
+  const formattedDate = displayDate
+    ? new Date(displayDate).toLocaleDateString(
         lang === "ht" ? "fr-HT" : "en-US",
         {
           month: "short",
+          day: "numeric",
           year: "numeric",
         },
       )
@@ -210,7 +226,7 @@ export const Folder: React.FC<FolderProps> = ({
     >
       {/* Visual Section: Exact identical aspect-[16/11] header height for all cards */}
       {resolvedImg ? (
-        <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden bg-forest/5">
+        <div className="relative aspect-16/11 w-full shrink-0 overflow-hidden bg-forest/5">
           {/* Ambient blurred glow in background */}
           <div
             className="absolute inset-0 bg-cover bg-center blur-lg opacity-25 scale-110 transition-opacity duration-300 group-hover:opacity-40"
@@ -222,27 +238,60 @@ export const Folder: React.FC<FolderProps> = ({
             src={resolvedImg}
             alt={name || "Album cover"}
             fill
+            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
             className="relative z-10 w-full object-cover transition-transform duration-500 ease-out group-hover:scale-106"
             loading="lazy"
           />
 
-          {/* Subtle Dark Gradient Overlay for Contrast */}
-          <div className="absolute inset-0 z-20 bg-linear-to-t from-black/65 via-transparent to-black/15 pointer-events-none" />
+          {/* Dark Gradient Overlay for Contrast */}
+          <div className="absolute inset-0 z-20 bg-linear-to-t from-black/75 via-black/15 to-black/35 pointer-events-none" />
+
+          {/* Top-Left: Category Badge */}
+          {category && (
+            <div className="absolute top-2.5 left-2.5 z-30 inline-flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-[10px] sm:text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-white/20">
+              <Tag className="h-2.5 w-2.5 text-sand" />
+              <span className="truncate max-w-[120px]">{category}</span>
+            </div>
+          )}
+
+          {/* Top-Right: Featured Star Badge */}
+          {featured && (
+            <div className="absolute top-2.5 right-2.5 z-30 inline-flex items-center gap-1 rounded-full bg-amber-500/90 px-2.5 py-1 text-[10px] sm:text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-amber-300/40">
+              <Star className="h-2.5 w-2.5 fill-white" />
+              <span>{dict?.GalleryPage?.Featured || "Featured"}</span>
+            </div>
+          )}
 
           {/* Bottom-Right: Photo Count Pill */}
           <div className="absolute bottom-2.5 right-2.5 z-30 inline-flex items-center gap-1.5 rounded-full bg-black/65 px-2.5 py-1 text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-white/20">
-            <Images className="h-3 w-3" />
+            <Images className="h-3 w-3 text-sand" />
             <span>{countText}</span>
           </div>
         </div>
       ) : (
         /* Fallback to 3D FolderVisual with same aspect-[16/11] container */
-        <div className="relative aspect-[16/11] w-full shrink-0 overflow-hidden bg-sand-soft/40 border-b border-hairline/50 flex items-center justify-center">
+        <div className="relative aspect-16/11 w-full shrink-0 overflow-hidden bg-sand-soft/40 border-b border-hairline/50 flex items-center justify-center">
           <FolderVisual color={color} size={size} items={items} />
+
+          {/* Top-Left: Category Badge */}
+          {category && (
+            <div className="absolute top-2.5 left-2.5 z-10 inline-flex items-center gap-1 rounded-full bg-forest/80 px-2.5 py-1 text-[10px] sm:text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-forest/20">
+              <Tag className="h-2.5 w-2.5 text-sand" />
+              <span className="truncate max-w-[120px]">{category}</span>
+            </div>
+          )}
+
+          {/* Top-Right: Featured Star Badge */}
+          {featured && (
+            <div className="absolute top-2.5 right-2.5 z-10 inline-flex items-center gap-1 rounded-full bg-amber-500/90 px-2.5 py-1 text-[10px] sm:text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-amber-300/40">
+              <Star className="h-2.5 w-2.5 fill-white" />
+              <span>{dict?.GalleryPage?.Featured || "Featured"}</span>
+            </div>
+          )}
 
           {/* Bottom-Right: Photo Count Pill */}
           <div className="absolute bottom-2.5 right-2.5 z-10 inline-flex items-center gap-1.5 rounded-full bg-forest/90 px-2.5 py-1 text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-forest/20">
-            <Images className="h-3 w-3" />
+            <Images className="h-3 w-3 text-sand" />
             <span>{countText}</span>
           </div>
         </div>
@@ -250,28 +299,46 @@ export const Folder: React.FC<FolderProps> = ({
 
       {/* Details Container */}
       <div className="flex flex-1 flex-col justify-between p-4 sm:p-5">
-        <div>
-          {/* Folder Name */}
-          <h3 className="font-display text-sm sm:text-base md:text-lg font-bold text-forest-deep transition-colors group-hover:text-forest line-clamp-1 w-full text-left">
+        <div className="space-y-1.5">
+          {/* Folder / Album Name */}
+          <h3 className="font-display text-base sm:text-lg font-bold text-forest-deep transition-colors group-hover:text-forest line-clamp-1 w-full text-left">
             {name}
           </h3>
+
+          {/* Location & Date Row */}
+          {(location || formattedDate) && (
+            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-mist">
+              {location && (
+                <span className="inline-flex items-center gap-1 truncate max-w-[150px]">
+                  <MapPin className="h-3 w-3 text-emerald-600 shrink-0" />
+                  <span className="truncate">{location}</span>
+                </span>
+              )}
+              {formattedDate && (
+                <span className="inline-flex items-center gap-1 shrink-0">
+                  <Calendar className="h-3 w-3 text-mist/70 shrink-0" />
+                  <span>{formattedDate}</span>
+                </span>
+              )}
+            </div>
+          )}
+
+          {/* Description snippet */}
+          {description && (
+            <p className="text-xs text-mist/80 line-clamp-2 leading-relaxed text-left pt-0.5">
+              {description}
+            </p>
+          )}
         </div>
 
         {/* Footer: Date and CTA */}
         <div className="mt-3.5 flex items-center justify-between border-t border-hairline/60 pt-2.5 text-[11px] sm:text-xs text-mist">
           <span className="inline-flex items-center gap-1 text-faint">
-            {formattedDate && (
-              <>
-                <Calendar className="h-3.5 w-3.5" />
-                <span>{formattedDate}</span>
-              </>
-            )}
+            {countText}
           </span>
 
           <span className="inline-flex items-center gap-1 font-bold text-forest group-hover:text-forest-deep transition-all group-hover:translate-x-0.5">
-            <span className="hidden sm:flex">
-              {dict?.GalleryPage?.OpenAlbum || "Open"}
-            </span>
+            <span>{dict?.GalleryPage?.OpenAlbum || "Open Album"}</span>
             <ArrowRight className="h-3.5 w-3.5" />
           </span>
         </div>
