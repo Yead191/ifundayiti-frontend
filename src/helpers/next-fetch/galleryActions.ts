@@ -2,11 +2,7 @@
 
 import { nextFetch } from "./NextFetch";
 
-export enum FOLDER_STATUS {
-  DRAFT = "Draft",
-  PUBLISHED = "Published",
-  ARCHIVED = "Archived",
-}
+export type FOLDER_STATUS = "Draft" | "Published" | "Archived";
 
 export interface GalleryFolder {
   _id: string;
