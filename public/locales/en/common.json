@@ -20,7 +20,8 @@
     "Contact": "Contact",
     "Track": "Track",
     "Donate": "Donate",
-    "Apply": "Apply"
+    "Apply": "Apply",
+    "Blogs": "Blogs"
   },
   "Hero": {
     "ApplicationsOpen": "Applications open now",
@@ -1902,6 +1903,35 @@
       "Environment": "Environment",
       "Volunteering": "Volunteering",
       "Other": "Other"
+    }
+  },
+  "BlogPage": {
+    "Meta": {
+      "Title": "Blogs & Insights · IFundAyiti",
+      "Description": "Discover authentic field dispatches, grassroots milestones, and impact stories from community projects across Haiti."
+    },
+    "Hero": {
+      "Eyebrow": "Insights & Dispatches · Field Archives",
+      "TitlePrefix": "Stories of ",
+      "TitleHighlight": "Impact, Transparency",
+      "TitleSuffix": " & Hope from Haiti",
+      "Subtitle": "Explore authentic dispatches, grassroots milestones, and in-depth stories documenting how local entrepreneurship and community grants shape sustainable futures.",
+      "SearchPlaceholder": "Search articles by title, topic, or keyword..."
+    },
+    "SpotlightBadge": "Featured Dispatch",
+    "ReadFullStory": "Read Full Story",
+    "AllArticles": "All Articles",
+    "ReadArticle": "Read Article",
+    "BackToArticles": "All Articles",
+    "RelatedEyebrow": "More Field Updates",
+    "RelatedTitle": "Related Stories & Dispatches",
+    "ViewAllArticles": "View all articles",
+    "Featured": "Featured Spotlight",
+    "Empty": {
+      "Title": "No articles found",
+      "FilteredBody": "We couldn't find any articles matching your search or category filter. Try clearing your search or browsing all topics.",
+      "NoArticlesBody": "Our editorial team is currently drafting field dispatches. Check back soon for new articles!",
+      "ResetBtn": "Reset filters"
     }
   }
 }

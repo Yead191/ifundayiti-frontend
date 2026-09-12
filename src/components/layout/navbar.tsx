@@ -129,6 +129,7 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
       subItems: [
         { label: t.Calendar || "Calendar", href: "/calendar" },
         { label: t.Gallery || "Gallery", href: "/gallery" },
+        { label: t.Blogs || "Blogs", href: "/blogs" },
       ],
     },
     { label: t.Shop || "Shop", href: "/shop" },

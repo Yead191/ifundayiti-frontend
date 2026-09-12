@@ -20,7 +20,8 @@
     "Contact": "Kontakte Nou",
     "Track": "Swiv",
     "Donate": "Fè yon don",
-    "Apply": "Aplike"
+    "Apply": "Aplike",
+    "Blogs": "Blòg"
   },
   "Hero": {
     "ApplicationsOpen": "Aplikasyon yo louvri kounye a",
@@ -1896,6 +1897,35 @@
       "ContactBtn": "Kontakte Sipò",
       "TrackBtn": "Suiv Aplikasyon Ou",
       "EmailUs": "Ekri nou nan"
+    }
+  },
+  "BlogPage": {
+    "Meta": {
+      "Title": "Blòg ak Nouvèl · IFundAyiti",
+      "Description": "Dekouvri atik sou teren, reyalizasyon lokal, ak istwa enpak kominotè atravè Ayiti."
+    },
+    "Hero": {
+      "Eyebrow": "Nouvèl ak Analiz · Achiv Teren",
+      "TitlePrefix": "Istwa ",
+      "TitleHighlight": "Enpak, Transparans",
+      "TitleSuffix": " ak Espwa an Ayiti",
+      "Subtitle": "Eksplore nouvèl sou teren, etap enpòtan, ak istwa pwofon ki montre kijan antreprenarya lokal ak ti sibvansyon kominotè ap bati yon avni dirab.",
+      "SearchPlaceholder": "Chèche atik pa tit, sijè, oswa mo kle..."
+    },
+    "SpotlightBadge": "Atik Vedèt",
+    "ReadFullStory": "Li Tout Atik la",
+    "AllArticles": "Tout Atik Yo",
+    "ReadArticle": "Li Atik Sa a",
+    "BackToArticles": "Tout Atik Yo",
+    "RelatedEyebrow": "Lòt Nouvèl sou Teren",
+    "RelatedTitle": "Istwa ak Atik Ki Gen Rapò",
+    "ViewAllArticles": "Wè tout atik yo",
+    "Featured": "Atik Vedèt",
+    "Empty": {
+      "Title": "Nou pa jwenn okenn atik",
+      "FilteredBody": "Nou pa jwenn okenn atik ki koresponn ak rechèch ou oswa kategori w chwazi a. Eseye efase rechèch la oswa gade tout atik yo.",
+      "NoArticlesBody": "Ekip editoryal nou an ap prepare nouvo atik sou teren. Retounen talè pou li nouvo istwa!",
+      "ResetBtn": "Reyajiste filtè yo"
     }
   }
 }

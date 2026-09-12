@@ -22,6 +22,7 @@ export function Footer() {
     { label: t.Impact, href: "/impact" },
     { label: t.Projects, href: "/projects" },
     { label: t.Winners, href: "/winners" },
+    { label: t.Blogs || "Blogs", href: "/blogs" },
   ];
 
   const participateLinks = [

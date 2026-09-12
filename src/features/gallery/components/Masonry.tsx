@@ -328,7 +328,7 @@ const Masonry: React.FC<MasonryProps> = ({
   }
 
   return (
-    <div ref={containerRef} className="relative w-full min-h-[300px]">
+    <div ref={containerRef} className="relative w-full min-h-75">
       {grid?.map((item, index) => (
         <div
           key={item.id}

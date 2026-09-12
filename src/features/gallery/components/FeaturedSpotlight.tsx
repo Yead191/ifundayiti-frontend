@@ -73,7 +73,7 @@ export function FeaturedSpotlight({
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 items-stretch">
             {/* Left: Cover Image Viewport */}
-            <div className="relative min-h-[260px] sm:min-h-[340px] lg:min-h-[420px] lg:col-span-7 overflow-hidden bg-black/40">
+            <div className="relative min-h-65 sm:min-h-85 lg:min-h-105 lg:col-span-7 overflow-hidden bg-black/40">
               {coverUrl ? (
                 <>
                   <Image
@@ -153,7 +153,9 @@ export function FeaturedSpotlight({
                   href={`/${lang}/gallery/${activeFolder._id || activeFolder.id}`}
                   className="inline-flex items-center gap-2 rounded-2xl bg-amber-400 px-5 py-2.5 text-sm font-bold text-forest-deep shadow-lg hover:bg-amber-300 transition-all hover:scale-102"
                 >
-                  <span>{dict?.GalleryPage?.ExploreAlbum || "Explore Album"}</span>
+                  <span>
+                    {dict?.GalleryPage?.ExploreAlbum || "Explore Album"}
+                  </span>
                   <ArrowRight className="h-4 w-4" />
                 </Link>
 
