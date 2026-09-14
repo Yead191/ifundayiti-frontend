@@ -127,6 +127,7 @@
     "Email": "Imèl:",
     "Phone": "Telefòn:",
     "Headquarters": "Biwo prensipal:",
+    "EIN": "EIN:",
     "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif. Estati 501(c)(3) an annatant."
   },
   "DonationForm": {
@@ -147,11 +148,11 @@
     "Preset4": "Sipòtè gwoup chak trimès",
     "Preset5": "Finanse 1 ti sibvansyon konplè",
     "ImpactDefault": "❤️ Every dollar brings a Haitian entrepreneur closer pou funding their dream.",
-    "Impact25": "🤝 Chak kontribisyon alimante fon pwogram santral la ki pèmèt pwochen sik sibvansyon yo fèt.",
-    "Impact50": "💡 Ou gift supplies 5% nan a micro-grant ak essential equipment pou small businesses.",
-    "Impact100": "🌱 Ou $100 gift provides 10% nan a micro-grant, opening new opportunities pou local builders.",
-    "Impact250": "🚀 Ou gift covers a quarter nan a micro-grant ak sponsors entrepreneur incubator training.",
-    "Impact500": "🌟 Ou gift funds over half nan an equity-free micro-grant pou a local business.",
+    "Impact25": "Chak kontribisyon alimante fon pwogram santral la ki pèmèt pwochen sik sibvansyon yo fèt.",
+    "Impact50": "Ou gift supplies 5% nan a micro-grant ak essential equipment pou small businesses.",
+    "Impact100": "Ou $100 gift provides 10% nan a micro-grant, opening new opportunities pou local builders.",
+    "Impact250": "Ou gift covers a quarter nan a micro-grant ak sponsors entrepreneur incubator training.",
+    "Impact500": "Ou gift funds over half nan an equity-free micro-grant pou a local business.",
     "Impact1000": "🇭🇹 Ou extraordinary gift sponsors an ENTIRE $1,000 micro-grant pou a Haitian entrepreneur!",
     "ErrName": "Tanpri antre non ou",
     "ErrEmail": "Antre yon adrès imèl valab",
@@ -1357,21 +1358,67 @@
   },
   "GalleryPage": {
     "Hero": {
-      "Eyebrow": "Galri Kominote",
-      "Title": "Moman Enpak nan Baz Kominote yo",
-      "Subtitle": "Gade foto otantik sou teren pwojè kominotè, seremoni sibvansyon, atelye ak kreyatè lokal k ap bati avni dirab atravè Ayiti."
+      "Eyebrow": "Achiv Sou Teren · Enpak Kominotè",
+      "Title": "Enpak Nou an Nan Imaj",
+      "TitlePrefix": "Enpak Nou an ",
+      "TitleHighlight": "Nan Imaj",
+      "Subtitle": "Gade istwa an foto ak inisyativ kominotè atravè Ayiti."
     },
-    "SearchPlaceholder": "Chèche pa tit, kote, kategori...",
-    "ResultsCount": "foto jwenn",
-    "All": "Tout",
+
+    "BackToFolders": "Retounen nan Tout Albòm Yo",
+
+    "AlbumLabel": "Albòm Foto",
+    "AlbumSubtitle": "Foto verifye sou teren k ap dokimante pwogrè ak travay kominotè nan albòm pwojè sa a.",
+    "OpenAlbum": "Louvri Albòm",
+    "ExploreAlbum": "Eksplore Albòm",
+
+    "Featured": "Enpòtan",
+    "Spotlight": "Albòm Enpòtan",
+
+    "PhotoSingle": "Foto",
+    "PhotoPlural": "Foto yo",
+    "AlbumSingle": "albòm jwenn",
+    "AlbumPlural": "albòm jwenn",
+
+    "SearchAlbumsPlaceholder": "Chèche albòm pa tit, lokalizasyon, kategori...",
+    "SearchFoldersPlaceholder": "Chèche albòm foto pa non...",
+    "SearchPlaceholder": "Chèche foto pa lejann oswa tit...",
+
+    "ResultsCount": "foto yo jwenn",
+
+    "NoFoldersTitle": "Pa gen albòm foto ki disponib kounye a",
+    "NoFoldersBody": "Ekip nou an ap òganize achiv foto yo kounye a. Retounen talè pou wè dènye mizajou yo.",
+
+    "NoSearchFoldersTitle": "Nou pa jwenn okenn albòm ki koresponn",
+    "NoSearchFoldersBody": "Eseye chanje mo kle rechèch ou a pou jwenn yon albòm.",
+
+    "ClearSearch": "Efase Rechèch",
+
+    "VerifiedBadge": "100% Verifye Sou Teren",
+    "DepartmentsBadge": "10 Depatman",
+    "VerifiedNotice": "100% Verifye Sou Teren",
+    "Filtered": "filtre",
+
+    "EmptyAlbums": {
+      "Title": "Pa gen albòm foto yo jwenn",
+      "FilteredBody": "Pa gen albòm foto ki koresponn ak rechèch oswa kategori ou chwazi a.",
+      "EmptyBody": "Pa gen albòm foto ki pibliye pou kounye a."
+    },
+
+    "EmptyAlbumPhotosTitle": "Poko gen foto nan albòm sa a",
+    "EmptyAlbumPhotosBody": "Ekip sou teren nou an ap telechaje foto pou albòm sa a. Tanpri tounen byento!",
+
+    "AlbumNotFoundTitle": "Albòm Foto a Pa Jwenn",
+    "AlbumNotFoundBody": "Albòm w ap chèche a pa egziste oswa yo retire li.",
+
     "Categories": {
-      "All": "Tout foto",
-      "Community Outreach": "Sansibilizasyon kominotè",
-      "Grant Programs": "Pwogram sibvansyon",
+      "All": "Tout Foto Yo",
+      "Community Outreach": "Sansibilizasyon Kominotè",
+      "Grant Programs": "Pwogram Sibvansyon",
       "Education": "Edikasyon",
       "Food & Agriculture": "Manje ak Agrikilti",
-      "Healthcare": "Swen sante",
-      "Community Development": "Devlopman kominotè",
+      "Healthcare": "Swen Sante",
+      "Community Development": "Devlopman Kominotè",
       "Entrepreneurship": "Antreprenarya",
       "Environment": "Anviwònman",
       "Events": "Evènman",
@@ -1379,22 +1426,26 @@
       "Success Stories": "Istwa Siksè",
       "Other": "Lòt"
     },
+
     "Modal": {
-      "CapturedOn": "Pran le",
+      "CapturedOn": "Pran nan dat",
       "Location": "Kote",
       "Category": "Kategori",
-      "StoryNote": "Kontèks ak nòt teren",
-      "Spotlight": "An vedèt",
-      "ViewOriginal": "Rezolisyon konplè",
+      "StoryNote": "Kontèks & Nòt Teren",
+      "Spotlight": "Enpòtan",
+      "ViewOriginal": "Rezolisyon Konplè",
       "Share": "Pataje",
-      "Copied": "Lyen kopye!",
+      "Copied": "Lyen Kopye!",
       "Close": "Fèmen aperçu"
     },
+
     "Empty": {
-      "Title": "Pa jwenn foto",
-      "Body": "Pa gen foto pibliye ki koresponn ak rechèch oswa filtè kategori ou kounye a.",
-      "ResetBtn": "Gade tout foto yo"
-    }
+      "Title": "Pa gen foto yo jwenn",
+      "Body": "Pa gen okenn foto pibliye ki koresponn ak rechèch ou an oswa kategori filtre a.",
+      "ResetBtn": "Wè tout foto yo"
+    },
+
+    "All": "Tout"
   },
   "ShopPage": {
     "Hero": {
@@ -1786,80 +1837,7 @@
       "AuthRequiredMessage": "Tanpri konekte oswa kreye yon kont pou w ka soumèt yon aplikasyon pou patenarya."
     }
   },
-  "GalleryPage": {
-    "Hero": {
-      "Eyebrow": "Achiv Sou Teren · Enpak Kominotè",
-      "Title": "Enpak Nou an Nan Imaj",
-      "TitlePrefix": "Enpak Nou an ",
-      "TitleHighlight": "Nan Imaj",
-      "Subtitle": "Gade istwa an foto ak inisyativ kominotè atravè Ayiti."
-    },
-    "BackToFolders": "Retounen nan Tout Albòm Yo",
-    "AlbumLabel": "Albòm Foto",
-    "AlbumSubtitle": "Foto verifye sou teren k ap dokimante pwogrè ak travay kominotè nan albòm pwojè sa a.",
-    "OpenAlbum": "Louvri Albòm",
-    "ExploreAlbum": "Eksplore Albòm",
-    "Featured": "Enpòtan",
-    "Spotlight": "Albòm Enpòtan",
-    "PhotoSingle": "Foto",
-    "PhotoPlural": "Foto yo",
-    "AlbumSingle": "albòm jwenn",
-    "AlbumPlural": "albòm jwenn",
-    "SearchAlbumsPlaceholder": "Chèche albòm pa tit, lokalizasyon, kategori...",
-    "SearchFoldersPlaceholder": "Chèche albòm foto pa non...",
-    "SearchPlaceholder": "Chèche foto pa lejann oswa tit...",
-    "ResultsCount": "foto yo jwenn",
-    "NoFoldersTitle": "Pa gen albòm foto ki disponib kounye a",
-    "NoFoldersBody": "Ekip nou an ap organize achiv foto yo kounye a. Retounen talè pou wè dènye mizajou yo.",
-    "EmptyAlbums": {
-      "Title": "Pa gen albòm foto yo jwenn",
-      "FilteredBody": "Pa gen albòm foto ki koresponn ak rechèch oswa kategori ou chwazi a.",
-      "EmptyBody": "Pa gen albòm foto ki pibliye pou kounye a."
-    },
-    "EmptyAlbumPhotosTitle": "Poko gen foto nan albòm sa a",
-    "EmptyAlbumPhotosBody": "Ekip sou teren nou an ap telechaje foto pou albòm sa a. Tanpri tounen byento!",
-    "AlbumNotFoundTitle": "Albòm Foto a Pa Jwenn",
-    "AlbumNotFoundBody": "Albòm w ap chèche a pa egziste oswa yo retire li.",
-    "NoSearchFoldersTitle": "Nou pa jwenn okenn albòm ki koresponn",
-    "NoSearchFoldersBody": "Eseye chanje mo kle rechèch ou a pou jwenn yon albòm.",
-    "ClearSearch": "Efase Rechèch",
-    "VerifiedBadge": "100% Verifye Sou Teren",
-    "DepartmentsBadge": "10 Depatman",
-    "VerifiedNotice": "100% Verifye Sou Teren",
-    "Filtered": "filtre",
-    "All": "Tout",
-    "Categories": {
-      "All": "Tout Foto Yo",
-      "Community Outreach": "Sansibilizasyon Kominotè",
-      "Healthcare": "Sante",
-      "Education": "Edikasyon",
-      "Events": "Evènman",
-      "Grant Programs": "Pwogram Sibvansyon",
-      "Success Stories": "Istwa Siksè",
-      "Food & Agriculture": "Agrikilti & Alimantasyon",
-      "Community Development": "Devlopman Kominotè",
-      "Entrepreneurship": "Antreprenarya",
-      "Environment": "Anviwònman",
-      "Volunteering": "Volontarya",
-      "Other": "Lòt"
-    },
-    "Modal": {
-      "CapturedOn": "Pran nan dat",
-      "Location": "Kote",
-      "Category": "Kategori",
-      "StoryNote": "Kontèks & Nòt Teren",
-      "Spotlight": "Enpòtan",
-      "ViewOriginal": "Gwo Rezolisyon",
-      "Share": "Pataje",
-      "Copied": "Lyen Kopye!",
-      "Close": "Fèmen aperçu"
-    },
-    "Empty": {
-      "Title": "Pa gen foto yo jwenn",
-      "Body": "Pa gen okenn foto pibliye ki koresponn ak rechèch ou an oswa kategori filtre a.",
-      "ResetBtn": "Wè tout foto yo"
-    }
-  },
+
   "FaqPage": {
     "Hero": {
       "Eyebrow": "Èd & Resous",

@@ -15,9 +15,7 @@ import {
 
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
-import {
-  getSingleBlog,
-} from "@/helpers/next-fetch/blogActions";
+import { getSingleBlog } from "@/helpers/next-fetch/blogActions";
 import { getDictionary } from "@/lib/dictionaries";
 import { buildMetadata, getSiteUrl } from "@/lib/seo";
 import { getImageUrl } from "@/lib/getImageUrl";
@@ -64,9 +62,7 @@ export async function generateMetadata({
   });
 }
 
-export default async function BlogDetailPage({
-  params,
-}: BlogDetailPageProps) {
+export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { lang, slug } = await params;
   const dict = await getDictionary(lang);
   const t = dict?.BlogPage;
@@ -81,7 +77,10 @@ export default async function BlogDetailPage({
   const rawContent = blog.content || blog.contain || "";
   const coverUrl = blog.image ? getImageUrl(blog.image) : null;
   const readTime = calculateReadTime(rawContent);
-  const formattedDate = formatBlogDate(blog.publishedAt || blog.createdAt, lang);
+  const formattedDate = formatBlogDate(
+    blog.publishedAt || blog.createdAt,
+    lang,
+  );
 
   const categoryName =
     typeof blog.category === "object" && blog.category
@@ -259,7 +258,7 @@ export default async function BlogDetailPage({
             {/* Featured Cover Hero Image */}
             {coverUrl && (
               <Reveal>
-                <div className="relative aspect-16/9 w-full overflow-hidden rounded-3xl bg-neutral-900 shadow-xl border border-hairline/70 mb-12">
+                <div className="relative aspect-video w-full overflow-hidden rounded-3xl bg-neutral-900 shadow-xl border border-hairline/70 mb-12">
                   <Image
                     src={coverUrl}
                     alt={blog.title}
@@ -305,7 +304,9 @@ export default async function BlogDetailPage({
               {/* Bottom Social Share Bar */}
               <div className="mt-8 flex items-center justify-between border-t border-b border-hairline/70 py-4">
                 <span className="text-xs font-bold uppercase tracking-wider text-forest">
-                  {lang === "ht" ? "Ou renmen atik sa a?" : "Enjoyed this article?"}
+                  {lang === "ht"
+                    ? "Ou renmen atik sa a?"
+                    : "Enjoyed this article?"}
                 </span>
                 <BlogShareButtons
                   title={blog.title}

@@ -127,6 +127,7 @@
     "Email": "Email:",
     "Phone": "Phone:",
     "Headquarters": "Headquarters:",
+    "EIN": "EIN:",
     "NonprofitNotice": "IFundAyiti is a nonprofit organization. 501(c)(3) pending."
   },
   "DonationForm": {
@@ -147,12 +148,12 @@
     "Preset4": "Quarterly batch sponsor",
     "Preset5": "Sponsor 1 Full Micro-Grant",
     "ImpactDefault": "❤️ Every dollar brings a Haitian entrepreneur closer to funding their dream.",
-    "Impact25": "🤝 Every contribution fuels the central program fund that powers upcoming grant cycles.",
-    "Impact50": "💡 Your gift supplies 5% of a micro-grant and essential equipment for small businesses.",
-    "Impact100": "🌱 Your $100 gift provides 10% of a micro-grant, opening new opportunities for local builders.",
-    "Impact250": "🚀 Your gift covers a quarter of a micro-grant and sponsors entrepreneur incubator training.",
-    "Impact500": "🌟 Your gift funds over half of an equity-free micro-grant for a local business.",
-    "Impact1000": "🇭🇹 Your extraordinary gift sponsors an ENTIRE $1,000 micro-grant for a Haitian entrepreneur!",
+    "Impact25": "Every contribution fuels the central program fund that powers upcoming grant cycles.",
+    "Impact50": "Your gift supplies 5% of a micro-grant and essential equipment for small businesses.",
+    "Impact100": "Your $100 gift provides 10% of a micro-grant, opening new opportunities for local builders.",
+    "Impact250": "Your gift covers a quarter of a micro-grant and sponsors entrepreneur incubator training.",
+    "Impact500": "Your gift funds over half of an equity-free micro-grant for a local business.",
+    "Impact1000": "Your extraordinary gift sponsors an ENTIRE $1,000 micro-grant for a Haitian entrepreneur!",
     "ErrName": "Please enter your name",
     "ErrEmail": "Enter a valid email address",
     "ErrAmount": "Minimum donation is $5",
@@ -1358,34 +1359,60 @@
   "GalleryPage": {
     "Hero": {
       "Eyebrow": "Field Archives · Community Impact",
-      "Title": "Moments of Grassroots Impact",
-      "TitlePrefix": "Moments of ",
-      "TitleHighlight": "Grassroots Impact",
-      "Subtitle": "Explore authentic field photographs of community projects, grant ceremonies, workshops, and local builders creating sustainable futures across Haiti."
+      "Title": "Our Impact in Pictures",
+      "TitlePrefix": "Our Impact in ",
+      "TitleHighlight": "Pictures",
+      "Subtitle": "Browse photo stories and community initiatives across Haiti."
     },
-    "BackToFolders": "All Albums",
+
+    "BackToFolders": "Back to All Albums",
+
     "AlbumLabel": "Photo Album",
-    "AlbumSubtitle": "Field photographs documenting community impact and grassroots progress in this project album.",
+    "AlbumSubtitle": "Verified field photographs of community initiatives across Haiti.",
+    "OpenAlbum": "Open Album",
+    "ExploreAlbum": "Explore Album",
+
+    "Featured": "Featured",
+    "Spotlight": "Featured Album",
+
     "PhotoSingle": "Photo",
     "PhotoPlural": "Photos",
-    "AlbumSingle": "Album",
-    "AlbumPlural": "Albums",
-    "OpenAlbum": "Open Album",
+    "AlbumSingle": "album found",
+    "AlbumPlural": "albums found",
+
+    "SearchAlbumsPlaceholder": "Search albums by title, location, category...",
     "SearchFoldersPlaceholder": "Search photo albums by name...",
-    "NoFoldersTitle": "No Photo Albums Available",
-    "NoFoldersBody": "Our team is currently organizing photo archives. Check back soon for field updates.",
-    "NoSearchFoldersTitle": "No matching albums found",
-    "NoSearchFoldersBody": "Try adjusting your search keywords to locate an album.",
-    "ClearSearch": "Clear Search",
+    "SearchPlaceholder": "Search photos by caption or title...",
+
+    "ResultsCount": "photos found",
+
     "VerifiedBadge": "100% Field Verified",
     "DepartmentsBadge": "10 Departments",
     "VerifiedNotice": "100% Field Verified",
     "Filtered": "filtered",
-    "SearchPlaceholder": "Search by title, location, category...",
-    "ResultsCount": "photos found",
-    "All": "All",
+
+    "NoFoldersTitle": "No photo albums available yet",
+    "NoFoldersBody": "Our team is currently organizing photo archives. Check back soon!",
+
+    "NoSearchFoldersTitle": "No matching albums found",
+    "NoSearchFoldersBody": "Try adjusting your search keywords to locate an album.",
+
+    "ClearSearch": "Clear Search",
+
+    "EmptyAlbums": {
+      "Title": "No photo albums found",
+      "FilteredBody": "There are no photo albums matching your current search or category filter.",
+      "EmptyBody": "There are currently no published photo albums available."
+    },
+
+    "EmptyAlbumPhotosTitle": "No photos in this album yet",
+    "EmptyAlbumPhotosBody": "Our field team is uploading photographs for this album. Please check back soon!",
+
+    "AlbumNotFoundTitle": "Photo Album Not Found",
+    "AlbumNotFoundBody": "The album you are looking for does not exist or has been removed.",
+
     "Categories": {
-      "All": "All Photos",
+      "All": "All",
       "Community Outreach": "Community Outreach",
       "Grant Programs": "Grant Programs",
       "Education": "Education",
@@ -1399,6 +1426,7 @@
       "Success Stories": "Success Stories",
       "Other": "Other"
     },
+
     "Modal": {
       "CapturedOn": "Captured on",
       "Location": "Location",
@@ -1410,10 +1438,11 @@
       "Copied": "Link Copied!",
       "Close": "Close preview"
     },
+
     "Empty": {
       "Title": "No photos found",
-      "Body": "There are no published photos matching your current search or category filter.",
-      "ResetBtn": "View all photos"
+      "Body": "There are no photos matching your current search in this album.",
+      "ResetBtn": "Reset filters"
     }
   },
   "ShopPage": {
@@ -1845,66 +1874,7 @@
       "EmailUs": "Email us at"
     }
   },
-  "GalleryPage": {
-    "Hero": {
-      "Eyebrow": "Field Archives · Community Impact",
-      "TitlePrefix": "Our Impact in ",
-      "TitleHighlight": "Pictures",
-      "Subtitle": "Browse photo stories and community initiatives across Haiti."
-    },
-    "BackToFolders": "Back to All Albums",
-    "AlbumLabel": "Photo Album",
-    "AlbumSubtitle": "Verified field photographs of community initiatives across Haiti.",
-    "OpenAlbum": "Open Album",
-    "ExploreAlbum": "Explore Album",
-    "Featured": "Featured",
-    "Spotlight": "Featured Album",
-    "PhotoSingle": "Photo",
-    "PhotoPlural": "Photos",
-    "AlbumSingle": "album found",
-    "AlbumPlural": "albums found",
-    "SearchAlbumsPlaceholder": "Search albums by title, location, category...",
-    "SearchPlaceholder": "Search photos by caption or title...",
-    "ResultsCount": "photos found",
-    "NoFoldersTitle": "No photo albums available yet",
-    "NoFoldersBody": "Our team is currently organizing photo archives. Check back soon!",
-    "EmptyAlbums": {
-      "Title": "No photo albums found",
-      "FilteredBody": "There are no photo albums matching your current search or category filter.",
-      "EmptyBody": "There are currently no published photo albums available."
-    },
-    "EmptyAlbumPhotosTitle": "No photos in this album yet",
-    "EmptyAlbumPhotosBody": "Our field team is uploading photographs for this album. Please check back soon!",
-    "AlbumNotFoundTitle": "Photo Album Not Found",
-    "AlbumNotFoundBody": "The album you are looking for does not exist or has been removed.",
-    "Empty": {
-      "Title": "No photos found",
-      "Body": "There are no photos matching your current search in this album.",
-      "ResetBtn": "Reset filters"
-    },
-    "Modal": {
-      "Close": "Close preview",
-      "ViewOriginal": "Full Resolution",
-      "Share": "Share",
-      "Copied": "Link Copied!",
-      "Spotlight": "Spotlight"
-    },
-    "Categories": {
-      "All": "All",
-      "Community Outreach": "Community Outreach",
-      "Healthcare": "Healthcare",
-      "Education": "Education",
-      "Events": "Events",
-      "Grant Programs": "Grant Programs",
-      "Success Stories": "Success Stories",
-      "Food & Agriculture": "Food & Agriculture",
-      "Community Development": "Community Development",
-      "Entrepreneurship": "Entrepreneurship",
-      "Environment": "Environment",
-      "Volunteering": "Volunteering",
-      "Other": "Other"
-    }
-  },
+
   "BlogPage": {
     "Meta": {
       "Title": "Blogs & Insights · IFundAyiti",

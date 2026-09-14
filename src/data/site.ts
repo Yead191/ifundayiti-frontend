@@ -7,6 +7,7 @@ export const SITE = {
   phone: "1(518)509-1804",
   location: "Mount Vernon, NY",
   headquarters: "Mount Vernon, NY",
+  ein: "42-3961432",
   social: {
     facebook: "https://www.facebook.com/share/1csyUt17fY/?mibextid=wwXIfr",
     instagram: "https://www.instagram.com/ifundayiti",

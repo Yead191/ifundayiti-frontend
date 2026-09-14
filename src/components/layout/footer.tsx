@@ -117,6 +117,12 @@ export function Footer() {
                 </span>{" "}
                 <span>{SITE.headquarters}</span>
               </p>
+              <p>
+                <span className="font-semibold text-white">
+                  {f.EIN || "EIN:"}
+                </span>{" "}
+                <span>{SITE.ein}</span>
+              </p>
             </div>
           </div>
 
@@ -140,7 +146,7 @@ export function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-6 border-t border-white/15 pt-8 md:flex-row">
-          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left flex-wrap">
             <p className="text-sm text-sand/75">
               © {new Date().getFullYear()} IFundAyiti. {f.Copyright}
             </p>
@@ -151,6 +157,10 @@ export function Footer() {
                 {f.NonprofitNotice ||
                   "IFundAyiti is a nonprofit organization. 501(c)(3) pending."}
               </span>
+            </p>
+            <span className="hidden sm:inline text-white/20">•</span>
+            <p className="text-xs font-medium text-sand/90">
+              EIN: {SITE.ein}
             </p>
           </div>
           <div className="flex gap-3">
