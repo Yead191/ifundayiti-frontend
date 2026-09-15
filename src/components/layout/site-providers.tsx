@@ -2,6 +2,7 @@
 
 import { Toaster } from "sonner";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { SessionGuard } from "@/components/auth/SessionGuard";
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "";
 
@@ -16,6 +17,7 @@ export function SiteProviders({
 
   return (
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID} locale={googleLocale}>
+      <SessionGuard />
       {children}
       <Toaster
         theme="light"

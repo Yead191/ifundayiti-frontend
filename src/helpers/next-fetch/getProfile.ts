@@ -1,7 +1,6 @@
 "use server";
 
 import { cookies } from "next/headers";
-
 const getProfile = async (): Promise<any | null> => {
   // Get request-bound data immediately
   const cookieStore = await cookies();
@@ -17,23 +16,46 @@ const getProfile = async (): Promise<any | null> => {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      // cache: "force-cache",
+      // cache: "no-store",
+      cache: "default",
       next: {
         tags: ["user-profile"],
-        revalidate: 60 * 60,
+        revalidate: 30,
       },
     });
 
+    if (res.status === 401 || res.status === 403) {
+      console.warn(
+        `Profile API rejected with ${res.status}. Invalidating session.`,
+      );
+      try {
+        cookieStore.delete("accessToken");
+        cookieStore.delete("role");
+        // revalidatePath("/");
+      } catch {
+        // Ignore if called in read-only phase
+      }
+      return null;
+    }
+
     if (!res.ok) {
-      console.error(`Profile API failed: ${res.status}`);
       return null;
     }
 
     const { data } = await res.json();
-    // console.log(data)
+    if (data?.status === "blocked") {
+      try {
+        cookieStore.delete("accessToken");
+        cookieStore.delete("role");
+      } catch {
+        // Ignore if called in read-only phase
+      }
+      return null;
+    }
+
     return data ?? null;
   } catch {
-    console.error("server not found");
+    console.error("Profile fetch error: server not reachable");
     return null;
   }
 };

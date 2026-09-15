@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
+import { cookies } from "next/headers";
 import { getAccessToken } from "./getAccessToken";
 
 interface Pagination {
@@ -10,6 +11,8 @@ interface Pagination {
 }
 export interface FetchResponse<T = any> {
   success: boolean;
+  statusCode?: number;
+  isBlocked?: boolean;
   message?: string;
   data?: T;
   error?: string | null;
@@ -67,9 +70,30 @@ export const nextFetch = async <T = any>(
     const json = await res.json();
 
     if (!res.ok) {
+      const isAuthError = res.status === 401 || res.status === 403;
+      const isBlocked =
+        res.status === 403 ||
+        Boolean(json?.message && typeof json.message === "string" && json.message.toLowerCase().includes("blocked"));
+
+      if (isAuthError) {
+        try {
+          const cookieStore = await cookies();
+          cookieStore.delete("accessToken");
+          cookieStore.delete("role");
+        } catch {
+          // Cookies cannot be modified during static render; client interceptor will catch and clear
+        }
+      }
+
       return {
         success: false,
-        message: json?.message,
+        statusCode: res.status,
+        isBlocked,
+        message:
+          json?.message ||
+          (isBlocked
+            ? "Your account has been blocked. Please contact support."
+            : "Request failed"),
         error: json?.errorMessages || "Request failed",
       };
     }
