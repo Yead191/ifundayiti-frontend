@@ -17,6 +17,7 @@ import {
   ShoppingBag,
   Trash2,
   Truck,
+  User,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -79,11 +80,11 @@ const CHECKOUT_I18N = {
     Email: "Email Address",
     Phone: "Contact Phone Number",
     PhoneDesc:
-      "Courier dispatch requires an active phone number for island delivery updates.",
+      "Required for carrier tracking updates and delivery notifications.",
     ShippingDestination: "Shipping Destination",
-    StreetAddress: "Street Address / Delivery Location",
-    City: "City / Commune",
-    PostalCode: "Postal Code",
+    StreetAddress: "Street Address",
+    City: "City, State",
+    PostalCode: "ZIP / Postal Code",
     Country: "Country",
     PaymentMethod: "Payment Method",
     CreditCard: "Credit / Debit Card (Stripe)",
@@ -128,11 +129,11 @@ const CHECKOUT_I18N = {
     Email: "Adrès Imèl",
     Phone: "Nimewo Telefòn",
     PhoneDesc:
-      "Sèvis livrezon an mande yon nimewo aktif pou yo ka kontakte w lè y ap livre.",
+      "Obligatwa pou enfòmasyon sou swivi ak mizajou livrezon an.",
     ShippingDestination: "Adrès Livrezon",
-    StreetAddress: "Adrès Lari / Kote Livrezon",
-    City: "Vil / Komin",
-    PostalCode: "Kòd Postal",
+    StreetAddress: "Adrès Lari",
+    City: "Vil, Eta",
+    PostalCode: "Kòd Postal (ZIP)",
     Country: "Peyi",
     PaymentMethod: "Mwayen Peman",
     CreditCard: "Kat Kredi / Debi (Stripe)",
@@ -185,7 +186,7 @@ export function CheckoutClient({
   const [streetAddress, setStreetAddress] = React.useState("");
   const [city, setCity] = React.useState("");
   const [postalCode, setPostalCode] = React.useState("");
-  const [country, setCountry] = React.useState("Haiti");
+  const [country, setCountry] = React.useState("United States");
 
   const [submitting, setSubmitting] = React.useState(false);
 
@@ -194,17 +195,18 @@ export function CheckoutClient({
     priceBreakdown?.subtotal ??
     priceBreakdown?.products_price ??
     items.reduce(
-      (sum, item) => sum + (item.total_price || item.unit_price * item.quantity),
+      (sum, item) =>
+        sum + (item.total_price || item.unit_price * item.quantity),
       0,
     );
   const deliveryCharge =
     priceBreakdown != null
       ? priceBreakdown.delivery_charge
       : items.length === 0
-      ? 0
-      : subtotal >= 150
-      ? 0
-      : 11.99;
+        ? 0
+        : subtotal >= 150
+          ? 0
+          : 11.99;
   const serviceFee = priceBreakdown?.serviceFee ?? 0;
   const tax =
     priceBreakdown != null
@@ -266,7 +268,9 @@ export function CheckoutClient({
         setItems(previous);
         toast.error(
           res.message ||
-            (isHt ? "Pa t kapab mete kantite a ajou" : "Failed to update quantity"),
+            (isHt
+              ? "Pa t kapab mete kantite a ajou"
+              : "Failed to update quantity"),
         );
         return;
       }
@@ -332,22 +336,16 @@ export function CheckoutClient({
     if (!city.trim() || city.trim().length < 2) {
       toast.error(
         isHt
-          ? "Tanpri mete vil / komin nan (omwen 2 karaktè)."
-          : "Please enter your city / commune (at least 2 characters).",
+          ? "Tanpri mete vil ak eta a (omwen 2 karaktè)."
+          : "Please enter your city and state (at least 2 characters).",
       );
       return;
     }
     if (!postalCode.trim() || postalCode.trim().length < 2) {
       toast.error(
         isHt
-          ? "Tanpri mete kòd postal la (omwen 2 karaktè)."
-          : "Please enter a valid postal code (at least 2 characters).",
-      );
-      return;
-    }
-    if (!country.trim() || country.trim().length < 2) {
-      toast.error(
-        isHt ? "Tanpri mete peyi a." : "Please enter your country.",
+          ? "Tanpri mete kòd postal ZIP la (omwen 2 karaktè)."
+          : "Please enter a valid ZIP code (at least 2 characters).",
       );
       return;
     }
@@ -356,7 +354,7 @@ export function CheckoutClient({
 
     try {
       const payload: CreateOrderPayload = {
-        country: country.trim() || "Haiti",
+        country: "United States",
         city: city.trim(),
         postal_code: postalCode.trim(),
         street_address: streetAddress.trim(),
@@ -387,9 +385,7 @@ export function CheckoutClient({
         window.location.href = stripeUrl;
       } else {
         toast.success(
-          isHt
-            ? "Kòmand la fèt avèk siksè!"
-            : "Order initiated successfully!",
+          isHt ? "Kòmand la fèt avèk siksè!" : "Order initiated successfully!",
         );
         router.push(`/${lang}/payment/success`);
       }
@@ -431,7 +427,12 @@ export function CheckoutClient({
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-xl">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="rounded-xl"
+              >
                 <Link href={`/${lang}/auth/join?redirect=/${lang}/checkout`}>
                   {t.CreateAccountBtn}
                 </Link>
@@ -546,13 +547,27 @@ export function CheckoutClient({
                 <div className="flex items-center justify-between rounded-2xl border border-hairline/80 bg-sand-soft/50 p-4">
                   <div className="flex items-center gap-3 min-w-0">
                     <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-forest text-sm font-bold text-white">
-                      {(user?.name?.[0] || "U").toUpperCase()}
+                      {user?.image ? (
+                        <Image
+                          src={getImageUrl(user.image) || ""}
+                          alt={user?.name || "User"}
+                          width={50}
+                          height={50}
+                          className="rounded-full h-10 w-fit object-cover"
+                        />
+                      ) : (
+                        <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-forest/10 text-forest">
+                          <User className="h-5 w-5" />
+                        </div>
+                      )}
                     </div>
                     <div className="min-w-0">
                       <p className="truncate text-sm font-bold text-forest-deep">
                         {user?.name || "Verified Customer"}
                       </p>
-                      <p className="truncate text-xs text-mist">{user?.email}</p>
+                      <p className="truncate text-xs text-mist">
+                        {user?.email}
+                      </p>
                     </div>
                   </div>
                   <div className="flex shrink-0 items-center gap-1.5 rounded-full border border-forest/20 bg-forest/10 px-3 py-1 text-[11px] font-semibold text-forest">
@@ -574,7 +589,7 @@ export function CheckoutClient({
                     required
                     value={contactNumber}
                     onChange={(e) => setContactNumber(e.target.value)}
-                    placeholder="+509 3123 4567"
+                    placeholder="(555) 123-4567"
                     className="h-11 rounded-xl border-hairline bg-sand-soft/30 focus:bg-white"
                   />
                   <p className="text-[11px] text-mist">{t.PhoneDesc}</p>
@@ -584,13 +599,18 @@ export function CheckoutClient({
 
             {/* Step 2: Shipping Destination */}
             <div className="rounded-3xl border border-hairline/80 bg-white/95 p-6 shadow-xs backdrop-blur-xs sm:p-8">
-              <div className="flex items-center gap-3 border-b border-hairline/80 pb-4">
-                <span className="grid h-7 w-7 place-items-center rounded-full bg-forest text-xs font-bold text-white">
-                  2
+              <div className="flex items-center justify-between border-b border-hairline/80 pb-4">
+                <div className="flex items-center gap-3">
+                  <span className="grid h-7 w-7 place-items-center rounded-full bg-forest text-xs font-bold text-white">
+                    2
+                  </span>
+                  <h2 className="font-display text-lg font-bold text-forest-deep">
+                    {t.ShippingDestination}
+                  </h2>
+                </div>
+                <span className="inline-flex items-center gap-1.5 rounded-full border border-forest/20 bg-forest/10 px-3 py-1 text-[11px] font-semibold text-forest">
+                  🇺🇸 {isHt ? "Livrezon Ozetazini Sèlman" : "U.S. Delivery Only"}
                 </span>
-                <h2 className="font-display text-lg font-bold text-forest-deep">
-                  {t.ShippingDestination}
-                </h2>
               </div>
 
               <div className="mt-6 space-y-4">
@@ -606,7 +626,7 @@ export function CheckoutClient({
                     required
                     value={streetAddress}
                     onChange={(e) => setStreetAddress(e.target.value)}
-                    placeholder="123 Rue Capois, Apt 4"
+                    placeholder="123 Main St, Apt 4B"
                     className="h-11 rounded-xl border-hairline bg-sand-soft/30 focus:bg-white"
                   />
                 </div>
@@ -624,7 +644,7 @@ export function CheckoutClient({
                       required
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-                      placeholder="Port-au-Prince / Cap-Haïtien / Jacmel"
+                      placeholder="New York, NY / Miami, FL"
                       className="h-11 rounded-xl border-hairline bg-sand-soft/30 focus:bg-white"
                     />
                   </div>
@@ -641,26 +661,33 @@ export function CheckoutClient({
                       required
                       value={postalCode}
                       onChange={(e) => setPostalCode(e.target.value)}
-                      placeholder="HT-6110"
+                      placeholder="10001"
                       className="h-11 rounded-xl border-hairline bg-sand-soft/30 focus:bg-white"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-1.5">
-                  <Label
-                    htmlFor="country"
-                    className="text-xs font-semibold text-forest"
-                  >
-                    {t.Country} *
-                  </Label>
+                  <div className="flex items-center justify-between">
+                    <Label
+                      htmlFor="country"
+                      className="text-xs font-semibold text-forest"
+                    >
+                      {t.Country} *
+                    </Label>
+                  </div>
                   <Input
                     id="country"
-                    required
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    className="h-11 rounded-xl border-hairline bg-sand-soft/30 focus:bg-white"
+                    disabled
+                    value="United States"
+                    readOnly
+                    className="h-11 rounded-xl border-hairline bg-sand-soft/60 text-forest-deep font-semibold cursor-not-allowed opacity-90 select-none"
                   />
+                  <p className="text-[11px] text-mist">
+                    {isHt
+                      ? "Pwodwi nou yo disponib pou livrezon Ozetazini sèlman pou kounye a."
+                      : "We currently deliver products within the United States only."}
+                  </p>
                 </div>
               </div>
             </div>
@@ -687,7 +714,8 @@ export function CheckoutClient({
                         {t.CreditCard}
                       </p>
                       <p className="text-xs text-mist">
-                        Visa, MasterCard, American Express, Apple Pay, Google Pay
+                        Visa, MasterCard, American Express, Apple Pay, Google
+                        Pay
                       </p>
                     </div>
                   </div>

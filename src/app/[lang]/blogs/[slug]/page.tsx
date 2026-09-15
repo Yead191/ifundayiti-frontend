@@ -3,15 +3,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
-import {
-  ArrowLeft,
-  Calendar,
-  Clock,
-  Star,
-  Tag as TagIcon,
-  ShieldCheck,
-  Share2,
-} from "lucide-react";
+import { ArrowLeft, Calendar, Clock, Star, Tag as TagIcon } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";

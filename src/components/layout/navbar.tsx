@@ -35,6 +35,7 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { getImageUrl } from "@/lib/getImageUrl";
+import Image from "next/image";
 
 function isActive(pathname: string, href: string) {
   const cleanPathname = "/" + pathname.split("/").slice(2).join("/");
@@ -247,10 +248,12 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
                   {/* User Information Header */}
                   <div className="flex items-center gap-3 border-b border-hairline p-2.5">
                     {user?.image ? (
-                      <img
+                      <Image
                         src={getImageUrl(user.image) || ""}
                         alt={user?.name || "User"}
-                        className="h-10 w-10 shrink-0 rounded-xl border border-hairline object-cover"
+                        width={50}
+                        height={50}
+                        className="rounded-full h-10 w-fit object-cover"
                       />
                     ) : (
                       <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-forest/10 text-forest">
