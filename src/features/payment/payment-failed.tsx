@@ -13,12 +13,13 @@ import {
   Sparkles,
   HelpCircle,
   ArrowLeft,
+  Ticket,
 } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/components/providers/translation-provider";
 
-type PaymentType = "donation" | "order" | "grant" | "subscription";
+type PaymentType = "donation" | "order" | "grant" | "subscription" | "event";
 
 export function PaymentFailedContent({
   lang: initialLang,
@@ -33,7 +34,10 @@ export function PaymentFailedContent({
   const searchParams = useSearchParams();
   const rawType = searchParams.get("type") ?? "donation";
   const type: PaymentType =
-    rawType === "order" || rawType === "grant" || rawType === "subscription"
+    rawType === "order" ||
+    rawType === "grant" ||
+    rawType === "subscription" ||
+    rawType === "event"
       ? rawType
       : "donation";
 
@@ -83,6 +87,35 @@ export function PaymentFailedContent({
             label: t.Grant.SecondaryCta,
           },
           tips: [t.Grant.Tip1, t.Grant.Tip2, t.Grant.Tip3],
+        };
+      case "event":
+        return {
+          icon: Ticket,
+          accentColor: "from-rose-600 via-rose-700 to-rose-900",
+          badgeText: t.Event?.BadgeText || "Ticket Reservation Incomplete",
+          headline: t.Event?.Headline || "Your ticket payment was not completed.",
+          subheadline:
+            t.Event?.Subheadline ||
+            "No charge was made — your seat reservation remains pending.",
+          body:
+            t.Event?.Body ||
+            "We were unable to process your payment for the gathering ticket. This may happen due to card verification issues or checkout cancellation. You can retry your reservation at any time.",
+          retryCta: {
+            href: `/${lang}/events`,
+            label: t.Event?.RetryCta || "Retry Event Reservation",
+          },
+          secondaryCta: {
+            href: `/${lang}/contact`,
+            label: t.Event?.SecondaryCta || "Contact Support",
+          },
+          tips: [
+            t.Event?.Tip1 ||
+              "Check that your card details and billing ZIP code match",
+            t.Event?.Tip2 ||
+              "Ensure your card allows online and international purchases",
+            t.Event?.Tip3 ||
+              "Try an alternative card or payment method via Stripe",
+          ],
         };
       case "subscription":
       default:

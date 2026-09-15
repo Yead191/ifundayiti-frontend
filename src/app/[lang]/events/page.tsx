@@ -12,10 +12,12 @@ import {
 } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
-import { EventsCalendar } from "@/components/events/events-calendar";
 import { buildMetadata } from "@/lib/seo";
 import { Button } from "@/components/ui/button";
 import { getDictionary } from "@/lib/dictionaries";
+import { getEvents } from "@/helpers/next-fetch/eventActions";
+import { FeaturedEventHero } from "@/features/events/components/FeaturedEventHero";
+import { EventsFilterAndCatalog } from "@/features/events/components/EventsFilterAndCatalog";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -30,8 +32,8 @@ export async function generateMetadata({
   const dict = await getDictionary(lang);
 
   return buildMetadata({
-    title: dict.Navbar.Events,
-    description: dict.EventsPage.Hero.Subtitle,
+    title: dict.Navbar?.Events || "Community Gatherings & Events",
+    description: dict.EventsPage?.Hero?.Subtitle || "Join IFundAyiti community gatherings, galas, workshops, and pitch nights.",
     path: `/${lang}/events`,
   });
 }
@@ -40,6 +42,13 @@ export default async function EventsPage({ params }: PageProps) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
   const t = dict.EventsPage;
+
+  // Fetch published events from backend API
+  const eventsRes = await getEvents({ status: "published", limit: 50 });
+  const events = eventsRes.success && Array.isArray(eventsRes.data) ? eventsRes.data : [];
+
+  // Pick first featured event or first upcoming event
+  const featuredEvent = events.find((e) => e.featured) || (events.length > 0 ? events[0] : null);
 
   const metricHighlights = [
     {
@@ -67,7 +76,7 @@ export default async function EventsPage({ params }: PageProps) {
   return (
     <div className="bg-cream min-h-screen">
       {/* ULTRA-PREMIUM EMOTIONAL HERO SECTION */}
-      <section className="relative overflow-hidden border-b border-hairline bg-cream pt-28 pb-16 md:pt-32 md:pb-20">
+      <section className="relative overflow-hidden border-b border-hairline bg-cream pt-28 pb-14 md:pt-32 md:pb-16">
         {/* Background Ambient Effects */}
         <div className="pointer-events-none absolute inset-0 bg-linear-to-br from-sand-soft/80 via-cream to-cream" />
         <div className="aurora -right-20 top-10 h-96 w-96 opacity-35" />
@@ -94,7 +103,7 @@ export default async function EventsPage({ params }: PageProps) {
             {/* CTA buttons */}
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Button asChild size="lg" className="rounded-xl px-7">
-                <Link href="#calendar">
+                <Link href="#catalog">
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {t.Hero.CalendarBtn}
                 </Link>
@@ -137,10 +146,34 @@ export default async function EventsPage({ params }: PageProps) {
         </Container>
       </section>
 
-      {/* MAIN CALENDAR SECTION */}
-      <section id="calendar" className="py-12 lg:py-16">
+      {/* FEATURED EVENT SPOTLIGHT (If available) */}
+      {featuredEvent && (
+        <section className="pt-10 lg:pt-14">
+          <Container>
+            <FeaturedEventHero event={featuredEvent} lang={lang} />
+          </Container>
+        </section>
+      )}
+
+      {/* EVENTS CATALOG & CALENDAR SECTION */}
+      <section id="catalog" className="py-12 lg:py-16">
         <Container>
-          <EventsCalendar lang={lang} />
+          <div className="mb-8">
+            <div className="flex items-center gap-2 text-forest mb-2">
+              <CalendarIcon className="h-4 w-4" />
+              <span className="text-xs font-semibold uppercase tracking-wider">
+                Gathering Schedule
+              </span>
+            </div>
+            <h2 className="font-display text-3xl font-bold tracking-tight text-forest-deep sm:text-4xl">
+              Explore Upcoming Gatherings
+            </h2>
+            <p className="mt-1.5 text-sm text-mist max-w-2xl">
+              Discover donor galas, founder pitch nights, entrepreneurship workshops, and community fundraisers.
+            </p>
+          </div>
+
+          <EventsFilterAndCatalog events={events} lang={lang} />
         </Container>
       </section>
     </div>

@@ -31,8 +31,8 @@ export function middleware(request: NextRequest) {
     }
   }
 
-  // If path is under /payment/* without locale prefix, redirect to /[targetLocale]/payment/*
-  if (pathname.startsWith("/payment/")) {
+  // If path is under /payment/* or /ticket/* without locale prefix, redirect to /[targetLocale]/...
+  if (pathname.startsWith("/payment/") || pathname.startsWith("/ticket/")) {
     const redirectUrl = new URL(
       `/${targetLocale}${pathname}${search}`,
       request.url,
@@ -44,5 +44,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/payment/:path*"],
+  matcher: ["/payment/:path*", "/ticket/:path*"],
 };

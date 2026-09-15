@@ -1210,6 +1210,20 @@
       "H3Label": "Receipt sent to",
       "H3Val": "your email"
     },
+    "Event": {
+      "BadgeText": "Official Gathering Pass Confirmed",
+      "Headline": "Your Ticket Reservation is Confirmed!",
+      "Subheadline": "Thank you for joining our mission to empower Haitian changemakers.",
+      "Body": "Your event ticket and payment have been verified. An official golden admission pass with your scannable check-in QR code has been issued and dispatched to your email.",
+      "PrimaryCta": "Browse More Gatherings",
+      "SecondaryCta": "View My Account",
+      "H1Label": "Pass Type",
+      "H1Val": "Verified Entry",
+      "H2Label": "Secured by",
+      "H2Val": "Stripe",
+      "H3Label": "Pass sent to",
+      "H3Val": "your email"
+    },
     "Share": {
       "Btn": "Share the mission",
       "Title": "I just supported IFundAyiti 🇭🇹",
@@ -1237,6 +1251,17 @@
       "Tip1": "Check that your card details are correct",
       "Tip2": "Ensure your card allows international transactions",
       "Tip3": "Try a different payment method or card"
+    },
+    "Event": {
+      "BadgeText": "Ticket Reservation Incomplete",
+      "Headline": "Your ticket payment was not completed.",
+      "Subheadline": "No charge was made — your seat reservation remains pending.",
+      "Body": "We were unable to process your payment for the gathering ticket. This may happen due to card verification issues or checkout cancellation. You can retry your reservation at any time.",
+      "RetryCta": "Retry Event Reservation",
+      "SecondaryCta": "Contact Support",
+      "Tip1": "Check that your card details and billing ZIP code match",
+      "Tip2": "Ensure your card allows online and international purchases",
+      "Tip3": "Try an alternative card or payment method via Stripe"
     },
     "Order": {
       "BadgeText": "Order Failed",

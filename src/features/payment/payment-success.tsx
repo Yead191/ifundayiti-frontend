@@ -12,12 +12,13 @@ import {
   Home,
   Sparkles,
   Share2,
+  Ticket,
 } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import { useTranslation } from "@/components/providers/translation-provider";
 
-type PaymentType = "donation" | "order" | "grant" | "subscription";
+type PaymentType = "donation" | "order" | "grant" | "subscription" | "event";
 
 export function PaymentSuccessContent({
   lang: initialLang,
@@ -32,7 +33,10 @@ export function PaymentSuccessContent({
   const searchParams = useSearchParams();
   const rawType = searchParams.get("type") ?? "donation";
   const type: PaymentType =
-    rawType === "order" || rawType === "grant" || rawType === "subscription"
+    rawType === "order" ||
+    rawType === "grant" ||
+    rawType === "subscription" ||
+    rawType === "event"
       ? rawType
       : "donation";
 
@@ -87,6 +91,22 @@ export function PaymentSuccessContent({
             { icon: "📋", label: t.Grant.H1Label, value: t.Grant.H1Val },
             { icon: "⏱️", label: t.Grant.H2Label, value: t.Grant.H2Val },
             { icon: "📩", label: t.Grant.H3Label, value: t.Grant.H3Val },
+          ],
+        };
+      case "event":
+        return {
+          icon: Ticket,
+          accentColor: "from-[#D4AF37] via-[#B38F26] to-[#0E0E10]",
+          badgeText: "Official Gathering Pass Confirmed",
+          headline: "Your Ticket Reservation is Confirmed!",
+          subheadline: "Thank you for joining our mission to empower Haitian changemakers.",
+          body: "Your event ticket and payment have been verified. An official golden admission pass with your scannable check-in QR code has been issued and dispatched to your email.",
+          primaryCta: { href: `/${lang}/events`, label: "Browse More Gatherings" },
+          secondaryCta: { href: `/${lang}/dashboard`, label: "View My Account" },
+          highlights: [
+            { icon: "🎟️", label: "ADMIT", value: "Verified Pass" },
+            { icon: "🔒", label: "ACCESS", value: "Door Scannable" },
+            { icon: "📩", label: "DELIVERY", value: "Email & Pass" },
           ],
         };
       case "subscription":

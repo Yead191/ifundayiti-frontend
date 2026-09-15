@@ -1210,6 +1210,20 @@
       "H3Label": "Resi voye bay",
       "H3Val": "imèl ou"
     },
+    "Event": {
+      "BadgeText": "Pas Ofisyèl Reyinyon Konfime",
+      "Headline": "Rezèvasyon Tikè Ou Konfime!",
+      "Subheadline": "Mèsi paske w ap sipòte antreprenè ayisyen yo.",
+      "Body": "Tikè evènman ou ak peman ou verifye avèk siksè. Nou voye yon pas admisyon an lò ofisyèl ak kòd QR ou dirèkteman nan imèl ou.",
+      "PrimaryCta": "Eksplore Lòt Evènman",
+      "SecondaryCta": "Gade Kont Mwen",
+      "H1Label": "Kalite Pas",
+      "H1Val": "Antre Verifye",
+      "H2Label": "Sekirize pa",
+      "H2Val": "Stripe",
+      "H3Label": "Pas voye nan",
+      "H3Val": "imèl ou"
+    },
     "Share": {
       "Btn": "Pataje misyon an",
       "Title": "Mwen sot sipòte IFundAyiti 🇭🇹",
@@ -1237,6 +1251,17 @@
       "Tip1": "Verifye detay kat ou yo kòrèk",
       "Tip2": "Asire kat ou pèmèt tranzaksyon entènasyonal",
       "Tip3": "Eseye yon lòt metòd peman oswa yon lòt kat"
+    },
+    "Event": {
+      "BadgeText": "Rezèvasyon Tikè Pa Konplete",
+      "Headline": "Peman tikè ou a pa t reyisi.",
+      "Subheadline": "Yo pa pran okenn lajan nan kat ou a — plas ou a rete an atant.",
+      "Body": "Nou pa t ka trete peman tikè evènman an. Sa ka rive akoz yon pwoblèm verifikasyon kat oswa sesyon an te anile. Ou ka eseye rezève ankò nenpòt lè.",
+      "RetryCta": "Eseye Rezève Ankò",
+      "SecondaryCta": "Kontakte Sipò",
+      "Tip1": "Verifye nimewo kat ou a ak kòd postal bòdwo w la",
+      "Tip2": "Asire w kat ou a otorize tranzaksyon sou entènèt",
+      "Tip3": "Eseye yon lòt kat oswa metòd peman sou Stripe"
     },
     "Order": {
       "BadgeText": "Kòmand echwe",

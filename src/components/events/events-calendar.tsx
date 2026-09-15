@@ -49,15 +49,152 @@ const MONTH_NAMES = [
   "December",
 ];
 
-export function EventsCalendar({ lang = "en" }: { lang?: string }) {
-  // Dynamically start at the real current date (e.g. today's month & year)
-  const [currentDate, setCurrentDate] = React.useState(() => new Date());
-  const [selectedCategory, setSelectedCategory] = React.useState<
-    EventCategory | "all"
-  >("all");
-  const [selectedEvent, setSelectedEvent] = React.useState<EventItem | null>(
-    MOCK_EVENTS[0],
+import { type IEvent } from "@/helpers/next-fetch/eventActions";
+import { getImageUrl } from "@/lib/getImageUrl";
+
+export function EventsCalendar({
+  lang = "en",
+  apiEvents,
+  categoryFilter,
+  onCategoryChange,
+  hideCategoryFilter = false,
+}: {
+  lang?: string;
+  apiEvents?: IEvent[];
+  categoryFilter?: EventCategory | "all";
+  onCategoryChange?: (cat: EventCategory | "all") => void;
+  hideCategoryFilter?: boolean;
+}) {
+  // Map API events or fallback to mock
+  const mappedEvents: EventItem[] = React.useMemo(() => {
+    if (apiEvents && apiEvents.length > 0) {
+      return apiEvents.map((evt) => {
+        // Exact calendar date string YYYY-MM-DD from startDate
+        let dateStr = "";
+        if (evt.startDate) {
+          if (evt.startDate.includes("T")) {
+            dateStr = evt.startDate.split("T")[0];
+          } else {
+            const d = new Date(evt.startDate);
+            if (!isNaN(d.getTime())) {
+              const y = d.getFullYear();
+              const m = String(d.getMonth() + 1).padStart(2, "0");
+              const day = String(d.getDate()).padStart(2, "0");
+              dateStr = `${y}-${m}-${day}`;
+            }
+          }
+        }
+
+        // Clean time string
+        let timeStr = "";
+        if (evt.startDate) {
+          const startObj = new Date(evt.startDate);
+          if (!isNaN(startObj.getTime())) {
+            timeStr = startObj.toLocaleTimeString(lang === "ht" ? "fr-HT" : "en-US", {
+              hour: "numeric",
+              minute: "2-digit",
+              hour12: true,
+            });
+            if (evt.endDate) {
+              const endObj = new Date(evt.endDate);
+              if (!isNaN(endObj.getTime())) {
+                const endTime = endObj.toLocaleTimeString(lang === "ht" ? "fr-HT" : "en-US", {
+                  hour: "numeric",
+                  minute: "2-digit",
+                  hour12: true,
+                });
+                timeStr = `${timeStr} – ${endTime}`;
+              }
+            }
+          }
+        }
+
+        return {
+          id: evt._id,
+          slug: evt._id,
+          title: evt.title,
+          date: dateStr,
+          time: timeStr || "6:00 PM EST",
+          location: evt.location || "Venue TBA",
+          eventType: evt.type || "physical",
+          venueAddress: evt.venueAddress,
+          virtualLink: evt.virtualLink,
+          category: evt.category,
+          description: evt.description,
+          image: getImageUrl(evt.image) || "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800",
+          featured: evt.featured,
+          speakers: evt.speakers?.map((s) => ({
+            name: s.name,
+            role: s.role,
+            avatar: getImageUrl(s.avatar) || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
+          })),
+          rsvpCount: evt.reservedCount || 0,
+        };
+      });
+    }
+    return MOCK_EVENTS;
+  }, [apiEvents, lang]);
+
+  // Dynamically start at the month containing events
+  const [currentDate, setCurrentDate] = React.useState(() => {
+    if (apiEvents && apiEvents.length > 0) {
+      const first = apiEvents[0];
+      if (first.startDate && first.startDate.includes("-")) {
+        const parts = first.startDate.split("T")[0].split("-");
+        if (parts.length === 3) {
+          const y = parseInt(parts[0], 10);
+          const m = parseInt(parts[1], 10) - 1;
+          const d = parseInt(parts[2], 10);
+          return new Date(y, m, d);
+        }
+      }
+    }
+    return new Date();
+  });
+
+  // When apiEvents load, jump to event month if current month has no events
+  React.useEffect(() => {
+    if (apiEvents && apiEvents.length > 0) {
+      const nowYear = new Date().getFullYear();
+      const nowMonth = new Date().getMonth();
+      const currentMonthEvents = apiEvents.filter((e) => {
+        if (!e.startDate) return false;
+        const parts = e.startDate.split("T")[0].split("-");
+        return parseInt(parts[0], 10) === nowYear && parseInt(parts[1], 10) - 1 === nowMonth;
+      });
+
+      if (currentMonthEvents.length === 0) {
+        const first = apiEvents[0];
+        if (first.startDate && first.startDate.includes("-")) {
+          const parts = first.startDate.split("T")[0].split("-");
+          if (parts.length === 3) {
+            setCurrentDate(new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1));
+          }
+        }
+      }
+    }
+  }, [apiEvents]);
+
+  const [internalCategory, setInternalCategory] = React.useState<EventCategory | "all">("all");
+  const selectedCategory = categoryFilter ?? internalCategory;
+
+  const handleCategorySelect = (cat: EventCategory | "all") => {
+    setInternalCategory(cat);
+    onCategoryChange?.(cat);
+  };
+
+  const [selectedEvent, setSelectedEvent] = React.useState<EventItem | null>(() =>
+    mappedEvents.length > 0 ? mappedEvents[0] : null
   );
+
+  React.useEffect(() => {
+    if (mappedEvents.length > 0) {
+      setSelectedEvent((prev) => {
+        if (prev && mappedEvents.some((m) => m.id === prev.id)) return prev;
+        return mappedEvents[0];
+      });
+    }
+  }, [mappedEvents]);
   const [modalOpen, setModalOpen] = React.useState(false);
   const [viewMode, setViewMode] = React.useState<"month" | "list">("month");
 
@@ -112,7 +249,7 @@ export function EventsCalendar({ lang = "en" }: { lang?: string }) {
     setCurrentDate(new Date(year, month + 1, 1));
   }
 
-  const filteredEvents = MOCK_EVENTS.filter((evt) => {
+  const filteredEvents = mappedEvents.filter((evt) => {
     if (selectedCategory === "all") return true;
     return evt.category === selectedCategory;
   });
@@ -160,6 +297,35 @@ export function EventsCalendar({ lang = "en" }: { lang?: string }) {
     setModalOpen(true);
   }
 
+  const monthsWithEvents = React.useMemo(() => {
+    const map = new Map<
+      string,
+      { year: number; month: number; label: string; count: number }
+    >();
+    filteredEvents.forEach((evt) => {
+      if (!evt.date || !evt.date.includes("-")) return;
+      const [yStr, mStr] = evt.date.split("-");
+      const y = parseInt(yStr, 10);
+      const m = parseInt(mStr, 10) - 1;
+      const key = `${y}-${m}`;
+      const existing = map.get(key);
+      if (existing) {
+        existing.count += 1;
+      } else {
+        const d = new Date(y, m, 1);
+        const label = d.toLocaleDateString(lang === "ht" ? "fr-HT" : "en-US", {
+          month: "short",
+          year: "numeric",
+        });
+        map.set(key, { year: y, month: m, label, count: 1 });
+      }
+    });
+    return Array.from(map.values()).sort((a, b) => {
+      if (a.year !== b.year) return a.year - b.year;
+      return a.month - b.month;
+    });
+  }, [filteredEvents, lang]);
+
   const formattedMonth = React.useMemo(() => {
     try {
       const formatter = new Intl.DateTimeFormat(lang, { month: "long" });
@@ -196,32 +362,73 @@ export function EventsCalendar({ lang = "en" }: { lang?: string }) {
 
   return (
     <div className="space-y-8">
-      {/* FILTER & NAVIGATION CONTROLS */}
-      <div className="flex flex-col gap-4 rounded-3xl border border-hairline bg-white p-4 sm:p-6 shadow-xs lg:flex-row lg:items-center lg:justify-between">
-        {/* Category Filter Pills */}
-        <div className="flex flex-wrap items-center gap-2">
-          {EVENT_CATEGORIES.map((cat) => {
-            const active = selectedCategory === cat.id;
-            return (
-              <button
-                key={cat.id}
-                type="button"
-                onClick={() => setSelectedCategory(cat.id)}
-                className={cn(
-                  "rounded-full px-4 py-2 text-xs font-semibold transition-all cursor-pointer",
-                  active
-                    ? "bg-forest text-white shadow-xs"
-                    : "border border-hairline bg-sand-soft/50 text-forest-deep hover:border-forest/40 hover:bg-sand-soft",
-                )}
-              >
-                {getCategoryLabel(cat.id)}
-              </button>
-            );
-          })}
-        </div>
+      {/* NAVIGATION CONTROLS */}
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-3xl border border-hairline bg-white p-4 sm:p-5 shadow-xs">
+        {!hideCategoryFilter && (
+          <div className="flex flex-wrap items-center gap-2">
+            {EVENT_CATEGORIES.map((cat) => {
+              const active = selectedCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  onClick={() => handleCategorySelect(cat.id)}
+                  className={cn(
+                    "rounded-full px-4 py-2 text-xs font-semibold transition-all cursor-pointer",
+                    active
+                      ? "bg-forest text-white shadow-xs"
+                      : "border border-hairline bg-sand-soft/50 text-forest-deep hover:border-forest/40 hover:bg-sand-soft",
+                  )}
+                >
+                  {getCategoryLabel(cat.id)}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Month Quick-Jump Pills */}
+        {monthsWithEvents.length > 0 && (
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="text-xs font-semibold text-mist mr-1">
+              Events in:
+            </span>
+            {monthsWithEvents.map((m) => {
+              const isCurrent = m.year === year && m.month === month;
+              return (
+                <button
+                  key={`${m.year}-${m.month}`}
+                  type="button"
+                  onClick={() => setCurrentDate(new Date(m.year, m.month, 1))}
+                  className={cn(
+                    "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-all cursor-pointer",
+                    isCurrent
+                      ? "bg-forest text-white shadow-xs"
+                      : "border border-hairline bg-sand-soft/50 text-forest-deep hover:border-forest/40 hover:bg-sand-soft"
+                  )}
+                >
+                  <span>{m.label}</span>
+                  <span
+                    className={cn(
+                      "rounded-full px-1.5 py-0.2 text-[10px] font-bold",
+                      isCurrent
+                        ? "bg-white/25 text-white"
+                        : "bg-forest/15 text-forest"
+                    )}
+                  >
+                    {m.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         {/* View Switcher & Month Navigation */}
-        <div className="flex items-center justify-between lg:justify-end gap-3 border-t border-hairline pt-3 lg:border-t-0 lg:pt-0">
+        <div className={cn(
+          "flex items-center justify-between gap-3 w-full sm:w-auto",
+          !hideCategoryFilter ? "border-t border-hairline pt-3 sm:border-t-0 sm:pt-0" : ""
+        )}>
           <div className="flex rounded-full border border-hairline bg-sand-soft/50 p-1 text-xs font-semibold">
             <button
               type="button"
@@ -249,7 +456,14 @@ export function EventsCalendar({ lang = "en" }: { lang?: string }) {
             </button>
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setCurrentDate(new Date())}
+              className="rounded-full border border-hairline bg-white px-2.5 py-1 text-xs font-semibold text-forest hover:bg-sand-soft cursor-pointer transition shadow-2xs"
+            >
+              Today
+            </button>
             <button
               type="button"
               onClick={prevMonth}
@@ -541,23 +755,35 @@ export function EventsCalendar({ lang = "en" }: { lang?: string }) {
                 {/* Action Buttons */}
                 <div className="flex flex-col gap-2 pt-1">
                   <Button
-                    onClick={() => setModalOpen(true)}
-                    className="w-full rounded-xl"
-                  >
-                    <Users className="mr-2 h-4 w-4" />
-                    {t.RsvpBtn} ({selectedEvent.rsvpCount} {t.RsvpCount})
-                  </Button>
-
-                  <Button
                     asChild
-                    variant="outline"
-                    className="w-full rounded-xl"
+                    className="w-full rounded-xl bg-forest text-white hover:bg-forest-deep shadow-xs cursor-pointer"
                   >
-                    <Link href={`/${lang}/donate`}>
-                      <Heart className="mr-2 h-4 w-4 text-forest" />
-                      {t.DonateBtn}
+                    <Link href={`/${lang}/events/${selectedEvent.id}`}>
+                      <Users className="mr-2 h-4 w-4" />
+                      View Details & Register →
                     </Link>
                   </Button>
+
+                  <div className="grid grid-cols-2 gap-2">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setModalOpen(true)}
+                      className="rounded-xl border-hairline"
+                    >
+                      Quick RSVP
+                    </Button>
+                    <Button
+                      asChild
+                      variant="outline"
+                      className="rounded-xl border-hairline"
+                    >
+                      <Link href={`/${lang}/donate`}>
+                        <Heart className="mr-1.5 h-3.5 w-3.5 text-forest" />
+                        {t.DonateBtn.split(" ")[0]}
+                      </Link>
+                    </Button>
+                  </div>
                 </div>
               </div>
             ) : (
@@ -576,12 +802,18 @@ export function EventsCalendar({ lang = "en" }: { lang?: string }) {
               </div>
 
               <div className="space-y-3 divide-y divide-hairline">
-                {MOCK_EVENTS.slice(0, 3).map((evt) => (
+                {mappedEvents.slice(0, 5).map((evt) => (
                   <button
                     key={evt.id}
                     type="button"
                     onClick={() => {
                       setSelectedEvent(evt);
+                      if (evt.date && evt.date.includes("-")) {
+                        const parts = evt.date.split("-");
+                        if (parts.length >= 2) {
+                          setCurrentDate(new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1));
+                        }
+                      }
                       setModalOpen(true);
                     }}
                     className="pt-3 first:pt-0 w-full text-left group flex justify-between items-center gap-3 cursor-pointer"
@@ -590,8 +822,21 @@ export function EventsCalendar({ lang = "en" }: { lang?: string }) {
                       <p className="text-xs font-semibold text-forest-deep group-hover:text-forest transition-colors line-clamp-1">
                         {evt.title}
                       </p>
-                      <p className="text-[11px] text-mist">
-                        {evt.date} · {evt.location.split("&")[0]}
+                      <p className="text-[11px] text-mist flex items-center gap-1.5 mt-0.5">
+                        <span className="font-semibold text-forest">
+                          {(() => {
+                            if (!evt.date || !evt.date.includes("-")) return evt.date;
+                            const [y, m, d] = evt.date.split("-").map(Number);
+                            const dt = new Date(y, m - 1, d);
+                            return dt.toLocaleDateString(lang === "ht" ? "fr-HT" : "en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                            });
+                          })()}
+                        </span>
+                        <span>·</span>
+                        <span className="truncate">{evt.location.split("&")[0]}</span>
                       </p>
                     </div>
                     <ChevronRight className="h-4 w-4 text-mist group-hover:text-forest shrink-0" />
