@@ -197,6 +197,33 @@ export async function getSingleEvent(id: string): Promise<SingleEventResponse> {
 }
 
 /**
+ * Fetch the nearest upcoming event (today or closest upcoming nearby event)
+ */
+export async function getUpcomingEvent(): Promise<SingleEventResponse> {
+  try {
+    const res = await nextFetch<IEvent>("/event/upcoming", {
+      cache: "force-cache",
+      next: {
+        revalidate: 60,
+        tags: ["events", "upcoming-event"],
+      },
+    });
+
+    if (res.success && res.data) {
+      return { success: true, data: res.data };
+    }
+
+    return { success: false, data: null, message: res.message };
+  } catch (error) {
+    return {
+      success: false,
+      data: null,
+      message: error instanceof Error ? error.message : "Network error",
+    };
+  }
+}
+
+/**
  * Reserve or purchase an event ticket
  * NOTE: User must be authenticated (JWT automatically attached by nextFetch).
  * Customer Name & Email are extracted securely from req.user by backend.

@@ -110,7 +110,7 @@ export function TicketPrintClient({
             <Button
               onClick={handlePrint}
               size="sm"
-              className="rounded-xl font-semibold bg-gradient-to-r from-[#D4AF37] via-[#E5C158] to-[#B38F26] text-neutral-950 shadow-md hover:brightness-110 cursor-pointer"
+              className="rounded-xl font-semibold bg-linear-to-r from-[#D4AF37] via-[#E5C158] to-[#B38F26] text-neutral-950 shadow-md hover:brightness-110 cursor-pointer"
             >
               <Printer className="h-4 w-4 mr-2 text-neutral-900" />
               <span>Print Ticket / Save PDF</span>
@@ -136,7 +136,8 @@ export function TicketPrintClient({
       {/* FOOTER CONTROLS / INSTRUCTIONS */}
       <footer className="print:hidden border-t border-white/10 bg-[#0E0E10] py-6 text-center text-xs text-neutral-400">
         <p>
-          Present this pass on your mobile device or printed ticket at the venue check-in desk.
+          Present this pass on your mobile device or printed ticket at the venue
+          check-in desk.
         </p>
         <p className="text-[11px] text-neutral-500 mt-1">
           IFundAyiti • Empowering Haitian Innovation Across the Globe

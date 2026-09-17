@@ -152,7 +152,11 @@ export function EventDetailModal({
 
   return (
     <>
-      <Modal open={open} onClose={onClose} className="max-w-2xl p-0 overflow-hidden rounded-3xl">
+      <Modal
+        open={open}
+        onClose={onClose}
+        className="max-w-2xl p-0 overflow-hidden rounded-3xl"
+      >
         <div className="flex flex-col max-h-[88vh] overflow-y-auto">
           {/* Event Banner Image */}
           <div className="relative aspect-21/9 w-full shrink-0 overflow-hidden bg-sand-soft">
@@ -162,7 +166,7 @@ export function EventDetailModal({
               fill
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0E0E10]/95 via-[#0E0E10]/40 to-transparent" />
+            <div className="absolute inset-0 bg-linear-to-t from-[#0E0E10]/95 via-[#0E0E10]/40 to-transparent" />
 
             {/* Badges & Title Overlay */}
             <div className="absolute bottom-4 left-5 right-5 space-y-2">
@@ -218,7 +222,9 @@ export function EventDetailModal({
                   <div className="flex items-start gap-2.5 text-forest-deep">
                     <Building2 className="h-4 w-4 text-forest shrink-0 mt-0.5" />
                     <div>
-                      <span className="font-semibold text-forest">{t.VenueAddress}:</span>{" "}
+                      <span className="font-semibold text-forest">
+                        {t.VenueAddress}:
+                      </span>{" "}
                       <span className="text-mist">{event.venueAddress}</span>
                     </div>
                   </div>
@@ -227,7 +233,9 @@ export function EventDetailModal({
                   <div className="flex items-center justify-between gap-2 text-blue-700 bg-blue-50 border border-blue-200/80 p-2.5 rounded-xl">
                     <div className="flex items-center gap-2 min-w-0">
                       <Video className="h-4 w-4 shrink-0 text-blue-600" />
-                      <span className="font-semibold truncate">{t.ZoomMeetingRoom}</span>
+                      <span className="font-semibold truncate">
+                        {t.ZoomMeetingRoom}
+                      </span>
                     </div>
                     <a
                       href={event.virtualLink}
@@ -256,7 +264,9 @@ export function EventDetailModal({
             <div className="rounded-2xl border border-hairline bg-sand-soft/60 p-4 text-xs text-forest-deep leading-relaxed flex items-start gap-2.5">
               <Info className="h-4 w-4 text-forest shrink-0 mt-0.5" />
               <div>
-                <strong className="font-semibold text-forest">{t.CentralNoticeTitle}</strong>{" "}
+                <strong className="font-semibold text-forest">
+                  {t.CentralNoticeTitle}
+                </strong>{" "}
                 <span>{t.CentralNoticeBody}</span>
               </div>
             </div>
@@ -282,7 +292,9 @@ export function EventDetailModal({
                         />
                       </div>
                       <div>
-                        <p className="text-xs font-semibold text-forest-deep">{sp.name}</p>
+                        <p className="text-xs font-semibold text-forest-deep">
+                          {sp.name}
+                        </p>
                         <p className="text-[11px] text-mist">{sp.role}</p>
                       </div>
                     </div>
@@ -299,7 +311,8 @@ export function EventDetailModal({
                   Reservation Confirmed!
                 </h4>
                 <p className="text-xs text-mist max-w-sm mx-auto">
-                  Your admission pass has been officially registered under your verified profile.
+                  Your admission pass has been officially registered under your
+                  verified profile.
                 </p>
 
                 <div className="inline-block font-mono text-xs font-bold text-forest bg-white px-3 py-1.5 rounded-lg border border-hairline my-2">
@@ -307,13 +320,25 @@ export function EventDetailModal({
                 </div>
 
                 <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
-                  <Button asChild size="sm" className="w-full sm:w-auto rounded-xl bg-gradient-to-r from-[#D4AF37] via-[#E5C158] to-[#B38F26] text-neutral-950 font-bold">
-                    <Link href={`/${lang}/ticket/${bookingSuccess.ticketCode || bookingSuccess.bookingId}`} target="_blank">
+                  <Button
+                    asChild
+                    size="sm"
+                    className="w-full sm:w-auto rounded-xl bg-linear-to-r from-[#D4AF37] via-[#E5C158] to-[#B38F26] text-neutral-950 font-bold"
+                  >
+                    <Link
+                      href={`/${lang}/ticket/${bookingSuccess.ticketCode || bookingSuccess.bookingId}`}
+                      target="_blank"
+                    >
                       <QrCode className="mr-1.5 h-4 w-4" />
                       View Golden Ticket
                     </Link>
                   </Button>
-                  <Button variant="outline" size="sm" onClick={onClose} className="w-full sm:w-auto rounded-xl">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={onClose}
+                    className="w-full sm:w-auto rounded-xl"
+                  >
                     Close
                   </Button>
                 </div>
@@ -327,7 +352,10 @@ export function EventDetailModal({
                   size="lg"
                   className="w-full h-12 rounded-2xl bg-forest text-white hover:bg-forest-deep shadow-md font-semibold text-sm cursor-pointer transition-all"
                 >
-                  <Link href={`/${lang}/events/${event.id || event.slug}`} onClick={onClose}>
+                  <Link
+                    href={`/${lang}/events/${event.id || event.slug}`}
+                    onClick={onClose}
+                  >
                     <Users className="mr-2 h-4 w-4" />
                     <span>View Full Details & Register</span>
                     <ArrowRight className="ml-2 h-4 w-4" />
@@ -345,11 +373,13 @@ export function EventDetailModal({
                   >
                     {submitting ? (
                       <span className="flex items-center gap-1.5">
-                        <Loader2 className="h-3.5 w-3.5 animate-spin" /> Reserving...
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />{" "}
+                        Reserving...
                       </span>
                     ) : (
                       <span className="flex items-center gap-1.5">
-                        <Ticket className="h-3.5 w-3.5 text-forest" /> Quick RSVP
+                        <Ticket className="h-3.5 w-3.5 text-forest" /> Quick
+                        RSVP
                       </span>
                     )}
                   </Button>
@@ -361,7 +391,8 @@ export function EventDetailModal({
                   >
                     <Link href={`/${lang}/donate`} onClick={onClose}>
                       <Heart className="mr-1.5 h-3.5 w-3.5 text-forest" />
-                      {dict.EventsPage.Calendar.DonateBtn.split(" ")[0]} to Program Fund
+                      {dict.EventsPage.Calendar.DonateBtn.split(" ")[0]} to
+                      Program Fund
                     </Link>
                   </Button>
                 </div>

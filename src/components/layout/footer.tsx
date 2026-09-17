@@ -64,7 +64,7 @@ export function Footer() {
 
       <div className="relative z-10 mx-auto max-w-6xl px-6 pb-10 pt-24 sm:pt-28 lg:px-8">
         {/* Absolute Logo at Top of Footer */}
-        <div className="absolute top-5 sm:top-2 left-6 lg:left-8">
+        <div className="absolute top-2 sm:top-2 left-6 lg:left-8">
           <Link
             href={`/${currentLocale}`}
             aria-label="IFundAyiti — home"
@@ -159,9 +159,7 @@ export function Footer() {
               </span>
             </p>
             <span className="hidden sm:inline text-white/20">•</span>
-            <p className="text-xs font-medium text-sand/90">
-              EIN: {SITE.ein}
-            </p>
+            <p className="text-xs font-medium text-sand/90">EIN: {SITE.ein}</p>
           </div>
           <div className="flex gap-3">
             <Social href={`mailto:${SITE.email}`} label="Email">

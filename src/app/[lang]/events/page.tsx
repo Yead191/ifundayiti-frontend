@@ -15,7 +15,7 @@ import { Container } from "@/components/shared/container";
 import { buildMetadata } from "@/lib/seo";
 import { Button } from "@/components/ui/button";
 import { getDictionary } from "@/lib/dictionaries";
-import { getEvents } from "@/helpers/next-fetch/eventActions";
+import { getEvents, getUpcomingEvent, type IEvent } from "@/helpers/next-fetch/eventActions";
 import { FeaturedEventHero } from "@/features/events/components/FeaturedEventHero";
 import { EventsFilterAndCatalog } from "@/features/events/components/EventsFilterAndCatalog";
 
@@ -43,12 +43,34 @@ export default async function EventsPage({ params }: PageProps) {
   const dict = await getDictionary(lang);
   const t = dict.EventsPage;
 
-  // Fetch published events from backend API
-  const eventsRes = await getEvents({ status: "published", limit: 50 });
+  // Fetch published events and nearest upcoming event (today or closest upcoming nearby event)
+  const [eventsRes, upcomingRes] = await Promise.all([
+    getEvents({ status: "published", limit: 50 }),
+    getUpcomingEvent(),
+  ]);
+
   const events = eventsRes.success && Array.isArray(eventsRes.data) ? eventsRes.data : [];
 
-  // Pick first featured event or first upcoming event
-  const featuredEvent = events.find((e) => e.featured) || (events.length > 0 ? events[0] : null);
+  // Helper to ensure an event hasn't already finished (e.g. AM time passed)
+  const now = Date.now();
+  const isEventUpcomingOrLive = (evt: IEvent | null | undefined): boolean => {
+    if (!evt || !evt.startDate) return false;
+    const start = new Date(evt.startDate).getTime();
+    if (isNaN(start)) return false;
+    const end = evt.endDate ? new Date(evt.endDate).getTime() : start + 3 * 60 * 60 * 1000;
+    return end >= now;
+  };
+
+  const upcomingCandidate = upcomingRes.success ? upcomingRes.data : null;
+
+  // Pick nearest upcoming event whose time hasn't already passed;
+  // If the candidate from /event/upcoming already passed (e.g. morning event), pick the next upcoming event from the catalog
+  const upcomingEvent =
+    (isEventUpcomingOrLive(upcomingCandidate) ? upcomingCandidate : null) ||
+    events.find((e) => isEventUpcomingOrLive(e)) ||
+    upcomingCandidate ||
+    events.find((e) => e.featured) ||
+    (events.length > 0 ? events[0] : null);
 
   const metricHighlights = [
     {
@@ -146,11 +168,15 @@ export default async function EventsPage({ params }: PageProps) {
         </Container>
       </section>
 
-      {/* FEATURED EVENT SPOTLIGHT (If available) */}
-      {featuredEvent && (
+      {/* UPCOMING EVENT SPOTLIGHT (Nearest upcoming or today's event) */}
+      {upcomingEvent && (
         <section className="pt-10 lg:pt-14">
           <Container>
-            <FeaturedEventHero event={featuredEvent} lang={lang} />
+            <FeaturedEventHero
+              event={upcomingEvent}
+              lang={lang}
+              badgeLabel={lang === "ht" ? "Pwochen Evènman K ap Vini" : "Next Upcoming Gathering"}
+            />
           </Container>
         </section>
       )}
