@@ -32,6 +32,7 @@ const DASHBOARD_I18N = {
     nav: {
       "/dashboard": "Overview",
       "/dashboard/orders": "Orders",
+      "/dashboard/donations": "My Donations",
       "/dashboard/profile": "Profile",
     },
   },
@@ -42,6 +43,7 @@ const DASHBOARD_I18N = {
     nav: {
       "/dashboard": "Apèsi",
       "/dashboard/orders": "Kòmand",
+      "/dashboard/donations": "Donasyon Mwen",
       "/dashboard/profile": "Profil",
     },
   },

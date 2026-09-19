@@ -37,7 +37,7 @@ type ProfileUser = {
   image?: string;
   company?: string;
   interest?: string;
-  contact?: string;
+  phone?: string;
   contactNo?: string;
   role?: string;
   vendorProfile?: Partial<VendorProfile> | null;
@@ -58,9 +58,7 @@ export function ProfileForms({
   const vp = user.vendorProfile ?? {};
 
   const [name, setName] = React.useState(user.name ?? "");
-  const [contact, setContact] = React.useState(
-    user.contact ?? user.contactNo ?? vp.contactNo ?? "",
-  );
+  const [contact, setContact] = React.useState(user.phone ?? user.phone ?? "");
   const [jobTitle, setJobTitle] = React.useState(vp.jobTitle ?? "");
 
   const [imageFile, setImageFile] = React.useState<File | null>(null);
@@ -86,11 +84,15 @@ export function ProfileForms({
 
     if (vendor) {
       if (!jobTitle.trim()) {
-        toast.error(t.JobTitleRequired || "Job title is required.", { id: "profile" });
+        toast.error(t.JobTitleRequired || "Job title is required.", {
+          id: "profile",
+        });
         return;
       }
       if (!contact.trim()) {
-        toast.error(t.ContactRequired || "Contact number is required.", { id: "profile" });
+        toast.error(t.ContactRequired || "Contact number is required.", {
+          id: "profile",
+        });
         return;
       }
     }
@@ -109,7 +111,7 @@ export function ProfileForms({
         };
         fd.append("vendorProfile", JSON.stringify(vendorProfile));
       } else {
-        if (contact.trim()) fd.append("contact", contact.trim());
+        if (contact.trim()) fd.append("phone", contact.trim());
       }
 
       const res = await updateUserProfile(fd);
@@ -119,9 +121,12 @@ export function ProfileForms({
             toast.error(err.message, { id: "profile" });
           });
         } else {
-          toast.error(res.message || t.ProfileUpdateError || "Could not update profile.", {
-            id: "profile",
-          });
+          toast.error(
+            res.message || t.ProfileUpdateError || "Could not update profile.",
+            {
+              id: "profile",
+            },
+          );
         }
         return;
       }
@@ -129,7 +134,9 @@ export function ProfileForms({
       setImageFile(null);
       router.refresh();
     } catch {
-      toast.error(t.NetworkError || "Network error. Please try again.", { id: "profile" });
+      toast.error(t.NetworkError || "Network error. Please try again.", {
+        id: "profile",
+      });
     } finally {
       setSavingProfile(false);
     }
@@ -138,13 +145,18 @@ export function ProfileForms({
   async function handlePasswordSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (newPassword.length < 8) {
-      toast.error(t.PasswordMinLength || "New password must be at least 8 characters.", {
-        id: "password",
-      });
+      toast.error(
+        t.PasswordMinLength || "New password must be at least 8 characters.",
+        {
+          id: "password",
+        },
+      );
       return;
     }
     if (newPassword !== confirmPassword) {
-      toast.error(t.PasswordsDoNotMatch || "New passwords do not match.", { id: "password" });
+      toast.error(t.PasswordsDoNotMatch || "New passwords do not match.", {
+        id: "password",
+      });
       return;
     }
 
@@ -156,17 +168,24 @@ export function ProfileForms({
         confirmPassword,
       });
       if (!res.success) {
-        toast.error(res.message || t.PasswordUpdateError || "Could not change password.", {
-          id: "password",
-        });
+        toast.error(
+          res.message || t.PasswordUpdateError || "Could not change password.",
+          {
+            id: "password",
+          },
+        );
         return;
       }
-      toast.success(t.PasswordUpdated || "Password updated", { id: "password" });
+      toast.success(t.PasswordUpdated || "Password updated", {
+        id: "password",
+      });
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
     } catch {
-      toast.error(t.NetworkError || "Network error. Please try again.", { id: "password" });
+      toast.error(t.NetworkError || "Network error. Please try again.", {
+        id: "password",
+      });
     } finally {
       setSavingPassword(false);
     }
@@ -175,11 +194,17 @@ export function ProfileForms({
   return (
     <div className="flex flex-col gap-6">
       <DashboardPanel
-        title={vendor ? t.ExpertPanelTitle || "Expert profile" : t.PanelTitle || "Profile information"}
+        title={
+          vendor
+            ? t.ExpertPanelTitle || "Expert profile"
+            : t.PanelTitle || "Profile information"
+        }
         description={
           vendor
-            ? t.ExpertPanelDesc || "Update the details members see on your public expert profile."
-            : t.PanelDesc || "Update your personal details and how you appear across IFundAyiti."
+            ? t.ExpertPanelDesc ||
+              "Update the details members see on your public expert profile."
+            : t.PanelDesc ||
+              "Update your personal details and how you appear across IFundAyiti."
         }
       >
         <form onSubmit={handleProfileSubmit} className="space-y-8">
@@ -200,7 +225,9 @@ export function ProfileForms({
               </label>
             </div>
             <div>
-              <p className="text-sm font-medium text-cloud">{t.PhotoTitle || "Profile photo"}</p>
+              <p className="text-sm font-medium text-cloud">
+                {t.PhotoTitle || "Profile photo"}
+              </p>
               <p className="mt-1 text-xs text-mist">
                 {t.PhotoHint || "JPG or PNG. A square image looks best."}
               </p>
@@ -230,9 +257,11 @@ export function ProfileForms({
               />
             </div>
             <div className={`space-y-2 ${!vendor ? "sm:col-span-2" : ""}`}>
-              <Label htmlFor="contact">{t.ContactNumber || "Contact number"}</Label>
+              <Label htmlFor="phone">
+                {t.ContactNumber || "Contact number"}
+              </Label>
               <Input
-                id="contact"
+                id="phone"
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
                 className="border-hairline bg-ink/50"
@@ -260,7 +289,8 @@ export function ProfileForms({
             <Button type="submit" disabled={savingProfile}>
               {savingProfile ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" /> {t.Saving || "Saving…"}
+                  <Loader2 className="h-4 w-4 animate-spin" />{" "}
+                  {t.Saving || "Saving…"}
                 </>
               ) : (
                 t.SaveProfile || "Save profile"
@@ -272,7 +302,10 @@ export function ProfileForms({
 
       <DashboardPanel
         title={t.ChangePasswordTitle || "Change password"}
-        description={t.ChangePasswordDesc || "Use a strong password you don't reuse elsewhere."}
+        description={
+          t.ChangePasswordDesc ||
+          "Use a strong password you don't reuse elsewhere."
+        }
       >
         <form
           id="password"
@@ -280,7 +313,9 @@ export function ProfileForms({
           className="scroll-mt-32 space-y-4"
         >
           <div className="space-y-2">
-            <Label htmlFor="currentPassword">{t.CurrentPassword || "Current password"}</Label>
+            <Label htmlFor="currentPassword">
+              {t.CurrentPassword || "Current password"}
+            </Label>
             <Input
               id="currentPassword"
               type="password"
@@ -292,7 +327,9 @@ export function ProfileForms({
           </div>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="newPassword">{t.NewPassword || "New password"}</Label>
+              <Label htmlFor="newPassword">
+                {t.NewPassword || "New password"}
+              </Label>
               <Input
                 id="newPassword"
                 type="password"
@@ -304,7 +341,9 @@ export function ProfileForms({
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">{t.ConfirmPassword || "Confirm new password"}</Label>
+              <Label htmlFor="confirmPassword">
+                {t.ConfirmPassword || "Confirm new password"}
+              </Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -320,11 +359,13 @@ export function ProfileForms({
             <Button type="submit" disabled={savingPassword}>
               {savingPassword ? (
                 <>
-                  <Loader2 className="h-4 w-4 animate-spin" /> {t.UpdatingPassword || "Updating…"}
+                  <Loader2 className="h-4 w-4 animate-spin" />{" "}
+                  {t.UpdatingPassword || "Updating…"}
                 </>
               ) : (
                 <>
-                  <Lock className="h-4 w-4" /> {t.UpdatePassword || "Update password"}
+                  <Lock className="h-4 w-4" />{" "}
+                  {t.UpdatePassword || "Update password"}
                 </>
               )}
             </Button>

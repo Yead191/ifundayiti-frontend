@@ -2,10 +2,8 @@ import type { LucideIcon } from "lucide-react";
 import {
   LayoutDashboard,
   User,
-  CalendarCheck,
-  BookOpen,
   Package,
-  Crown,
+  Heart,
   Lock,
 } from "lucide-react";
 
@@ -28,6 +26,12 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
     href: "/dashboard/orders",
     icon: Package,
     description: "Order history & shipment tracking",
+  },
+  {
+    label: "My Donations",
+    href: "/dashboard/donations",
+    icon: Heart,
+    description: "Your contributions & impact history",
   },
   {
     label: "Profile",
