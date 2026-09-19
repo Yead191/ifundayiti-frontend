@@ -4,10 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
-  Calendar,
   CheckCircle2,
-  ExternalLink,
-  Info,
   Loader2,
   Lock,
   Minus,
@@ -21,7 +18,10 @@ import {
   Video,
 } from "lucide-react";
 import { toast } from "sonner";
-import { type IEvent, bookEventTicket } from "@/helpers/next-fetch/eventActions";
+import {
+  type IEvent,
+  bookEventTicket,
+} from "@/helpers/next-fetch/eventActions";
 import { AuthRequiredModal } from "@/components/auth/AuthRequiredModal";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
@@ -79,7 +79,7 @@ export function EventBookingWidget({
 
   const occupancyPercent = Math.min(
     100,
-    Math.round((reserved / Math.max(1, capacity)) * 100)
+    Math.round((reserved / Math.max(1, capacity)) * 100),
   );
 
   const totalPrice = isFree ? 0 : (event.price || 0) * quantity;
@@ -112,7 +112,9 @@ export function EventBookingWidget({
           toast.error("Please sign in to complete your reservation.");
           return;
         }
-        toast.error(res.message || "Failed to reserve ticket. Please try again.");
+        toast.error(
+          res.message || "Failed to reserve ticket. Please try again.",
+        );
         return;
       }
 
@@ -142,11 +144,11 @@ export function EventBookingWidget({
       toast.success(
         event.type === "virtual"
           ? "Virtual access reserved! Confirmation sent to your email."
-          : "Ticket confirmed! Official pass generated."
+          : "Ticket confirmed! Official pass generated.",
       );
     } catch (err) {
       toast.error(
-        err instanceof Error ? err.message : "An unexpected error occurred."
+        err instanceof Error ? err.message : "An unexpected error occurred.",
       );
     } finally {
       setSubmitting(false);
@@ -176,13 +178,18 @@ export function EventBookingWidget({
           <span className="font-display text-3xl sm:text-4xl font-extrabold text-forest-deep">
             {isFree ? "Complimentary" : `$${event.price}.00`}
           </span>
-          {!isFree && <span className="text-xs text-mist font-medium">USD / person</span>}
+          {!isFree && (
+            <span className="text-xs text-mist font-medium">USD / person</span>
+          )}
         </div>
 
         {event.type === "virtual" && (
           <p className="text-xs text-blue-700 bg-blue-50 border border-blue-200/70 rounded-xl p-2.5 flex items-center gap-2">
             <Video className="h-4 w-4 shrink-0 text-blue-600" />
-            <span>Virtual attendance via Zoom stream is complimentary for all members.</span>
+            <span>
+              Virtual attendance via Zoom stream is complimentary for all
+              members.
+            </span>
           </p>
         )}
       </div>
@@ -208,8 +215,8 @@ export function EventBookingWidget({
               occupancyPercent >= 90
                 ? "bg-red-500"
                 : occupancyPercent >= 70
-                ? "bg-amber-500"
-                : "bg-forest"
+                  ? "bg-amber-500"
+                  : "bg-forest"
             }`}
             style={{ width: `${occupancyPercent}%` }}
           />
@@ -224,7 +231,9 @@ export function EventBookingWidget({
             <Label className="text-xs font-semibold uppercase tracking-wider text-forest block">
               Number of Tickets
             </Label>
-            <span className="text-xs text-mist font-medium">Max 5 per order</span>
+            <span className="text-xs text-mist font-medium">
+              Max 5 per order
+            </span>
           </div>
 
           <div className="flex items-center justify-between rounded-2xl border border-hairline bg-sand-soft/30 p-2">
@@ -244,7 +253,9 @@ export function EventBookingWidget({
 
             <button
               type="button"
-              onClick={() => setQuantity((q) => Math.min(Math.min(5, remaining), q + 1))}
+              onClick={() =>
+                setQuantity((q) => Math.min(Math.min(5, remaining), q + 1))
+              }
               disabled={quantity >= 5 || quantity >= remaining || submitting}
               className="grid h-9 w-9 place-items-center rounded-xl bg-white text-forest-deep shadow-xs hover:bg-sand-soft disabled:opacity-40 cursor-pointer transition"
               aria-label="Increase quantity"
@@ -273,7 +284,8 @@ export function EventBookingWidget({
               </div>
               <p className="text-mist truncate">{profile.email}</p>
               <p className="text-[11px] text-mist/80 pt-1">
-                Your name & email will be officially encoded on your golden pass.
+                Your name & email will be officially encoded on your golden
+                pass.
               </p>
             </div>
           ) : (
@@ -285,7 +297,8 @@ export function EventBookingWidget({
                     Account sign-in required
                   </p>
                   <p className="text-mist text-[11px] mt-0.5">
-                    Your official admission pass will be securely linked to your IFundAyiti account.
+                    Your official admission pass will be securely linked to your
+                    IFundAyiti account.
                   </p>
                 </div>
               </div>
@@ -308,7 +321,10 @@ export function EventBookingWidget({
             htmlFor="phone-input"
             className="text-xs font-semibold uppercase tracking-wider text-forest block mb-1.5"
           >
-            Phone Number <span className="text-mist font-normal lowercase">(optional for SMS reminder)</span>
+            Phone Number{" "}
+            <span className="text-mist font-normal lowercase">
+              (optional for SMS reminder)
+            </span>
           </Label>
           <Input
             id="phone-input"
@@ -326,7 +342,10 @@ export function EventBookingWidget({
             htmlFor="note-input"
             className="text-xs font-semibold uppercase tracking-wider text-forest block mb-1.5"
           >
-            Special Notes <span className="text-mist font-normal lowercase">(dietary, seating, requests)</span>
+            Special Notes{" "}
+            <span className="text-mist font-normal lowercase">
+              (dietary, seating, requests)
+            </span>
           </Label>
           <Textarea
             id="note-input"
@@ -340,10 +359,12 @@ export function EventBookingWidget({
 
         {/* Total calculation row if paid */}
         {!isFree && (
-          <div className="rounded-2xl border border-[#D4AF37]/30 bg-gradient-to-r from-[#D4AF37]/10 via-sand-soft to-transparent p-4 flex items-center justify-between text-xs">
+          <div className="rounded-2xl border border-[#D4AF37]/30 bg-linear-to-r from-[#D4AF37]/10 via-sand-soft to-transparent p-4 flex items-center justify-between text-xs">
             <div>
               <span className="text-mist block">Total Investment</span>
-              <span className="text-[11px] text-mist">{quantity} × ${event.price}.00</span>
+              <span className="text-[11px] text-mist">
+                {quantity} × ${event.price}.00
+              </span>
             </div>
             <div className="text-right">
               <span className="font-display text-2xl font-bold text-forest-deep block">
@@ -363,7 +384,7 @@ export function EventBookingWidget({
           className={`w-full h-12 rounded-2xl font-semibold shadow-md cursor-pointer transition-all ${
             isFree
               ? "bg-forest text-white hover:bg-forest-deep"
-              : "bg-gradient-to-r from-[#D4AF37] via-[#E5C158] to-[#B38F26] text-neutral-950 hover:brightness-110 shadow-[#D4AF37]/25"
+              : "bg-linear-to-r from-[#D4AF37] via-[#E5C158] to-[#B38F26] text-neutral-950 hover:brightness-110 shadow-[#D4AF37]/25"
           }`}
         >
           {submitting ? (
@@ -415,7 +436,8 @@ export function EventBookingWidget({
                 You're Officially Registered!
               </h3>
               <p className="text-xs text-mist mt-1">
-                We're excited to welcome you to <strong className="text-forest-deep">{event.title}</strong>.
+                We're excited to welcome you to{" "}
+                <strong className="text-forest-deep">{event.title}</strong>.
               </p>
             </div>
 
@@ -430,7 +452,8 @@ export function EventBookingWidget({
               <div className="flex items-center justify-between text-xs pt-1 border-t border-hairline/60">
                 <span className="text-mist">Admission</span>
                 <span className="font-semibold text-forest-deep">
-                  Admit {successBooking.quantity} {successBooking.quantity === 1 ? "Person" : "Persons"}
+                  Admit {successBooking.quantity}{" "}
+                  {successBooking.quantity === 1 ? "Person" : "Persons"}
                 </span>
               </div>
               <div className="flex items-center justify-between text-xs pt-1 border-t border-hairline/60">
@@ -445,7 +468,8 @@ export function EventBookingWidget({
             {successBooking.isVirtual && successBooking.virtualLink && (
               <div className="rounded-2xl bg-blue-50 border border-blue-200 p-3.5 text-left text-xs text-blue-900 space-y-1">
                 <p className="font-bold flex items-center gap-1.5">
-                  <Video className="h-4 w-4 text-blue-600" /> Private Virtual Meeting Link
+                  <Video className="h-4 w-4 text-blue-600" /> Private Virtual
+                  Meeting Link
                 </p>
                 <p className="text-[11px] text-blue-800 break-all">
                   {successBooking.virtualLink}
@@ -457,7 +481,7 @@ export function EventBookingWidget({
             <div className="flex flex-col gap-2.5 pt-2">
               <Button
                 asChild
-                className="w-full h-12 rounded-xl font-semibold bg-gradient-to-r from-[#D4AF37] via-[#E5C158] to-[#B38F26] text-neutral-950 shadow-md hover:brightness-110"
+                className="w-full h-12 rounded-xl font-semibold bg-linear-to-r from-[#D4AF37] via-[#E5C158] to-[#B38F26] text-neutral-950 shadow-md hover:brightness-110"
               >
                 <Link
                   href={`/${lang}/ticket/${successBooking.ticketCode || successBooking.bookingId}`}

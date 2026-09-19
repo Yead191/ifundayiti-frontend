@@ -40,7 +40,8 @@ export function EventCard({ event, lang }: EventCardProps) {
       })
     : "";
 
-  const isFree = event.pricingType === "free" || !event.price || event.price === 0;
+  const isFree =
+    event.pricingType === "free" || !event.price || event.price === 0;
   const capacity = event.capacity || 100;
   const reserved = event.reservedCount || 0;
   const remaining =
@@ -49,7 +50,10 @@ export function EventCard({ event, lang }: EventCardProps) {
       : Math.max(0, capacity - reserved);
   const isSoldOut = remaining <= 0;
 
-  const occupancyPercent = Math.min(100, Math.round((reserved / Math.max(1, capacity)) * 100));
+  const occupancyPercent = Math.min(
+    100,
+    Math.round((reserved / Math.max(1, capacity)) * 100),
+  );
 
   const imageUrl =
     getImageUrl(event.image) ||
@@ -60,7 +64,8 @@ export function EventCard({ event, lang }: EventCardProps) {
       case "gala":
         return {
           label: "Gala & Banquet",
-          color: "bg-[#D4AF37]/15 text-[#8F721A] border-[#D4AF37]/40 dark:text-[#E5C158]",
+          color:
+            "bg-[#D4AF37]/15 text-[#8F721A] border-[#D4AF37]/40 dark:text-[#E5C158]",
         };
       case "fundraiser":
         return {
@@ -97,7 +102,7 @@ export function EventCard({ event, lang }: EventCardProps) {
           fill
           className="object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-black/70 via-black/20 to-transparent" />
 
         {/* Top Badges */}
         <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2">
@@ -167,9 +172,7 @@ export function EventCard({ event, lang }: EventCardProps) {
 
         {/* Title */}
         <h3 className="font-display text-lg font-bold text-forest-deep transition-colors group-hover:text-forest line-clamp-2 leading-snug">
-          <Link href={`/${lang}/events/${event._id}`}>
-            {event.title}
-          </Link>
+          <Link href={`/${lang}/events/${event._id}`}>{event.title}</Link>
         </h3>
 
         {/* Excerpt */}
@@ -199,8 +202,8 @@ export function EventCard({ event, lang }: EventCardProps) {
                 occupancyPercent >= 90
                   ? "bg-red-500"
                   : occupancyPercent >= 70
-                  ? "bg-amber-500"
-                  : "bg-forest"
+                    ? "bg-amber-500"
+                    : "bg-forest"
               }`}
               style={{ width: `${occupancyPercent}%` }}
             />

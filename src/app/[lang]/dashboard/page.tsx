@@ -24,14 +24,9 @@ interface PageProps {
   params: Promise<{ lang: string }>;
 }
 
-async function countTotal(url: string) {
-  const res = await nextFetch(url, {
-    method: "GET",
-    cache: "no-store",
-  });
-  return res.success
-    ? (res.pagination?.total ?? (Array.isArray(res.data) ? res.data.length : 0))
-    : 0;
+interface MyStats {
+  myOrders: number;
+  myTotalDonation: number;
 }
 
 export default async function DashboardOverviewPage({ params }: PageProps) {
@@ -39,8 +34,14 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
   const isHt = lang === "ht";
   const user = await getProfile();
 
-  // Fetch real order count
-  const ordersCount = await countTotal("/order?page=1&limit=1");
+  // Fetch user stats
+  const statsRes = await nextFetch<MyStats>("/dashboard/my-stats", {
+    method: "GET",
+    cache: "no-store",
+  });
+
+  const myOrders = statsRes.data?.myOrders ?? 0;
+  const myTotalDonation = statsRes.data?.myTotalDonation ?? 0;
 
   // Meaningful demo donation info (to be connected to live donation API)
   const demoDonations = [
@@ -70,12 +71,10 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
     },
   ];
 
-  const totalDonated = demoDonations.reduce((sum, d) => sum + d.amount, 0);
-
   const statCards = [
     {
       label: isHt ? "Kòmand Mwen Yo" : "My Orders",
-      value: ordersCount,
+      value: myOrders,
       sublabel: isHt ? "Acha ak livrezon" : "Store shipments & tracking",
       href: `/${lang}/dashboard/orders`,
       icon: Package,
@@ -83,24 +82,15 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
     },
     {
       label: isHt ? "Total Donasyon" : "Total Donated",
-      value: formatPrice(totalDonated),
+      value: formatPrice(myTotalDonation),
       sublabel: isHt
-        ? "2 kontribisyon nan fon an"
-        : "2 contributions to Program Fund",
+        ? "Kontribisyon nan fon an"
+        : "Contributions to Program Fund",
       href: `/${lang}/donate`,
       icon: Heart,
       badge: isHt ? "Enpak" : "Impact",
     },
-    {
-      label: isHt ? "Sibvansyon Sipòte" : "Grants Supported",
-      value: "2",
-      sublabel: isHt
-        ? "Antreprenè lokal ki jwenn èd"
-        : "Grassroots Haitian builders backed",
-      href: `/${lang}/winners`,
-      icon: Sparkles,
-      badge: isHt ? "Kominote" : "Community",
-    },
+
     {
       label: isHt ? "Boutik Ofisyèl" : "Mission Store",
       value: isHt ? "Vizite" : "Shop",
@@ -116,7 +106,7 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
   return (
     <div className="space-y-6">
       {/* 1. Stat Cards Row */}
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {statCards.map(
           ({ label, value, sublabel, href, icon: Icon, badge }) => (
             <Link

@@ -75,7 +75,7 @@ export function EventDetailsView({
 
   const googleMapsUrl = event.venueAddress
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        `${event.location} ${event.venueAddress}`
+        `${event.location} ${event.venueAddress}`,
       )}`
     : undefined;
 
@@ -108,7 +108,7 @@ export function EventDetailsView({
             priority
             className="object-cover opacity-20 filter blur-[1px] scale-105"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0E0E10] via-[#0E0E10]/80 to-[#0E0E10]/95" />
+          <div className="absolute inset-0 bg-linear-to-t from-[#0E0E10] via-[#0E0E10]/80 to-[#0E0E10]/95" />
           <div className="absolute -top-32 right-1/4 h-96 w-96 rounded-full bg-[#D4AF37]/15 blur-3xl pointer-events-none" />
         </div>
 
@@ -123,9 +123,13 @@ export function EventDetailsView({
                 <ArrowLeft className="h-3.5 w-3.5" /> Events
               </Link>
               <span>/</span>
-              <span className="capitalize">{event.category.replace("-", " ")}</span>
+              <span className="capitalize">
+                {event.category.replace("-", " ")}
+              </span>
               <span>/</span>
-              <span className="text-white truncate max-w-xs">{event.title}</span>
+              <span className="text-white truncate max-w-xs">
+                {event.title}
+              </span>
             </nav>
 
             <button
@@ -177,7 +181,9 @@ export function EventDetailsView({
             <div className="flex flex-wrap items-center gap-x-8 gap-y-3 text-xs sm:text-sm text-neutral-300 pt-2">
               <div className="flex items-center gap-2.5">
                 <Calendar className="h-4 w-4 text-[#D4AF37]" />
-                <span className="font-semibold text-white">{formattedDate}</span>
+                <span className="font-semibold text-white">
+                  {formattedDate}
+                </span>
               </div>
 
               <div className="flex items-center gap-2.5">
@@ -233,7 +239,11 @@ export function EventDetailsView({
                       Central Program Fund Impact:
                     </strong>{" "}
                     <span>
-                      100% of proceeds from tickets and event contributions directly support the central IFundAyiti Program Fund. Our independent selection committee deploys these resources as non-dilutive micro-grants to verified Haitian entrepreneurs during quarterly cycles.
+                      100% of proceeds from tickets and event contributions
+                      directly support the central IFundAyiti Program Fund. Our
+                      independent selection committee deploys these resources as
+                      non-dilutive micro-grants to verified Haitian
+                      entrepreneurs during quarterly cycles.
                     </span>
                   </div>
                 </div>
@@ -304,7 +314,9 @@ export function EventDetailsView({
                         {event.location}
                       </strong>
                       {event.venueAddress && (
-                        <p className="text-mist text-xs mt-0.5">{event.venueAddress}</p>
+                        <p className="text-mist text-xs mt-0.5">
+                          {event.venueAddress}
+                        </p>
                       )}
                     </div>
                   </div>
@@ -339,7 +351,8 @@ export function EventDetailsView({
                         <span>Zoom Live Stream Included</span>
                       </div>
                       <p className="text-blue-800 text-[11px] leading-relaxed">
-                        Registered virtual attendees receive their unique streaming link directly by email upon RSVP confirmation.
+                        Registered virtual attendees receive their unique
+                        streaming link directly by email upon RSVP confirmation.
                       </p>
                     </div>
                   )}
@@ -361,7 +374,8 @@ export function EventDetailsView({
                   Have inquiries about this event?
                 </p>
                 <p className="text-mist text-[11px]">
-                  Contact our gathering coordination team for accessibility, sponsor tables, or group tickets.
+                  Contact our gathering coordination team for accessibility,
+                  sponsor tables, or group tickets.
                 </p>
                 <div className="pt-1">
                   <Button

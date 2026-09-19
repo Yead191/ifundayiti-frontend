@@ -81,7 +81,7 @@ export function Footer() {
           </Link>
         </div>
 
-        <div className="grid gap-12 md:grid-cols-12 pt-6">
+        <div className="grid gap-12 md:grid-cols-12 pt-1">
           <div className="md:col-span-4">
             {/* Nonprofit Status Trust Badge */}
 
