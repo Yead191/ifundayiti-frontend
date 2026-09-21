@@ -86,7 +86,7 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
       sublabel: isHt
         ? "Kontribisyon nan fon an"
         : "Contributions to Program Fund",
-      href: `/${lang}/donate`,
+      href: `/${lang}/dashboard/donations`,
       icon: Heart,
       badge: isHt ? "Enpak" : "Impact",
     },
@@ -141,9 +141,9 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
       </div>
 
       {/* 2. Main 2-Column Split: Profile & Donations */}
-      <div className="grid gap-6 lg:grid-cols-12">
+      <div className="grid ">
         {/* Profile Card (5 cols) */}
-        <div className="lg:col-span-5 space-y-6">
+        <div className=" space-y-6">
           <DashboardPanel
             title={isHt ? "Pwofil Kont Ou" : "Account Profile"}
             description={
@@ -234,100 +234,6 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
                   {isHt ? "Gade Tout Kòmand Yo" : "View All Orders"}
                 </Link>
               </Button>
-            </div>
-          </DashboardPanel>
-        </div>
-
-        {/* Donations & Grant Impact Card (7 cols) */}
-        <div className="lg:col-span-7 space-y-6">
-          <DashboardPanel
-            title={
-              isHt
-                ? "Donasyon ak Enpak Kominotè"
-                : "Donations & Community Impact"
-            }
-            description={
-              isHt
-                ? "Kontribisyon ou nan Fon Pwogram IFundAyiti pou kreyatè lokal yo."
-                : "Your contributions to the IFundAyiti Program Fund empowering local builders."
-            }
-            actions={
-              <Button
-                asChild
-                size="sm"
-                className="rounded-xl bg-forest hover:bg-forest-bright text-xs font-bold text-white shadow-xs"
-              >
-                <Link href={`/${lang}/donate`}>
-                  <Heart className="mr-1.5 h-3.5 w-3.5 text-rose-300" />
-                  {isHt ? "Fè Yon Don" : "Donate Now"}
-                </Link>
-              </Button>
-            }
-          >
-            {/* Demo Donations Feed */}
-            <div className="space-y-3">
-              {demoDonations.map((donation) => (
-                <div
-                  key={donation.id}
-                  className="rounded-2xl border border-hairline/80 bg-white p-4 shadow-2xs transition-colors hover:border-forest/30"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs font-bold text-forest">
-                          #{donation.id}
-                        </span>
-                        <span className="rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-700">
-                          {donation.status}
-                        </span>
-                      </div>
-                      <p className="mt-1 text-sm font-bold text-cloud">
-                        {donation.cause}
-                      </p>
-                      <p className="mt-0.5 text-xs text-mist flex items-center gap-1.5">
-                        <Clock className="h-3 w-3 text-mist/70" />
-                        <span>{donation.date}</span>
-                      </p>
-                    </div>
-
-                    <p className="font-display text-base font-bold text-forest">
-                      {formatPrice(donation.amount)}
-                    </p>
-                  </div>
-
-                  <div className="mt-2.5 border-t border-hairline/50 pt-2 flex items-center gap-1.5 text-[11px] text-mist">
-                    <Sparkles className="h-3.5 w-3.5 text-amber-500 shrink-0" />
-                    <span>{donation.directImpact}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Micro-Grant Milestone Progress */}
-            <div className="mt-5 rounded-2xl border border-hairline/80 bg-sand-soft/50 p-4">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-bold text-forest uppercase tracking-wider">
-                  {isHt
-                    ? "Pwochen Sibvansyon $1,000"
-                    : "Next $1,000 Micro-Grant Cycle"}
-                </span>
-                <span className="font-bold text-forest-deep">
-                  $750 / $1,000 (75%)
-                </span>
-              </div>
-
-              <div className="mt-2 h-2.5 w-full overflow-hidden rounded-full bg-sand-soft border border-hairline/80">
-                <div
-                  className="h-full rounded-full bg-forest transition-all duration-500"
-                  style={{ width: "75%" }}
-                />
-              </div>
-
-              <p className="mt-2 text-[11px] text-mist leading-relaxed">
-                {isHt
-                  ? "Chak dola ou bay antre dirèkteman nan fon prim mikwo-sibvansyon an pou rekonpanse gayan sik aktyèl la."
-                  : "Every dollar donated fuels our equity-free micro-grant awards for verified Haitian grassroots builders."}
-              </p>
             </div>
           </DashboardPanel>
         </div>

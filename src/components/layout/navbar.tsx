@@ -231,10 +231,11 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
                     title={user?.name || authT.Account || "Account"}
                   >
                     {user?.image ? (
-                      <img
+                      <Image
+                        fill
                         src={getImageUrl(user.image) || ""}
                         alt={user?.name || "User"}
-                        className="h-full w-full object-cover"
+                        className="h-10 w-fit object-cover"
                       />
                     ) : (
                       <User className="h-4.5 w-4.5" />
@@ -246,14 +247,14 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
                   className="w-64 rounded-2xl border-hairline bg-white/95 p-1.5 shadow-xl backdrop-blur-xl"
                 >
                   {/* User Information Header */}
-                  <div className="flex items-center gap-3 border-b border-hairline p-2.5">
+                  <div className="flex items-center gap-2 border-b border-hairline p-2.5">
                     {user?.image ? (
                       <Image
-                        src={getImageUrl(user.image) || ""}
+                        src={getImageUrl(user?.image) || ""}
                         alt={user?.name || "User"}
                         width={50}
-                        height={50}
-                        className="rounded-full h-10 w-fit object-cover"
+                        height={40}
+                        className="rounded-full object-cover w-9 h-full"
                       />
                     ) : (
                       <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-forest/10 text-forest">
