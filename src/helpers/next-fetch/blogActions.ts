@@ -1,6 +1,7 @@
 "use server";
 
 import { nextFetch } from "./NextFetch";
+import { revalidateTags } from "./revalidateTags";
 
 export type BLOG_STATUS = "draft" | "published" | "archived";
 
@@ -32,9 +33,48 @@ export interface IBlog {
   tags?: string[];
   status: BLOG_STATUS | string;
   isFeatured: boolean;
+  totalLikes?: number;
+  totalComments?: number;
+  isLikedByMe?: boolean;
   publishedAt?: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IBlogComment {
+  _id: string;
+  blog: string;
+  text: string;
+  author: {
+    _id: string;
+    name: string;
+    email?: string;
+    image?: string;
+    role?: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CommentsResponse {
+  success: boolean;
+  message?: string;
+  data: IBlogComment[];
+  pagination?: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPage: number;
+  };
+}
+
+export interface ToggleLikeResponse {
+  success: boolean;
+  message?: string;
+  data?: {
+    liked: boolean;
+    totalLikes: number;
+  };
 }
 
 export interface BlogsResponse {
@@ -137,9 +177,8 @@ export async function getSingleBlog(slugOrId: string): Promise<{
 }> {
   try {
     const res = await nextFetch<IBlog>(`/blog/${slugOrId}`, {
-      cache: "force-cache",
+      cache: "no-store",
       next: {
-        revalidate: 60,
         tags: ["blogs", `blog-${slugOrId}`],
       },
     });
@@ -207,3 +246,147 @@ export async function getBlogCategories({
     };
   }
 }
+
+/**
+ * Toggle like on a blog article
+ */
+export async function toggleBlogLike(
+  blogIdOrSlug: string,
+): Promise<ToggleLikeResponse> {
+  try {
+    const res = await nextFetch<{ liked: boolean; totalLikes: number }>(
+      `/like/${blogIdOrSlug}`,
+      {
+        method: "POST",
+      },
+    );
+
+    if (res.success) {
+      await revalidateTags(["blogs", `blog-${blogIdOrSlug}`]);
+    }
+
+    return res;
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to toggle like",
+    };
+  }
+}
+
+/**
+ * Fetch all comments for a blog article
+ */
+export async function getBlogComments(
+  blogIdOrSlug: string,
+  page = 1,
+  limit = 20,
+): Promise<CommentsResponse> {
+  try {
+    const res = await nextFetch<IBlogComment[]>(
+      `/comment/${blogIdOrSlug}?page=${page}&limit=${limit}`,
+      {
+        cache: "no-store",
+      },
+    );
+
+    if (res.success && Array.isArray(res.data)) {
+      return {
+        success: true,
+        data: res.data,
+        pagination: res.pagination,
+      };
+    }
+
+    return {
+      success: false,
+      message: res.message || "Failed to fetch comments",
+      data: [],
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Network error",
+      data: [],
+    };
+  }
+}
+
+/**
+ * Create a new comment on a blog article
+ */
+export async function createBlogComment(
+  blogIdOrSlug: string,
+  text: string,
+): Promise<{ success: boolean; data?: IBlogComment; message?: string }> {
+  try {
+    const res = await nextFetch<IBlogComment>(`/comment/${blogIdOrSlug}`, {
+      method: "POST",
+      body: { text },
+    });
+
+    if (res.success) {
+      await revalidateTags(["blogs", `blog-${blogIdOrSlug}`]);
+    }
+
+    return res;
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to post comment",
+    };
+  }
+}
+
+/**
+ * Update an existing comment
+ */
+export async function updateBlogComment(
+  commentId: string,
+  text: string,
+  blogIdOrSlug?: string,
+): Promise<{ success: boolean; data?: IBlogComment; message?: string }> {
+  try {
+    const res = await nextFetch<IBlogComment>(`/comment/${commentId}`, {
+      method: "PATCH",
+      body: { text },
+    });
+
+    if (res.success && blogIdOrSlug) {
+      await revalidateTags(["blogs", `blog-${blogIdOrSlug}`]);
+    }
+
+    return res;
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to update comment",
+    };
+  }
+}
+
+/**
+ * Delete a comment
+ */
+export async function deleteBlogComment(
+  commentId: string,
+  blogIdOrSlug?: string,
+): Promise<{ success: boolean; message?: string }> {
+  try {
+    const res = await nextFetch<void>(`/comment/${commentId}`, {
+      method: "DELETE",
+    });
+
+    if (res.success && blogIdOrSlug) {
+      await revalidateTags(["blogs", `blog-${blogIdOrSlug}`]);
+    }
+
+    return res;
+  } catch (error) {
+    return {
+      success: false,
+      message: error instanceof Error ? error.message : "Failed to delete comment",
+    };
+  }
+}
+

@@ -8,6 +8,7 @@ import { ArrowLeft, Calendar, Clock, Star, Tag as TagIcon } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { getSingleBlog } from "@/helpers/next-fetch/blogActions";
+import getProfile from "@/helpers/next-fetch/getProfile";
 import { getDictionary } from "@/lib/dictionaries";
 import { buildMetadata, getSiteUrl } from "@/lib/seo";
 import { getImageUrl } from "@/lib/getImageUrl";
@@ -19,6 +20,8 @@ import {
 import { BlogContentRenderer } from "@/features/blogs/components/BlogContentRenderer";
 import { BlogShareButtons } from "@/features/blogs/components/BlogShareButtons";
 import { BlogAuthorBio } from "@/features/blogs/components/BlogAuthorBio";
+import { BlogEngagementBar } from "@/features/blogs/components/BlogEngagementBar";
+import { BlogCommentsSection } from "@/features/blogs/components/BlogCommentsSection";
 import { RelatedBlogsStream } from "@/features/blogs/components/RelatedBlogsStream";
 import { RelatedBlogsSkeleton } from "@/features/blogs/components/BlogSkeleton";
 
@@ -56,16 +59,20 @@ export async function generateMetadata({
 
 export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
   const { lang, slug } = await params;
-  const dict = await getDictionary(lang);
-  const t = dict?.BlogPage;
 
-  const res = await getSingleBlog(slug);
+  const [res, profile, dict] = await Promise.all([
+    getSingleBlog(slug),
+    getProfile(),
+    getDictionary(lang),
+  ]);
 
   if (!res.success || !res.data) {
     notFound();
   }
 
   const blog = res.data;
+  const t = dict?.BlogPage;
+  const isLoggedIn = Boolean(profile);
   const rawContent = blog.content || blog.contain || "";
   const coverUrl = blog.image ? getImageUrl(blog.image) : null;
   const readTime = calculateReadTime(rawContent);
@@ -231,12 +238,23 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                   </div>
                 </div>
 
-                {/* Social Share Buttons */}
-                <BlogShareButtons
-                  title={blog.title}
-                  url={articleUrl}
-                  lang={lang}
-                />
+                {/* Engagement Bar & Social Share Buttons */}
+                <div className="flex flex-wrap items-center gap-3">
+                  <BlogEngagementBar
+                    blogId={blog._id}
+                    blogSlug={blog.slug}
+                    initialLikes={blog.totalLikes || 0}
+                    initialLiked={Boolean(blog.isLikedByMe)}
+                    totalComments={blog.totalComments || 0}
+                    isLoggedIn={isLoggedIn}
+                    lang={lang}
+                  />
+                  <BlogShareButtons
+                    title={blog.title}
+                    url={articleUrl}
+                    lang={lang}
+                  />
+                </div>
               </div>
             </Reveal>
           </div>
@@ -293,19 +311,39 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
                 <BlogAuthorBio author={blog.author} lang={lang} />
               </div>
 
-              {/* Bottom Social Share Bar */}
-              <div className="mt-8 flex items-center justify-between border-t border-b border-hairline/70 py-4">
-                <span className="text-xs font-bold uppercase tracking-wider text-forest">
-                  {lang === "ht"
-                    ? "Ou renmen atik sa a?"
-                    : "Enjoyed this article?"}
-                </span>
+              {/* Bottom Social & Engagement Bar */}
+              <div className="mt-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-t border-b border-hairline/70 py-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-bold uppercase tracking-wider text-forest">
+                    {lang === "ht"
+                      ? "Ou renmen atik sa a?"
+                      : "Enjoyed this article?"}
+                  </span>
+                  <BlogEngagementBar
+                    blogId={blog._id}
+                    blogSlug={blog.slug}
+                    initialLikes={blog.totalLikes || 0}
+                    initialLiked={Boolean(blog.isLikedByMe)}
+                    totalComments={blog.totalComments || 0}
+                    isLoggedIn={isLoggedIn}
+                    lang={lang}
+                  />
+                </div>
                 <BlogShareButtons
                   title={blog.title}
                   url={articleUrl}
                   lang={lang}
                 />
               </div>
+
+              {/* Community Comments & Reflections Section */}
+              <BlogCommentsSection
+                blogId={blog._id}
+                blogSlug={blog.slug}
+                currentUser={profile}
+                initialTotal={blog.totalComments || 0}
+                lang={lang}
+              />
             </div>
 
             {/* Related Field Dispatches - Streamed under Suspense */}
@@ -319,6 +357,20 @@ export default async function BlogDetailPage({ params }: BlogDetailPageProps) {
             </Suspense>
           </div>
         </Container>
+
+        {/* Floating Quick-Engagement Capsule Bar */}
+        <div className="fixed bottom-6 right-6 z-40 animate-in fade-in slide-in-from-bottom-5 duration-300">
+          <BlogEngagementBar
+            blogId={blog._id}
+            blogSlug={blog.slug}
+            initialLikes={blog.totalLikes || 0}
+            initialLiked={Boolean(blog.isLikedByMe)}
+            totalComments={blog.totalComments || 0}
+            isLoggedIn={isLoggedIn}
+            lang={lang}
+            className="shadow-2xl border-forest/20 bg-white/95"
+          />
+        </div>
       </section>
     </>
   );

@@ -234,22 +234,38 @@ export function TopbarNotifications({
       auth: token ? { token } : undefined,
     });
 
-    const eventName = `get-notification::${userId}`;
-    const onNotify = () => {
+    const onNotify = (notif?: any) => {
       // Quiet sync so the bell badge updates without opening the menu.
       void syncRef.current({ quiet: true });
+
+      if (notif?.title) {
+        toast(notif.title, {
+          description: notif.message,
+          action: notif.path
+            ? {
+                label: "View",
+                onClick: () => {
+                  const href = resolveNotificationPath(notif.path);
+                  if (href) router.push(href);
+                },
+              }
+            : undefined,
+        });
+      }
     };
 
-    socket.on(eventName, onNotify);
+    socket.on(`getNotification::${userId}`, onNotify);
+    socket.on(`get-notification::${userId}`, onNotify);
     socket.on("connect_error", (err) => {
       console.warn("Notification socket error:", err.message);
     });
 
     return () => {
-      socket.off(eventName, onNotify);
+      socket.off(`getNotification::${userId}`, onNotify);
+      socket.off(`get-notification::${userId}`, onNotify);
       socket.disconnect();
     };
-  }, [userId]);
+  }, [userId, router]);
 
   function handleOpenChange(next: boolean) {
     openRef.current = next;

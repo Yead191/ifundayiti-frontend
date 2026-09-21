@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Calendar, Clock, Star, Tag } from "lucide-react";
+import { ArrowRight, Calendar, Clock, Star, Tag, Heart, MessageSquare } from "lucide-react";
 import type { IBlog } from "@/helpers/next-fetch/blogActions";
 import { getImageUrl } from "@/lib/getImageUrl";
 import { calculateReadTime, formatBlogDate, getExcerpt } from "../utils";
@@ -85,8 +85,8 @@ export function BlogCard({ blog, lang = "en", dict }: BlogCardProps) {
       {/* Content Body */}
       <div className="flex flex-1 flex-col justify-between p-5 sm:p-6">
         <div className="space-y-2.5">
-          {/* Metadata Row: Date & Read Time */}
-          <div className="flex items-center gap-3 text-xs text-mist">
+          {/* Metadata Row: Date, Read Time & Engagement */}
+          <div className="flex flex-wrap items-center gap-2.5 text-xs text-mist">
             {formattedDate && (
               <span className="inline-flex items-center gap-1">
                 <Calendar className="h-3.5 w-3.5 text-mist/70 shrink-0" />
@@ -98,6 +98,27 @@ export function BlogCard({ blog, lang = "en", dict }: BlogCardProps) {
               <Clock className="h-3.5 w-3.5 text-mist/70 shrink-0" />
               <span>{readTime}</span>
             </span>
+
+            {/* Engagement Indicators */}
+            {((blog.totalLikes ?? 0) > 0 || (blog.totalComments ?? 0) > 0) && (
+              <>
+                <span className="text-mist/40">·</span>
+                <div className="flex items-center gap-2 text-[11px] font-medium text-mist/80">
+                  {(blog.totalLikes ?? 0) > 0 && (
+                    <span className="inline-flex items-center gap-1">
+                      <Heart className="h-3 w-3 fill-rose-500/20 text-rose-500 shrink-0" />
+                      <span>{blog.totalLikes}</span>
+                    </span>
+                  )}
+                  {(blog.totalComments ?? 0) > 0 && (
+                    <span className="inline-flex items-center gap-1">
+                      <MessageSquare className="h-3 w-3 text-forest shrink-0" />
+                      <span>{blog.totalComments}</span>
+                    </span>
+                  )}
+                </div>
+              </>
+            )}
           </div>
 
           {/* Article Title */}

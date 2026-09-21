@@ -31,7 +31,10 @@ export function LoginForm() {
   const t = dict?.Auth || {};
 
   // Return the user to where they came from, else home.
-  const rawRedirect = searchParams.get("redirect");
+  const rawRedirect =
+    searchParams.get("redirect") ||
+    searchParams.get("callbackUrl") ||
+    searchParams.get("returnUrl");
   const redirectTo = rawRedirect
     ? rawRedirect.startsWith("http")
       ? rawRedirect
@@ -81,6 +84,7 @@ export function LoginForm() {
             (currentLocale === "ht" ? "Byenveni ankò!" : "Welcome back!"),
         );
         router.replace(redirectTo);
+        router.refresh();
         return;
       }
 

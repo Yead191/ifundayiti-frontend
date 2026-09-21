@@ -42,7 +42,10 @@ export function GoogleButton({
   const isHt = currentLocale === "ht";
 
   // Compute destination
-  const rawRedirect = searchParams?.get("redirect");
+  const rawRedirect =
+    searchParams?.get("redirect") ||
+    searchParams?.get("callbackUrl") ||
+    searchParams?.get("returnUrl");
   const defaultRedirect = rawRedirect
     ? rawRedirect.startsWith("http")
       ? rawRedirect

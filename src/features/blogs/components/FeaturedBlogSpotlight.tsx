@@ -3,7 +3,16 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Calendar, Clock, Star, Tag, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  Clock,
+  Star,
+  Tag,
+  Sparkles,
+  Heart,
+  MessageSquare,
+} from "lucide-react";
 import type { IBlog } from "@/helpers/next-fetch/blogActions";
 import { getImageUrl } from "@/lib/getImageUrl";
 import { calculateReadTime, formatBlogDate, getExcerpt } from "../utils";
@@ -25,7 +34,10 @@ export function FeaturedBlogSpotlight({
   const rawContent = blog.content || blog.contain || "";
   const coverUrl = blog.image ? getImageUrl(blog.image) : null;
   const readTime = calculateReadTime(rawContent);
-  const formattedDate = formatBlogDate(blog.publishedAt || blog.createdAt, lang);
+  const formattedDate = formatBlogDate(
+    blog.publishedAt || blog.createdAt,
+    lang,
+  );
   const excerpt = getExcerpt(rawContent, 220);
 
   const categoryName =
@@ -55,7 +67,7 @@ export function FeaturedBlogSpotlight({
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 items-stretch">
             {/* Left Column: Cover Image Viewport */}
-            <div className="relative min-h-[260px] sm:min-h-[340px] lg:min-h-[420px] lg:col-span-7 overflow-hidden bg-black/40">
+            <div className="relative min-h-65 sm:min-h-85 lg:min-h-105 lg:col-span-7 overflow-hidden bg-black/40">
               {coverUrl ? (
                 <>
                   <Image
@@ -108,6 +120,28 @@ export function FeaturedBlogSpotlight({
                     <Clock className="h-3 w-3 text-white/60" />
                     <span>{readTime}</span>
                   </span>
+
+                  {/* Engagement Indicators */}
+                  {((blog.totalLikes ?? 0) > 0 ||
+                    (blog.totalComments ?? 0) > 0) && (
+                    <>
+                      <span className="text-white/40">·</span>
+                      <div className="flex items-center gap-2.5 text-xs text-white/80">
+                        {(blog.totalLikes ?? 0) > 0 && (
+                          <span className="inline-flex items-center gap-1">
+                            <Heart className="h-3.5 w-3.5 fill-rose-400/30 text-rose-400" />
+                            <span>{blog.totalLikes}</span>
+                          </span>
+                        )}
+                        {(blog.totalComments ?? 0) > 0 && (
+                          <span className="inline-flex items-center gap-1">
+                            <MessageSquare className="h-3.5 w-3.5 text-amber-300" />
+                            <span>{blog.totalComments}</span>
+                          </span>
+                        )}
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 {/* Article Headline */}
