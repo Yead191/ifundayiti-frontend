@@ -23,7 +23,6 @@ import {
 import { cn } from "@/lib/utils";
 import {
   EVENT_CATEGORIES,
-  MOCK_EVENTS,
   type EventCategory,
   type EventItem,
 } from "@/data/events";
@@ -132,7 +131,7 @@ export function EventsCalendar({
         };
       });
     }
-    return MOCK_EVENTS;
+    return [];
   }, [apiEvents, lang]);
 
   // Dynamically start at the month containing events
@@ -193,6 +192,8 @@ export function EventsCalendar({
         if (prev && mappedEvents.some((m) => m.id === prev.id)) return prev;
         return mappedEvents[0];
       });
+    } else {
+      setSelectedEvent(null);
     }
   }, [mappedEvents]);
   const [modalOpen, setModalOpen] = React.useState(false);
@@ -793,57 +794,59 @@ export function EventsCalendar({
             )}
 
             {/* Upcoming Drives List */}
-            <div className="rounded-3xl border border-hairline bg-sand-soft/60 p-6">
-              <div className="flex items-center gap-2 text-forest mb-4">
-                <Sparkles className="h-4 w-4" />
-                <h4 className="font-display text-sm font-semibold text-forest-deep">
-                  {t.UpcomingDrives}
-                </h4>
-              </div>
+            {mappedEvents.length > 0 && (
+              <div className="rounded-3xl border border-hairline bg-sand-soft/60 p-6">
+                <div className="flex items-center gap-2 text-forest mb-4">
+                  <Sparkles className="h-4 w-4" />
+                  <h4 className="font-display text-sm font-semibold text-forest-deep">
+                    {t.UpcomingDrives}
+                  </h4>
+                </div>
 
-              <div className="space-y-3 divide-y divide-hairline">
-                {mappedEvents.slice(0, 5).map((evt) => (
-                  <button
-                    key={evt.id}
-                    type="button"
-                    onClick={() => {
-                      setSelectedEvent(evt);
-                      if (evt.date && evt.date.includes("-")) {
-                        const parts = evt.date.split("-");
-                        if (parts.length >= 2) {
-                          setCurrentDate(new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1));
+                <div className="space-y-3 divide-y divide-hairline">
+                  {mappedEvents.slice(0, 5).map((evt) => (
+                    <button
+                      key={evt.id}
+                      type="button"
+                      onClick={() => {
+                        setSelectedEvent(evt);
+                        if (evt.date && evt.date.includes("-")) {
+                          const parts = evt.date.split("-");
+                          if (parts.length >= 2) {
+                            setCurrentDate(new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1));
+                          }
                         }
-                      }
-                      setModalOpen(true);
-                    }}
-                    className="pt-3 first:pt-0 w-full text-left group flex justify-between items-center gap-3 cursor-pointer"
-                  >
-                    <div>
-                      <p className="text-xs font-semibold text-forest-deep group-hover:text-forest transition-colors line-clamp-1">
-                        {evt.title}
-                      </p>
-                      <p className="text-[11px] text-mist flex items-center gap-1.5 mt-0.5">
-                        <span className="font-semibold text-forest">
-                          {(() => {
-                            if (!evt.date || !evt.date.includes("-")) return evt.date;
-                            const [y, m, d] = evt.date.split("-").map(Number);
-                            const dt = new Date(y, m - 1, d);
-                            return dt.toLocaleDateString(lang === "ht" ? "fr-HT" : "en-US", {
-                              month: "short",
-                              day: "numeric",
-                              year: "numeric",
-                            });
-                          })()}
-                        </span>
-                        <span>·</span>
-                        <span className="truncate">{evt.location.split("&")[0]}</span>
-                      </p>
-                    </div>
-                    <ChevronRight className="h-4 w-4 text-mist group-hover:text-forest shrink-0" />
-                  </button>
-                ))}
+                        setModalOpen(true);
+                      }}
+                      className="pt-3 first:pt-0 w-full text-left group flex justify-between items-center gap-3 cursor-pointer"
+                    >
+                      <div>
+                        <p className="text-xs font-semibold text-forest-deep group-hover:text-forest transition-colors line-clamp-1">
+                          {evt.title}
+                        </p>
+                        <p className="text-[11px] text-mist flex items-center gap-1.5 mt-0.5">
+                          <span className="font-semibold text-forest">
+                            {(() => {
+                              if (!evt.date || !evt.date.includes("-")) return evt.date;
+                              const [y, m, d] = evt.date.split("-").map(Number);
+                              const dt = new Date(y, m - 1, d);
+                              return dt.toLocaleDateString(lang === "ht" ? "fr-HT" : "en-US", {
+                                month: "short",
+                                day: "numeric",
+                                year: "numeric",
+                              });
+                            })()}
+                          </span>
+                          <span>·</span>
+                          <span className="truncate">{evt.location.split("&")[0]}</span>
+                        </p>
+                      </div>
+                      <ChevronRight className="h-4 w-4 text-mist group-hover:text-forest shrink-0" />
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
