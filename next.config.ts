@@ -15,6 +15,7 @@ const nextConfig: NextConfig = {
       { protocol: "http", hostname: "10.10.26.173" },
       { protocol: "http", hostname: "31.97.103.122" },
       { protocol: "https", hostname: "api.ifundayiti.org" },
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
     ],
   },
   allowedDevOrigins: ["10.10.26.173", "api.ifundayiti.org"],
