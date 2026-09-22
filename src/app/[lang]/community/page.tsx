@@ -47,7 +47,8 @@ export default async function CommunityPage({
     }),
   ]);
 
-  const posts = postsRes.success && Array.isArray(postsRes.data) ? postsRes.data : [];
+  const posts =
+    postsRes.success && Array.isArray(postsRes.data) ? postsRes.data : [];
   const isLoggedIn = Boolean(profile && (profile._id || profile.email));
 
   return (
