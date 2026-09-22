@@ -54,7 +54,7 @@ export function LanguageSelector() {
           <span className="uppercase text-xs font-bold tracking-wider">
             {currentLocale}
           </span>
-          <ChevronDown className="h-3 w-3 opacity-50 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+          <ChevronDown className="h-3 w-3 opacity-50 transition-transform duration-200 group-data-[state=open]:rotate-180 hidden md:flex" />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent

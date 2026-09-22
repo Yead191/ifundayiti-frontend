@@ -237,7 +237,7 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
                 <DropdownMenuTrigger asChild>
                   <button
                     aria-label="User account"
-                    className="relative grid h-9.5 w-9.5 shrink-0 place-items-center overflow-hidden rounded-xl border border-hairline/80 bg-forest text-sand shadow-2xs transition-all hover:bg-forest/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/30"
+                    className="relative hidden h-9.5 w-9.5 shrink-0 place-items-center overflow-hidden rounded-xl border border-hairline/80 bg-forest text-sand shadow-2xs transition-all hover:bg-forest/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-forest/30 md:grid"
                     title={user?.name || authT.Account || "Account"}
                   >
                     {user?.image ? (
