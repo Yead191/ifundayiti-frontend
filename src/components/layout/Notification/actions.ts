@@ -9,7 +9,7 @@ export interface NotificationItem {
   path?: string;
   refId?: string;
   seen: boolean;
-  sender?: { _id: string; name?: string; image?: string } | null;
+  sender?: { _id: string; name?: string; email?: string; image?: string } | null;
   receiver?: { _id: string } | string | null;
   createdAt: string;
   updatedAt?: string;
@@ -41,5 +41,17 @@ export async function readNotificationAction(id: string) {
 export async function readAllNotificationsAction() {
   return nextFetch("/notification", {
     method: "PATCH",
+  });
+}
+
+export async function deleteNotificationAction(id: string) {
+  return nextFetch(`/notification/${id}`, {
+    method: "DELETE",
+  });
+}
+
+export async function clearAllNotificationsAction() {
+  return nextFetch("/notification/clear-all", {
+    method: "DELETE",
   });
 }

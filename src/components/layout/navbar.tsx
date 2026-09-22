@@ -20,6 +20,7 @@ import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/layout/logo";
 import { CartMenu } from "@/components/layout/cart-menu";
 import { LanguageSelector } from "@/components/layout/language-selector";
+import { TopbarNotifications } from "@/components/layout/Notification/TopbarNotifications";
 import { useTranslation } from "@/components/providers/translation-provider";
 import type { CartData } from "@/types";
 import {
@@ -130,11 +131,11 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
       subItems: [
         { label: t.Calendar || "Calendar", href: "/calendar" },
         { label: t.Gallery || "Gallery", href: "/gallery" },
+        { label: t.Blogs || "Blogs", href: "/blogs" },
         {
           label: t.CommunityForum || t.Community || "Community Forum",
           href: "/community",
         },
-        { label: t.Blogs || "Blogs", href: "/blogs" },
       ],
     },
     { label: t.Shop || "Shop", href: "/shop" },
@@ -224,6 +225,11 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
 
             {/* Cart Menu */}
             <CartMenu cart={cart} />
+
+            {/* Notifications Menu (when authenticated) */}
+            {isLoggedIn && (
+              <TopbarNotifications userId={user?._id} lang={currentLocale} />
+            )}
 
             {/* User Account Button with User Icon / Avatar */}
             {isLoggedIn ? (
@@ -339,14 +345,14 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
             </Button>
 
             {/* Apply CTA (compact or large screens) */}
-            <Button
+            {/* <Button
               asChild
               variant="outline"
               size="sm"
               className="hidden h-9.5 rounded-xl border-forest/20 px-3 text-xs font-semibold text-forest-deep hover:bg-sand-soft xl:inline-flex"
             >
               <Link href={localize("/apply")}>{t.Apply || "Apply"}</Link>
-            </Button>
+            </Button> */}
 
             {/* Mobile Menu Toggle Button */}
             <button
@@ -428,8 +434,10 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
                 <div className="flex flex-col gap-2.5 pb-2">
                   <div className="flex items-center gap-3 rounded-2xl border border-hairline bg-sand-soft/50 p-2.5">
                     {user?.image ? (
-                      <img
-                        src={user.image}
+                      <Image
+                        width={40}
+                        height={40}
+                        src={getImageUrl(user.image) || ""}
                         alt={user?.name || "User"}
                         className="h-10 w-10 shrink-0 rounded-xl border border-hairline object-cover"
                       />
