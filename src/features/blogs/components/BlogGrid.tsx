@@ -15,9 +15,9 @@ export function BlogGrid({ blogs = [], lang = "en", dict }: BlogGridProps) {
   if (!blogs || blogs.length === 0) return null;
 
   return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 items-stretch">
+    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 sm:gap-7 lg:gap-8 items-stretch">
       {blogs.map((blog, index) => (
-        <Reveal key={blog._id} delay={index * 50} className="h-full">
+        <Reveal key={blog._id} delay={Math.min(index * 50, 300)} className="h-full">
           <BlogCard blog={blog} lang={lang} dict={dict} />
         </Reveal>
       ))}

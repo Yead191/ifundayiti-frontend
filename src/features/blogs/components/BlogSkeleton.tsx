@@ -65,9 +65,9 @@ export function BlogGridSkeleton({ count = 6 }: { count?: number }) {
 export function BlogSpotlightSkeleton() {
   return (
     <div className="mb-14 w-full overflow-hidden rounded-3xl border border-forest/15 bg-linear-to-br from-forest-deep via-[#0c3f30] to-[#062018] shadow-xl">
-      <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-[380px] lg:min-h-[420px]">
+      <div className="grid grid-cols-1 lg:grid-cols-12 items-stretch min-h-95 lg:min-h-105">
         {/* Left Cover Image Shimmer */}
-        <div className="relative min-h-[260px] sm:min-h-[320px] lg:min-h-full lg:col-span-7 bg-white/5 animate-pulse">
+        <div className="relative min-h-65 sm:min-h-80 lg:min-h-full lg:col-span-7 bg-white/5 animate-pulse">
           <div className="absolute top-6 left-6 h-7 w-32 rounded-full bg-white/15" />
         </div>
 
@@ -131,10 +131,10 @@ export function BlogCategoryTabsSkeleton() {
  * Combined skeleton for the main blog content area
  */
 export function BlogContentSkeleton({
-  showSpotlight = true,
+  showSpotlight = false,
 }: {
   showSpotlight?: boolean;
-}) {
+} = {}) {
   return (
     <div>
       {showSpotlight && <BlogSpotlightSkeleton />}
@@ -179,7 +179,6 @@ export function BlogDirectorySkeleton() {
       {/* Main Content Area */}
       <section className="py-12 md:py-16 bg-sand-soft/20 min-h-[60vh]">
         <Container>
-          <BlogSpotlightSkeleton />
           <BlogCategoryTabsSkeleton />
           <BlogGridSkeleton count={6} />
         </Container>
@@ -238,7 +237,7 @@ export function BlogDetailSkeleton() {
         <Container>
           <div className="mx-auto max-w-4xl">
             {/* Cover Hero Image Shimmer */}
-            <div className="relative aspect-16/9 w-full overflow-hidden rounded-3xl bg-sand-soft/80 border border-hairline/70 mb-12 animate-pulse" />
+            <div className="relative aspect-video w-full overflow-hidden rounded-3xl bg-sand-soft/80 border border-hairline/70 mb-12 animate-pulse" />
 
             {/* Article Prose Shimmer */}
             <div className="mx-auto max-w-3xl space-y-6">
@@ -317,4 +316,3 @@ export function RelatedBlogsSkeleton() {
     </section>
   );
 }
-

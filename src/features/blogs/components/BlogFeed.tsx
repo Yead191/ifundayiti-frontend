@@ -1,7 +1,6 @@
 import React, { Suspense } from "react";
 import { EmptyState } from "@/components/shared/empty-state";
 import { getBlogs, getBlogCategories } from "@/helpers/next-fetch/blogActions";
-import { FeaturedBlogSpotlight } from "./FeaturedBlogSpotlight";
 import { BlogCategoryTabs } from "./BlogCategoryTabs";
 import { BlogGrid } from "./BlogGrid";
 
@@ -41,28 +40,15 @@ export async function BlogFeed({
   const isFiltering =
     Boolean(searchTerm) || (category !== "all" && category !== "All");
 
-  // Choose the spotlight article: highest priority to isFeatured, fallback to first article
-  const featuredBlog =
-    !isFiltering && blogs.length > 0
-      ? blogs.find((b) => b.isFeatured) || blogs[0]
-      : null;
-
-  // Remaining articles for the grid
-  const gridBlogs = featuredBlog
-    ? blogs.filter((b) => b._id !== featuredBlog._id)
-    : blogs;
+  // Keep all blogs in uniform grid; surface featured articles at the top with a star mark
+  const sortedBlogs = [...blogs].sort((a, b) => {
+    if (a.isFeatured && !b.isFeatured) return -1;
+    if (!a.isFeatured && b.isFeatured) return 1;
+    return 0;
+  });
 
   return (
     <>
-      {/* Top Featured Article Spotlight (when on home/unfiltered view) */}
-      {featuredBlog && (
-        <FeaturedBlogSpotlight
-          blog={featuredBlog}
-          lang={lang}
-          dict={dict}
-        />
-      )}
-
       {/* Category Navigation Tabs */}
       <Suspense fallback={null}>
         <BlogCategoryTabs
@@ -76,23 +62,33 @@ export async function BlogFeed({
       </Suspense>
 
       {/* Empty State or Article Grid */}
-      {blogs.length === 0 ? (
+      {sortedBlogs.length === 0 ? (
         <EmptyState
-          title={t?.Empty?.Title || "No articles found"}
+          title={
+            t?.Empty?.Title ||
+            (lang === "ht" ? "Pa gen atik yo jwenn" : "No articles found")
+          }
           body={
             isFiltering
               ? t?.Empty?.FilteredBody ||
-                "We couldn't find any articles matching your search or category filter. Try clearing your search or browsing all topics."
+                (lang === "ht"
+                  ? "Nou pa jwenn okenn atik ki koresponn ak rechèch ou an. Eseye efase filtè yo."
+                  : "We couldn't find any articles matching your search or category filter. Try clearing your search or browsing all topics.")
               : t?.Empty?.NoArticlesBody ||
-                "Our editorial team is currently drafting field dispatches. Check back soon for new articles!"
+                (lang === "ht"
+                  ? "Ekip nou an ap prepare nouvo atik. Tounen talè pou dekouvri yo!"
+                  : "Our editorial team is currently drafting field dispatches. Check back soon for new articles!")
           }
           actionLabel={
-            isFiltering ? t?.Empty?.ResetBtn || "Reset filters" : undefined
+            isFiltering
+              ? t?.Empty?.ResetBtn ||
+                (lang === "ht" ? "Reyajiste filtè yo" : "Reset filters")
+              : undefined
           }
           actionHref={isFiltering ? `/${lang}/blogs` : undefined}
         />
       ) : (
-        <BlogGrid blogs={gridBlogs} lang={lang} dict={dict} />
+        <BlogGrid blogs={sortedBlogs} lang={lang} dict={dict} />
       )}
     </>
   );

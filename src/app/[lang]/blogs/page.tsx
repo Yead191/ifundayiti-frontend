@@ -61,7 +61,7 @@ export default async function BlogsPage({
         <Container>
           <Suspense
             key={`${category}-${searchTerm}-${page}`}
-            fallback={<BlogContentSkeleton showSpotlight={!isFiltering} />}
+            fallback={<BlogContentSkeleton />}
           >
             <BlogFeed
               lang={lang}

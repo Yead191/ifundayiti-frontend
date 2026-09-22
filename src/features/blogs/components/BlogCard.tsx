@@ -3,9 +3,18 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Calendar, Clock, Star, Tag, Heart, MessageSquare } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  Clock,
+  Star,
+  Tag,
+  Heart,
+  MessageSquare,
+} from "lucide-react";
 import type { IBlog } from "@/helpers/next-fetch/blogActions";
 import { getImageUrl } from "@/lib/getImageUrl";
+import { cn } from "@/lib/utils";
 import { calculateReadTime, formatBlogDate, getExcerpt } from "../utils";
 
 interface BlogCardProps {
@@ -19,7 +28,10 @@ export function BlogCard({ blog, lang = "en", dict }: BlogCardProps) {
   const rawContent = blog.content || blog.contain || "";
   const coverUrl = blog.image ? getImageUrl(blog.image) : null;
   const readTime = calculateReadTime(rawContent);
-  const formattedDate = formatBlogDate(blog.publishedAt || blog.createdAt, lang);
+  const formattedDate = formatBlogDate(
+    blog.publishedAt || blog.createdAt,
+    lang,
+  );
   const excerpt = getExcerpt(rawContent, 140);
 
   const categoryName =
@@ -38,7 +50,14 @@ export function BlogCard({ blog, lang = "en", dict }: BlogCardProps) {
       : null;
 
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-hairline/70 bg-white/90 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-forest/30 hover:shadow-xl">
+    <article
+      className={cn(
+        "group relative flex h-full flex-col overflow-hidden rounded-3xl border bg-white/95 shadow-sm backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl",
+        blog.isFeatured
+          ? "border-amber-400/40 ring-1 ring-amber-400/30 hover:border-amber-400 hover:ring-amber-400/50 shadow-amber-500/5"
+          : "border-hairline/70 hover:border-forest/30",
+      )}
+    >
       {/* Visual Cover Viewport with 16:10 Aspect Ratio */}
       <div className="relative aspect-16/10 w-full shrink-0 overflow-hidden bg-sand-soft/60">
         {coverUrl ? (
@@ -68,16 +87,15 @@ export function BlogCard({ blog, lang = "en", dict }: BlogCardProps) {
 
         {/* Top-Left Category Badge */}
         {categoryName && (
-          <div className="absolute top-3 left-3 z-10 inline-flex items-center gap-1 rounded-full bg-black/60 px-2.5 py-1 text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-white/20">
+          <div className="absolute top-3 left-3 z-10 inline-flex items-center gap-1 rounded-full bg-black/60 px-3 py-1 text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-white/20">
             <span className="truncate max-w-35">{categoryName}</span>
           </div>
         )}
 
         {/* Top-Right Featured Star Badge */}
         {blog.isFeatured && (
-          <div className="absolute top-3 right-3 z-10 inline-flex items-center gap-1 rounded-full bg-amber-500/90 px-2.5 py-1 text-[11px] font-bold text-white shadow-xs backdrop-blur-md border border-amber-300/40">
-            <Star className="h-3 w-3 fill-white" />
-            <span>Featured</span>
+          <div className="absolute top-3 right-3 z-10 inline-flex items-center gap-1.5 rounded-full bg-linear-to-r from-amber-500 to-amber-600 px-3 py-1 text-[11px] font-bold text-white shadow-md shadow-amber-600/30 ring-1 ring-white/30 backdrop-blur-md">
+            <Star className="h-3.5 w-3.5 fill-amber-200 text-amber-200" />
           </div>
         )}
       </div>
