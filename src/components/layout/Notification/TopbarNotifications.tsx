@@ -116,6 +116,12 @@ export function resolveNotificationPath(
     clean = "/dashboard";
   } else if (clean === "/applications") {
     clean = "/track-application";
+  } else if (
+    clean === "/bookings" ||
+    clean === "/my-bookings" ||
+    clean === "/my-events"
+  ) {
+    clean = "/dashboard/my-bookings";
   }
 
   return `/${lang}${clean === "/" ? "" : clean}`;

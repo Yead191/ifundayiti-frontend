@@ -12,6 +12,7 @@ import {
   Clock,
   Compass,
   FileText,
+  Ticket,
 } from "lucide-react";
 
 import { nextFetch } from "@/helpers/next-fetch/NextFetch";
@@ -64,6 +65,16 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
     },
 
     {
+      label: isHt ? "Rezèvasyon Mwen Yo" : "My Bookings",
+      value: isHt ? "Tikè" : "Tickets",
+      sublabel: isHt
+        ? "Evènman ak paspò antre"
+        : "Event passes & entry codes",
+      href: `/${lang}/dashboard/my-bookings`,
+      icon: Ticket,
+      badge: isHt ? "Evènman" : "Events",
+    },
+    {
       label: isHt ? "Boutik Ofisyèl" : "Mission Store",
       value: isHt ? "Vizite" : "Shop",
       sublabel: isHt
@@ -78,7 +89,7 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
   return (
     <div className="space-y-6">
       {/* 1. Stat Cards Row */}
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {statCards.map(
           ({ label, value, sublabel, href, icon: Icon, badge }) => (
             <Link

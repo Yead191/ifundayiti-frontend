@@ -4,6 +4,7 @@ import {
   User,
   Package,
   Heart,
+  Ticket,
   Lock,
 } from "lucide-react";
 
@@ -32,6 +33,12 @@ export const DASHBOARD_NAV: DashboardNavItem[] = [
     href: "/dashboard/donations",
     icon: Heart,
     description: "Your contributions & impact history",
+  },
+  {
+    label: "My Bookings",
+    href: "/dashboard/my-bookings",
+    icon: Ticket,
+    description: "Event reservations & entry tickets",
   },
   {
     label: "Profile",
