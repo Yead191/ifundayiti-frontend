@@ -111,13 +111,14 @@ export function DashboardShell({
               {t.welcome}
               {user.name ? (
                 <>
-                  , <span className="text-gradient">{user.name.split(" ")[0]}</span>
+                  ,{" "}
+                  <span className="text-gradient">
+                    {user.name.split(" ")[0]}
+                  </span>
                 </>
               ) : null}
             </h1>
-            <p className="mt-2 max-w-xl text-sm text-mist">
-              {t.subtitle}
-            </p>
+            <p className="mt-2 max-w-xl text-sm text-mist">{t.subtitle}</p>
           </div>
         </div>
 
@@ -158,7 +159,8 @@ export function DashboardShell({
                   const Icon = item.icon;
                   const targetHref = `/${locale}${item.href}`;
                   const active = isNavActive(normalizedPath, item.href);
-                  const label = (t.nav as Record<string, string>)[item.href] || item.label;
+                  const label =
+                    (t.nav as Record<string, string>)[item.href] || item.label;
 
                   return (
                     <Link

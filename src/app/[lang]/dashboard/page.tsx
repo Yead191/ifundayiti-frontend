@@ -43,34 +43,6 @@ export default async function DashboardOverviewPage({ params }: PageProps) {
   const myOrders = statsRes.data?.myOrders ?? 0;
   const myTotalDonation = statsRes.data?.myTotalDonation ?? 0;
 
-  // Meaningful demo donation info (to be connected to live donation API)
-  const demoDonations = [
-    {
-      id: "DON-84920",
-      cause: isHt
-        ? "Dlo Pwòp Kominotè · Okap"
-        : "Clean Water Community Micro-Grant · Cap-Haïtien",
-      amount: 150,
-      date: isHt ? "28 Out 2026" : "Aug 28, 2026",
-      status: isHt ? "Konfime" : "Completed",
-      directImpact: isHt
-        ? "Finanse ekipman filtraj dlo pou 120 fanmi"
-        : "Funded water filtration equipment for 120 families",
-    },
-    {
-      id: "DON-72109",
-      cause: isHt
-        ? "Ekleraj Solè Mache Lannwit · Jakmèl"
-        : "Solar Powered Night Market · Jacmel",
-      amount: 100,
-      date: isHt ? "14 Jiyè 2026" : "Jul 14, 2026",
-      status: isHt ? "Konfime" : "Completed",
-      directImpact: isHt
-        ? "Finanse 6 lanp solè pou machann lari"
-        : "Funded 6 solar lighting kits for night vendors",
-    },
-  ];
-
   const statCards = [
     {
       label: isHt ? "Kòmand Mwen Yo" : "My Orders",
