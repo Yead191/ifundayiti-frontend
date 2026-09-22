@@ -21,7 +21,9 @@
     "Track": "Track",
     "Donate": "Donate",
     "Apply": "Apply",
-    "Blogs": "Blogs"
+    "Blogs": "Blogs",
+    "Community": "Community",
+    "CommunityForum": "Community Forum"
   },
   "Hero": {
     "ApplicationsOpen": "Applications open now",
@@ -1928,5 +1930,47 @@
       "NoArticlesBody": "Our editorial team is currently drafting field dispatches. Check back soon for new articles!",
       "ResetBtn": "Reset filters"
     }
+  },
+  "CommunityPage": {
+    "Hero": {
+      "Eyebrow": "Community Forum & Announcements",
+      "Title": "Community Discussions & Official Announcements",
+      "Subtitle": "Stay informed with the latest updates from iFundAyiti leadership, join discussions, and share insights with grassroots builders."
+    },
+    "Notice": {
+      "Badge": "Official Channel",
+      "Text": "Official announcements are published by iFundAyiti administrators. All verified members are invited to comment, reply, and interact!"
+    },
+    "SearchPlaceholder": "Search announcements and discussions...",
+    "PinnedBadge": "Pinned Announcement",
+    "LockedBadge": "Comments Locked",
+    "LockedNotice": "Comments have been locked by an administrator for this announcement.",
+    "Comments": "Comments",
+    "Comment": "Comment",
+    "Replies": "Replies",
+    "Reply": "Reply",
+    "Like": "Like",
+    "Liked": "Liked",
+    "Share": "Share",
+    "LinkCopied": "Link copied to clipboard!",
+    "SignInToInteract": "Sign In to Participate",
+    "SignInDesc": "Join the conversation, leave reflections, and connect with Haitian builders.",
+    "PostCommentPlaceholder": "Join the discussion or share your feedback...",
+    "PostReplyPlaceholder": "Write a reply...",
+    "PostBtn": "Post Comment",
+    "ReplyBtn": "Reply",
+    "CancelBtn": "Cancel",
+    "Edit": "Edit",
+    "Delete": "Delete",
+    "Save": "Save",
+    "ViewReplies": "View {count} replies",
+    "HideReplies": "Hide replies",
+    "BackToFeed": "Back to Community Feed",
+    "NoPostsTitle": "No Announcements Yet",
+    "NoPostsDesc": "There are no community discussions published yet. Check back soon for updates from iFundAyiti leadership!",
+    "NoSearchResults": "No discussions found matching your search query.",
+    "ConfirmDeleteComment": "Are you sure you want to delete this comment? This cannot be undone.",
+    "CommentDeleted": "Comment deleted successfully",
+    "CommentUpdated": "Comment updated successfully"
   }
 }

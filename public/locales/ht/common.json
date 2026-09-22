@@ -21,7 +21,9 @@
     "Track": "Swiv",
     "Donate": "Fè yon don",
     "Apply": "Aplike",
-    "Blogs": "Blòg"
+    "Blogs": "Blòg",
+    "Community": "Kominote",
+    "CommunityForum": "Fowòm Kominotè"
   },
   "Hero": {
     "ApplicationsOpen": "Aplikasyon yo louvri kounye a",
@@ -1930,5 +1932,47 @@
       "NoArticlesBody": "Ekip editoryal nou an ap prepare nouvo atik sou teren. Retounen talè pou li nouvo istwa!",
       "ResetBtn": "Reyajiste filtè yo"
     }
+  },
+  "CommunityPage": {
+    "Hero": {
+      "Eyebrow": "Fowòm Kominotè ak Anons",
+      "Title": "Diskisyon Kominotè ak Anons Ofisyèl",
+      "Subtitle": "Rete enfòme ak dènye nouvèl ki soti nan lidèchip iFundAyiti, patisipe nan diskisyon, epi pataje lide ak antreprenè ayisyen yo."
+    },
+    "Notice": {
+      "Badge": "Kanal Ofisyèl",
+      "Text": "Anons ofisyèl yo pibliye pa administratè iFundAyiti yo. Tout manm verifye envite pou fè kòmantè, reponn, epi kominike!"
+    },
+    "SearchPlaceholder": "Chèche anons ak diskisyon yo...",
+    "PinnedBadge": "Anons Epengle",
+    "LockedBadge": "Kòmantè Fèmen",
+    "LockedNotice": "Yon administratè fèmen kòmantè pou anons sa a.",
+    "Comments": "Kòmantè",
+    "Comment": "Kòmantè",
+    "Replies": "Repons",
+    "Reply": "Reponn",
+    "Like": "Renmen",
+    "Liked": "Ou Renmen l",
+    "Share": "Pataje",
+    "LinkCopied": "Lyen an kopye nan klipbòd la!",
+    "SignInToInteract": "Konekte Pou w Patisipe",
+    "SignInDesc": "Antre nan konvèsasyon an, pataje refleksyon w, epi konekte ak antreprenè ayisyen yo.",
+    "PostCommentPlaceholder": "Antre nan diskisyon an oswa bay opinyon w...",
+    "PostReplyPlaceholder": "Ekri yon repons...",
+    "PostBtn": "Pibliye Kòmantè",
+    "ReplyBtn": "Reponn",
+    "CancelBtn": "Anile",
+    "Edit": "Modifye",
+    "Delete": "Efase",
+    "Save": "Anrejistre",
+    "ViewReplies": "Gade {count} repons",
+    "HideReplies": "Kache repons yo",
+    "BackToFeed": "Retounen nan Fowòm Kominotè a",
+    "NoPostsTitle": "Poko Gen Anons",
+    "NoPostsDesc": "Poko gen diskisyon kominotè ki pibliye. Retounen talè pou wè mizajou nan men lidèchip iFundAyiti!",
+    "NoSearchResults": "Nou pa jwenn okenn diskisyon ki koresponn ak rechèch ou a.",
+    "ConfirmDeleteComment": "Èske ou sèten ou vle efase kòmantè sa a? Aksyon sa a pa ka anile.",
+    "CommentDeleted": "Kòmantè a efase avèk siksè",
+    "CommentUpdated": "Kòmantè a mete ajou avèk siksè"
   }
 }
