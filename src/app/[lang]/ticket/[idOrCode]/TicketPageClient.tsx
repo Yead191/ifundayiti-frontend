@@ -34,7 +34,9 @@ export function TicketPageClient({ booking, lang }: TicketPageClientProps) {
       } else {
         navigator.clipboard.writeText(url);
         toast.success(
-          isHt ? "Lyen paspò a kopye!" : "Ticket pass link copied to clipboard!",
+          isHt
+            ? "Lyen paspò a kopye!"
+            : "Ticket pass link copied to clipboard!",
         );
       }
     }
@@ -45,15 +47,15 @@ export function TicketPageClient({ booking, lang }: TicketPageClientProps) {
       {/* ABSOLUTE CIRCULAR GRADIENTS IN LOW OPACITY */}
       <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden">
         {/* Circle 1: Top-Left */}
-        <div className="absolute -top-20 -left-20 h-[380px] w-[380px] rounded-full bg-forest/[0.08] blur-3xl" />
+        <div className="absolute -top-20 -left-20 h-95 w-95 rounded-full bg-forest/8 blur-3xl" />
         {/* Circle 2: Top-Right */}
-        <div className="absolute top-16 -right-24 h-[440px] w-[440px] rounded-full bg-forest/[0.07] blur-3xl" />
+        <div className="absolute top-16 -right-24 h-110 w-110 rounded-full bg-forest/[0.07] blur-3xl" />
         {/* Circle 3: Center-Left */}
-        <div className="absolute top-1/2 -left-28 h-[460px] w-[460px] -translate-y-1/2 rounded-full bg-forest/[0.06] blur-3xl" />
+        <div className="absolute top-1/2 -left-28 h-115 w-115 -translate-y-1/2 rounded-full bg-forest/6 blur-3xl" />
         {/* Circle 4: Bottom-Right */}
-        <div className="absolute -bottom-24 -right-16 h-[500px] w-[500px] rounded-full bg-forest/[0.08] blur-3xl" />
+        <div className="absolute -bottom-24 -right-16 h-125 w-125 rounded-full bg-forest/8 blur-3xl" />
         {/* Circle 5: Bottom-Center */}
-        <div className="absolute -bottom-20 left-1/3 h-[400px] w-[400px] rounded-full bg-forest/[0.05] blur-3xl" />
+        <div className="absolute -bottom-20 left-1/3 h-100 w-100 rounded-full bg-forest/5 blur-3xl" />
       </div>
 
       {/* 1. TOP CONTROLS (Padded below navbar, border-free, elevated z-index) */}
@@ -101,7 +103,11 @@ export function TicketPageClient({ booking, lang }: TicketPageClientProps) {
               className="rounded-xl font-bold bg-forest hover:bg-forest-deep text-white shadow-md cursor-pointer transition"
             >
               <Printer className="h-4 w-4 mr-2 text-white" />
-              <span>{isHt ? "Enprime / Telechaje PDF" : "Print / Download Ticket (PDF)"}</span>
+              <span>
+                {isHt
+                  ? "Enprime / Telechaje PDF"
+                  : "Print / Download Ticket (PDF)"}
+              </span>
             </Button>
           </div>
         </div>

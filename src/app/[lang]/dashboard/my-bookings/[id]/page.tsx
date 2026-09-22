@@ -64,9 +64,7 @@ export default async function DashboardBookingDetailPage({
 
         <div className="space-y-1 max-w-md">
           <h2 className="font-display text-lg font-bold text-forest-deep">
-            {isHt
-              ? "Nou pa jwenn rezèvasyon sa a"
-              : "Reservation not found"}
+            {isHt ? "Nou pa jwenn rezèvasyon sa a" : "Reservation not found"}
           </h2>
           <p className="text-xs sm:text-sm text-mist leading-relaxed">
             {isHt
@@ -75,7 +73,11 @@ export default async function DashboardBookingDetailPage({
           </p>
         </div>
 
-        <Button asChild size="sm" className="rounded-xl px-4 text-xs font-semibold gap-1.5">
+        <Button
+          asChild
+          size="sm"
+          className="rounded-xl px-4 text-xs font-semibold gap-1.5"
+        >
           <Link href={`/${lang}/dashboard/my-bookings`}>
             <ArrowLeft className="h-3.5 w-3.5" />
             <span>{isHt ? "Tounen nan Lis la" : "Back to My Bookings"}</span>

@@ -588,12 +588,11 @@ export function BookingDetailView({
               {booking.qrCode && (
                 <Button
                   type="button"
-                  variant="outline"
                   size="sm"
                   onClick={handleDownloadQr}
-                  className="w-full rounded-xl border-neutral-700 hover:bg-white/10 text-white font-semibold text-xs gap-1.5 cursor-pointer"
+                  className="w-full rounded-xl border border-white/20 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs gap-1.5 cursor-pointer shadow-xs transition"
                 >
-                  <Download className="h-3.5 w-3.5" />
+                  <Download className="h-3.5 w-3.5 text-amber-300" />
                   <span>
                     {isHt ? "Telechaje Imaj QR la" : "Download QR Code"}
                   </span>
