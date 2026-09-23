@@ -16,7 +16,8 @@ export async function SuccessStory({
   lang: string;
 }) {
   const res = await nextFetch("/application?status=winner&limit=1", {
-    cache: "default",
+    cache: "force-cache",
+    next: { revalidate: 60 * 15, tags: ["winners"] },
   });
   const winners = res.success ? res.data || [] : [];
   const winner = winners[0];

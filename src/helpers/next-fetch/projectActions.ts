@@ -80,7 +80,8 @@ export async function getProjects(params?: {
   try {
     const result = await nextFetch<Project[]>(endpoint, {
       method: "GET",
-      next: { revalidate: 60 },
+      cache: "force-cache",
+      next: { revalidate: 60 * 5 },
       tags: ["projects"],
     });
 
