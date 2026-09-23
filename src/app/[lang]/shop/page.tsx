@@ -288,7 +288,9 @@ export default async function ShopPage({ params, searchParams }: PageProps) {
                       className="mt-6 inline-flex items-center gap-2 rounded-2xl bg-forest px-5 py-2.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-forest/90"
                     >
                       <RotateCcw className="h-3.5 w-3.5" />
-                      <span>{t?.Empty?.ResetBtn || "Explore All Products"}</span>
+                      <span>
+                        {t?.Empty?.ResetBtn || "Explore All Products"}
+                      </span>
                     </Link>
                   </div>
                 ) : (
