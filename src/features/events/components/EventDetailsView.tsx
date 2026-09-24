@@ -77,7 +77,13 @@ export function EventDetailsView({
     ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
         `${event.location} ${event.venueAddress}`,
       )}`
+    : event.location
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+        event.location,
+      )}`
     : undefined;
+
+  const mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(event.location)}&output=embed`;
 
   const handleShare = () => {
     if (typeof window !== "undefined") {
@@ -320,6 +326,19 @@ export function EventDetailsView({
                       )}
                     </div>
                   </div>
+
+                  {event.location && event.type !== "virtual" && (
+                    <div className="w-full h-64 sm:h-72 rounded-2xl overflow-hidden border border-hairline/80 shadow-xs relative bg-sand-soft/30">
+                      <iframe
+                        title="Event Location Map"
+                        src={mapUrl}
+                        className="w-full h-full border-0"
+                        loading="lazy"
+                        allowFullScreen
+                        referrerPolicy="no-referrer-when-downgrade"
+                      />
+                    </div>
+                  )}
 
                   {googleMapsUrl && (
                     <div className="pt-2">
