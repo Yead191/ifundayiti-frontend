@@ -45,10 +45,18 @@ export default async function DonatePage({ params }: PageProps) {
   const t = dict.DonatePage;
 
   const trustBadges = [
-    { icon: ShieldCheck, title: t.Badges.DirectTitle, desc: t.Badges.DirectDesc },
+    {
+      icon: ShieldCheck,
+      title: t.Badges.DirectTitle,
+      desc: t.Badges.DirectDesc,
+    },
     { icon: Zap, title: t.Badges.GrantTitle, desc: t.Badges.GrantDesc },
     { icon: Award, title: t.Badges.EquityTitle, desc: t.Badges.EquityDesc },
-    { icon: Users, title: t.Badges.GrassrootsTitle, desc: t.Badges.GrassrootsDesc },
+    {
+      icon: Users,
+      title: t.Badges.GrassrootsTitle,
+      desc: t.Badges.GrassrootsDesc,
+    },
   ];
 
   const localizedFaqItems = [
@@ -76,7 +84,9 @@ export default async function DonatePage({ params }: PageProps) {
                   <Icon className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-forest-deep">{title}</p>
+                  <p className="text-xs font-semibold text-forest-deep">
+                    {title}
+                  </p>
                   <p className="text-[11px] text-mist">{desc}</p>
                 </div>
               </div>
@@ -112,27 +122,6 @@ export default async function DonatePage({ params }: PageProps) {
               </div>
 
               {/* Emotional Story Spotlight Box */}
-              <div className="rounded-3xl border border-hairline bg-linear-to-br from-sand-soft/80 via-cream to-sand-soft/40 p-6 sm:p-8 relative overflow-hidden">
-                <Quote className="absolute -right-4 -bottom-4 h-32 w-32 text-forest/5 pointer-events-none" />
-                <div className="flex items-center gap-2 text-forest">
-                  <Sparkles className="h-4 w-4" />
-                  <span className="text-xs font-semibold uppercase tracking-wider">
-                    {t.Story.Eyebrow}
-                  </span>
-                </div>
-                <blockquote className="mt-3 font-display text-base font-semibold leading-relaxed text-forest-deep sm:text-lg">
-                  {t.Story.Quote}
-                </blockquote>
-                <div className="mt-4 flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-forest text-white font-bold flex items-center justify-center text-xs">
-                    {t.Story.Author.split("-").map((part: string) => part[0]).join("")}
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-forest-deep">{t.Story.Author}</p>
-                    <p className="text-[11px] text-mist">{t.Story.AuthorRole}</p>
-                  </div>
-                </div>
-              </div>
             </div>
 
             {/* RIGHT COLUMN: Transparency & Impact Breakdown */}
@@ -153,35 +142,56 @@ export default async function DonatePage({ params }: PageProps) {
                 <div className="mt-6 space-y-4">
                   <div>
                     <div className="flex justify-between text-xs font-semibold mb-1">
-                      <span className="text-forest-deep">{t.Transparency.DirectGrants}</span>
+                      <span className="text-forest-deep">
+                        {t.Transparency.DirectGrants}
+                      </span>
                       <span className="text-forest font-bold">85%</span>
                     </div>
                     <div className="h-2.5 w-full rounded-full bg-sand-soft overflow-hidden">
-                      <div className="h-full bg-forest rounded-full" style={{ width: "85%" }} />
+                      <div
+                        className="h-full bg-forest rounded-full"
+                        style={{ width: "85%" }}
+                      />
                     </div>
-                    <p className="text-[11px] text-mist mt-1">{t.Transparency.DirectGrantsDesc}</p>
+                    <p className="text-[11px] text-mist mt-1">
+                      {t.Transparency.DirectGrantsDesc}
+                    </p>
                   </div>
 
                   <div>
                     <div className="flex justify-between text-xs font-semibold mb-1">
-                      <span className="text-forest-deep">{t.Transparency.Mentorship}</span>
+                      <span className="text-forest-deep">
+                        {t.Transparency.Mentorship}
+                      </span>
                       <span className="text-forest font-bold">10%</span>
                     </div>
                     <div className="h-2.5 w-full rounded-full bg-sand-soft overflow-hidden">
-                      <div className="h-full bg-forest/80 rounded-full" style={{ width: "10%" }} />
+                      <div
+                        className="h-full bg-forest/80 rounded-full"
+                        style={{ width: "10%" }}
+                      />
                     </div>
-                    <p className="text-[11px] text-mist mt-1">{t.Transparency.MentorshipDesc}</p>
+                    <p className="text-[11px] text-mist mt-1">
+                      {t.Transparency.MentorshipDesc}
+                    </p>
                   </div>
 
                   <div>
                     <div className="flex justify-between text-xs font-semibold mb-1">
-                      <span className="text-forest-deep">{t.Transparency.Verification}</span>
+                      <span className="text-forest-deep">
+                        {t.Transparency.Verification}
+                      </span>
                       <span className="text-forest font-bold">5%</span>
                     </div>
                     <div className="h-2.5 w-full rounded-full bg-sand-soft overflow-hidden">
-                      <div className="h-full bg-forest/50 rounded-full" style={{ width: "5%" }} />
+                      <div
+                        className="h-full bg-forest/50 rounded-full"
+                        style={{ width: "5%" }}
+                      />
                     </div>
-                    <p className="text-[11px] text-mist mt-1">{t.Transparency.VerificationDesc}</p>
+                    <p className="text-[11px] text-mist mt-1">
+                      {t.Transparency.VerificationDesc}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -243,9 +253,7 @@ export default async function DonatePage({ params }: PageProps) {
               <h2 className="mt-2 font-display text-3xl font-semibold text-forest-deep">
                 {t.FAQ.Title}
               </h2>
-              <p className="mt-2 text-sm text-mist">
-                {t.FAQ.Subtitle}
-              </p>
+              <p className="mt-2 text-sm text-mist">{t.FAQ.Subtitle}</p>
             </div>
 
             <div className="max-w-3xl mx-auto rounded-3xl border border-hairline bg-white p-6 shadow-xs sm:p-8">
