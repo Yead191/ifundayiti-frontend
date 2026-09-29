@@ -152,7 +152,7 @@
     "Impact1000": "🇭🇹 Kado ekstraòdinè w la finanse yon mikwo-sibvansyon $1,000 ANTYE pou yon antreprenè ayisyen!",
     "ErrName": "Tanpri mete non ou",
     "ErrEmail": "Mete yon adrès imèl ki valab",
-    "ErrAmount": "Donasyon minimòm nan se $5",
+    "ErrAmount": "Donasyon minimòm nan se $0.50",
     "ErrGeneric": "Tanpri ranpli fòm nan"
   },
   "AboutPage": {

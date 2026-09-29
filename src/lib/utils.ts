@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 /** Format a price number into a localized currency string. */
 export function formatPrice(amount: number, currency = "$") {
   return `${currency}${amount.toLocaleString("en-US", {
-    minimumFractionDigits: 0,
+    minimumFractionDigits: Number.isInteger(amount) ? 0 : 2,
     maximumFractionDigits: 2,
   })}`;
 }

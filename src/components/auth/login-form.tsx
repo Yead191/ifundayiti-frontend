@@ -69,9 +69,9 @@ export function LoginForm() {
         response.message ===
           "Account is not verified. Please check your email for verification code."
       ) {
-        await resend(email);
+        // await resend(email);
         router.push(
-          `/${currentLocale}/verify-otp?email=${encodeURIComponent(email)}&flow=verify`,
+          `/${currentLocale}/auth/verify-otp?email=${encodeURIComponent(email)}&flow=verify`,
         );
         return;
       }

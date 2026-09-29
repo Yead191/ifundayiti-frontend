@@ -158,7 +158,7 @@
     "Impact1000": "🇭🇹 Ou extraordinary gift sponsors an ENTIRE $1,000 micro-grant pou a Haitian entrepreneur!",
     "ErrName": "Tanpri antre non ou",
     "ErrEmail": "Antre yon adrès imèl valab",
-    "ErrAmount": "Don minimòm lan se $5",
+    "ErrAmount": "Don minimòm lan se $0.50",
     "ErrGeneric": "Tanpri ranpli fòm nan"
   },
   "AboutPage": {

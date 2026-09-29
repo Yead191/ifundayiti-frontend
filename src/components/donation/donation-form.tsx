@@ -33,7 +33,7 @@ export function DonationForm({
   const donationSchema = z.object({
     name: z.string().min(2, t.ErrName),
     email: z.string().email(t.ErrEmail),
-    amount: z.number().min(5, t.ErrAmount),
+    amount: z.number().min(0.5, t.ErrAmount),
   });
 
   const [selected, setSelected] = React.useState<number | "custom">(100);
@@ -146,7 +146,8 @@ export function DonationForm({
             </span>
             <Input
               type="number"
-              min={5}
+              min="0.5"
+              step="any"
               placeholder={t.EnterCustom}
               value={custom}
               onChange={(e) => setCustom(e.target.value)}
@@ -200,24 +201,30 @@ export function DonationForm({
         <Button
           type="submit"
           disabled={submitting}
-          size="lg"
-          className="h-14 w-full rounded-2xl text-base font-semibold shadow-md transition-all hover:shadow-lg"
+          className="h-auto min-h-12 sm:min-h-14 w-full rounded-2xl px-4 py-3 sm:px-6 sm:py-3.5 text-sm sm:text-base font-semibold shadow-md transition-all hover:shadow-lg whitespace-normal leading-tight"
         >
           {submitting ? (
-            <span className="flex items-center gap-2">
-              <Loader2 className="h-5 w-5 animate-spin" />
-              {t.Redirecting}
+            <span className="flex items-center justify-center gap-2">
+              <Loader2 className="h-4 w-4 sm:h-5 sm:w-5 shrink-0 animate-spin" />
+              <span>{t.Redirecting}</span>
             </span>
           ) : (
-            <span className="flex items-center gap-2">
-              <Heart className="h-4 w-4 fill-white/20" />
-              {t.FuelFund} {amount > 0 ? formatPrice(amount) : t.Donate}
+            <span className="flex items-center justify-center flex-wrap gap-1.5 sm:gap-2 text-center">
+              <Heart className="h-4 w-4 shrink-0 fill-white/20" />
+              {amount > 0 ? (
+                <>
+                  <span>{t.FuelFund}</span>
+                  <span className="font-bold tabular-nums">{formatPrice(amount)}</span>
+                </>
+              ) : (
+                <span>{t.Donate}</span>
+              )}
             </span>
           )}
         </Button>
 
-        <div className="flex items-center justify-center gap-2 text-xs text-mist">
-          <Lock className="h-3.5 w-3.5 text-forest" />
+        <div className="flex items-center justify-center gap-2 text-center text-xs text-mist">
+          <Lock className="h-3.5 w-3.5 shrink-0 text-forest" />
           <span>{t.SecureCheckout}</span>
         </div>
       </div>

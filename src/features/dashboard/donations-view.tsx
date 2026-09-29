@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   Heart,
   CheckCircle2,
@@ -13,6 +14,7 @@ import {
   ShieldCheck,
   Calendar,
   ArrowRight,
+  Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -24,6 +26,7 @@ import type { IDonationItem } from "@/helpers/next-fetch/donationActions";
 interface DonationsViewProps {
   donations: IDonationItem[];
   totalDonation: number;
+  totalCount?: number;
   lang?: string;
 }
 
@@ -44,41 +47,68 @@ function formatDate(dateStr?: string, isHt?: boolean): string {
 export function DonationsView({
   donations = [],
   totalDonation = 0,
+  totalCount,
   lang = "en",
 }: DonationsViewProps) {
   const isHt = lang === "ht";
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [isPending, startTransition] = React.useTransition();
+
+  const querySearch = searchParams.get("searchTerm") || "";
+  const [searchTerm, setSearchTerm] = React.useState(querySearch);
   const [copiedId, setCopiedId] = React.useState<string | null>(null);
+
+  // Synchronize state if URL changes externally (e.g. back/forward navigation)
+  React.useEffect(() => {
+    setSearchTerm(querySearch);
+  }, [querySearch]);
+
+  // Debounced search to server
+  React.useEffect(() => {
+    if (searchTerm === querySearch) return;
+
+    const timer = setTimeout(() => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (searchTerm.trim()) {
+        params.set("searchTerm", searchTerm.trim());
+        params.delete("page"); // Reset to page 1 on new search
+      } else {
+        params.delete("searchTerm");
+        params.delete("page");
+      }
+      const qs = params.toString();
+      startTransition(() => {
+        router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+      });
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [searchTerm, querySearch, pathname, router, searchParams]);
+
+  function handleClear() {
+    setSearchTerm("");
+    const params = new URLSearchParams(searchParams.toString());
+    params.delete("searchTerm");
+    params.delete("page");
+    const qs = params.toString();
+    startTransition(() => {
+      router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+    });
+  }
 
   function handleCopy(text: string, label: string) {
     if (!navigator?.clipboard) return;
     navigator.clipboard.writeText(text);
     setCopiedId(text);
     toast.success(
-      isHt
-        ? `${label} kopye avèk siksè!`
-        : `${label} copied to clipboard!`,
+      isHt ? `${label} kopye avèk siksè!` : `${label} copied to clipboard!`,
     );
     setTimeout(() => setCopiedId(null), 2000);
   }
 
-  // Filter donations
-  const filteredDonations = React.useMemo(() => {
-    if (!searchTerm.trim()) return donations;
-    const term = searchTerm.toLowerCase().trim();
-    return donations.filter((d) => {
-      const txnId = (d.transactionId || d._id || "").toLowerCase();
-      const amountStr = String(d.amount || "");
-      const nameStr = (d.name || "").toLowerCase();
-      return (
-        txnId.includes(term) ||
-        amountStr.includes(term) ||
-        nameStr.includes(term)
-      );
-    });
-  }, [donations, searchTerm]);
-
-  const donationCount = donations.length;
+  const donationCount = totalCount !== undefined ? totalCount : donations.length;
   const computedTotal =
     totalDonation > 0
       ? totalDonation
@@ -145,9 +175,7 @@ export function DonationsView({
             {donationCount}
           </p>
           <p className="mt-1 text-[11px] text-mist">
-            {isHt
-              ? "Tranzaksyon ki konfime"
-              : "Confirmed payment records"}
+            {isHt ? "Tranzaksyon ki konfime" : "Confirmed payment records"}
           </p>
         </div>
 
@@ -168,7 +196,9 @@ export function DonationsView({
               href={`/${lang}/winners`}
               className="hover:underline flex items-center gap-1"
             >
-              <span>{isHt ? "Gade gayan sibvansyon yo" : "See grant winners"}</span>
+              <span>
+                {isHt ? "Gade gayan sibvansyon yo" : "See grant winners"}
+              </span>
               <ArrowRight className="h-3 w-3" />
             </Link>
           </div>
@@ -176,10 +206,14 @@ export function DonationsView({
       </div>
 
       {/* Filter & Search Bar */}
-      {donations.length > 0 && (
+      {(donations.length > 0 || !!searchTerm) && (
         <div className="flex flex-col gap-3 rounded-2xl border border-hairline/80 bg-panel/60 p-3 sm:flex-row sm:items-center sm:justify-between sm:p-4 shadow-xs">
           <div className="relative flex-1">
-            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-mist" />
+            {isPending ? (
+              <Loader2 className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 animate-spin text-forest" />
+            ) : (
+              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-mist" />
+            )}
             <Input
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -195,7 +229,7 @@ export function DonationsView({
             <Button
               variant="outline"
               size="sm"
-              onClick={() => setSearchTerm("")}
+              onClick={handleClear}
               className="rounded-xl text-xs cursor-pointer"
             >
               {isHt ? "Efase rechèch" : "Clear Search"}
@@ -205,7 +239,7 @@ export function DonationsView({
       )}
 
       {/* Donations List / Empty State */}
-      {filteredDonations.length === 0 ? (
+      {donations.length === 0 ? (
         <div className="rounded-3xl border border-hairline/80 bg-panel/50 p-10 text-center backdrop-blur-md sm:p-14 shadow-xs">
           <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl bg-rose-500/10 text-rose-500">
             <Heart className="h-8 w-8" />
@@ -233,7 +267,7 @@ export function DonationsView({
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => setSearchTerm("")}
+                onClick={handleClear}
                 className="rounded-xl text-xs cursor-pointer"
               >
                 {isHt ? "Reyajiste Rechèch" : "Reset Search"}
@@ -254,10 +288,9 @@ export function DonationsView({
         </div>
       ) : (
         <div className="space-y-3">
-          {filteredDonations.map((item) => {
+          {donations.map((item) => {
             const displayId =
-              item.transactionId ||
-              `#${item._id.slice(-8).toUpperCase()}`;
+              item.transactionId || `#${item._id.slice(-8).toUpperCase()}`;
             const amount = item.amount || 0;
 
             return (
@@ -288,8 +321,12 @@ export function DonationsView({
                       <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-emerald-700">
                         <CheckCircle2 className="h-3 w-3" />
                         {item.payment_status === "paid"
-                          ? (isHt ? "Peye" : "Paid")
-                          : (isHt ? "Konfime" : "Completed")}
+                          ? isHt
+                            ? "Peye"
+                            : "Paid"
+                          : isHt
+                            ? "Konfime"
+                            : "Completed"}
                       </span>
                     </div>
 

@@ -59,6 +59,7 @@ export default async function DashboardDonationsPage({
       <DonationsView
         donations={donations}
         totalDonation={totalDonation}
+        totalCount={donationsRes.pagination?.total}
         lang={lang}
       />
       {donationsRes.pagination && (
