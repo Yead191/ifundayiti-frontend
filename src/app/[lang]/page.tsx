@@ -14,9 +14,9 @@ import {
 } from "@/components/home/people-sections";
 import { SuccessStory } from "@/components/home/success-story";
 import { DonationCta } from "@/components/home/donation-cta";
-import { absoluteUrl, buildMetadata, getSiteUrl, SITE_NAME } from "@/lib/seo";
+import { buildMetadata, getSiteUrl, SITE_NAME } from "@/lib/seo";
 import { SITE } from "@/data/site";
-import { getImpactStats } from "@/helpers/next-fetch/impactActions";
+import { getFundStats } from "@/helpers/next-fetch/impactActions";
 import { getPartnerLogos } from "@/helpers/next-fetch/partnerActions";
 import { getDictionary } from "@/lib/dictionaries";
 import { PartnerLogoCarousel } from "@/features/partners/components/partner-logo-carousel";
@@ -41,12 +41,12 @@ export default async function HomePage({
   const { lang } = await params;
   const site = getSiteUrl();
 
-  const [impactStatsRes, partnerLogosRes, dict] = await Promise.all([
-    getImpactStats(),
+  const [fundStatsRes, partnerLogosRes, dict] = await Promise.all([
+    getFundStats(),
     getPartnerLogos(),
     getDictionary(lang),
   ]);
-  const impactStats = impactStatsRes.success ? impactStatsRes.data : undefined;
+  const fundStats = fundStatsRes.success ? fundStatsRes.data : undefined;
   const partnerLogos =
     partnerLogosRes.success && Array.isArray(partnerLogosRes.data)
       ? partnerLogosRes.data
@@ -80,7 +80,7 @@ export default async function HomePage({
       <CurrentGrant lang={lang} />
       <WhatWeDo />
       <HowItWorks />
-      <ImpactStats initialStats={impactStats} />
+      <ImpactStats initialStats={fundStats} />
       <FeaturedProjects lang={lang} />
       {/* <LeadershipSection lang={lang} />
       <VolunteersSection lang={lang} /> */}

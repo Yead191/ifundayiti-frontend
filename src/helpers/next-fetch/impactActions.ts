@@ -10,6 +10,18 @@ export interface ImpactStatsData {
   grantCycleCount: number;
 }
 
+export interface FundStatsData {
+  totalBalance: number;
+  totalDonations: number;
+  totalGrants: number;
+  totalFundRaised: number;
+  donationCount: number;
+  grantCount: number;
+  fundRaisedCount: number;
+  totalCount: number;
+  totalApplication: number;
+}
+
 /**
  * Fetch live impact statistics directly from the backend API.
  * Endpoint: GET /dashboard/impact-stats
@@ -32,6 +44,37 @@ export async function getImpactStats() {
         totalFundsAwarded: 0,
         projectSupported: 0,
         grantCycleCount: 0,
+      },
+    };
+  }
+}
+
+/**
+ * Fetch live fund statistics directly from the backend API.
+ * Endpoint: GET /donation/fund-stats
+ */
+export async function getFundStats() {
+  try {
+    const res = await nextFetch<FundStatsData>("/donation/fund-stats", {
+      cache: "force-cache",
+      next: { revalidate: 60, tags: ["fund-stats"] },
+    });
+    return res;
+  } catch (error) {
+    return {
+      success: false,
+      message:
+        error instanceof Error ? error.message : "Failed to fetch fund stats",
+      data: {
+        totalBalance: 0,
+        totalDonations: 0,
+        totalGrants: 0,
+        totalFundRaised: 0,
+        donationCount: 0,
+        grantCount: 0,
+        fundRaisedCount: 0,
+        totalCount: 0,
+        totalApplication: 0,
       },
     };
   }
