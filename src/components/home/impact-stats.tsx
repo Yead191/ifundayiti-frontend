@@ -187,7 +187,7 @@ export function ImpactStats({
   ];
 
   return (
-    <section className="relative pt-24 md:pt-32 overflow-hidden">
+    <section className="relative py-24 md:py-32 overflow-hidden">
       {/* Soft ambient background glow */}
       <div className="pointer-events-none absolute -left-28 top-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-sand/30 blur-3xl" />
       <div className="pointer-events-none absolute -right-28 top-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-[#0B3D2E]/5 blur-3xl" />
