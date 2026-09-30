@@ -5,22 +5,32 @@ import { ArrowDownRight, MapPin, Sparkles } from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { getDictionary } from "@/lib/dictionaries";
-import { getImpactStats } from "@/helpers/next-fetch/impactActions";
-import { formatPrice } from "@/lib/utils";
+import { getFundStats } from "@/helpers/next-fetch/impactActions";
+
+function formatStatCurrency(amount: number | undefined | null) {
+  if (amount === undefined || amount === null) return "$0";
+  return `$${Number(amount).toLocaleString("en-US", {
+    maximumFractionDigits: 2,
+  })}`;
+}
 
 export async function ImpactHero({ lang }: { lang: string }) {
   const dict = await getDictionary(lang);
   const t = dict.ImpactPage.Hero;
 
-  const statsRes = await getImpactStats();
+  const statsRes = await getFundStats();
   const stats = statsRes.success && statsRes.data
     ? statsRes.data
     : {
-        applicationReceived: 0,
-        grantsAwardedCount: 0,
-        totalFundsAwarded: 0,
-        projectSupported: 0,
-        grantCycleCount: 0,
+        totalBalance: 0,
+        totalDonations: 0,
+        totalGrants: 0,
+        totalFundRaised: 0,
+        donationCount: 0,
+        grantCount: 0,
+        fundRaisedCount: 0,
+        totalCount: 0,
+        totalApplication: 0,
       };
 
   const chapters = [
@@ -69,15 +79,37 @@ export async function ImpactHero({ lang }: { lang: string }) {
 
   const proofStrip = [
     {
-      value: String(stats.applicationReceived),
+      value: String(stats.totalApplication),
       label:
+        dict.ImpactStats?.TotalApplications ||
         t.StatApplications ||
-        (lang === "ht" ? "Aplikasyon resevwa" : "Applications received"),
+        (lang === "ht" ? "Aplikasyon Total" : "Total Applications"),
     },
-    { value: String(stats.grantsAwardedCount), label: t.StatWinners },
-    { value: String(stats.projectSupported), label: t.StatProjects },
-    { value: formatPrice(stats.totalFundsAwarded), label: t.StatFund },
-    { value: String(stats.grantCycleCount), label: t.StatCycle },
+    {
+      value: formatStatCurrency(stats.totalDonations),
+      label:
+        dict.ImpactStats?.TotalDonations ||
+        (lang === "ht" ? "Don Total" : "Total Donations"),
+    },
+    {
+      value: formatStatCurrency(stats.totalFundRaised),
+      label:
+        dict.ImpactStats?.FundsRaised ||
+        (lang === "ht" ? "Fon Ranmase" : "Funds Raised"),
+    },
+    {
+      value: formatStatCurrency(stats.totalGrants),
+      label:
+        dict.ImpactStats?.AwardedGrants ||
+        t.StatWinners ||
+        (lang === "ht" ? "Sibvansyon Akòde" : "Awarded Grants"),
+    },
+    {
+      value: formatStatCurrency(stats.totalBalance),
+      label:
+        dict.ImpactStats?.ProgramFund ||
+        (lang === "ht" ? "Fon Pwogram" : "Program Fund"),
+    },
   ];
 
   return (
