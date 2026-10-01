@@ -19,19 +19,20 @@ export async function ImpactHero({ lang }: { lang: string }) {
   const t = dict.ImpactPage.Hero;
 
   const statsRes = await getFundStats();
-  const stats = statsRes.success && statsRes.data
-    ? statsRes.data
-    : {
-        totalBalance: 0,
-        totalDonations: 0,
-        totalGrants: 0,
-        totalFundRaised: 0,
-        donationCount: 0,
-        grantCount: 0,
-        fundRaisedCount: 0,
-        totalCount: 0,
-        totalApplication: 0,
-      };
+  const stats =
+    statsRes.success && statsRes.data
+      ? statsRes.data
+      : {
+          totalBalance: 0,
+          totalDonations: 0,
+          totalGrants: 0,
+          totalFundRaised: 0,
+          donationCount: 0,
+          grantCount: 0,
+          fundRaisedCount: 0,
+          totalCount: 0,
+          totalApplication: 0,
+        };
 
   const chapters = [
     {
@@ -81,21 +82,10 @@ export async function ImpactHero({ lang }: { lang: string }) {
     {
       value: String(stats.totalApplication),
       label:
+        dict.ImpactStats?.Applications ||
         dict.ImpactStats?.TotalApplications ||
         t.StatApplications ||
-        (lang === "ht" ? "Aplikasyon Total" : "Total Applications"),
-    },
-    {
-      value: formatStatCurrency(stats.totalDonations),
-      label:
-        dict.ImpactStats?.TotalDonations ||
-        (lang === "ht" ? "Don Total" : "Total Donations"),
-    },
-    {
-      value: formatStatCurrency(stats.totalFundRaised),
-      label:
-        dict.ImpactStats?.FundsRaised ||
-        (lang === "ht" ? "Fon Ranmase" : "Funds Raised"),
+        (lang === "ht" ? "Aplikasyon" : "Applications"),
     },
     {
       value: formatStatCurrency(stats.totalGrants),
@@ -105,10 +95,30 @@ export async function ImpactHero({ lang }: { lang: string }) {
         (lang === "ht" ? "Sibvansyon Akòde" : "Awarded Grants"),
     },
     {
+      value: formatStatCurrency(stats.totalFundRaised),
+      label:
+        dict.ImpactStats?.SalesBasedFundraiser ||
+        dict.ImpactStats?.FundsRaised ||
+        (lang === "ht" ? "Ranmase Fon pa Lavant" : "Sales-based Fundraiser"),
+    },
+    {
+      value: formatStatCurrency(stats.totalDonations),
+      label:
+        dict.ImpactStats?.Donations ||
+        dict.ImpactStats?.TotalDonations ||
+        (lang === "ht" ? "Don" : "Donations"),
+    },
+    {
+      value: "$0",
+      label:
+        dict.ImpactStats?.Expenses || (lang === "ht" ? "Depans" : "Expenses"),
+    },
+    {
       value: formatStatCurrency(stats.totalBalance),
       label:
+        dict.ImpactStats?.TotalProgramFunds ||
         dict.ImpactStats?.ProgramFund ||
-        (lang === "ht" ? "Fon Pwogram" : "Program Fund"),
+        (lang === "ht" ? "Fon Pwogram Total" : "Total Program Funds"),
     },
   ];
 
@@ -223,16 +233,16 @@ export async function ImpactHero({ lang }: { lang: string }) {
                   : "Live metrics from active grant programs"}
               </p>
             </div>
-            <div className="grid grid-cols-2 divide-x divide-y divide-white/10 sm:grid-cols-3 lg:grid-cols-5 sm:divide-y-0">
+            <div className="grid grid-cols-2 divide-x divide-y divide-white/10 sm:grid-cols-3 lg:grid-cols-6 sm:divide-y-0">
               {proofStrip.map((item) => (
                 <div
                   key={item.label}
-                  className="px-6 py-6 transition-colors hover:bg-white/5 sm:px-8 sm:py-8 last:col-span-2 sm:last:col-span-1"
+                  className="px-5 py-6 transition-colors hover:bg-white/5 sm:px-6 sm:py-7 xl:px-8 xl:py-8"
                 >
-                  <p className="font-display text-3xl font-semibold tracking-tight text-sand md:text-[2.5rem]">
+                  <p className="font-display text-2xl font-semibold tracking-tight text-sand sm:text-3xl lg:text-2xl xl:text-[2.25rem]">
                     {item.value}
                   </p>
-                  <p className="mt-2 text-xs font-medium leading-snug text-white/70">
+                  <p className="mt-2 text-xs font-medium leading-snug text-white/70 text-nowrap">
                     {item.label}
                   </p>
                 </div>

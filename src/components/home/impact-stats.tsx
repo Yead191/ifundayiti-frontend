@@ -1,7 +1,15 @@
 "use client";
 
 import * as React from "react";
-import { FileText, Heart, Store, Gift, Wallet, TrendingUp } from "lucide-react";
+import {
+  FileText,
+  Gift,
+  Store,
+  Heart,
+  Receipt,
+  Wallet,
+  TrendingUp,
+} from "lucide-react";
 import { Container } from "@/components/shared/container";
 import { Reveal } from "@/components/ui/reveal";
 import { useTranslation } from "@/components/providers/translation-provider";
@@ -43,7 +51,7 @@ export function ImpactStats({
   const cards = [
     {
       id: "applications",
-      label: t?.TotalApplications || "TOTAL APPLICATIONS",
+      label: t?.Applications || t?.TotalApplications || "Applications",
       value: statsData
         ? statsData.totalApplication.toLocaleString("en-US")
         : "...",
@@ -55,7 +63,7 @@ export function ImpactStats({
       accentBar: "from-[#0B3D2E]/70 to-[#0B3D2E]/20",
       subtext: (
         <p
-          className="mt-1.5 flex items-center gap-1.5 text-[11px] 2xl:text-xs text-mist truncate"
+          className="mt-1.5 flex items-center gap-1.5 text-[11px]  text-mist truncate"
           title={t?.ReceivedOverall || "Received overall"}
         >
           <TrendingUp className="h-3.5 w-3.5 text-[#0B3D2E]/80 shrink-0" />
@@ -66,70 +74,8 @@ export function ImpactStats({
       ),
     },
     {
-      id: "donations",
-      label: t?.TotalDonations || "TOTAL DONATIONS",
-      value: statsData ? formatStatCurrency(statsData.totalDonations) : "...",
-      fullValue: statsData
-        ? formatStatCurrency(statsData.totalDonations)
-        : undefined,
-      icon: Heart,
-      iconBoxStyle:
-        "bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white",
-      hoverBorder: "hover:border-emerald-500/35",
-      accentBar: "from-emerald-500 to-emerald-300",
-      subtext: (
-        <p
-          className="mt-1.5 flex items-center gap-1 text-[11px] 2xl:text-xs text-mist truncate"
-          title={`${statsData?.donationCount ?? 0} ${
-            statsData?.donationCount === 1
-              ? t?.DonationSingle || "donation"
-              : t?.DonationsPlural || "donations"
-          } ${t?.DonationsFunded || "funded"}`}
-        >
-          <span className="font-semibold text-emerald-600 shrink-0">
-            {statsData ? statsData.donationCount : 0}{" "}
-            {statsData?.donationCount === 1
-              ? t?.DonationSingle || "donation"
-              : t?.DonationsPlural || "donations"}
-          </span>
-          <span className="truncate">{t?.DonationsFunded || "funded"}</span>
-        </p>
-      ),
-    },
-    {
-      id: "fundsRaised",
-      label: t?.FundsRaised || "FUNDS RAISED",
-      value: statsData ? formatStatCurrency(statsData.totalFundRaised) : "...",
-      fullValue: statsData
-        ? formatStatCurrency(statsData.totalFundRaised)
-        : undefined,
-      icon: Store,
-      iconBoxStyle:
-        "bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white",
-      hoverBorder: "hover:border-purple-500/35",
-      accentBar: "from-purple-500 to-purple-300",
-      subtext: (
-        <p
-          className="mt-1.5 flex items-center gap-1 text-[11px] 2xl:text-xs text-mist truncate"
-          title={`${statsData?.fundRaisedCount ?? 0} ${
-            statsData?.fundRaisedCount === 1
-              ? t?.OrderSingle || "order/sale"
-              : t?.OrdersPlural || "orders & sales"
-          } ${t?.OrdersSalesRaised || "raised"}`}
-        >
-          <span className="font-semibold text-purple-600 shrink-0">
-            {statsData ? statsData.fundRaisedCount : 0}{" "}
-            {statsData?.fundRaisedCount === 1
-              ? t?.OrderSingle || "order/sale"
-              : t?.OrdersPlural || "orders & sales"}
-          </span>
-          <span className="truncate">{t?.OrdersSalesRaised || "raised"}</span>
-        </p>
-      ),
-    },
-    {
       id: "grants",
-      label: t?.AwardedGrants || "AWARDED GRANTS",
+      label: t?.AwardedGrants || "Awarded Grants",
       value: statsData ? formatStatCurrency(statsData.totalGrants) : "...",
       fullValue: statsData
         ? formatStatCurrency(statsData.totalGrants)
@@ -141,7 +87,7 @@ export function ImpactStats({
       accentBar: "from-amber-500 to-amber-300",
       subtext: (
         <p
-          className="mt-1.5 flex items-center gap-1 text-[11px] 2xl:text-xs text-mist truncate"
+          className="mt-1.5 flex items-center gap-1 text-[11px]  text-mist truncate"
           title={`${statsData?.grantCount ?? 0} ${
             statsData?.grantCount === 1
               ? t?.GrantSingle || "grant"
@@ -159,8 +105,92 @@ export function ImpactStats({
       ),
     },
     {
+      id: "salesBasedFundraiser",
+      label: t?.SalesBasedFundraiser || "Sales-based Fundraiser",
+      value: statsData ? formatStatCurrency(statsData.totalFundRaised) : "...",
+      fullValue: statsData
+        ? formatStatCurrency(statsData.totalFundRaised)
+        : undefined,
+      icon: Store,
+      iconBoxStyle:
+        "bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white",
+      hoverBorder: "hover:border-purple-500/35",
+      accentBar: "from-purple-500 to-purple-300",
+      subtext: (
+        <p
+          className="mt-1.5 flex items-center gap-1 text-[11px]  text-mist truncate"
+          title={`${statsData?.fundRaisedCount ?? 0} ${
+            statsData?.fundRaisedCount === 1
+              ? t?.OrderSingle || "order/sale"
+              : t?.OrdersPlural || "orders & sales"
+          } ${t?.OrdersSalesRaised || "raised"}`}
+        >
+          <span className="font-semibold text-purple-600 shrink-0">
+            {statsData ? statsData.fundRaisedCount : 0}{" "}
+            {statsData?.fundRaisedCount === 1
+              ? t?.OrderSingle || "order/sale"
+              : t?.OrdersPlural || "orders & sales"}
+          </span>
+          <span className="truncate">{t?.OrdersSalesRaised || "raised"}</span>
+        </p>
+      ),
+    },
+    {
+      id: "donations",
+      label: t?.Donations || t?.TotalDonations || "Donations",
+      value: statsData ? formatStatCurrency(statsData.totalDonations) : "...",
+      fullValue: statsData
+        ? formatStatCurrency(statsData.totalDonations)
+        : undefined,
+      icon: Heart,
+      iconBoxStyle:
+        "bg-emerald-50 text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white",
+      hoverBorder: "hover:border-emerald-500/35",
+      accentBar: "from-emerald-500 to-emerald-300",
+      subtext: (
+        <p
+          className="mt-1.5 flex items-center gap-1 text-[11px]  text-mist truncate"
+          title={`${statsData?.donationCount ?? 0} ${
+            statsData?.donationCount === 1
+              ? t?.DonationSingle || "donation"
+              : t?.DonationsPlural || "donations"
+          } ${t?.DonationsFunded || "funded"}`}
+        >
+          <span className="font-semibold text-emerald-600 shrink-0">
+            {statsData ? statsData.donationCount : 0}{" "}
+            {statsData?.donationCount === 1
+              ? t?.DonationSingle || "donation"
+              : t?.DonationsPlural || "donations"}
+          </span>
+          <span className="truncate">{t?.DonationsFunded || "funded"}</span>
+        </p>
+      ),
+    },
+    {
+      id: "expenses",
+      label: t?.Expenses || "Expenses",
+      value: "$0",
+      fullValue: "$0",
+      icon: Receipt,
+      iconBoxStyle:
+        "bg-rose-50 text-rose-600 group-hover:bg-rose-600 group-hover:text-white",
+      hoverBorder: "hover:border-rose-500/35",
+      accentBar: "from-rose-500 to-rose-300",
+      subtext: (
+        <p
+          className="mt-1.5 flex items-center gap-1 text-[11px]  text-mist truncate"
+          title={`0 ${t?.ExpensesSubtext || "costs logged"}`}
+        >
+          <span className="font-semibold text-rose-600 shrink-0">0</span>
+          <span className="truncate">
+            {t?.ExpensesSubtext || "costs logged"}
+          </span>
+        </p>
+      ),
+    },
+    {
       id: "programFund",
-      label: t?.ProgramFund || "PROGRAM FUND",
+      label: t?.TotalProgramFunds || t?.ProgramFund || "Total Program Funds",
       value: statsData ? formatStatCurrency(statsData.totalBalance) : "...",
       fullValue: statsData
         ? formatStatCurrency(statsData.totalBalance)
@@ -172,7 +202,7 @@ export function ImpactStats({
       accentBar: "from-sky-500 to-sky-300",
       subtext: (
         <p
-          className="mt-1.5 flex items-center gap-1 text-[11px] 2xl:text-xs text-mist truncate"
+          className="mt-1.5 flex items-center gap-1 text-[11px]  text-mist truncate"
           title={`${t?.TotalBalanceAvailable || "Total balance"} ${
             t?.Available || "available"
           }`}
@@ -187,7 +217,7 @@ export function ImpactStats({
   ];
 
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden">
+    <section className="relative pt-24 md:pt-32 overflow-hidden">
       {/* Soft ambient background glow */}
       <div className="pointer-events-none absolute -left-28 top-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-sand/30 blur-3xl" />
       <div className="pointer-events-none absolute -right-28 top-1/2 -translate-y-1/2 h-80 w-80 rounded-full bg-[#0B3D2E]/5 blur-3xl" />
@@ -209,12 +239,12 @@ export function ImpactStats({
           </div>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 xl:gap-3.5 2xl:gap-4.5">
+        <div className="mt-12 grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 xl:gap-3 2xl:gap-4">
           {cards.map((card, i) => (
-            <Reveal key={card.id} delay={i * 70}>
+            <Reveal key={card.id} delay={i * 60}>
               <div
                 className={cn(
-                  "group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-hairline bg-white/95 p-4 lg:p-4.5 xl:p-4 2xl:p-5 shadow-[0_4px_20px_-4px_rgba(11,61,46,0.05)] backdrop-blur-xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_-10px_rgba(11,61,46,0.12)]",
+                  "group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-hairline bg-white/95 p-4 xl:p-3.5 2xl:p-4.5 shadow-[0_4px_20px_-4px_rgba(11,61,46,0.05)] backdrop-blur-xs transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_36px_-10px_rgba(11,61,46,0.12)]",
                   card.hoverBorder,
                 )}
               >
@@ -230,14 +260,14 @@ export function ImpactStats({
                   {/* Card Header: Label & Icon */}
                   <div className="flex items-center justify-between gap-2">
                     <span
-                      className="text-[11px] 2xl:text-xs font-semibold uppercase tracking-wider text-mist truncate"
+                      className="text-[11px] xl:text-[10px] 2xl:text-xs font-semibold uppercase tracking-wider text-mist truncate"
                       title={card.label}
                     >
                       {card.label}
                     </span>
                     <div
                       className={cn(
-                        "flex h-8 w-8 2xl:h-9.5 2xl:w-9.5 shrink-0 items-center justify-center rounded-xl transition-all duration-300 shadow-xs group-hover:scale-105",
+                        "flex h-8 w-8 2xl:h-9 2xl:w-9 shrink-0 items-center justify-center rounded-xl transition-all duration-300 shadow-xs group-hover:scale-105",
                         card.iconBoxStyle,
                       )}
                     >
@@ -248,7 +278,7 @@ export function ImpactStats({
                   {/* Big Metric Value */}
                   <div className="mt-2.5 xl:mt-3 2xl:mt-4">
                     <h3
-                      className="font-display text-2xl xl:text-xl 2xl:text-2xl font-bold text-[#0B3D2E] tracking-tight truncate"
+                      className="font-display text-2xl xl:text-[1.35rem] 2xl:text-[1.65rem] font-bold text-[#0B3D2E] tracking-tight truncate"
                       title={card.fullValue}
                     >
                       {card.value}
