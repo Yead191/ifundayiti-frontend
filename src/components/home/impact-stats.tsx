@@ -260,19 +260,19 @@ export function ImpactStats({
                   {/* Card Header: Label & Icon */}
                   <div className="flex items-center justify-between gap-2">
                     <span
-                      className="text-[11px] xl:text-[10px] 2xl:text-xs font-semibold uppercase tracking-wider text-mist truncate"
+                      className="text-[11px] xl:text-[10px] 2xl:text-[11px] font-semibold uppercase tracking-normal text-mist truncate"
                       title={card.label}
                     >
                       {card.label}
                     </span>
-                    <div
+                    {/* <div
                       className={cn(
                         "flex h-8 w-8 2xl:h-9 2xl:w-9 shrink-0 items-center justify-center rounded-xl transition-all duration-300 shadow-xs group-hover:scale-105",
                         card.iconBoxStyle,
                       )}
                     >
                       <card.icon className="h-4 w-4 2xl:h-4.5 2xl:w-4.5" />
-                    </div>
+                    </div> */}
                   </div>
 
                   {/* Big Metric Value */}
