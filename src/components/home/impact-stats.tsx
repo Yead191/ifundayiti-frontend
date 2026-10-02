@@ -169,8 +169,12 @@ export function ImpactStats({
     {
       id: "expenses",
       label: t?.Expenses || "Expenses",
-      value: "$0",
-      fullValue: "$0",
+      value: statsData
+        ? formatStatCurrency(statsData.totalPaidExpenses ?? 0)
+        : "...",
+      fullValue: statsData
+        ? formatStatCurrency(statsData.totalPaidExpenses ?? 0)
+        : undefined,
       icon: Receipt,
       iconBoxStyle:
         "bg-rose-50 text-rose-600 group-hover:bg-rose-600 group-hover:text-white",
@@ -179,9 +183,13 @@ export function ImpactStats({
       subtext: (
         <p
           className="mt-1.5 flex items-center gap-1 text-[11px]  text-mist truncate"
-          title={`0 ${t?.ExpensesSubtext || "costs logged"}`}
+          title={`${statsData ? (statsData.paidExpenseCount ?? 0) : 0} ${
+            t?.ExpensesSubtext || "costs logged"
+          }`}
         >
-          <span className="font-semibold text-rose-600 shrink-0">0</span>
+          <span className="font-semibold text-rose-600 shrink-0">
+            {statsData ? (statsData.paidExpenseCount ?? 0) : 0}
+          </span>
           <span className="truncate">
             {t?.ExpensesSubtext || "costs logged"}
           </span>

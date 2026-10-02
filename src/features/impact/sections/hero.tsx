@@ -27,9 +27,11 @@ export async function ImpactHero({ lang }: { lang: string }) {
           totalDonations: 0,
           totalGrants: 0,
           totalFundRaised: 0,
+          totalPaidExpenses: 0,
           donationCount: 0,
           grantCount: 0,
           fundRaisedCount: 0,
+          paidExpenseCount: 0,
           totalCount: 0,
           totalApplication: 0,
         };
@@ -109,7 +111,7 @@ export async function ImpactHero({ lang }: { lang: string }) {
         (lang === "ht" ? "Don" : "Donations"),
     },
     {
-      value: "$0",
+      value: formatStatCurrency(stats.totalPaidExpenses ?? 0),
       label:
         dict.ImpactStats?.Expenses || (lang === "ht" ? "Depans" : "Expenses"),
     },
