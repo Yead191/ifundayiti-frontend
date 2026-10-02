@@ -15,9 +15,11 @@ export interface FundStatsData {
   totalDonations: number;
   totalGrants: number;
   totalFundRaised: number;
+  totalPaidExpenses?: number;
   donationCount: number;
   grantCount: number;
   fundRaisedCount: number;
+  paidExpenseCount?: number;
   totalCount: number;
   totalApplication: number;
 }
@@ -57,7 +59,7 @@ export async function getFundStats() {
   try {
     const res = await nextFetch<FundStatsData>("/donation/fund-stats", {
       cache: "force-cache",
-      next: { revalidate: 60, tags: ["fund-stats"] },
+      next: { revalidate: 60 * 60 * 4, tags: ["fund-stats"] },
     });
     return res;
   } catch (error) {
@@ -70,9 +72,11 @@ export async function getFundStats() {
         totalDonations: 0,
         totalGrants: 0,
         totalFundRaised: 0,
+        totalPaidExpenses: 0,
         donationCount: 0,
         grantCount: 0,
         fundRaisedCount: 0,
+        paidExpenseCount: 0,
         totalCount: 0,
         totalApplication: 0,
       },
