@@ -59,7 +59,7 @@ export async function getFundStats() {
   try {
     const res = await nextFetch<FundStatsData>("/donation/fund-stats", {
       cache: "force-cache",
-      next: { revalidate: 60 * 60 * 4, tags: ["fund-stats"] },
+      next: { revalidate: 60 * 30, tags: ["fund-stats"] },
     });
     return res;
   } catch (error) {

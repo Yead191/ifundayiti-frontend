@@ -155,7 +155,7 @@ export function Footer() {
               <ShieldCheck className="h-3.5 w-3.5 text-sand shrink-0" />
               <span>
                 {f.NonprofitNotice ||
-                  "IFundAyiti is a nonprofit organization. 501(c)(3) pending."}
+                  "IFundAyiti is a 501(c)(3) nonprofit organization."}
               </span>
             </p>
             <span className="hidden sm:inline text-white/20">•</span>

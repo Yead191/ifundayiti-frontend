@@ -34,7 +34,7 @@
     "MaximumGrant": "Maksimòm sibvansyon",
     "Window": "Peryòd",
     "CycleNotice": "Yon sèl gayan pou chak sik. Donasyon yo ale dirèkteman nan Fon Pwogram nan — pa nan yon sèl aplikan.",
-    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif. Nou nan pwosesis pou jwenn estati 501(c)(3)."
+    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif 501(c)(3)."
   },
   "FloatingDonate": {
     "QuickDonate": "Fè yon don rapid",
@@ -124,7 +124,7 @@
     "Email": "Imèl:",
     "Phone": "Telefòn:",
     "Headquarters": "Katye Jeneral:",
-    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif. Nou nan pwosesis pou jwenn estati 501(c)(3)."
+    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif 501(c)(3)."
   },
   "DonationForm": {
     "SelectAmount": "Chwazi Kantite Lajan Don (USD)",

@@ -50,7 +50,7 @@ export function AuthShell({
               <Logo href={homeHref} className="inline-block transition-opacity hover:opacity-90" />
               <div className="inline-flex items-center gap-1.5 rounded-full border border-sand/30 bg-white/10 px-3 py-1 text-xs font-semibold tracking-wide text-sand backdrop-blur-md">
                 <Sparkles className="h-3.5 w-3.5 text-sand" />
-                <span>501(c)(3) Pending</span>
+                <span>501(c)(3) Nonprofit</span>
               </div>
             </div>
 

@@ -39,7 +39,7 @@ Economic sovereignty begins with empowering local visionaries. Across Haiti, tho
 
 ## 💡 What is IFundAyiti?
 
-IFundAyiti is an end-to-end digital grant management, transparency verification, and community engagement ecosystem. Operating as a nonprofit initiative (501(c)(3) pending period), the platform serves as:
+IFundAyiti is an end-to-end digital grant management, transparency verification, and community engagement ecosystem. Operating as a 501(c)(3) nonprofit initiative, the platform serves as:
 
 - **An Open Grant Portal:** Where Haitian entrepreneurs can easily apply for quarterly funding opportunities in their native language (**Kreyòl Ayisyen**) or **English**.
 - **A Public Accountability Ledger:** Where applications are independently evaluated, progress milestones are displayed, and finalists and winners are celebrated.

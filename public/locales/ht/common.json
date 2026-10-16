@@ -38,7 +38,7 @@
     "MaximumGrant": "Sibvansyon maksimòm",
     "Window": "Peryòd",
     "CycleNotice": "Yon gayan pou chak sik. Don yo alimante Fon Pwogram nan — yo pa ale pou yon sèl aplikan.",
-    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif. Estati 501(c)(3) an annatant."
+    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif 501(c)(3)."
   },
   "FloatingDonate": {
     "QuickDonate": "Fè yon don rapid",
@@ -153,7 +153,7 @@
     "Phone": "Telefòn:",
     "Headquarters": "Biwo prensipal:",
     "EIN": "EIN:",
-    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif. Estati 501(c)(3) an annatant."
+    "NonprofitNotice": "IFundAyiti se yon òganizasyon san bi likratif 501(c)(3)."
   },
   "DonationForm": {
     "SelectAmount": "Chwazi kantite don (USD)",
