@@ -53,13 +53,13 @@ export function CommunityImageGrid({
       {validImages.length === 1 && (
         <div
           onClick={(e) => handleOpen(e, 0)}
-          className="group relative mt-3.5 aspect-video w-full max-h-96 overflow-hidden rounded-2xl bg-sand-soft border border-hairline/80 cursor-pointer shadow-xs"
+          className="group relative mt-3.5 aspect-video w-full max-h-76 overflow-hidden rounded-2xl bg-sand-soft border border-hairline/80 cursor-pointer shadow-xs"
         >
           <Image
             src={validImages[0]}
             alt={postTitle}
             fill
-            className="object-contain transition-transform duration-500 group-hover:scale-103"
+            className="object-cover transition-transform duration-500 group-hover:scale-103"
             sizes="(max-width: 768px) 100vw, 800px"
           />
           <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/10 flex items-center justify-center">

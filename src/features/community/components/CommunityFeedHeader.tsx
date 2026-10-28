@@ -28,7 +28,7 @@ export function CommunityFeedHeader({
 
       <div className="relative z-10 space-y-3.5">
         {/* Top Row: Title & Search Bar Side-by-Side on Desktop */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5">
+        <div className="flex flex-col gap-3.5">
           <div className="space-y-1 min-w-0">
             <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold text-emerald-300 uppercase tracking-wider backdrop-blur-md">
               <span>{t.Hero?.Eyebrow || "Community Forum"}</span>
