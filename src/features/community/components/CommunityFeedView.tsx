@@ -79,7 +79,7 @@ export function CommunityFeedView({
 
   return (
     <div className="min-h-screen bg-cream pb-20 pt-20 sm:pt-24">
-      <Container className="max-w-4xl space-y-6">
+      <Container className="max-w-3xl space-y-6">
         {/* Hero Header */}
         <CommunityFeedHeader
           searchTerm={searchTerm}
@@ -131,9 +131,7 @@ export function CommunityFeedView({
                 <div className="flex items-center gap-2 px-1 text-xs font-bold uppercase tracking-wider text-amber-800">
                   <Pin className="h-3.5 w-3.5 fill-amber-700 text-amber-700" />
                   <span>
-                    {isHt
-                      ? "Anons Epengle yo"
-                      : "Pinned Announcements"}
+                    {isHt ? "Anons Epengle yo" : "Pinned Announcements"}
                   </span>
                 </div>
                 <div className="space-y-5">
@@ -157,9 +155,7 @@ export function CommunityFeedView({
                   <div className="flex items-center gap-2 px-1 text-xs font-bold uppercase tracking-wider text-forest pt-2">
                     <Sparkles className="h-3.5 w-3.5 text-forest" />
                     <span>
-                      {isHt
-                        ? "Tout Diskisyon yo"
-                        : "All Community Discussions"}
+                      {isHt ? "Tout Diskisyon yo" : "All Community Discussions"}
                     </span>
                   </div>
                 )}

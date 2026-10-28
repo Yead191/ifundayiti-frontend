@@ -31,7 +31,6 @@ export function CommunityFeedHeader({
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5">
           <div className="space-y-1 min-w-0">
             <div className="inline-flex items-center gap-1.5 rounded-full border border-emerald-400/20 bg-emerald-500/10 px-2.5 py-0.5 text-[10px] font-bold text-emerald-300 uppercase tracking-wider backdrop-blur-md">
-              <Sparkles className="h-3 w-3 text-amber-400" />
               <span>{t.Hero?.Eyebrow || "Community Forum"}</span>
             </div>
             <h1 className="font-display text-xl sm:text-2xl font-bold tracking-tight text-white leading-snug">
@@ -50,10 +49,7 @@ export function CommunityFeedHeader({
               type="text"
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
-              placeholder={
-                t.SearchPlaceholder ||
-                "Search discussions..."
-              }
+              placeholder={t.SearchPlaceholder || "Search discussions..."}
               className="h-9.5 rounded-xl border-white/15 bg-white/10 pl-9 pr-8 text-xs text-white placeholder:text-white/40 focus:border-emerald-400 focus:bg-white/15 focus:ring-1 focus:ring-emerald-400/30"
             />
             {searchTerm && (

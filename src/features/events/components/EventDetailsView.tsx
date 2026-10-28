@@ -78,12 +78,10 @@ export function EventDetailsView({
         `${event.location} ${event.venueAddress}`,
       )}`
     : event.location
-    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-        event.location,
-      )}`
-    : undefined;
-
-  const mapUrl = `https://www.google.com/maps?q=${encodeURIComponent(event.location)}&output=embed`;
+      ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+          event.location,
+        )}`
+      : undefined;
 
   const handleShare = () => {
     if (typeof window !== "undefined") {
@@ -230,7 +228,6 @@ export function EventDetailsView({
               {/* About the Event */}
               <div className="rounded-3xl border border-hairline/80 bg-white p-7 sm:p-9 shadow-sm space-y-4">
                 <h2 className="font-display text-2xl font-bold text-forest-deep flex items-center gap-2">
-                  <Sparkles className="h-5 w-5 text-forest" />
                   About This Gathering
                 </h2>
                 <div className="prose prose-neutral max-w-none text-mist leading-relaxed text-sm sm:text-base space-y-4">
@@ -326,41 +323,6 @@ export function EventDetailsView({
                       )}
                     </div>
                   </div>
-
-                  {event.location && event.type !== "virtual" && (
-                    <div className="w-full h-64 sm:h-72 rounded-2xl overflow-hidden border border-hairline/80 shadow-xs relative bg-sand-soft/30">
-                      <iframe
-                        title="Event Location Map"
-                        src={mapUrl}
-                        className="w-full h-full border-0"
-                        loading="lazy"
-                        allowFullScreen
-                        referrerPolicy="no-referrer-when-downgrade"
-                      />
-                    </div>
-                  )}
-
-                  {googleMapsUrl && (
-                    <div className="pt-2">
-                      <Button
-                        asChild
-                        variant="outline"
-                        size="sm"
-                        className="rounded-xl border-hairline bg-sand-soft/40 hover:bg-sand-soft"
-                      >
-                        <a
-                          href={googleMapsUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-flex items-center gap-1.5 text-forest font-semibold"
-                        >
-                          <Navigation className="h-3.5 w-3.5" />
-                          <span>Open in Google Maps</span>
-                          <ExternalLink className="h-3 w-3 ml-0.5" />
-                        </a>
-                      </Button>
-                    </div>
-                  )}
 
                   {/* Virtual Meeting banner if Virtual or Hybrid */}
                   {(event.type === "virtual" || event.type === "hybrid") && (

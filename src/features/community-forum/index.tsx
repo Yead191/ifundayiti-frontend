@@ -4,17 +4,10 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import { MessageSquareDashed, SearchX } from "lucide-react";
 
-import type {
-  ForumCategory,
-  ForumPost,
-  ForumTab,
-  Pagination,
-} from "@/types";
+import type { ForumCategory, ForumPost, ForumTab, Pagination } from "@/types";
 import { Aurora } from "@/components/ui/aurora";
 import { PaginationControls } from "@/components/ui/pagination-controls";
-import {
-  ForumSidebar,
-} from "@/features/community-forum/sections/forum-sidebar";
+import { ForumSidebar } from "@/features/community-forum/sections/forum-sidebar";
 import {
   FeedToolbar,
   type CategoryFilter,
@@ -50,10 +43,7 @@ export interface ForumFilters {
   limit: number;
 }
 
-function buildForumHref(
-  tab: ForumTab,
-  filters: Partial<ForumFilters>,
-) {
+function buildForumHref(tab: ForumTab, filters: Partial<ForumFilters>) {
   const params = new URLSearchParams();
   if (tab !== "feed") params.set("tab", tab);
   // Search / category only apply to the community feed.
@@ -102,9 +92,7 @@ export default function CommunityForum({
       const nextTab = next.tab ?? tab;
       const href = buildForumHref(nextTab, {
         searchTerm:
-          nextTab === "feed"
-            ? (next.searchTerm ?? filters.searchTerm)
-            : "",
+          nextTab === "feed" ? (next.searchTerm ?? filters.searchTerm) : "",
         category:
           nextTab === "feed" ? (next.category ?? filters.category) : "All",
         page: next.page ?? 1,
@@ -208,7 +196,7 @@ export default function CommunityForum({
               )
             ) : (
               <div key={tab} className="flex flex-col gap-5">
-                {posts.map((post) => (
+                {posts?.map((post) => (
                   <PostCard key={`${tab}-${post.id}`} post={post} />
                 ))}
               </div>
