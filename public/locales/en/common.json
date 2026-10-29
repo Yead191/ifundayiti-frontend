@@ -650,15 +650,16 @@
       "CategoryWorkshop": "Workshops",
       "CategoryGala": "Donor Galas",
       "Zoom": "Zoom",
+      "Virtual": "Virtual",
       "Hybrid": "Hybrid",
       "ViewEvent": "View Event",
       "EventsOn": "Events on"
     },
     "Modal": {
-      "ZoomMeeting": "Zoom Virtual Meeting",
+      "ZoomMeeting": "Virtual Meeting",
       "HybridMeeting": "Hybrid (In-Person + Zoom)",
       "PhysicalMeeting": "Physical In-Person Event",
-      "ZoomMeetingRoom": "Zoom Meeting Room Available",
+      "ZoomMeetingRoom": "Virtual Meeting Room Available",
       "OpenLink": "Open Link",
       "DescriptionTitle": "Event Description & Purpose",
       "CentralNoticeTitle": "Central Program Fund Allocation:",

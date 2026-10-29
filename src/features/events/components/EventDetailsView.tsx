@@ -268,7 +268,7 @@ export function EventDetailsView({
                     {event.speakers.map((speaker, idx) => {
                       const avatarUrl =
                         getImageUrl(speaker.avatar) ||
-                        "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200";
+                        "https://images.unsplash.com/photo-1584462746497-276f4aeb9fca?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D";
 
                       return (
                         <div

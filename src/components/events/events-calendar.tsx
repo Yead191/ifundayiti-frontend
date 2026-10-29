@@ -89,19 +89,25 @@ export function EventsCalendar({
         if (evt.startDate) {
           const startObj = new Date(evt.startDate);
           if (!isNaN(startObj.getTime())) {
-            timeStr = startObj.toLocaleTimeString(lang === "ht" ? "fr-HT" : "en-US", {
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true,
-            });
+            timeStr = startObj.toLocaleTimeString(
+              lang === "ht" ? "fr-HT" : "en-US",
+              {
+                hour: "numeric",
+                minute: "2-digit",
+                hour12: true,
+              },
+            );
             if (evt.endDate) {
               const endObj = new Date(evt.endDate);
               if (!isNaN(endObj.getTime())) {
-                const endTime = endObj.toLocaleTimeString(lang === "ht" ? "fr-HT" : "en-US", {
-                  hour: "numeric",
-                  minute: "2-digit",
-                  hour12: true,
-                });
+                const endTime = endObj.toLocaleTimeString(
+                  lang === "ht" ? "fr-HT" : "en-US",
+                  {
+                    hour: "numeric",
+                    minute: "2-digit",
+                    hour12: true,
+                  },
+                );
                 timeStr = `${timeStr} – ${endTime}`;
               }
             }
@@ -120,12 +126,16 @@ export function EventsCalendar({
           virtualLink: evt.virtualLink,
           category: evt.category,
           description: evt.description,
-          image: getImageUrl(evt.image) || "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800",
+          image:
+            getImageUrl(evt.image) ||
+            "https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&q=80&w=800",
           featured: evt.featured,
           speakers: evt.speakers?.map((s) => ({
             name: s.name,
             role: s.role,
-            avatar: getImageUrl(s.avatar) || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
+            avatar:
+              getImageUrl(s.avatar) ||
+              "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200",
           })),
           rsvpCount: evt.reservedCount || 0,
         };
@@ -159,7 +169,10 @@ export function EventsCalendar({
       const currentMonthEvents = apiEvents.filter((e) => {
         if (!e.startDate) return false;
         const parts = e.startDate.split("T")[0].split("-");
-        return parseInt(parts[0], 10) === nowYear && parseInt(parts[1], 10) - 1 === nowMonth;
+        return (
+          parseInt(parts[0], 10) === nowYear &&
+          parseInt(parts[1], 10) - 1 === nowMonth
+        );
       });
 
       if (currentMonthEvents.length === 0) {
@@ -167,14 +180,18 @@ export function EventsCalendar({
         if (first.startDate && first.startDate.includes("-")) {
           const parts = first.startDate.split("T")[0].split("-");
           if (parts.length === 3) {
-            setCurrentDate(new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1));
+            setCurrentDate(
+              new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1),
+            );
           }
         }
       }
     }
   }, [apiEvents]);
 
-  const [internalCategory, setInternalCategory] = React.useState<EventCategory | "all">("all");
+  const [internalCategory, setInternalCategory] = React.useState<
+    EventCategory | "all"
+  >("all");
   const selectedCategory = categoryFilter ?? internalCategory;
 
   const handleCategorySelect = (cat: EventCategory | "all") => {
@@ -182,8 +199,8 @@ export function EventsCalendar({
     onCategoryChange?.(cat);
   };
 
-  const [selectedEvent, setSelectedEvent] = React.useState<EventItem | null>(() =>
-    mappedEvents.length > 0 ? mappedEvents[0] : null
+  const [selectedEvent, setSelectedEvent] = React.useState<EventItem | null>(
+    () => (mappedEvents.length > 0 ? mappedEvents[0] : null),
   );
 
   React.useEffect(() => {
@@ -405,7 +422,7 @@ export function EventsCalendar({
                     "inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold transition-all cursor-pointer",
                     isCurrent
                       ? "bg-forest text-white shadow-xs"
-                      : "border border-hairline bg-sand-soft/50 text-forest-deep hover:border-forest/40 hover:bg-sand-soft"
+                      : "border border-hairline bg-sand-soft/50 text-forest-deep hover:border-forest/40 hover:bg-sand-soft",
                   )}
                 >
                   <span>{m.label}</span>
@@ -414,7 +431,7 @@ export function EventsCalendar({
                       "rounded-full px-1.5 py-0.2 text-[10px] font-bold",
                       isCurrent
                         ? "bg-white/25 text-white"
-                        : "bg-forest/15 text-forest"
+                        : "bg-forest/15 text-forest",
                     )}
                   >
                     {m.count}
@@ -426,10 +443,14 @@ export function EventsCalendar({
         )}
 
         {/* View Switcher & Month Navigation */}
-        <div className={cn(
-          "flex items-center justify-between gap-3 w-full sm:w-auto",
-          !hideCategoryFilter ? "border-t border-hairline pt-3 sm:border-t-0 sm:pt-0" : ""
-        )}>
+        <div
+          className={cn(
+            "flex items-center justify-between gap-3 w-full sm:w-auto",
+            !hideCategoryFilter
+              ? "border-t border-hairline pt-3 sm:border-t-0 sm:pt-0"
+              : "",
+          )}
+        >
           <div className="flex rounded-full border border-hairline bg-sand-soft/50 p-1 text-xs font-semibold">
             <button
               type="button"
@@ -605,9 +626,7 @@ export function EventsCalendar({
                   <p className="font-display text-xl text-forest-deep">
                     {t.NoEvents}
                   </p>
-                  <p className="text-xs text-mist mt-1">
-                    {t.NoEventsDesc}
-                  </p>
+                  <p className="text-xs text-mist mt-1">{t.NoEventsDesc}</p>
                 </div>
               ) : (
                 filteredEvents.map((evt) => (
@@ -708,12 +727,12 @@ export function EventsCalendar({
                   />
                   {selectedEvent.eventType === "virtual" && (
                     <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-blue-600 px-3 py-1 text-[10px] font-bold text-white shadow-md">
-                      <Video className="h-3 w-3" /> {t.Zoom} Virtual
+                      <Video className="h-3 w-3" /> {t.Virtual}
                     </span>
                   )}
                   {selectedEvent.eventType === "hybrid" && (
                     <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-full bg-purple-600 px-3 py-1 text-[10px] font-bold text-white shadow-md">
-                      <Video className="h-3 w-3" /> {t.Hybrid} Event
+                      <Video className="h-3 w-3" /> {t.Hybrid}
                     </span>
                   )}
                 </div>
@@ -813,7 +832,13 @@ export function EventsCalendar({
                         if (evt.date && evt.date.includes("-")) {
                           const parts = evt.date.split("-");
                           if (parts.length >= 2) {
-                            setCurrentDate(new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1));
+                            setCurrentDate(
+                              new Date(
+                                parseInt(parts[0], 10),
+                                parseInt(parts[1], 10) - 1,
+                                1,
+                              ),
+                            );
                           }
                         }
                         setModalOpen(true);
@@ -827,18 +852,24 @@ export function EventsCalendar({
                         <p className="text-[11px] text-mist flex items-center gap-1.5 mt-0.5">
                           <span className="font-semibold text-forest">
                             {(() => {
-                              if (!evt.date || !evt.date.includes("-")) return evt.date;
+                              if (!evt.date || !evt.date.includes("-"))
+                                return evt.date;
                               const [y, m, d] = evt.date.split("-").map(Number);
                               const dt = new Date(y, m - 1, d);
-                              return dt.toLocaleDateString(lang === "ht" ? "fr-HT" : "en-US", {
-                                month: "short",
-                                day: "numeric",
-                                year: "numeric",
-                              });
+                              return dt.toLocaleDateString(
+                                lang === "ht" ? "fr-HT" : "en-US",
+                                {
+                                  month: "short",
+                                  day: "numeric",
+                                  year: "numeric",
+                                },
+                              );
                             })()}
                           </span>
                           <span>·</span>
-                          <span className="truncate">{evt.location.split("&")[0]}</span>
+                          <span className="truncate">
+                            {evt.location.split("&")[0]}
+                          </span>
                         </p>
                       </div>
                       <ChevronRight className="h-4 w-4 text-mist group-hover:text-forest shrink-0" />
@@ -865,8 +896,8 @@ export function EventsCalendar({
                   {t.EventsOn} {selectedDayEvents.dateStr}
                 </h3>
                 <p className="text-xs text-mist">
-                  {selectedDayEvents.events.length} {t.EventsCount} scheduled for this
-                  day
+                  {selectedDayEvents.events.length} {t.EventsCount} scheduled
+                  for this day
                 </p>
               </div>
             </div>

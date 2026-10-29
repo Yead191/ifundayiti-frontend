@@ -9,6 +9,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "randomuser.me" },
       { protocol: "https", hostname: "res.cloudinary.com" },
       { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "unsplash.com" },
       { protocol: "https", hostname: "**.r2.dev" },
       { protocol: "http", hostname: "68.178.164.48" },
       { protocol: "http", hostname: "10.10.26.159" },
