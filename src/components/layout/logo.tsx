@@ -29,6 +29,7 @@ export function Logo({
       className={cn("relative h-10 w-auto select-none sm:h-11", logoClass)}
       draggable={false}
       priority
+      loading="eager"
     />
   );
 

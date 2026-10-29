@@ -38,6 +38,7 @@ export async function HomeHero({ lang }: { lang: string }) {
             alt="Children in Haiti smiling and celebrating community"
             fill
             priority
+            loading="eager"
             className="object-cover object-right md:object-[center_35%] lg:object-[center_30%]"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 50vw"
           />

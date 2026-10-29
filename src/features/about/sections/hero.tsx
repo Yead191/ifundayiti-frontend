@@ -100,6 +100,7 @@ export async function AboutHero({ lang }: { lang: string }) {
               alt={ABOUT_HERO.imageAlt}
               fill
               priority
+              loading="eager"
               className="object-cover object-[center_35%] transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />
