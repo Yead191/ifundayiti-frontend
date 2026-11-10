@@ -15,7 +15,11 @@ import { Container } from "@/components/shared/container";
 import { buildMetadata } from "@/lib/seo";
 import { Button } from "@/components/ui/button";
 import { getDictionary } from "@/lib/dictionaries";
-import { getEvents, getUpcomingEvent, type IEvent } from "@/helpers/next-fetch/eventActions";
+import {
+  getEvents,
+  getUpcomingEvent,
+  type IEvent,
+} from "@/helpers/next-fetch/eventActions";
 import { FeaturedEventHero } from "@/features/events/components/FeaturedEventHero";
 import { EventsFilterAndCatalog } from "@/features/events/components/EventsFilterAndCatalog";
 
@@ -33,7 +37,9 @@ export async function generateMetadata({
 
   return buildMetadata({
     title: dict.Navbar?.Events || "Community Gatherings & Events",
-    description: dict.EventsPage?.Hero?.Subtitle || "Join IFundAyiti community gatherings, galas, workshops, and pitch nights.",
+    description:
+      dict.EventsPage?.Hero?.Subtitle ||
+      "Join IFundAyiti community gatherings, galas, workshops, and pitch nights.",
     path: `/${lang}/events`,
   });
 }
@@ -49,7 +55,8 @@ export default async function EventsPage({ params }: PageProps) {
     getUpcomingEvent(),
   ]);
 
-  const events = eventsRes.success && Array.isArray(eventsRes.data) ? eventsRes.data : [];
+  const events =
+    eventsRes.success && Array.isArray(eventsRes.data) ? eventsRes.data : [];
 
   // Helper to ensure an event hasn't already finished (e.g. AM time passed)
   const now = Date.now();
@@ -57,7 +64,9 @@ export default async function EventsPage({ params }: PageProps) {
     if (!evt || !evt.startDate) return false;
     const start = new Date(evt.startDate).getTime();
     if (isNaN(start)) return false;
-    const end = evt.endDate ? new Date(evt.endDate).getTime() : start + 3 * 60 * 60 * 1000;
+    const end = evt.endDate
+      ? new Date(evt.endDate).getTime()
+      : start + 3 * 60 * 60 * 1000;
     return end >= now;
   };
 
@@ -130,7 +139,12 @@ export default async function EventsPage({ params }: PageProps) {
                   {t.Hero.CalendarBtn}
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="rounded-xl px-7">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="rounded-xl px-7"
+              >
                 <Link href={`/${lang}/donate`}>
                   <Heart className="mr-2 h-4 w-4 text-forest" />
                   {t.Hero.DonateBtn}
@@ -150,7 +164,9 @@ export default async function EventsPage({ params }: PageProps) {
                   <Icon className="h-5 w-5" />
                 </div>
                 <div>
-                  <p className="text-xs font-semibold text-forest-deep">{title}</p>
+                  <p className="text-xs font-semibold text-forest-deep">
+                    {title}
+                  </p>
                   <p className="text-[11px] text-mist">{desc}</p>
                 </div>
               </div>
@@ -161,7 +177,9 @@ export default async function EventsPage({ params }: PageProps) {
           <div className="mt-8 rounded-2xl border border-hairline bg-white/90 p-4 shadow-xs flex items-start gap-3 text-xs text-forest-deep max-w-4xl">
             <Info className="h-4.5 w-4.5 text-forest shrink-0 mt-0.5" />
             <div>
-              <strong className="font-semibold text-forest">{t.Notice.Title}</strong>{" "}
+              <strong className="font-semibold text-forest">
+                {t.Notice.Title}
+              </strong>{" "}
               <span>{t.Notice.Body}</span>
             </div>
           </div>
@@ -175,7 +193,11 @@ export default async function EventsPage({ params }: PageProps) {
             <FeaturedEventHero
               event={upcomingEvent}
               lang={lang}
-              badgeLabel={lang === "ht" ? "Pwochen Evènman K ap Vini" : "Next Upcoming Gathering"}
+              badgeLabel={
+                lang === "ht"
+                  ? "Pwochen Evènman K ap Vini"
+                  : "Next Upcoming Gathering"
+              }
             />
           </Container>
         </section>
@@ -195,7 +217,8 @@ export default async function EventsPage({ params }: PageProps) {
               Explore Upcoming Gatherings
             </h2>
             <p className="mt-1.5 text-sm text-mist max-w-2xl">
-              Discover donor galas, founder pitch nights, entrepreneurship workshops, and community fundraisers.
+              Discover donor galas, founder pitch nights, entrepreneurship
+              workshops, and community fundraisers.
             </p>
           </div>
 

@@ -9,7 +9,6 @@ import {
   ChevronLeft,
   ChevronRight,
   Clock,
-  ExternalLink,
   Heart,
   Info,
   Layers,
@@ -144,28 +143,50 @@ export function EventsCalendar({
     return [];
   }, [apiEvents, lang]);
 
-  // Dynamically start at the month containing events
-  const [currentDate, setCurrentDate] = React.useState(() => {
-    if (apiEvents && apiEvents.length > 0) {
-      const first = apiEvents[0];
-      if (first.startDate && first.startDate.includes("-")) {
-        const parts = first.startDate.split("T")[0].split("-");
-        if (parts.length === 3) {
-          const y = parseInt(parts[0], 10);
-          const m = parseInt(parts[1], 10) - 1;
-          const d = parseInt(parts[2], 10);
-          return new Date(y, m, d);
-        }
-      }
-    }
-    return new Date();
-  });
+  // Dynamic today midnight timestamp
+  const todayMidnight = React.useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d.getTime();
+  }, []);
 
-  // When apiEvents load, jump to event month if current month has no events
+  // Helper to determine if an event is upcoming/active today
+  const isEventUpcoming = React.useCallback(
+    (evt: { date?: string } | null | undefined) => {
+      if (!evt || !evt.date) return false;
+      const parts = evt.date.split("-").map(Number);
+      if (parts.length < 3) return false;
+      const eventTime = new Date(
+        parts[0],
+        parts[1] - 1,
+        parts[2],
+        23,
+        59,
+        59,
+      ).getTime();
+      return eventTime >= todayMidnight;
+    },
+    [todayMidnight],
+  );
+
+  // Mapped list of strictly upcoming events sorted by date ASC
+  const upcomingEvents = React.useMemo(() => {
+    return mappedEvents
+      .filter((evt) => isEventUpcoming(evt))
+      .sort((a, b) => {
+        return new Date(a.date).getTime() - new Date(b.date).getTime();
+      });
+  }, [mappedEvents, isEventUpcoming]);
+
+  // Dynamically start at the current month, or nearest upcoming month
+  const [currentDate, setCurrentDate] = React.useState(() => new Date());
+
+  // Jump to event month if current month has no events
   React.useEffect(() => {
     if (apiEvents && apiEvents.length > 0) {
-      const nowYear = new Date().getFullYear();
-      const nowMonth = new Date().getMonth();
+      const now = new Date();
+      const nowYear = now.getFullYear();
+      const nowMonth = now.getMonth();
       const currentMonthEvents = apiEvents.filter((e) => {
         if (!e.startDate) return false;
         const parts = e.startDate.split("T")[0].split("-");
@@ -176,10 +197,18 @@ export function EventsCalendar({
       });
 
       if (currentMonthEvents.length === 0) {
-        const first = apiEvents[0];
-        if (first.startDate && first.startDate.includes("-")) {
-          const parts = first.startDate.split("T")[0].split("-");
-          if (parts.length === 3) {
+        // Look for nearest upcoming event, or fallback to the latest event
+        const nearestUpcoming = apiEvents
+          .filter((e) => e.startDate && new Date(e.startDate) >= now)
+          .sort(
+            (a, b) =>
+              new Date(a.startDate).getTime() - new Date(b.startDate).getTime(),
+          )[0];
+
+        const target = nearestUpcoming || apiEvents[apiEvents.length - 1];
+        if (target?.startDate && target.startDate.includes("-")) {
+          const parts = target.startDate.split("T")[0].split("-");
+          if (parts.length >= 2) {
             setCurrentDate(
               new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, 1),
             );
@@ -199,20 +228,31 @@ export function EventsCalendar({
     onCategoryChange?.(cat);
   };
 
+  // Default spotlight priority: 1) Upcoming Featured, 2) Nearest Upcoming, 3) Fallback
   const [selectedEvent, setSelectedEvent] = React.useState<EventItem | null>(
-    () => (mappedEvents.length > 0 ? mappedEvents[0] : null),
+    () => {
+      const featuredUpcoming = mappedEvents.find(
+        (e) => e.featured && isEventUpcoming(e),
+      );
+      const firstUpcoming = mappedEvents.find((e) => isEventUpcoming(e));
+      return featuredUpcoming || firstUpcoming || mappedEvents[0] || null;
+    },
   );
 
   React.useEffect(() => {
     if (mappedEvents.length > 0) {
       setSelectedEvent((prev) => {
         if (prev && mappedEvents.some((m) => m.id === prev.id)) return prev;
-        return mappedEvents[0];
+        const featuredUpcoming = mappedEvents.find(
+          (e) => e.featured && isEventUpcoming(e),
+        );
+        const firstUpcoming = mappedEvents.find((e) => isEventUpcoming(e));
+        return featuredUpcoming || firstUpcoming || mappedEvents[0];
       });
     } else {
       setSelectedEvent(null);
     }
-  }, [mappedEvents]);
+  }, [mappedEvents, isEventUpcoming]);
   const [modalOpen, setModalOpen] = React.useState(false);
   const [viewMode, setViewMode] = React.useState<"month" | "list">("month");
 
@@ -708,14 +748,21 @@ export function EventsCalendar({
                   <p className="text-xs font-semibold uppercase tracking-[0.16em] text-forest">
                     {t.SpotlightTitle}
                   </p>
-                  <span
-                    className={cn(
-                      "rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider",
-                      getCategoryBadgeColor(selectedEvent.category),
+                  <div className="flex items-center gap-1.5">
+                    {!isEventUpcoming(selectedEvent) && (
+                      <span className="rounded-full bg-sand-soft px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-mist border border-hairline">
+                        Concluded
+                      </span>
                     )}
-                  >
-                    {getCategoryLabel(selectedEvent.category)}
-                  </span>
+                    <span
+                      className={cn(
+                        "rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider",
+                        getCategoryBadgeColor(selectedEvent.category),
+                      )}
+                    >
+                      {getCategoryLabel(selectedEvent.category)}
+                    </span>
+                  </div>
                 </div>
 
                 <div className="relative aspect-video w-full overflow-hidden rounded-2xl bg-sand-soft">
@@ -773,38 +820,66 @@ export function EventsCalendar({
                 </div>
 
                 {/* Action Buttons */}
-                <div className="flex flex-col gap-2 pt-1">
-                  <Button
-                    asChild
-                    className="w-full rounded-xl bg-forest text-white hover:bg-forest-deep shadow-xs cursor-pointer"
-                  >
-                    <Link href={`/${lang}/events/${selectedEvent.id}`}>
-                      <Users className="mr-2 h-4 w-4" />
-                      View Details & Register →
-                    </Link>
-                  </Button>
-
-                  <div className="grid grid-cols-2 gap-2">
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => setModalOpen(true)}
-                      className="rounded-xl border-hairline"
-                    >
-                      Quick RSVP
-                    </Button>
+                {isEventUpcoming(selectedEvent) ? (
+                  <div className="flex flex-col gap-2 pt-1">
                     <Button
                       asChild
-                      variant="outline"
-                      className="rounded-xl border-hairline"
+                      className="w-full rounded-xl bg-forest text-white hover:bg-forest-deep shadow-xs cursor-pointer"
                     >
-                      <Link href={`/${lang}/donate`}>
-                        <Heart className="mr-1.5 h-3.5 w-3.5 text-forest" />
-                        {t.DonateBtn.split(" ")[0]}
+                      <Link href={`/${lang}/events/${selectedEvent.id}`}>
+                        <Users className="mr-2 h-4 w-4" />
+                        View Details & Register →
                       </Link>
                     </Button>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setModalOpen(true)}
+                        className="rounded-xl border-hairline"
+                      >
+                        Quick RSVP
+                      </Button>
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="rounded-xl border-hairline"
+                      >
+                        <Link href={`/${lang}/donate`}>
+                          <Heart className="mr-1.5 h-3.5 w-3.5 text-forest" />
+                          {t.DonateBtn.split(" ")[0]}
+                        </Link>
+                      </Button>
+                    </div>
                   </div>
-                </div>
+                ) : (
+                  <div className="space-y-2 pt-1">
+                    <div className="rounded-xl bg-amber-500/10 border border-amber-500/20 px-3 py-2 text-center text-xs font-semibold text-amber-800">
+                      This gathering has concluded
+                    </div>
+                    <div className="grid grid-cols-2 gap-2">
+                      <Button
+                        asChild
+                        className="rounded-xl bg-forest text-white hover:bg-forest-deep"
+                      >
+                        <Link href={`/${lang}/events/${selectedEvent.id}`}>
+                          View Details →
+                        </Link>
+                      </Button>
+                      <Button
+                        asChild
+                        variant="outline"
+                        className="rounded-xl border-hairline"
+                      >
+                        <Link href={`/${lang}/donate`}>
+                          <Heart className="mr-1.5 h-3.5 w-3.5 text-forest" />
+                          {t.DonateBtn.split(" ")[0]}
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             ) : (
               <div className="rounded-3xl border border-hairline bg-white p-6 text-center text-mist">
@@ -813,17 +888,17 @@ export function EventsCalendar({
             )}
 
             {/* Upcoming Drives List */}
-            {mappedEvents.length > 0 && (
-              <div className="rounded-3xl border border-hairline bg-sand-soft/60 p-6">
-                <div className="flex items-center gap-2 text-forest mb-4">
-                  <Sparkles className="h-4 w-4" />
-                  <h4 className="font-display text-sm font-semibold text-forest-deep">
-                    {t.UpcomingDrives}
-                  </h4>
-                </div>
+            <div className="rounded-3xl border border-hairline bg-sand-soft/60 p-6">
+              <div className="flex items-center gap-2 text-forest mb-4">
+                <Sparkles className="h-4 w-4" />
+                <h4 className="font-display text-sm font-semibold text-forest-deep">
+                  {t.UpcomingDrives}
+                </h4>
+              </div>
 
+              {upcomingEvents.length > 0 ? (
                 <div className="space-y-3 divide-y divide-hairline">
-                  {mappedEvents.slice(0, 5).map((evt) => (
+                  {upcomingEvents.slice(0, 5).map((evt) => (
                     <button
                       key={evt.id}
                       type="button"
@@ -876,8 +951,12 @@ export function EventsCalendar({
                     </button>
                   ))}
                 </div>
-              </div>
-            )}
+              ) : (
+                <div className="rounded-2xl border border-dashed border-hairline/80 p-5 text-center text-xs text-mist">
+                  No upcoming community drives scheduled right now.
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
