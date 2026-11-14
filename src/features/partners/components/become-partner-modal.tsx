@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 import { applyPartner } from "@/helpers/next-fetch/partnerActions";
+import { toErrorMessage } from "@/lib/api-error";
 
 interface BecomePartnerModalProps {
   open: boolean;
@@ -149,7 +150,12 @@ export function BecomePartnerModal({
           tModal.SuccessTitle || "Partner application submitted successfully!"
         );
       } else {
-        toast.error(res.message || res.error || "Failed to submit application");
+        toast.error(
+          toErrorMessage(
+            res.message,
+            toErrorMessage(res.error, "Failed to submit application"),
+          ),
+        );
       }
     } catch (err: any) {
       toast.error(err?.message || "An unexpected error occurred");

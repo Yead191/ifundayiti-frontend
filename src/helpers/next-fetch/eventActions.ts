@@ -1,6 +1,7 @@
 "use server";
 
 import { nextFetch } from "./NextFetch";
+import { toErrorMessage } from "@/lib/api-error";
 
 export type EventCategory = "fundraiser" | "pitch-night" | "workshop" | "gala";
 export type EventType = "physical" | "virtual" | "hybrid";
@@ -245,7 +246,7 @@ export async function bookEventTicket(payload: IBookingPayload): Promise<Booking
       statusCode: res.statusCode,
       message: res.message,
       data: res.data,
-      error: res.error,
+      error: toErrorMessage(res.error, res.message || ""),
     };
   } catch (error) {
     return {

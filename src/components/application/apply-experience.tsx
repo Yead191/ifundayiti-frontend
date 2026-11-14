@@ -44,29 +44,7 @@ import {
   saveApplyDraftFields,
   saveApplyDraftFiles,
 } from "@/lib/apply-draft";
-
-/** API errors often arrive as `{ path, message }[]` — never render those as React children. */
-function toErrorMessage(error: unknown, fallback: string): string {
-  if (typeof error === "string" && error.trim()) return error;
-  if (Array.isArray(error)) {
-    const parts = error
-      .map((item) => {
-        if (typeof item === "string" && item.trim()) return item;
-        if (item && typeof item === "object" && "message" in item) {
-          const msg = (item as { message?: unknown }).message;
-          return typeof msg === "string" && msg.trim() ? msg : null;
-        }
-        return null;
-      })
-      .filter((m): m is string => Boolean(m));
-    if (parts.length) return [...new Set(parts)].join(". ");
-  }
-  if (error && typeof error === "object" && "message" in error) {
-    const msg = (error as { message?: unknown }).message;
-    if (typeof msg === "string" && msg.trim()) return msg;
-  }
-  return fallback;
-}
+import { toErrorMessage } from "@/lib/api-error";
 
 function formatDraftTime(iso: string, lang: string): string {
   try {
