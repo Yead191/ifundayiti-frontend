@@ -868,6 +868,14 @@
       "Tip2": "Be specific about how the $1,000 grant will be spent.",
       "Tip3": "Explain the tangible community benefits of your project."
     },
+    "Draft": {
+      "Restored": "Draft restored",
+      "Banner": "We restored your saved application so you can continue where you left off.",
+      "Dismiss": "Dismiss",
+      "Saving": "Saving…",
+      "SavedAt": "Saved at [time]",
+      "SavedOnError": "Your answers and files were saved locally. Fix the issue and submit again."
+    },
     "Nav": {
       "Previous": "Previous Step",
       "Continue": "Continue",
@@ -984,6 +992,7 @@
       "Eyebrow": "Application Submitted",
       "Title": "Good luck, [name]!",
       "Body": "Your grant application has been successfully received by our review board.",
+      "Toast": "Application submitted successfully",
       "ImportantPrefix": "Important:",
       "ImportantNotice": "You will need your registered email and date of birth to track your application status later. Please keep them safe.",
       "RegEmail": "Registered Email",

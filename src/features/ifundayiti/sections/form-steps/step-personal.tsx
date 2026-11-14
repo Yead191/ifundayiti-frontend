@@ -84,7 +84,7 @@ export function StepPersonal({
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/png, image/jpeg, image/webp"
+              accept="image/png,image/jpeg,image/webp,image/avif,.png,.jpg,.jpeg,.webp,.avif"
               onChange={handleFileChange}
               className="hidden"
               id="profile-photo-input"

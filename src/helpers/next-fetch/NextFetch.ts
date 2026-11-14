@@ -15,7 +15,8 @@ export interface FetchResponse<T = any> {
   isBlocked?: boolean;
   message?: string;
   data?: T;
-  error?: string | null;
+  /** String message, or backend `errorMessages` as `{ path, message }[]`. */
+  error?: string | { path?: string | number; message: string }[] | null;
   pagination?: Pagination;
 }
 

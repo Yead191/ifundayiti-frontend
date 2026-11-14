@@ -217,7 +217,7 @@ export function StepDocuments({
             ref={galleryRef}
             onChange={handleGalleryFiles}
             className="hidden"
-            accept="image/png, image/jpeg, image/webp"
+            accept="image/png,image/jpeg,image/webp,image/avif,.png,.jpg,.jpeg,.webp,.avif"
           />
 
           <button

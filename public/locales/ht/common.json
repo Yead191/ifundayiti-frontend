@@ -363,7 +363,7 @@
       "Subtitle": "Peryòd ki pase yo rete vizib pou donatè ak aplikan yo ka wè kijan pwogram nan fonksyone sou tan."
     },
     "CTA": {
-      "OpenTitle": "Ready when ou are.",
+      "OpenTitle": "Prè lè ou pare.",
       "OpenBody": "Si dokiman ou yo annòd epi lide ou sèvi kominote a, paj Aplike a ap gide ou nan chak etap.",
       "ClosedTitle": "Peryòd sa a fèmen.",
       "ClosedBody": "Swiv yon aplikasyon ki deja egziste oswa sipòte Fon Pwogram nan pandan y ap prepare pwochen sik la.",
@@ -868,6 +868,14 @@
       "Tip2": "Bay detay sou fason w ap depanse sibvansyon $1,000 lan.",
       "Tip3": "Eksplike benefis konkrè pwojè ou a pote pou kominote a."
     },
+    "Draft": {
+      "Restored": "Draft restore",
+      "Banner": "Nou restore aplikasyon ou te sove a pou ou ka kontinye kote ou te rete a.",
+      "Dismiss": "Fèmen",
+      "Saving": "Ap sove…",
+      "SavedAt": "Sove a [time]",
+      "SavedOnError": "Repons ou yo ak fichye yo sove lokalman. Korije pwoblèm nan epi soumèt ankò."
+    },
     "Nav": {
       "Previous": "Etap anvan",
       "Continue": "Kontinye",
@@ -984,6 +992,7 @@
       "Eyebrow": "Aplikasyon soumèt",
       "Title": "Bòn chans, [name]!",
       "Body": "Komite revizyon nou an resevwa aplikasyon sibvansyon ou avèk siksè.",
+      "Toast": "Aplikasyon soumèt avèk siksè",
       "ImportantPrefix": "Enpòtan:",
       "ImportantNotice": "W ap bezwen imèl ou anrejistre ak dat nesans ou pou swiv estati aplikasyon ou pita. Tanpri kenbe yo an sekirite.",
       "RegEmail": "Imèl ki anrejistre",
