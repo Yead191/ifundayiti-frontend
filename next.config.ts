@@ -22,8 +22,10 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["10.10.26.173", "api.ifundayiti.org"],
   experimental: {
     serverActions: {
-      bodySizeLimit: "10mb",
+      bodySizeLimit: "32mb",
+      allowedOrigins: ["ifundayiti.org", "www.ifundayiti.org"],
     },
+    middlewareClientMaxBodySize: "32mb",
     staleTimes: {
       dynamic: 30,
       static: 180,

@@ -874,7 +874,10 @@
       "Dismiss": "Dismiss",
       "Saving": "Saving…",
       "SavedAt": "Saved at [time]",
-      "SavedOnError": "Your answers and files were saved locally. Fix the issue and submit again."
+      "SavedOnError": "Your answers and files were saved locally. Fix the issue and submit again.",
+      "SubmitCrashed": "The application could not be sent. Your answers are saved on this device. Use smaller files (under 5MB each) and try again.",
+      "ErrFileTooLarge": "[name] is [size]. Each file must be under 5MB.",
+      "ErrTotalTooLarge": "Attachments total [size]. Keep the total under 20MB."
     },
     "Nav": {
       "Previous": "Previous Step",

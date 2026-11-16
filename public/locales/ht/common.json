@@ -874,7 +874,10 @@
       "Dismiss": "Fèmen",
       "Saving": "Ap sove…",
       "SavedAt": "Sove a [time]",
-      "SavedOnError": "Repons ou yo ak fichye yo sove lokalman. Korije pwoblèm nan epi soumèt ankò."
+      "SavedOnError": "Repons ou yo ak fichye yo sove lokalman. Korije pwoblèm nan epi soumèt ankò.",
+      "SubmitCrashed": "Aplikasyon an pa t kapab voye. Repons ou yo sove sou aparèy sa a. Itilize fichye ki pi piti (anba 5MB chak) epi eseye ankò.",
+      "ErrFileTooLarge": "[name] gen [size]. Chak fichye dwe anba 5MB.",
+      "ErrTotalTooLarge": "Atachman yo total [size]. Kenbe total la anba 20MB."
     },
     "Nav": {
       "Previous": "Etap anvan",

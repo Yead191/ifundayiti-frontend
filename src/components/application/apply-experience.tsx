@@ -385,11 +385,82 @@ export function ApplyExperience() {
     }
   }
 
+  function showSubmitError(message: string) {
+    setSubmitError(message);
+    toast.error(message, {
+      description:
+        t.Draft?.SavedOnError ??
+        "Your answers were saved. Fix the issue and submit again.",
+    });
+    requestAnimationFrame(() => {
+      submitErrorRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    });
+  }
+
+  function readableSubmitError(error: unknown) {
+    const message = toErrorMessage(error, "An unexpected error occurred.");
+    if (
+      message.includes("Server Components render") ||
+      message.includes("Body exceeded") ||
+      message.includes("Invalid Server Actions request")
+    ) {
+      return (
+        t.Draft?.SubmitCrashed ??
+        "The application could not be sent. Your answers are saved on this device. Use smaller files (under 5MB each) and try again."
+      );
+    }
+    return message;
+  }
+
+  function attachmentSizeError() {
+    const files = [
+      imageFile,
+      govIdFile,
+      proofAddrFile,
+      businessPlanFile,
+      ...projectGallery,
+      ...supportingDocs,
+    ].filter((file): file is File => Boolean(file));
+    const maxFile = 5 * 1024 * 1024;
+    const maxTotal = 20 * 1024 * 1024;
+    const format = (bytes: number) => `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
+
+    const tooBig = files.find((file) => file.size > maxFile);
+    if (tooBig) {
+      return (
+        t.Draft?.ErrFileTooLarge ??
+        "[name] is [size]. Each file must be under 5MB."
+      )
+        .replace("[name]", tooBig.name)
+        .replace("[size]", format(tooBig.size));
+    }
+
+    const total = files.reduce((sum, file) => sum + file.size, 0);
+    if (total > maxTotal) {
+      return (
+        t.Draft?.ErrTotalTooLarge ??
+        "Attachments total [size]. Keep the total under 20MB."
+      ).replace("[size]", format(total));
+    }
+    return "";
+  }
+
   async function handleSubmit() {
     const ok = await agreementForm.trigger();
     if (!ok) return;
     setLoading(true);
     setSubmitError("");
+
+    const sizeError = attachmentSizeError();
+    if (sizeError) {
+      await persistDraft();
+      showSubmitError(sizeError);
+      setLoading(false);
+      return;
+    }
 
     const personal = personalForm.getValues();
     const contact = contactForm.getValues();
@@ -424,8 +495,8 @@ export function ApplyExperience() {
         await import("@/helpers/next-fetch/applicationActions");
       const res = await submitApplication(formData);
 
-      if (res.success && res.data) {
-        setTrackingCode(res.data.id || res.data._id || "IFA-SUBMITTED");
+      if (res.success) {
+        setTrackingCode(res.applicationId || "IFA-SUBMITTED");
         await clearApplyDraft();
         setDraftSavedAt(null);
         setDraftBanner(false);
@@ -434,39 +505,13 @@ export function ApplyExperience() {
           description: t.Success.ImportantNotice,
         });
       } else {
-        const message = toErrorMessage(
-          res.message,
-          toErrorMessage(res.error, "Failed to submit application."),
-        );
         await persistDraft();
-        setSubmitError(message);
-        toast.error(message, {
-          description:
-            t.Draft?.SavedOnError ??
-            "Your answers were saved. Fix the issue and submit again.",
-        });
-        requestAnimationFrame(() => {
-          submitErrorRef.current?.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
-        });
+        showSubmitError(readableSubmitError(res.message));
       }
     } catch (err: unknown) {
-      const message = toErrorMessage(err, "An unexpected error occurred.");
+      console.error("Application submit failed", err);
       await persistDraft();
-      setSubmitError(message);
-      toast.error(message, {
-        description:
-          t.Draft?.SavedOnError ??
-          "Your answers were saved. Fix the issue and submit again.",
-      });
-      requestAnimationFrame(() => {
-        submitErrorRef.current?.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
-      });
+      showSubmitError(readableSubmitError(err));
     } finally {
       setLoading(false);
     }
