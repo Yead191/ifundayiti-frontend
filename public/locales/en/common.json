@@ -23,6 +23,7 @@
     "Apply": "Apply",
     "Blogs": "Blogs",
     "Community": "Community",
+    "Forum": "Forum",
     "CommunityForum": "Community Forum"
   },
   "Hero": {
@@ -875,8 +876,8 @@
       "Saving": "Saving…",
       "SavedAt": "Saved at [time]",
       "SavedOnError": "Your answers and files were saved locally. Fix the issue and submit again.",
-      "SubmitCrashed": "The application could not be sent. Your answers are saved on this device. Use smaller files (under 5MB each) and try again.",
-      "ErrFileTooLarge": "[name] is [size]. Each file must be under 5MB.",
+      "SubmitCrashed": "The application could not be sent. Your answers are saved on this device. Use smaller files (under 7MB each) and try again.",
+      "ErrFileTooLarge": "[name] is [size]. Each file must be under 7MB.",
       "ErrTotalTooLarge": "Attachments total [size]. Keep the total under 20MB."
     },
     "Nav": {
@@ -891,7 +892,7 @@
       "UploadPhoto": "Upload Photo",
       "ChangePhoto": "Change Photo",
       "Remove": "Remove",
-      "PhotoFormat": "JPEG, PNG or WebP · Max 5MB",
+      "PhotoFormat": "JPEG, PNG or WebP · Max 7MB",
       "NameLabel": "Full Name (Must match National ID) *",
       "NamePlaceholder": "e.g. Jean-Baptiste Pierre",
       "DobLabel": "Date of Birth *",
@@ -899,7 +900,7 @@
       "NationalityVal": "Haitian",
       "LocationLabel": "Location (Department / City / Full Address) *",
       "LocationPlaceholder": "e.g. Cap-Haïtien, Rue 24 A, House #14",
-      "ErrFileSize": "File size should be less than 5MB",
+      "ErrFileSize": "File size should be less than 7MB",
       "ErrName": "Full Name must match your National ID",
       "ErrDob": "Date of Birth is required",
       "ErrLocation": "Full Address is required"

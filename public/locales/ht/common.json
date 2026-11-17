@@ -23,6 +23,7 @@
     "Apply": "Aplike",
     "Blogs": "Blòg",
     "Community": "Kominote",
+    "Forum": "Fowòm",
     "CommunityForum": "Fowòm Kominotè"
   },
   "Hero": {
@@ -811,7 +812,7 @@
   },
   "ApplyPage": {
     "Hero": {
-      "Eyebrow": "Equity-Gratis Micro-Sibvansyon Aplikasyon",
+      "Eyebrow": "Aplikasyon mikwo-sibvansyon san ekite",
       "Title": "Fè vizyon ou tounen reyalite.",
       "Subtitle": "Mande jiska $1,000 finansman san patisipasyon nan pwopriyetè pou biznis ou oswa inisyativ kominotè ou. Swiv aplikasyon gide nou an anba a."
     },
@@ -821,7 +822,7 @@
       "BackHome": "Retounen nan Akèy"
     },
     "Badges": {
-      "MaxGrantTitle": "$1,000 Max Sibvansyon",
+      "MaxGrantTitle": "Sibvansyon maksimòm $1,000",
       "MaxGrantDesc": "Finansman demaraj san patisipasyon nan pwopriyetè",
       "EquityTitle": "0% patisipasyon nan pwopriyetè",
       "EquityDesc": "Kapital kominotè san patisipasyon nan pwopriyetè",
@@ -846,7 +847,7 @@
     },
     "Stepper": {
       "Progress": "Pwogrè aplikasyon an",
-      "StepOf": "Step [current] nan [total]",
+      "StepOf": "Etap [current] nan [total]",
       "Step1Label": "Enfòmasyon pèsonèl ak foto",
       "Step1Desc": "Detay debaz ak foto",
       "Step2Label": "Enfòmasyon kontak",
@@ -869,14 +870,14 @@
       "Tip3": "Eksplike benefis konkrè pwojè ou a pote pou kominote a."
     },
     "Draft": {
-      "Restored": "Draft restore",
-      "Banner": "Nou restore aplikasyon ou te sove a pou ou ka kontinye kote ou te rete a.",
+      "Restored": "Bouyon retabli",
+      "Banner": "Nou retabli aplikasyon ou te sove a pou ou ka kontinye kote ou te rete a.",
       "Dismiss": "Fèmen",
       "Saving": "Ap sove…",
       "SavedAt": "Sove a [time]",
       "SavedOnError": "Repons ou yo ak fichye yo sove lokalman. Korije pwoblèm nan epi soumèt ankò.",
-      "SubmitCrashed": "Aplikasyon an pa t kapab voye. Repons ou yo sove sou aparèy sa a. Itilize fichye ki pi piti (anba 5MB chak) epi eseye ankò.",
-      "ErrFileTooLarge": "[name] gen [size]. Chak fichye dwe anba 5MB.",
+      "SubmitCrashed": "Aplikasyon an pa t kapab voye. Repons ou yo sove sou aparèy sa a. Itilize fichye ki pi piti (anba 7MB chak) epi eseye ankò.",
+      "ErrFileTooLarge": "[name] gen [size]. Chak fichye dwe anba 7MB.",
       "ErrTotalTooLarge": "Atachman yo total [size]. Kenbe total la anba 20MB."
     },
     "Nav": {
@@ -886,22 +887,22 @@
       "Submitting": "Ap soumèt..."
     },
     "Step1": {
-      "PhotoLabel": "Applicant Pwofil Photo (Recommended)",
+      "PhotoLabel": "Foto pwofil aplikan an (Rekòmande)",
       "PhotoDesc": "Telechaje yon foto figi oswa foto pwofil klè. Sa ede moun k ap revize sibvansyon yo idantifye ou menm ak ekip ou.",
       "UploadPhoto": "Telechaje foto",
       "ChangePhoto": "Chanje foto",
       "Remove": "Retire",
-      "PhotoFormat": "JPEG, PNG oswa WebP · Maksimòm 5MB",
+      "PhotoFormat": "JPEG, PNG oswa WebP · Maksimòm 7MB",
       "NameLabel": "Non konplè (Dwe koresponn ak kat idantite nasyonal la) *",
       "NamePlaceholder": "eg. Jean-Baptiste Pierre",
-      "DobLabel": "Dat nan Birth *",
+      "DobLabel": "Dat nesans *",
       "NationalityLabel": "Nasyonalite",
       "NationalityVal": "Ayisyen",
       "LocationLabel": "Kote (Depatman / Vil / Adrès konplè) *",
       "LocationPlaceholder": "eg. Okap, Ri 24 A, Kay #14",
-      "ErrFileSize": "Gwosè fichye a dwe mwens pase 5MB",
+      "ErrFileSize": "Gwosè fichye a dwe mwens pase 7MB",
       "ErrName": "Non konplè a dwe koresponn ak kat idantite nasyonal ou",
-      "ErrDob": "Dat nan Birth obligatwa",
+      "ErrDob": "Dat nesans obligatwa",
       "ErrLocation": "Adrès konplè obligatwa"
     },
     "Step2": {
@@ -928,7 +929,7 @@
       "DescPlaceholder": "Eksplike kisa biznis ou ye ak istwa ki dèyè li...",
       "FundUsageLabel": "Kijan lajan an pral itilize *",
       "FundUsagePlaceholder": "Detay depans yo: eg. panno solè, batri, kab...",
-      "ImpactLabel": "Expected Kominote Enpak *",
+      "ImpactLabel": "Enpak espere sou kominote a *",
       "ImpactPlaceholder": "Kijan sa ap sipòte vwazen ou oswa vil ou?...",
       "ErrProjectName": "Non pwojè a obligatwa",
       "ErrAmountNumber": "Montan mande a dwe yon nimewo",
@@ -953,7 +954,7 @@
       "GovIdDesc": "Kat idantite nasyonal oswa kopi paspò (Obligatwa)",
       "UploadId": "Telechaje kopi idantite",
       "ChangeFile": "Chanje fichye",
-      "ProofAddrTitle": "Proof nan Adrès *",
+      "ProofAddrTitle": "Prèv adrès *",
       "ProofAddrDesc": "Fakti sèvis piblik, dosye taks oswa resi lwaye (Obligatwa)",
       "UploadAddr": "Telechaje kopi adrès",
       "PlanTitle": "Plan biznis",
@@ -980,7 +981,7 @@
       "Email": "Imèl",
       "Phone": "Telefòn",
       "NationalId": "Kat idantite nasyonal / NIF",
-      "ProjectName": "Pwojè Non",
+      "ProjectName": "Non pwojè a",
       "RequestedAmount": "Montan mande a",
       "TermsTitle": "Deklarasyon ak kondisyon",
       "TermsBody": "Lè ou soumèt aplikasyon sa a, ou konfime tout enfòmasyon ou bay yo egzat epi veridik selon sa ou konnen. Komite revizyon nou an fè seleksyon yo selon merit, posibilite pwojè a ak enpak sou kominote a.",
@@ -1001,7 +1002,7 @@
       "RegEmail": "Imèl ki anrejistre",
       "Dob": "Dat nesans",
       "TrackBtn": "Swiv estati aplikasyon an",
-      "ReturnGrants": "Return pou Sibvansyons"
+      "ReturnGrants": "Retounen nan sibvansyon yo"
     }
   },
   "TeamPage": {

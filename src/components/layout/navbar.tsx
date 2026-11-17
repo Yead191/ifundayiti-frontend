@@ -22,7 +22,6 @@ import { CartMenu } from "@/components/layout/cart-menu";
 import { LanguageSelector } from "@/components/layout/language-selector";
 import { TopbarNotifications } from "@/components/layout/Notification/TopbarNotifications";
 import { useTranslation } from "@/components/providers/translation-provider";
-import type { CartData } from "@/types";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -131,11 +130,14 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
       subItems: [
         { label: t.Calendar || "Calendar", href: "/calendar" },
         { label: t.Gallery || "Gallery", href: "/gallery" },
+      ],
+    },
+    {
+      label: t.Community || "Community",
+      href: "/community",
+      subItems: [
+        { label: t.Forum || "Forum", href: "/community" },
         { label: t.Blogs || "Blogs", href: "/blogs" },
-        {
-          label: t.CommunityForum || t.Community || "Community Forum",
-          href: "/community",
-        },
       ],
     },
     { label: t.Shop || "Shop", href: "/shop" },
@@ -144,25 +146,27 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
 
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-2 pt-2.5 sm:px-4 sm:pt-3.5">
-      <div className="pointer-events-auto relative w-full max-w-6xl lg:px-4 xl:px-8">
+      <div className="pointer-events-auto relative w-full max-w-6xl lg:px-1 xl:px-8">
         <nav
           className={cn(
-            "flex w-full items-center justify-between gap-1.5 sm:gap-2 lg:gap-3 rounded-[16px] border border-white/80 bg-white/85 px-2.5 py-1.5 sm:px-3 sm:py-2 shadow-[0_10px_35px_-15px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-all duration-300",
+            "flex w-full items-center justify-between gap-1 sm:gap-1.5 lg:gap-2 rounded-[16px] border border-white/80 bg-white/85 px-2 py-1.5 sm:px-2.5 sm:py-2 shadow-[0_10px_35px_-15px_rgba(15,23,42,0.18)] backdrop-blur-xl transition-all duration-300",
             scrolled &&
               "bg-white/95 shadow-[0_14px_45px_-12px_rgba(15,23,42,0.24)] border-forest/10",
           )}
         >
           {/* Logo */}
-          <div className="pointer-events-auto shrink-0 transition-opacity hover:opacity-95 pr-1 sm:pr-2">
-            <Logo href={localize("/")} />
+          <div className="pointer-events-auto flex shrink-0 items-center translate-y-[0.5px] transition-opacity hover:opacity-95">
+            <Logo href={localize("/")} logoClass="lg:h-9" />
           </div>
 
           {/* Desktop Navigation Links */}
-          <ul className="hidden items-center gap-0.5 lg:flex xl:gap-1.5">
+          <ul className="hidden min-w-0 flex-1 items-center justify-center gap-0 lg:flex xl:gap-0.5">
             {navItems.map((item) => {
-              const active = isActive(pathname, item.href);
+              const active =
+                isActive(pathname, item.href) ||
+                item.subItems?.some((sub) => isActive(pathname, sub.href));
               const linkClass = cn(
-                "relative flex items-center gap-0.5 rounded-xl px-2 xl:px-1.5 py-1.5 text-[13px] xl:text-[14px] font-semibold tracking-tight outline-none transition-colors",
+                "relative flex shrink-0 items-center gap-0.5 whitespace-nowrap rounded-lg px-1 py-1 text-[12px] font-semibold tracking-tight outline-none transition-colors xl:px-1.5 xl:text-[13px]",
                 active
                   ? "text-forest"
                   : "text-forest-deep/85 hover:text-forest hover:bg-sand-soft/60",
@@ -170,12 +174,12 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
 
               if (item.subItems) {
                 return (
-                  <li key={item.href}>
+                  <li key={item.href} className="shrink-0">
                     <DropdownMenu modal={false}>
                       <DropdownMenuTrigger asChild>
                         <button className={linkClass}>
                           <span>{item.label}</span>
-                          <ChevronDown className="h-3.5 w-3.5 opacity-60 transition-transform group-hover:rotate-180" />
+                          <ChevronDown className="h-3 w-3 shrink-0 opacity-60" />
                           {active && (
                             <span className="absolute inset-x-2.5 bottom-0 h-0.5 rounded-full bg-forest" />
                           )}
@@ -206,7 +210,7 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
               }
 
               return (
-                <li key={item.href}>
+                <li key={item.href} className="shrink-0">
                   <Link href={localize(item.href)} className={linkClass}>
                     <span>{item.label}</span>
                     {active && (
@@ -382,7 +386,9 @@ export function Navbar({ user, cart }: { user?: any; cart?: any }) {
           <div className="rounded-[24px] border border-white/80 bg-white/95 p-3 shadow-[0_20px_50px_-20px_rgba(15,23,42,0.35)] backdrop-blur-xl">
             <ul className="flex flex-col">
               {navItems.map((item) => {
-                const active = isActive(pathname, item.href);
+                const active =
+                  isActive(pathname, item.href) ||
+                  item.subItems?.some((sub) => isActive(pathname, sub.href));
                 if (item.subItems) {
                   return (
                     <li key={item.href}>

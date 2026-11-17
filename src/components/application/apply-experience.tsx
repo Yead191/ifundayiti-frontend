@@ -207,7 +207,7 @@ export function ApplyExperience() {
     defaultValues: {
       projectName: "",
       projectDescription: "",
-      requestedAmount: 1000,
+      requestedAmount: 0,
       fundUsage: "",
       expectedImpact: "",
     },
@@ -409,7 +409,7 @@ export function ApplyExperience() {
     ) {
       return (
         t.Draft?.SubmitCrashed ??
-        "The application could not be sent. Your answers are saved on this device. Use smaller files (under 5MB each) and try again."
+        "The application could not be sent. Your answers are saved on this device. Use smaller files (under 7MB each) and try again."
       );
     }
     return message;
@@ -424,7 +424,7 @@ export function ApplyExperience() {
       ...projectGallery,
       ...supportingDocs,
     ].filter((file): file is File => Boolean(file));
-    const maxFile = 5 * 1024 * 1024;
+    const maxFile = 7 * 1024 * 1024;
     const maxTotal = 20 * 1024 * 1024;
     const format = (bytes: number) => `${(bytes / (1024 * 1024)).toFixed(1)}MB`;
 
@@ -432,7 +432,7 @@ export function ApplyExperience() {
     if (tooBig) {
       return (
         t.Draft?.ErrFileTooLarge ??
-        "[name] is [size]. Each file must be under 5MB."
+        "[name] is [size]. Each file must be under 7MB."
       )
         .replace("[name]", tooBig.name)
         .replace("[size]", format(tooBig.size));
