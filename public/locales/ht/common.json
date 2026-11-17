@@ -2010,6 +2010,19 @@
     "NoSearchResults": "Nou pa jwenn okenn diskisyon ki koresponn ak rechèch ou a.",
     "ConfirmDeleteComment": "Èske ou sèten ou vle efase kòmantè sa a? Aksyon sa a pa ka anile.",
     "CommentDeleted": "Kòmantè a efase avèk siksè",
+    "Sidebar": {
+      "SignInPrompt": "Konekte pou w ka kòmante, renmen pòs, epi wè aktivite w.",
+      "SignIn": "Konekte",
+      "Feed": "Fil kominotè",
+      "MyComments": "Kòmantè mwen yo",
+      "MyLikes": "Pòs mwen renmen",
+      "Comments": "Kòmantè",
+      "Likes": "Renmen",
+      "Member": "Manm",
+      "Admin": "Admin",
+      "NoComments": "Ou poko kòmante sou okenn pòs",
+      "NoLikes": "Ou poko renmen okenn pòs"
+    },
     "CommentUpdated": "Kòmantè a mete ajou avèk siksè"
   }
 }

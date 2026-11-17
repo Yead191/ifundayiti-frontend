@@ -1,7 +1,9 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { MessageSquare, Pin, Search, Sparkles } from "lucide-react";
+import { toast } from "sonner";
 import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,11 +12,23 @@ import {
 } from "@/helpers/next-fetch/communityActions";
 import { CommunityFeedHeader } from "./CommunityFeedHeader";
 import { CommunityPostCard } from "./CommunityPostCard";
+import {
+  CommunitySidebar,
+  type CommunityTab,
+} from "./CommunitySidebar";
 
 interface CommunityFeedViewProps {
   initialPosts: ICommunityPost[];
   lang?: string;
   isLoggedIn?: boolean;
+  user?: {
+    name?: string;
+    image?: string;
+    role?: string;
+  } | null;
+  tab?: CommunityTab;
+  commentCount?: number;
+  likeCount?: number;
   dict?: any;
 }
 
@@ -22,10 +36,16 @@ export function CommunityFeedView({
   initialPosts = [],
   lang = "en",
   isLoggedIn = false,
+  user = null,
+  tab = "feed",
+  commentCount = 0,
+  likeCount = 0,
   dict,
 }: CommunityFeedViewProps) {
+  const router = useRouter();
   const isHt = lang === "ht";
   const t = dict?.CommunityPage || {};
+  const sidebar = t.Sidebar || {};
 
   const [posts, setPosts] = React.useState<ICommunityPost[]>(initialPosts);
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -33,7 +53,7 @@ export function CommunityFeedView({
 
   // Debounced server search when searchTerm changes
   React.useEffect(() => {
-    if (!searchTerm.trim()) {
+    if (!searchTerm.trim() || tab !== "feed") {
       setPosts(initialPosts);
       return;
     }
@@ -64,7 +84,7 @@ export function CommunityFeedView({
     }, 350);
 
     return () => clearTimeout(timer);
-  }, [searchTerm, initialPosts]);
+  }, [searchTerm, initialPosts, tab]);
 
   // Separate pinned announcements from regular posts
   const pinnedPosts = React.useMemo(
@@ -77,10 +97,44 @@ export function CommunityFeedView({
     [posts],
   );
 
+  function changeTab(next: CommunityTab) {
+    if (!isLoggedIn && next !== "feed") {
+      toast.info(
+        sidebar.SignInPrompt ||
+          "Sign in to comment, like posts, and see your activity.",
+      );
+      return;
+    }
+    const params = new URLSearchParams();
+    if (next !== "feed") params.set("tab", next);
+    const query = params.toString();
+    router.push(`/${lang}/community${query ? `?${query}` : ""}`);
+  }
+
+  const emptyTitle =
+    tab === "comments"
+      ? sidebar.NoComments || "You have not commented yet"
+      : tab === "likes"
+        ? sidebar.NoLikes || "You have not liked a post yet"
+        : searchTerm
+          ? t.NoSearchResults || "No discussions found"
+          : t.NoPostsTitle || "No Announcements Yet";
+
   return (
     <div className="min-h-screen bg-cream pb-20 pt-20 sm:pt-24">
-      <Container className="max-w-3xl space-y-6">
-        {/* Hero Header */}
+      <Container className="max-w-6xl">
+        <div className="grid items-start gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+          <CommunitySidebar
+            lang={lang}
+            tab={tab}
+            isLoggedIn={isLoggedIn}
+            user={user}
+            commentCount={commentCount}
+            likeCount={likeCount}
+            dict={dict}
+            onTabChange={changeTab}
+          />
+          <div className="min-w-0 space-y-6">
         <CommunityFeedHeader
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -100,9 +154,7 @@ export function CommunityFeedView({
               )}
             </div>
             <h3 className="font-display text-lg font-bold text-forest-deep">
-              {searchTerm
-                ? t.NoSearchResults || "No discussions found"
-                : t.NoPostsTitle || "No Announcements Yet"}
+              {emptyTitle}
             </h3>
             <p className="text-xs sm:text-sm text-mist max-w-md mx-auto leading-relaxed">
               {searchTerm
@@ -174,6 +226,8 @@ export function CommunityFeedView({
             )}
           </div>
         )}
+          </div>
+        </div>
       </Container>
     </div>
   );

@@ -428,3 +428,62 @@ export async function deleteCommunityComment(
     };
   }
 }
+
+function asCommunityPost(value: unknown): ICommunityPost | null {
+  if (!value || typeof value !== "object") return null;
+  const post = value as ICommunityPost;
+  if (!post._id || !post.content) return null;
+  return {
+    ...post,
+    _id: String(post._id),
+    isPinned: Boolean(post.isPinned),
+    isLocked: Boolean(post.isLocked),
+    status: post.status || "published",
+    totalLikes: post.totalLikes || 0,
+    totalComments: post.totalComments || 0,
+    createdAt: post.createdAt || "",
+    updatedAt: post.updatedAt || post.createdAt || "",
+  };
+}
+
+/** Posts the signed-in member commented on, plus their total comment count. */
+export async function getMyCommentedPosts(page = 1, limit = 30) {
+  const res = await nextFetch<Array<{ post?: unknown }>>(
+    `/community-comment/my-comments?page=${page}&limit=${limit}`,
+    { cache: "no-store" },
+  );
+  const seen = new Set<string>();
+  const posts: ICommunityPost[] = [];
+  for (const row of Array.isArray(res.data) ? res.data : []) {
+    const post = asCommunityPost(row?.post);
+    if (!post || seen.has(post._id)) continue;
+    seen.add(post._id);
+    posts.push(post);
+  }
+  return {
+    success: Boolean(res.success),
+    posts,
+    total: res.pagination?.total ?? posts.length,
+  };
+}
+
+/** Posts the signed-in member liked, plus their total like count. */
+export async function getMyLikedPosts(page = 1, limit = 30) {
+  const res = await nextFetch<Array<{ post?: unknown }>>(
+    `/community-like/my?page=${page}&limit=${limit}`,
+    { cache: "no-store" },
+  );
+  const seen = new Set<string>();
+  const posts: ICommunityPost[] = [];
+  for (const row of Array.isArray(res.data) ? res.data : []) {
+    const post = asCommunityPost(row?.post);
+    if (!post || seen.has(post._id)) continue;
+    seen.add(post._id);
+    posts.push(post);
+  }
+  return {
+    success: Boolean(res.success),
+    posts,
+    total: res.pagination?.total ?? posts.length,
+  };
+}

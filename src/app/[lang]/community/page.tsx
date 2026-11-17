@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import { getDictionary } from "@/lib/dictionaries";
 import { buildMetadata } from "@/lib/seo";
 import getProfile from "@/helpers/next-fetch/getProfile";
-import { getCommunityPosts } from "@/helpers/next-fetch/communityActions";
+import {
+  getCommunityPosts,
+  getMyCommentedPosts,
+  getMyLikedPosts,
+} from "@/helpers/next-fetch/communityActions";
+import type { CommunityTab } from "@/features/community/components/CommunitySidebar";
 import { CommunityFeedView } from "@/features/community/components/CommunityFeedView";
 
 interface CommunityPageProps {
@@ -10,6 +15,7 @@ interface CommunityPageProps {
   searchParams: Promise<{
     searchTerm?: string;
     page?: string;
+    tab?: string;
   }>;
 }
 
@@ -34,28 +40,61 @@ export default async function CommunityPage({
   searchParams,
 }: CommunityPageProps) {
   const { lang } = await params;
-  const { searchTerm = "", page = "1" } = await searchParams;
+  const { searchTerm = "", page = "1", tab: rawTab } = await searchParams;
+  const tab: CommunityTab =
+    rawTab === "comments" || rawTab === "likes" ? rawTab : "feed";
+  const pageNumber = parseInt(page, 10) || 1;
 
-  const [dict, profile, postsRes] = await Promise.all([
+  const [dict, profile] = await Promise.all([
     getDictionary(lang),
     getProfile(),
-    getCommunityPosts({
-      searchTerm,
-      page: parseInt(page, 10) || 1,
-      limit: 30,
-      status: "published",
-    }),
+  ]);
+  const isLoggedIn = Boolean(profile && (profile._id || profile.email));
+  const activeTab = isLoggedIn ? tab : "feed";
+
+  const [postsRes, commentsMeta, likesMeta] = await Promise.all([
+    activeTab === "feed"
+      ? getCommunityPosts({
+          searchTerm,
+          page: pageNumber,
+          limit: 30,
+          status: "published",
+        })
+      : Promise.resolve(null),
+    isLoggedIn
+      ? getMyCommentedPosts(activeTab === "comments" ? pageNumber : 1, activeTab === "comments" ? 30 : 1)
+      : Promise.resolve(null),
+    isLoggedIn
+      ? getMyLikedPosts(activeTab === "likes" ? pageNumber : 1, activeTab === "likes" ? 30 : 1)
+      : Promise.resolve(null),
   ]);
 
   const posts =
-    postsRes.success && Array.isArray(postsRes.data) ? postsRes.data : [];
-  const isLoggedIn = Boolean(profile && (profile._id || profile.email));
+    activeTab === "comments"
+      ? commentsMeta?.posts || []
+      : activeTab === "likes"
+        ? likesMeta?.posts || []
+        : postsRes?.success && Array.isArray(postsRes.data)
+          ? postsRes.data
+          : [];
 
   return (
     <CommunityFeedView
       initialPosts={posts}
       lang={lang}
       isLoggedIn={isLoggedIn}
+      user={
+        profile
+          ? {
+              name: profile.name,
+              image: profile.image,
+              role: profile.role,
+            }
+          : null
+      }
+      tab={activeTab}
+      commentCount={commentsMeta?.total || 0}
+      likeCount={likesMeta?.total || 0}
       dict={dict}
     />
   );
