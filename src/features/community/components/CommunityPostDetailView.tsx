@@ -203,13 +203,13 @@ export function CommunityPostDetailView({
                   )}
                 </div>
 
-                <div className="flex items-center gap-2 text-xs text-mist">
-                  <Calendar className="h-3.5 w-3.5 text-forest" />
-                  <span>{formattedDate}</span>
+                <div className="flex flex-nowrap items-center gap-2 whitespace-nowrap text-xs text-mist">
+                  <Calendar className="h-3.5 w-3.5 shrink-0 text-forest" />
+                  <span className="shrink-0">{formattedDate}</span>
                   {post.updatedAt && post.updatedAt !== post.createdAt && (
                     <>
-                      <span>·</span>
-                      <span className="italic opacity-75">
+                      <span className="shrink-0">·</span>
+                      <span className="shrink-0 italic opacity-75">
                         {isHt ? "modifye" : "edited"}
                       </span>
                     </>

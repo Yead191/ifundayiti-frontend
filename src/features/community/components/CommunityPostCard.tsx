@@ -210,12 +210,12 @@ export function CommunityPostCard({
                 </span>
               )}
             </div>
-            <p className="text-[11px] text-mist flex items-center gap-1.5">
-              <span>{formatTime(post.createdAt)}</span>
+            <p className="flex flex-nowrap items-center gap-1.5 whitespace-nowrap text-[11px] text-mist">
+              <span className="shrink-0">{formatTime(post.createdAt)}</span>
               {post.updatedAt && post.updatedAt !== post.createdAt && (
                 <>
-                  <span>·</span>
-                  <span className="italic opacity-80">
+                  <span className="shrink-0">·</span>
+                  <span className="shrink-0 italic opacity-80">
                     {isHt ? "modifye" : "edited"}
                   </span>
                 </>
@@ -302,9 +302,7 @@ export function CommunityPostCard({
             className="group/comment inline-flex items-center gap-1.5 rounded-xl bg-sand-soft/60 px-3 py-1.5 text-xs font-semibold text-mist hover:bg-sand-soft hover:text-forest transition-all"
           >
             <MessageSquare className="h-4 w-4 text-mist group-hover/comment:text-forest" />
-            <span className="font-mono text-xs">
-              {post.totalComments || 0}
-            </span>
+            <span className="font-mono text-xs">{post.totalComments || 0}</span>
             <span className="hidden sm:inline text-[11px] font-normal">
               {t.Comments || "Comments"}
             </span>
