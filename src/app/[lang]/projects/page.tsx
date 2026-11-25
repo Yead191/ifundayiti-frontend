@@ -9,7 +9,7 @@ import { ProjectPagination } from "@/features/projects/components/project-pagina
 import { getProjects } from "@/helpers/next-fetch/projectActions";
 import { buildMetadata } from "@/lib/seo";
 import { getDictionary } from "@/lib/dictionaries";
-import { Users, DollarSign, ShieldCheck } from "lucide-react";
+import { Users, ShieldCheck } from "lucide-react";
 
 interface PageProps {
   params: Promise<{ lang: string }>;
@@ -94,7 +94,6 @@ export default async function ProjectsPage({
                 <span>{t.StatCommunities}</span>
               </div>
               <div className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2 text-xs sm:text-sm font-semibold text-white backdrop-blur-md">
-                <DollarSign className="h-4 w-4 text-sand" />
                 <span>{t.StatDeployed}</span>
               </div>
               <div className="inline-flex items-center gap-2 rounded-2xl border border-white/15 bg-white/10 px-4 py-2 text-xs sm:text-sm font-semibold text-white backdrop-blur-md">
